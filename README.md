@@ -5,12 +5,21 @@
 
 ```
 -- data
+   |__pipa_effort_by_vessel.csv
+   |__vessels_inside_pipa.csv
 -- docs
+   |__Manuscript.pdf
 -- MPA_displacement.Rproj
 -- raw_data
+   |__gfw_daily
+   |__spatial
 -- README.md
 -- rmd
+   |__Manuscript.Rmd
+   |__references.bib
 -- scripts
+   |__sfc_as_cols.R
+   |__vessels_inside_pipa.R
 ```
 
 --------- 
