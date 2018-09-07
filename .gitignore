@@ -6,3 +6,4 @@ raw_data/gfw_daily/
 *.Rproj
 logs/
 EEZ_MEOW.*
+*.log
