@@ -4,3 +4,4 @@
 .Ruserdata
 raw_data/gfw_daily/
 *.Rproj
+logs/
