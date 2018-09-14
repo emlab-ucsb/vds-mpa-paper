@@ -23,13 +23,15 @@ biblio-style: nature
 
 *Last update: `r Sys.Date()`*
 
-```{r, echo = F}
+```{r, echo = F, message = F, warning = F}
 suppressPackageStartupMessages({
   library(startR)
   library(tidyverse)
 })
 
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
 ```
 
 # Introduction
@@ -42,16 +44,24 @@ The rest of the paper is outlined as follows: Section \ref{background} provides 
 
 ## Data
 
-```{r, echo = F}
-vessel_info_pipa <- read.csv(here::here("data", "vessel_info_mmsi_inside_pipa.csv"), stringsAsFactors = F) %>% 
-  mutate(treated = T)
+Number of vessels
 
-vessel_info_pna <- read.csv(here::here("data", "vessel_info_mmsi_inside_pna.csv"), stringsAsFactors = F) %>% 
-  mutate(treated = F)
+Explain BACI strict
 
-vessel_info <- rbind(vessel_info_pipa, vessel_info_pna) %>% 
-  rename(gear = inferred_label)
+Analyses being run
 
+Correct number of vessels in tables
+
+Add figure legends
+
+
+
+```{r}
+effort_by_vessel <- read.csv(file = here::here("data", "effort_by_vessel.csv"))
+```
+
+```{r}
+# Just to get pipa vessels that fished inside pipa before 2015
 pipa_vessels <- read.csv(here::here("data", "vessels_inside_pipa.csv"))
 
 n_prev <- pipa_vessels %>% 
@@ -63,28 +73,11 @@ n_prev <- pipa_vessels %>%
 mmsis <- unique(n_prev$mmsi)
 ```
 
+
 The Global Fishing Watch (GFW) data contain `r length(unique(pipa_vessels$mmsi))` vessels that have fished within PIPA waters [^3]. From these, `r length(mmsis)` did so at least once before 2015.
 
 [^3]: Perhaps some of these vessels only fished there for a couple hours one year. Therefore, I would need to further identify which ones were transient vs constant fishing events using some cutoff. For now, I run regressions for all vessels and for vessels that fly the Kiribati flag (n = 12). The true number of impacted vessels must lie between these two groups, but it provides a starting point.
 
-
-```{r}
-effort_by_vessel <- read.csv(here::here("data", "pipa_effort_by_vessel.csv"), stringsAsFactors = F) %>% 
-  rbind(read.csv(here::here("data", "pna_vessels_outside_pipa.csv"), stringsAsFactors = F)) %>% 
-  left_join(vessel_info, by = c("mmsi", "year")) %>% 
-  filter(gear %in% c("purse_seines", "drifting_longlines")) %>%
-  mutate(mmsi = as.character(mmsi),
-         month = as.character(month),
-         year = as.character(year))
-  
-effort_by_vessel %>%  
-  group_by(gear, treated, post) %>% 
-  summarize(hours = mean(hours, na.rm = T)) %>% 
-  spread(post, hours) %>% 
-  mutate(change = `TRUE` / `FALSE`) %>% 
-  knitr::kable(col.names = c("Gear", "Treated", "Before", "After", "Change (A / B)"),
-               caption = "Mean fishing hours for each gear before and after")
-```
 
 ```{r}
 effort_by_vessel %>% 
@@ -99,6 +92,16 @@ effort_by_vessel %>%
                caption = "Number of fishing vessels (identified by mmsi) for each gear before and after PIPA implementation.")
 ```
 
+```{r}
+effort_by_vessel %>%
+  filter(baci_strict) %>%
+  group_by(gear, treated, post) %>% 
+  summarize(hours = mean(hours, na.rm = T)) %>% 
+  spread(post, hours) %>% 
+  mutate(change = `TRUE` / `FALSE`) %>% 
+  knitr::kable(col.names = c("Gear", "Treated", "Before", "After", "Change (A / B)"),
+               caption = "Mean fishing hours for each gear before and after")
+```
 
 Then, I look at the entire fishing effort of vessels that fished at least once in PIPA before 2015. In other words, I use GFW data to track vessel-level activities inside and outside PIPA before and after 2015. However, all boats included in this case fished at least once in PIPA before 2015 (*i.e.* no control group). First I look at vessels whose `mmsi` code starts with `529`, indicating that they come from Kiribati [^4]. The overall pattern for fishing time (total and mean) show a downward trend that initiated well before 2015 (Fig. \ref{fig:kir_vessels}). The number of vessels as given by unique mmsi numbers shows a maximum near the end of 2014, and then decreases after 2015.
 
@@ -109,30 +112,14 @@ Then, I look at the entire fishing effort of vessels that fished at least once i
 
 ### To do
 
-- Divide pipa vessels by type of boat (longline vs. purse seine)
-- Identify two counterfactuals:
-    - A:
-        - PNA
-        - similar vessel
-        - never fished inside PIPA
-    -B:
-        - Taiwan
-        - Never in PNA
-        - Similar region?
-
-Has effort increased?
-
-- Change in fishing hours before vs after
-- Change in total hours before vs after
-- Change in distance before vs after
-- Where do PIPA vessels go?
-- How many were transient vs local?
-
-Has search time increased?
-
-- Distance between fishing points before vs. after
-- Prop hour fishing before vs after
-- Time between fishing points before vs. after
+- [x] Divide pipa vessels by type of boat (longline vs. purse seine)
+- [x] Identify two counterfactuals:
+    -  [x] A: PNA, similar vessel, never fished inside PIPA
+    - [ ] B: Taiwan, Never in PNA, Similar region
+- [x] Change in fishing hours before vs after
+- [ ] ~~Change in total hours before vs after~~
+- [ ] Change in distance before vs after
+- [ ] Where do PIPA vessels go?
 
 The current approach is to estimate what percentage of fishing effort from the PNA was displaced by PIPA and use this to infer something about Palau. While this provides a measure of the displacement, it does not fully address the possibility of costs increasing. I believ we can use individual tracks (as opposed to just the gridded effort) and obtain show how their behavior changed (*i.e.* are they fishing further away, are they fishing more, where are they now?).
 
@@ -155,7 +142,7 @@ $$
 In this section I present some of the preliminary results of regressions similar to what you have conducted for US MNMs using hours as an estimate of fishing effort. First, I explore patterns of fishing effort only inside PIPA (Fig. \ref{fig:blue_para}). Consistent with the blue paradox \citep{mcdermott_2018}, we see an increase in the number of vessels, total hours, mean hours, and number of data points between 2014 and 2015. Shortly after that, all measures decrease in 2015.
 
 
-```{r, echo = F, fig.cap = "\\label{fig:blue_para}Monthly hours, number of vessels, and data points observed inside PIPA. These clearly show the blue-paradox effect."}
+```{r, echo = F, fig.cap = "\\label{fig:blue_para}Monthly hours, number of vessels, and data points observed inside PIPA. These clearly show the blue-paradox effect.", fig.height = 3, fig.width = 6}
 # This is just to show the blue paradox, no need to include this figure
 pipa_vessels %>% 
   group_by(year, month, mmsi) %>% 
@@ -183,64 +170,13 @@ pipa_vessels %>%
 
 Given the similar trends observed in total fishing hours and mean fishing hours, I calculate total fishing hours at the year-month-vessel level and regress that on a `post` dummy that indicates years before or after 2015, which is interacted with a `treated` dummy that indicates if vessels fished at least once within PIPA or only in PNA waters. Results of this regression are presented in Table \ref{tab:kir_vessels}. In this table, column (1) presents the regression only against the policy dummy, column (2) includes month fixed effects, column (3) includes month and year fixed effects, and column (4) includes month, year, and vessel fixed effects. All three specifications show negative coefficients. The full model explains 71% of the variance in monthly fishing hours by vessel. This specification has the lowest policy coefficient (labeled `post`), and it is not different from zero at the $\alpha = 0.05$ level.
 
-```{r, echo = F, fig.cap = "\\label{fig:kir_vessels}Fishing hours and number of 12 Kiribati vessels from 2012 - 2016 that at some point fished inside PIPA."}
-effort_by_vessel %>% 
-  filter(kir, treated) %>% 
-  group_by(year, month, mmsi, gear) %>% 
-  summarize(hours = sum(hours)) %>% 
-  group_by(year, month, gear) %>% 
-  summarize(total_hours = sum(hours),
-            mean_hours = mean(hours),
-            n_mmsi = n()) %>% 
-  ungroup() %>% 
-  mutate(date = lubridate::date(paste(year, month, "01", sep = "/")),
-         post = year >= 2015) %>% 
-  select(-year) %>% 
-  gather(variable, value, -c(date, month, post, gear)) %>% 
-  ggplot(aes(x = date, y = value)) +
-  geom_line() +
-  geom_point(aes(color = post)) +
-  facet_wrap(gear~variable, scales = "free_y", ncol = 3) +
-  theme_bw() +
-  scale_color_brewer(palette = "Set1")
-```
-
-
-```{r, results = "asis", echo = F}
-kir_vessel <- effort_by_vessel %>% 
-  filter(kir, gear == "purse_seines") %>% 
-  mutate(post = post * 1,
-         treated = treated * 1)
-
-m1 <- lm(hours ~ post*treated, data = kir_vessel)
-m2 <- lm(hours ~ post*treated + month, data = kir_vessel)
-m3 <- lm(hours ~ post*treated + month + year, data = kir_vessel)
-m4 <- lm(hours ~ post*treated + month + year + mmsi, data = kir_vessel)
-
-models <- list(m1, m2, m3, m4)
-
-stargazer::stargazer(models,
-                     se = commarobust::makerobustseslist(models),
-                     t.auto = T,
-                     p.auto = T,
-                     type = "latex",
-                     omit = c("mmsi", "year", "month"),
-                     add.lines = list(c("Month FE", "No", "Yes", "Yes", "Yes"),
-                                      c("Year FE", "No", "No", "Yes", "Yes"),
-                                      c("Vessel FE", "No", "No", "No", "Yes")),
-                     omit.stat = c("adj.rsq", "f", "ser"),
-                     header = F,
-                     title = "\\label{tab:kir_vessels}Fishing hours from GFW for vessels flying Kiribati flag (n = 12). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
-```
-
-
-
 \clearpage
 
 I then repeat a similar analysis but for all fishing vessels that fished at least once inside PIPA before 2015. In this case this likely represents an underestimate of the effect, as it could include vessels who once fished inside PIPA, but are not even in the region any more. The number of unique mmsi codes (Fig. \ref{fig:all_vessels}) follows a similar pattern as in the previous case. However, mean hours and total hours show stable trends before and after. As opposed to only Kiribati vessels who seemed to reduce the number of fishing hours, a similar analysis of all vessels shows positive coefficients that are not statistically significant ($alpha < 0.05$). Results of the regressions are shown in Table \ref{tab:all_vessels}. Like before, column (1) presents the regression only against the policy dummy, column (2) includes month fixed effects, column (3) includes month and year fixed effects, and column (4) includes month, year, and vessel fixed effects.
 
 ```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Fishing hours and number of vessels by month for all vessels that fished inside PIPA at least once."}
 effort_by_vessel %>% 
+  filter(baci_strict) %>%
   group_by(year, gear, treated, post, month) %>% 
   summarize(total_hours = sum(hours),
             mean_hours = mean(hours),
@@ -257,18 +193,21 @@ effort_by_vessel %>%
   scale_color_brewer(palette = "Set1")
 ```
 
+## Purse seiners
+
 ```{r, results = "asis", echo = F}
 
 model_data <- effort_by_vessel %>% 
-  filter(gear == "purse_seines") %>% 
+  filter(baci_strict,
+         gear == "purse_seines") %>% 
   mutate(post = post * 1,
          treated = treated * 1) %>% 
   mutate_at(.vars = vars(month, year, mmsi), .funs = as.character)
 
-m1 <- lm(hours ~ post*treated, data = effort_by_vessel)
-m2 <- lm(hours ~ post*treated + month, data = effort_by_vessel)
-m3 <- lm(hours ~ post*treated + month + year, data = effort_by_vessel)
-m4 <- lm(hours ~ post*treated + month + year + mmsi, data = effort_by_vessel)
+m1 <- lm(hours ~ post*treated, data = model_data)
+m2 <- lm(hours ~ post*treated + month, data = model_data)
+m3 <- lm(hours ~ post*treated + month + year, data = model_data)
+m4 <- lm(hours ~ post*treated + month + year + flag, data = model_data)
 
 models <- list(m1, m2, m3, m4)
 
@@ -277,19 +216,59 @@ stargazer::stargazer(models,
                      t.auto = T,
                      p.auto = T,
                      type = "latex",
-                     omit = c("mmsi", "year", "month"),
+                     omit = c("flag", "year", "month"),
                      add.lines = list(c("Month FE", "No", "Yes", "Yes", "Yes"),
                                       c("Year FE", "No", "No", "Yes", "Yes"),
-                                      c("Vessel FE", "No", "No", "No", "Yes")),
+                                      c("Flag FE", "No", "No", "No", "Yes")),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
                      title = "\\label{tab:all_vessels}Fishing hours from GFW for all vessels (n = 206) that at some point fished in PIPA. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
 
+map_df(models, broom::tidy, .id = "model") %>%
+  filter(term %in% c("(Intercept)", "post", "treated", "post:treated")) %>%
+  ggplot(aes(x = model, y = estimate)) +
+  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error),
+                size = 1,
+                width = 0,
+                color = "red") +
+  geom_point(color = "steelblue", size = 3) +
+  facet_wrap(~term, scale = "free") +
+  theme_bw()
 ```
 
-```{r, echo = F}
+## Longliners
+
+```{r, results = "asis"}
+
+model_data <- effort_by_vessel %>% 
+  filter(baci_strict,
+         !gear == "purse_seines") %>% 
+  mutate(post = post * 1,
+         treated = treated * 1) %>% 
+  mutate_at(.vars = vars(month, year, mmsi), .funs = as.character)
+
+m1 <- lm(hours ~ post*treated, data = model_data)
+m2 <- lm(hours ~ post*treated + month, data = model_data)
+m3 <- lm(hours ~ post*treated + month + year, data = model_data)
+m4 <- lm(hours ~ post*treated + month + year + flag, data = model_data)
+
+models <- list(m1, m2, m3, m4)
+
+stargazer::stargazer(models,
+                     se = commarobust::makerobustseslist(models),
+                     t.auto = T,
+                     p.auto = T,
+                     type = "latex",
+                     omit = c("flag", "year", "month"),
+                     add.lines = list(c("Month FE", "No", "Yes", "Yes", "Yes"),
+                                      c("Year FE", "No", "No", "Yes", "Yes"),
+                                      c("Flag FE", "No", "No", "No", "Yes")),
+                     omit.stat = c("adj.rsq", "f", "ser"),
+                     header = F,
+                     title = "\\label{tab:all_vessels}Fishing hours from GFW for all vessels (n = 206) that at some point fished in PIPA. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
+
 map_df(models, broom::tidy, .id = "model") %>%
-  filter(term %in% c("(Intercept)", "postTRUE", "treatedTRUE", "postTRUE:treatedTRUE")) %>%
+  filter(term %in% c("(Intercept)", "post", "treated", "post:treated")) %>%
   ggplot(aes(x = model, y = estimate)) +
   geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error),
                 size = 1,
