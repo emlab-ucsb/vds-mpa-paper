@@ -1,11 +1,12 @@
-/* Last run on September 7, 2018 */
+/* Last run on September 13, 2018 */
 
 SELECT
   mmsi,
   year,
   inferred_label,
   label_score,
-  inferred_label_allyears
+  inferred_label_allyears,
+  iso3
 FROM
   [world-fishing-827:gfw_research.vessel_info]
 WHERE
