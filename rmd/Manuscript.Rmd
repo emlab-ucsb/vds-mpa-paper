@@ -1,12 +1,7 @@
 ---
-title: "Displacement effects and implications of Large-Scale Marine Protected Areas"
-author: |
-  Juan Carlos Villaseñor-Derbez ^1^
-  John Lynham ^2^
-date: |
-  ^1^ Bren School of Environmental Science & Management, University of California, Santa Barbara
-  ^2^ Department of Economics, Saunders Hall 532, University of Hawai`i at Manoa
-abstract: "Large-scale Marine Protected Areas (LSMPAs) have seen a significant increase over the last years. Literature shows that fishing effort is effectively eliminated in this protected areas upon implementation. The benefits of reducing effort have been largely studied, and include increases in abundance, biomass, and diversity within the bounded regions. In terms of the fishing implication, no-take zones may produce spillover that provide fish for outside areas. The implications of displacement of fishing effort are not yet fully understood. Evidence suggests that fishing effort re-distributes along the borders of the MPA, following an ideal free distribution. Novel data products allow us to track fishing effort at the vessel-level, allowing us to identify changes in behavior at both the fleet and vessel level. This papers evaluates the implications of implementing a LMPA, the Phoenix Islands Protected Area (PIPA). We evaluate changes in fishing effort, and track vessels to see where they go after the implementation of PIPA. Our results show that vessels in the effected region increase fishing effort after the implementation of PIPA. THey are redistributed to X. These findings have major implications for MPA implementation, especially as countries rush to meet the goals of 10% ocean protection as mandated by the SDG."
+title: "Displacement effects in PIPA"
+author: "Juan Carlos Villaseñor-Derbez"
+# abstract: "Large-scale Marine Protected Areas (LSMPAs) have seen a significant increase over the last years. Literature shows that fishing effort is effectively eliminated in this protected areas upon implementation. The benefits of reducing effort have been largely studied, and include increases in abundance, biomass, and diversity within the bounded regions. In terms of the fishing implication, no-take zones may produce spillover that provide fish for outside areas. The implications of displacement of fishing effort are not yet fully understood. Evidence suggests that fishing effort re-distributes along the borders of the MPA, following an ideal free distribution. Novel data products allow us to track fishing effort at the vessel-level, allowing us to identify changes in behavior at both the fleet and vessel level. This papers evaluates the implications of implementing a LMPA, the Phoenix Islands Protected Area (PIPA). We evaluate changes in fishing effort, and track vessels to see where they go after the implementation of PIPA. Our results show that vessels in the effected region increase fishing effort after the implementation of PIPA. THey are redistributed to X. These findings have major implications for MPA implementation, especially as countries rush to meet the goals of 10% ocean protection as mandated by the SDG."
 output:
   bookdown::pdf_document2:
     toc: yes
@@ -16,7 +11,7 @@ output:
     number_sections: no
 header-includes:
   - \usepackage{float}
-  - \floatplacement{figure}{H}
+  - \floatplacement{figure,table}{H}
 bibliography: references.bib
 biblio-style: nature
 ---
@@ -34,83 +29,7 @@ knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE)
 ```
 
-# Introduction
-
-The rest of the paper is outlined as follows: Section \ref{background} provides further information about PIPA and Palau, section \ref{methods} describes our data and empirical strategy, section \ref{results} presents our results, in section \ref{discussion} we discuss our findings and provide management recommendations.
-
-# Background
-
-# Methods
-
-## Data
-
-Number of vessels
-
-Explain BACI strict
-
-Analyses being run
-
-Correct number of vessels in tables
-
-Add figure legends
-
-
-
-```{r}
-effort_by_vessel <- read.csv(file = here::here("data", "effort_by_vessel.csv"))
-```
-
-```{r}
-# Just to get pipa vessels that fished inside pipa before 2015
-pipa_vessels <- read.csv(here::here("data", "vessels_inside_pipa.csv"))
-
-n_prev <- pipa_vessels %>% 
-  filter(year < 2015) %>%
-  group_by(year, mmsi) %>% 
-  summarize(n_points = sum(n_points),
-            hours = sum(total_fishing_hours))
-
-mmsis <- unique(n_prev$mmsi)
-```
-
-
-The Global Fishing Watch (GFW) data contain `r length(unique(pipa_vessels$mmsi))` vessels that have fished within PIPA waters [^3]. From these, `r length(mmsis)` did so at least once before 2015.
-
-[^3]: Perhaps some of these vessels only fished there for a couple hours one year. Therefore, I would need to further identify which ones were transient vs constant fishing events using some cutoff. For now, I run regressions for all vessels and for vessels that fly the Kiribati flag (n = 12). The true number of impacted vessels must lie between these two groups, but it provides a starting point.
-
-
-```{r}
-effort_by_vessel %>% 
-  group_by(gear, treated, post, mmsi) %>% 
-  count() %>% 
-  ungroup() %>% 
-  group_by(gear, treated, post) %>% 
-  summarize(boats = n()) %>% 
-  spread(post, boats) %>% 
-  mutate(change = `TRUE` / `FALSE`) %>% 
-  knitr::kable(col.names = c("Gear", "Treated", "Before", "After", "Change (A / B)"),
-               caption = "Number of fishing vessels (identified by mmsi) for each gear before and after PIPA implementation.")
-```
-
-```{r}
-effort_by_vessel %>%
-  filter(baci_strict) %>%
-  group_by(gear, treated, post) %>% 
-  summarize(hours = mean(hours, na.rm = T)) %>% 
-  spread(post, hours) %>% 
-  mutate(change = `TRUE` / `FALSE`) %>% 
-  knitr::kable(col.names = c("Gear", "Treated", "Before", "After", "Change (A / B)"),
-               caption = "Mean fishing hours for each gear before and after")
-```
-
-Then, I look at the entire fishing effort of vessels that fished at least once in PIPA before 2015. In other words, I use GFW data to track vessel-level activities inside and outside PIPA before and after 2015. However, all boats included in this case fished at least once in PIPA before 2015 (*i.e.* no control group). First I look at vessels whose `mmsi` code starts with `529`, indicating that they come from Kiribati [^4]. The overall pattern for fishing time (total and mean) show a downward trend that initiated well before 2015 (Fig. \ref{fig:kir_vessels}). The number of vessels as given by unique mmsi numbers shows a maximum near the end of 2014, and then decreases after 2015.
-
-[^4]: link: [http://www.vtexplorer.com/mmsi-mid-codes-en/](http://www.vtexplorer.com/mmsi-mid-codes-en/)
-
-
-## Analysis
-
-### To do
+# To do
 
 - [x] Divide pipa vessels by type of boat (longline vs. purse seine)
 - [x] Identify two counterfactuals:
@@ -120,6 +39,90 @@ Then, I look at the entire fishing effort of vessels that fished at least once i
 - [ ] ~~Change in total hours before vs after~~
 - [ ] Change in distance before vs after
 - [ ] Where do PIPA vessels go?
+- [ ] Make sure I have full tracks of all mmsis
+
+\clearpage
+
+# Methods
+
+## Data
+
+
+```{r}
+effort_by_vessel <- read.csv(file = here::here("data", "effort_by_vessel.csv"))
+```
+
+```{r}
+# Just to get pipa vessels that fished inside pipa before 2015
+pipa_vessels <- effort_by_vessel %>% 
+  filter(treated) %$%
+  unique(mmsi) %>% 
+  length()
+
+n_prev <- effort_by_vessel %>% 
+  filter(treated, !post) %$%
+  unique(mmsi) %>% 
+  length()
+
+n_post <- effort_by_vessel %>% 
+  filter(treated, post, baci_strict) %$%
+  unique(mmsi) %>% 
+  length()
+
+```
+
+
+The Global Fishing Watch (GFW) data contain `r pipa_vessels` vessels that have fished within PIPA waters. From these, `r n_prev` did so at least once before 2015, but only `r n_post` continued to fish after 2015. The `r n_prev - n_post` missing vessels might tell us something about the impact of PIPA. However, they might have gone to other areas (i.e. outside of PNA countries). I must dig deeper into this.
+
+Accounting for the fact that vessels that fished within PIPA before implementation might stop fishing afterwards, or that vessels entered the fishery after PIPA closure, I define my treatment and control groups as follows. The treatment group contains all vessels that fished within PIPA at least once before the closure, and that continued to fish elsewhere afterwards. The Control group has vessels that never fished within PIPA waters, belong to other PNA countries, and have fished in surroinding areas before and after PIPA closure. Tables \ref{tab:baci_n}, \ref{tab:baci_n_s}, and \ref{tab:baci_h} show the number of vessels, number of vessels following a BACI design, and fishing hours, respectively. Tables show data grouped by gear (longlines, purse seines), group (treated, control), and period (before, after). The relative change (After / Before) is also shown. Table \ref{tab:baci_n} shows information for all fishing vessels in the dataset, while Tables \ref{tab:baci_n_s} and \ref{tab:baci_h} show information for vessels that meet the BACI design (i.e. excludes vessels that only appear at one point in time).
+
+
+```{r}
+effort_by_vessel %>% 
+  # filter(baci_strict) %>%
+  group_by(gear, treated, post, mmsi) %>% 
+  count() %>% 
+  ungroup() %>% 
+  group_by(gear, treated, post) %>% 
+  summarize(boats = n()) %>% 
+  spread(post, boats) %>% 
+  mutate(change = `TRUE` / `FALSE`) %>% 
+  knitr::kable(col.names = c("Gear", "Treatment", "Before", "After", "Change (A / B)"),
+               caption = "\\label{tab:baci_n}Number of fishing vessels (identified by mmsi) for each gear before and after PIPA implementation.",
+               booktabs = T) %>% 
+  kableExtra::kable_styling(latex_options = "HOLD_position")
+```
+
+```{r}
+effort_by_vessel %>% 
+  filter(baci_strict) %>%
+  group_by(gear, treated, post, mmsi) %>% 
+  count() %>% 
+  ungroup() %>% 
+  group_by(gear, treated, post) %>% 
+  summarize(boats = n()) %>% 
+  spread(post, boats) %>% 
+  mutate(change = `TRUE` / `FALSE`) %>% 
+  knitr::kable(col.names = c("Gear", "Treatment", "Before", "After", "Change (A / B)"),
+               caption = "\\label{tab:baci_n_s}Number of fishing vessels (identified by mmsi) for each gear before and after PIPA implementation.",
+               booktabs = T) %>% 
+  kableExtra::kable_styling(latex_options = "HOLD_position")
+```
+
+```{r}
+effort_by_vessel %>%
+  filter(baci_strict) %>%
+  group_by(gear, treated, post) %>% 
+  summarize(hours = mean(hours, na.rm = T)) %>% 
+  spread(post, hours) %>% 
+  mutate(change = `TRUE` / `FALSE`) %>% 
+  knitr::kable(col.names = c("Gear", "Treatment", "Before", "After", "Change (A / B)"),
+               caption = "\\label{tab:baci_h}Mean fishing hours for each gear before and after",
+               booktabs = T) %>% 
+  kableExtra::kable_styling(latex_options = "HOLD_position")
+```
+
+## Analysis
 
 The current approach is to estimate what percentage of fishing effort from the PNA was displaced by PIPA and use this to infer something about Palau. While this provides a measure of the displacement, it does not fully address the possibility of costs increasing. I believ we can use individual tracks (as opposed to just the gridded effort) and obtain show how their behavior changed (*i.e.* are they fishing further away, are they fishing more, where are they now?).
 
@@ -131,50 +134,20 @@ The current approach is to estimate what percentage of fishing effort from the P
 
 <!-- Where $H_{ijk}$ is a measure of effort (*.i.e.* total hours, fishing hours, distance traveled), $\beta$ captures the change for before ($Post_i = 0$) and after ($Post_i = 1$) implementation of PIPA, $mu_j$ captures the month fixed-effects, and $\phi_k$ captures vessel-level fixed-effects. We use this general model and the nested specifications which drop the month and vessel-level fixed effects to test for differences. -->
 
-Our model specification uses a difference-in-differences approach. In this case, we interact the before-after dummy with a treatment dummy. The treatment-control groups follow our definition in the data description. The model takes the form of:
+Our model specification uses a DiD approach. In this case, we interact the before-after dummy with a treatment dummy. The treatment and control groups follow our definition in the data description. The model takes the form of:
 
 $$
-H_{ijk} = \alpha + \beta Post_i \times Treat + \mu_j + \phi_k + \epsilon_{ijk}
+H_{ijkl} = \alpha + \beta Post_i \times Treat + \mu_j + \phi_k + \gamma_l+ \epsilon_{ijk}
 $$
+
+Where $\mu_j$, $\phi_k$, and $\gamma_l$ represent month-, year-, and flag-level fixed effects. I use total hours at the vessel-month level.
 
 # Results
 
-In this section I present some of the preliminary results of regressions similar to what you have conducted for US MNMs using hours as an estimate of fishing effort. First, I explore patterns of fishing effort only inside PIPA (Fig. \ref{fig:blue_para}). Consistent with the blue paradox \citep{mcdermott_2018}, we see an increase in the number of vessels, total hours, mean hours, and number of data points between 2014 and 2015. Shortly after that, all measures decrease in 2015.
+Fig. \ref{fig:all_vessels} shows that mean fishing hours for purse seiners have an abrupt increase, just before January 1st, 2015. This trend is observed for both treated and control groups. Longliners, however, show a more stable trend. The number of mmsi codes increases through time. This can largel be explained by the addition of more satellits, which increasedetectability of vessels. As expected total fishing hours follow a similar trend to that of mmsi numbers. Results of the regressions for each gear type are shown in Tables \ref{tab:purse} and \ref{tab:long}. Column (1) presents the DiD regression with no fixed effects, column (2) includes month fixed effects, column (3) includes month and year fixed effects, and column (4) includes month, year, and flag fixed effects. Figures \ref{fig:puse} and \ref{fig:long} represent the same coefficient estimates.
 
 
-```{r, echo = F, fig.cap = "\\label{fig:blue_para}Monthly hours, number of vessels, and data points observed inside PIPA. These clearly show the blue-paradox effect.", fig.height = 3, fig.width = 6}
-# This is just to show the blue paradox, no need to include this figure
-pipa_vessels %>% 
-  group_by(year, month, mmsi) %>% 
-  summarize(n_points = sum(n_points),
-            hours = sum(total_fishing_hours)) %>% 
-  group_by(year, month) %>% 
-  summarize(total_hours = sum(hours),
-            mean_hours = mean(hours),
-            n_points = sum(n_points),
-            n_mmsi = n()) %>% 
-  ungroup() %>% 
-  mutate(date = lubridate::date(paste(year, month, "01", sep = "/")),
-         post = year >= 2015) %>% 
-  select(-year) %>% 
-  gather(variable, value, -c(date, month, post)) %>% 
-  ggplot(aes(x = date, y = value)) +
-  geom_line() +
-  geom_point(aes(color = post)) +
-  facet_wrap(~variable, scales = "free", ncol = 2) +
-  theme_bw() +
-  scale_color_brewer(palette = "Set1")
-```
-
-\clearpage
-
-Given the similar trends observed in total fishing hours and mean fishing hours, I calculate total fishing hours at the year-month-vessel level and regress that on a `post` dummy that indicates years before or after 2015, which is interacted with a `treated` dummy that indicates if vessels fished at least once within PIPA or only in PNA waters. Results of this regression are presented in Table \ref{tab:kir_vessels}. In this table, column (1) presents the regression only against the policy dummy, column (2) includes month fixed effects, column (3) includes month and year fixed effects, and column (4) includes month, year, and vessel fixed effects. All three specifications show negative coefficients. The full model explains 71% of the variance in monthly fishing hours by vessel. This specification has the lowest policy coefficient (labeled `post`), and it is not different from zero at the $\alpha = 0.05$ level.
-
-\clearpage
-
-I then repeat a similar analysis but for all fishing vessels that fished at least once inside PIPA before 2015. In this case this likely represents an underestimate of the effect, as it could include vessels who once fished inside PIPA, but are not even in the region any more. The number of unique mmsi codes (Fig. \ref{fig:all_vessels}) follows a similar pattern as in the previous case. However, mean hours and total hours show stable trends before and after. As opposed to only Kiribati vessels who seemed to reduce the number of fishing hours, a similar analysis of all vessels shows positive coefficients that are not statistically significant ($alpha < 0.05$). Results of the regressions are shown in Table \ref{tab:all_vessels}. Like before, column (1) presents the regression only against the policy dummy, column (2) includes month fixed effects, column (3) includes month and year fixed effects, and column (4) includes month, year, and vessel fixed effects.
-
-```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Fishing hours and number of vessels by month for all vessels that fished inside PIPA at least once."}
+```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Fishing hours and number of vessels by month for all vessels. Vertical dashed line indicates PIPA closure."}
 effort_by_vessel %>% 
   filter(baci_strict) %>%
   group_by(year, gear, treated, post, month) %>% 
@@ -185,13 +158,16 @@ effort_by_vessel %>%
   mutate(date = lubridate::date(paste(year, month, "01", sep = "/"))) %>% 
   select(-year) %>% 
   gather(variable, value, -c(date, month, post, gear, treated)) %>% 
-  ggplot(aes(x = date, y = value, group = treated)) +
-  geom_line(aes(linetype = treated)) +
-  geom_point(aes(color = post)) +
+  ggplot(aes(x = date, y = value, color = treated)) +
+  geom_line() +
+  geom_point() +
   facet_wrap(gear~variable, scales = "free", ncol = 3) +
   theme_bw() +
-  scale_color_brewer(palette = "Set1")
+  scale_color_brewer(palette = "Set1") +
+  geom_vline(xintercept = lubridate::date(paste(2015, 01, "01", sep = "/")), linetype = "dashed")
 ```
+
+\clearpage
 
 ## Purse seiners
 
@@ -222,8 +198,10 @@ stargazer::stargazer(models,
                                       c("Flag FE", "No", "No", "No", "Yes")),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
-                     title = "\\label{tab:all_vessels}Fishing hours from GFW for all vessels (n = 206) that at some point fished in PIPA. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
+                     title = "\\label{tab:purse}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
+```
 
+```{r, fig.cap = "\\label{fig:puse}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate."}
 map_df(models, broom::tidy, .id = "model") %>%
   filter(term %in% c("(Intercept)", "post", "treated", "post:treated")) %>%
   ggplot(aes(x = model, y = estimate)) +
@@ -235,6 +213,8 @@ map_df(models, broom::tidy, .id = "model") %>%
   facet_wrap(~term, scale = "free") +
   theme_bw()
 ```
+
+\clearpage
 
 ## Longliners
 
@@ -265,8 +245,10 @@ stargazer::stargazer(models,
                                       c("Flag FE", "No", "No", "No", "Yes")),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
-                     title = "\\label{tab:all_vessels}Fishing hours from GFW for all vessels (n = 206) that at some point fished in PIPA. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
+                     title = "\\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment).. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
+```
 
+```{r, fig.cap = "\\label{fig:long}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate."}
 map_df(models, broom::tidy, .id = "model") %>%
   filter(term %in% c("(Intercept)", "post", "treated", "post:treated")) %>%
   ggplot(aes(x = model, y = estimate)) +
@@ -280,13 +262,11 @@ map_df(models, broom::tidy, .id = "model") %>%
 ```
 
 
-# Discusion
+<!-- # Discusion -->
 
-\clearpage
+<!-- ### Further work -->
 
-### Further work
-
-<!-- In order to strengthen this analysis, I would like to identify an appropriate sample of vessels that acccurately represent the PNA. This vessels must meet at least these two points: i) belong to the PNA and ii) Have fished for a significant amount of time inside PIPA, to count as "treated". Ideally, this would get rid of vessels that sporadically fished for insignificant time in PIPA, and are therefore unlikely to be affected. This would include between 12 and `r length(unique(n_prev$mmsi))` vessels (number of Kiribati vessels vs. number of all vessels who fished in PIPA at least once before 2015). -->
+<!-- In order to strengthen this analysis, I would like to identify an appropriate sample of vessels that acccurately represent the PNA. This vessels must meet at least these two points: i) belong to the PNA and ii) Have fished for a significant amount of time inside PIPA, to count as "treated". Ideally, this would get rid of vessels that sporadically fished for insignificant time in PIPA, and are therefore unlikely to be affected. This would include between 12 and  vessels (number of Kiribati vessels vs. number of all vessels who fished in PIPA at least once before 2015). -->
 
 <!-- I would also like to explore the possibility of identifying a plausible counterfactual. That way we could do something like a DiD. I think it is possible to identify counterfactual boats. I would start by identifying vessels who meet at least these four criteria: i) fish in near-by regions, ii) have same gear as vessels from PIPA, and iii) having similar length of data, and iv) never fished inside PIPA. Perhaps an additional one would be that they belong to the PNA. -->
 
