@@ -113,6 +113,15 @@ p3 <- filter(effort_by_vessel, baci_strict) %>%
 
 ggsave(p3, filename = here::here("img", "BACI_strict_gear.png"), width = 15, height = 10)
 
+# Generate a list of mmsis, group (treated-post), and gear.
+# I'll use this one to get the full tracks from BigQuery
+
+vessel_groups <- effort_by_vessel %>% 
+  group_by(mmsi, treated, gear) %>% 
+  count() %>% 
+  select(-n)
+
 # Save data
 
-write.csv(effort_by_vessel, file = here::here("data", "effort_by_vessel.csv"))
+write.csv(effort_by_vessel, file = here::here("data", "effort_by_vessel.csv"), row.names = F)
+write.csv(vessel_groups, file = here::here("data", "vessel_groups.csv"), row.names = F)
