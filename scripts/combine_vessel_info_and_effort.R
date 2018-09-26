@@ -9,10 +9,12 @@ library(magrittr)
 # Put it all together
 
 ## Load and bind vessel info
-vessel_info_pipa <- read.csv(here::here("data", "vessel_info_mmsi_inside_pipa.csv"), stringsAsFactors = F) %>% 
+vessel_info_pipa <- read.csv(here::here("data", "vessel_info_mmsi_inside_pipa.csv"),
+                             stringsAsFactors = F) %>% 
   mutate(treated = T)
 
-vessel_info_pna <- read.csv(here::here("data", "vessel_info_mmsi_inside_pna.csv"), stringsAsFactors = F) %>% 
+vessel_info_pna <- read.csv(here::here("data", "vessel_info_mmsi_inside_pna.csv"),
+                            stringsAsFactors = F) %>% 
   mutate(treated = F)
 
 vessel_info <- rbind(vessel_info_pipa, vessel_info_pna) %>% 
@@ -117,7 +119,8 @@ ggsave(p3, filename = here::here("img", "BACI_strict_gear.png"), width = 15, hei
 # I'll use this one to get the full tracks from BigQuery
 
 vessel_groups <- effort_by_vessel %>% 
-  group_by(mmsi, treated, gear) %>% 
+  filter(baci_strict) %>% 
+  group_by(mmsi, treated, gear, flag) %>% 
   count() %>% 
   select(-n)
 

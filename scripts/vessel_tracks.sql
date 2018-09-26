@@ -1,33 +1,45 @@
-/* Last run on 19/09/2018 */
+/* Last run on 25/09/2018 */
 
 SELECT
-A.mmsi AS mmsi,
-A.timestamp AS timestamp,
-A.lon AS lon,
-A.lat AS lat,
-A.hours AS hours,
-A.nnet_score AS nnet_score,
-A.eez_iso3,
-B.treated AS treated,
-B.gear AS gear
+  A.mmsi AS mmsi,
+  A.timestamp AS timestamp,
+  A.lon AS lon,
+  A.lat AS lat,
+  A.hours AS hours,
+  A.nnet_score AS nnet_score,
+  A.eez_iso3,
+  A.distance_from_port AS distance_from_port,
+  A.distance_from_shore AS distance_from_shore,
+  A.seg_id AS seg_id,
+  B.treated AS treated,
+  B.gear AS gear,
+  B.glaf AS flag
 FROM (
   SELECT
-  mmsi,
-  timestamp,
-  lon,
-  lat,
-  hours,
-  nnet_score,
-  eez_iso3
+    mmsi,
+    timestamp,
+    lon,
+    lat,
+    hours,
+    nnet_score,
+    eez_iso3,
+    distance_from_port,
+    distance_from_shore,
+    seg_id
   FROM
-  `world-fishing-827.gfw_research.nn7`
+    `world-fishing-827.gfw_research.nn7`
   WHERE
-  mmsi IN (
+    mmsi IN (
     SELECT
-    mmsi
+      mmsi
     FROM
-    `ucsb-gfw.mpa_displacement.vessel_groups`)) A
+      `ucsb-gfw.mpa_displacement.vessel_groups`)
+    AND seg_id IN (
+    SELECT
+      seg_id
+    FROM
+      `world-fishing-827.gfw_research.good_segments`)) A
 JOIN
-`ucsb-gfw.mpa_displacement.vessel_groups` B
+  `ucsb-gfw.mpa_displacement.vessel_groups` B
 ON
-A.mmsi = B.mms
+  A.mmsi = B.mmsi
