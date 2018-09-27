@@ -24,8 +24,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={Displacement effects in PIPA},
-            pdfauthor={Juan Carlos Villaseñor-Derbez},
+            pdftitle={Displacement of fishing effort by Large Scale Marine Protected Areas},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -79,41 +78,55 @@
 }
 
 \setlength{\droptitle}{-2em}
-  \title{Displacement effects in PIPA}
-  \pretitle{\vspace{\droptitle}\centering\huge}
+
+  \title{Displacement of fishing effort by Large Scale Marine Protected Areas}
+    \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
-  \author{Juan Carlos Villaseñor-Derbez}
-  \preauthor{\centering\large\emph}
+  \subtitle{Updated on 2018-09-27}
+  \author{Juan Carlos Villaseñor-Derbez\textsuperscript{1} John
+Lynham\textsuperscript{2}}
+    \preauthor{\centering\large\emph}
   \postauthor{\par}
-  \date{}
-  \predate{}\postdate{}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{\textsuperscript{1} Bren School of Environmental Science and Management,
+University of California Santa Barbara, Santa Barbara, CA
+\textsuperscript{2} Department of Economics, University of Hawaii at
+Manoa, Honolulu, HI}
 
 \usepackage{float}
 \floatplacement{figure,table}{H}
 
-\usepackage{amsthm}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}
-\newtheorem{corollary}{Corollary}
-\newtheorem{proposition}{Proposition}
-\theoremstyle{definition}
-\newtheorem{example}{Example}
-\theoremstyle{definition}
-\newtheorem{exercise}{Exercise}
-\theoremstyle{remark}
-\newtheorem*{remark}{Remark}
-\newtheorem*{solution}{Solution}
 \begin{document}
 \maketitle
+\begin{abstract}
+Large-scale Marine Protected Areas (LSMPAs) have seen a significant
+increase over the last years. Fishing effort is effectively eliminated
+within these protected areas upon implementation. The benefits of
+reducing effort have been largely studied, and include increases in
+abundance, biomass, and diversity within the bounded regions. These
+no-take zones may produce spillover effects, which provide fish for
+outside areas. However, the economic and ecological implications of
+displacing fishing effort are not yet fully understood. Novel data
+products that track fishing effort at the vessel-level allow us to
+identify changes in fleet- and vessel-level behavior upon the
+implementation of protected areas, as well as how these redistribute.
+This papers evaluates the implications of implementing LSMPA, by
+evaluating changes in fishing hours, showing that vessels in the
+effected region reduce fishing effort after the implementation of PIPA.
+Our results are robust to a set of specifications. We also track the
+relative spatial allocation of fishing events thorugh time, and identify
+that areas closer to PIPA show an increase in relative fishing hourse
+due to the displacement of PIPA-fishing vessels. Our results not only
+provide an impact evaluation of the effect of LSMPAs on fishing
+activity, but provide insights into vessel redistribution dynamics,
+which may have ecological and economic implications.
+\end{abstract}
 
 {
 \setcounter{tocdepth}{4}
 \tableofcontents
 }
-\emph{Last update: 2018-09-14}
-
 \section{To do}\label{to-do}
 
 \begin{itemize}
@@ -128,7 +141,7 @@
   \item
     {[}x{]} A: PNA, similar vessel, never fished inside PIPA
   \item
-    {[} {]} B: Taiwan, Never in PNA, Similar region
+    {[} {]} \sout{B: Taiwan, Never in PNA, Similar region}
   \end{itemize}
 \item
   {[}x{]} Change in fishing hours before vs after
@@ -137,34 +150,75 @@
 \item
   {[} {]} Change in distance before vs after
 \item
-  {[} {]} Where do PIPA vessels go?
+  {[}x{]} Where do PIPA vessels go?
 \item
-  {[} {]} Make sure I have full tracks of all mmsis
+  {[}x{]} Make sure I have full tracks of all mmsis
 \end{itemize}
 
 \clearpage
 
+\section{Introduction}\label{introduction}
+
+This work identifies the behavioral changes of fishing vessels due to
+the implementation of PIPA. Not only can we identify temporal changes in
+fishing patterns (\emph{i.e.} time and distance), but also spatial
+patterns. Our vessel-level tracks allow us to see where PIPA-fishing
+vessels go after the closure, providing empirical insights about the
+redistribution of fishing effort after the implementaion of a MPA.
+
 \section{Methods}\label{methods}
+
+This section is divided into two main parts. First, we provide a general
+description of AIS data and the process of identification of
+vessel-level events done by Global Fishing Watch \footnote{\href{globalfishingwatch.org}{Global
+  Fishing Watch}}. Alongside, we describe the subset of data that we use
+for these analyses. When relevant, we also point out possible
+shortcommings in the data, or factors that must be considered in the
+later analyses. Then we move on to explain our identification strategy,
+and the main analyses that we undertake.
 
 \subsection{Data}\label{data}
 
-The Global Fishing Watch (GFW) data contain 233 vessels that have fished
-within PIPA waters. From these, 217 did so at least once before 2015,
-but only 183 continued to fish after 2015. The 34 missing vessels might
-tell us something about the impact of PIPA. However, they might have
-gone to other areas (i.e.~outside of PNA countries). I must dig deeper
-into this.
+\subsubsection{AIS data}\label{ais-data}
 
-Accounting for the fact that vessels that fished within PIPA before
-implementation might stop fishing afterwards, or that vessels entered
-the fishery after PIPA closure, I define my treatment and control groups
-as follows. The treatment group contains all vessels that fished within
+Automatic Identification Systems are on-board devices intended to
+provide at-sea saftey and prevent ship collisions by broadcasting vessel
+locations to surrounding vessels. These broadcasted positions can be
+recorded by satellites and land-based antenas. GFW uses a neural network
+to infer vessel characteristics and whether each broadcasted position
+represents a fishing event, thus allowing us to estimate near real-time
+fishing events globally \citep{kroodsma_2018}. The recent addition of
+satellites that can receive AIS signals causes an apparent increase in
+the number of broadcasted AIS messages (\emph{i.e.} points) and
+therefore fishing hours. It is therefore important to be cautious when
+comparing temporal trends. The variability in AIS data and dynamic ocean
+conditions require that temporal trends be taken into account. We do
+that by incorporating a series of controls, which are defined in the
+following section.
+
+\subsubsection{PIPA data}\label{pipa-data}
+
+The GFW data contain 233 purse seiners and longliners that have fished
+within PIPA waters. From these, only 217 did so at least once before
+2015, but only 183 continued to fish after 2015\footnote{The 34 missing
+  vessels might have exited the fishery, been decomissioned or sold
+  (therefore chaning their AIS and mmsi), or turned off their AIS
+  transmiters. On either case, we are not able to observe these.}.
+Vessels that fished within PIPA before implementation might stop fishing
+afterwards, therefore not being observable in the post-treatment period.
+New vessels might have also entered the fishery after PIPA closure, and
+were likely not exposed to the policy intervention in the pre-treatment
+period. Therefore, we define our treatment and control groups as
+follows. The treatment group contains all vessels that fished within
 PIPA at least once before the closure, and that continued to fish
-elsewhere afterwards. The Control group has vessels that never fished
+elsewhere afterwards. The control group has vessels that never fished
 within PIPA waters, belong to other PNA countries, and have fished in
-surroinding areas before and after PIPA closure. Tables
-\ref{tab:baci_n}, \ref{tab:baci_n_s}, and \ref{tab:baci_h} show the
-number of vessels, number of vessels following a BACI design, and
+surrounding areas (\emph{i.e.} PNA-countries' EEZ) before and after PIPA
+closure. Figure \ref{fig:baci_strict} provides a visual representation
+of the vessel-level that make up each of group through time.
+
+Tables \ref{tab:baci_n}, \ref{tab:baci_n_s}, and \ref{tab:baci_h} show
+the number of vessels, number of vessels following a BACI design, and
 fishing hours, respectively. Tables show data grouped by gear
 (longlines, purse seines), group (treated, control), and period (before,
 after). The relative change (After / Before) is also shown. Table
@@ -172,6 +226,16 @@ after). The relative change (After / Before) is also shown. Table
 dataset, while Tables \ref{tab:baci_n_s} and \ref{tab:baci_h} show
 information for vessels that meet the BACI design (i.e.~excludes vessels
 that only appear at one point in time).
+
+\begin{figure}
+\centering
+\includegraphics{../img/BACI_strict_gear.png}
+\caption{\label{fig:baci_strict}Stream of fishing events by vessels
+(stacked on the y-axis due to space) through time (x-axis). Each dot
+represent a vessel-month, with colors indicating the pre and post
+periods, and pannels separating between gear and treated or control
+groups.}
+\end{figure}
 
 \begin{table}[H]
 
