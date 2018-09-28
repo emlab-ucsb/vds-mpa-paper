@@ -40,9 +40,6 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\usepackage[normalem]{ulem}
-% avoid problems with \sout in headers with hyperref:
-\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
 \IfFileExists{parskip.sty}{%
 \usepackage{parskip}
 }{% else
@@ -89,13 +86,15 @@ Lynham\textsuperscript{2}}
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{\textsuperscript{1} Bren School of Environmental Science and Management,
+    \date{\textsuperscript{1}Bren School of Environmental Science and Management,
 University of California Santa Barbara, Santa Barbara, CA
-\textsuperscript{2} Department of Economics, University of Hawaii at
+\textsuperscript{2}Department of Economics, University of Hawaii at
 Manoa, Honolulu, HI}
 
 \usepackage{float}
 \floatplacement{figure,table}{H}
+\usepackage{lineno}
+\linenumbers
 
 \begin{document}
 \maketitle
@@ -127,34 +126,6 @@ which may have ecological and economic implications.
 \setcounter{tocdepth}{4}
 \tableofcontents
 }
-\section{To do}\label{to-do}
-
-\begin{itemize}
-\tightlist
-\item
-  {[}x{]} Divide pipa vessels by type of boat (longline vs.~purse seine)
-\item
-  {[}x{]} Identify two counterfactuals:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    {[}x{]} A: PNA, similar vessel, never fished inside PIPA
-  \item
-    {[} {]} \sout{B: Taiwan, Never in PNA, Similar region}
-  \end{itemize}
-\item
-  {[}x{]} Change in fishing hours before vs after
-\item
-  {[} {]} \sout{Change in total hours before vs after}
-\item
-  {[} {]} Change in distance before vs after
-\item
-  {[}x{]} Where do PIPA vessels go?
-\item
-  {[}x{]} Make sure I have full tracks of all mmsis
-\end{itemize}
-
 \clearpage
 
 \section{Introduction}\label{introduction}
@@ -287,28 +258,73 @@ purse\_seines & TRUE & 56.87322 & 146.2015 & 2.5706563\\
 
 \subsection{Analysis}\label{analysis}
 
-The current approach is to estimate what percentage of fishing effort
-from the PNA was displaced by PIPA and use this to infer something about
-Palau. While this provides a measure of the displacement, it does not
-fully address the possibility of costs increasing. I believ we can use
-individual tracks (as opposed to just the gridded effort) and obtain
-show how their behavior changed (\emph{i.e.} are they fishing further
-away, are they fishing more, where are they now?).
+\subsubsection{Change in behavior}\label{change-in-behavior}
 
-\subsubsection{Model specifications}\label{model-specifications}
-
-Our model specification uses a DiD approach. In this case, we interact
-the before-after dummy with a treatment dummy. The treatment and control
-groups follow our definition in the data description. The model takes
-the form of:
+The first analysis focuses on identifying the response of fishing
+vessels to PIPA closure. Our variables of interests are fishing effort,
+indicated by total fishing hours per month, and distance traveled (Km)
+on every fishing trip. We compare fishing hours\footnote{And soon,
+  distance} before and after the implementation of PIPA using a
+Difference-in-Differences approach, where we track the variable of
+interest for vessels that used to fish inside PIPA and vessels that
+never fished inside PIPA, before and after PIPA implementation. Our
+specification is the following:
 
 \[
-H_{ijkl} = \alpha + \beta Post_i \times Treat + \mu_j + \phi_k + \gamma_l+ \epsilon_{ijk}
+y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \mu_t + \phi_t + \gamma_i + \epsilon_{i,t}
 \]
 
-Where \(\mu_j\), \(\phi_k\), and \(\gamma_l\) represent month-, year-,
-and flag-level fixed effects. I use total hours at the vessel-month
-level.
+Where \(y_{ijkl}\) is the variable of interest for vessel \(i\) in time
+period \(t\). A dummy variable \(Post_i\) takes the value of 0 for all
+dates prior to PIPA implementation and a value of 1 por all dates
+including and following PIPA implementation. \(Treat_i\) is a dummy
+variable indicating whether a vessel belongs to the control
+(\(Treat_i = 0\)) or treatment (\(Treat_i = 1\)) group. \(\alpha\) is
+the standard intercept, \(\beta_1\) captures the \emph{ex post} change,
+\(\beta_2\) captures the difference between treated and control groups,
+and \(\beta_3\) is our parameter of interest: de DiD estimate capturing
+the treatment effect. Finally, \(\mu_t\), \(\phi_t\), and \(\gamma_i\)
+represent month-, year-, and flag-level dummies that account for
+seasonality or country-level management interventions.
+
+\subsubsection{Vessel displacement and
+redistribution}\label{vessel-displacement-and-redistribution}
+
+Our second part of the analyses focuses on the redistribution of fishing
+effort. In other words, identifying where do vessels that used to fish
+inside PIPA go after its establishment. We calculate the monthly
+relative distribution of fishing hours by all treated vessels across all
+fished EEZs and the high seas. These trends are shown in Figure
+\ref{fig:redist_trend}. EEZs that had sproadic fishing events were
+pooled into a group of ``others'', leaving us with a total of n = 12
+spatially defined regions (\emph{i.e.} EEZs, High Seas, ``other EEZs'').
+Figure \ref{fig:redist_trend_spa} shows the yearly average of the
+relative spatial allocation of fishing efforts; this is the spatial
+representation of \ref{fig:redist_trend} averaged by year.
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-9-1.pdf}
+\caption{\label{fig:unnamed-chunk-9}\label{fig:redist_trend}}
+\end{figure}
+
+To evaluate this change in effort allocation, we regress our variable of
+interest, fishing hours, on the interaction between a dummy variable
+indicating the policy intervention and a dummy variable for countries,
+to obtain the by-country change in proportional allocation of fishing
+effort:
+
+\[
+y_{i,t} = \alpha + \beta_1Post_t + \beta_2Country_i + \beta3Post_t \times Country_i + \epsilon_{i,t}
+\]
+
+Our variable of interest, \(y_{i,t}\) represents the proportion of
+fishing hours that country \(i\) receives at time \(t\). \(Post\) also
+represents a policy dummy that takes the value of 0 for all dates before
+implementation of PIPA, and 1 otherwise. \(Country\) is a dummy variable
+for countries, interpreted as individual EEZs, the high seas, and a
+group of ``other EEZs''. Our parameter of interest is \(\beta_3\), which
+captures the country-level change in proportional fishing effort.
 
 \section{Results}\label{results}
 
@@ -328,15 +344,17 @@ the same coefficient estimates.
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-7-1.pdf}
-\caption{\label{fig:unnamed-chunk-7}\label{fig:all_vessels}Fishing hours and
-number of vessels by month for all vessels. Vertical dashed line
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-11-1.pdf}
+\caption{\label{fig:unnamed-chunk-11}\label{fig:all_vessels}Fishing hours
+and number of vessels by month for all vessels. Vertical dashed line
 indicates PIPA closure.}
 \end{figure}
 
 \clearpage
 
-\subsection{Purse seiners}\label{purse-seiners}
+\subsection{Change in behavior}\label{change-in-behavior-1}
+
+\subsubsection{Purse seiners}\label{purse-seiners}
 
 \begin{table}[!htbp] \centering 
   \caption{\label{tab:purse}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.} 
@@ -375,15 +393,15 @@ R$^{2}$ & 0.238 & 0.262 & 0.312 & 0.339 \\
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-9-1.pdf}
-\caption{\label{fig:unnamed-chunk-9}\label{fig:puse}Coefficient estimates
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-13-1.pdf}
+\caption{\label{fig:unnamed-chunk-13}\label{fig:puse}Coefficient estimates
 for each model. Top pannel indicates variable, x-axis represents model
 specification, and y-axis coefficient estimate.}
 \end{figure}
 
 \clearpage
 
-\subsection{Longliners}\label{longliners}
+\subsubsection{Longliners}\label{longliners}
 
 \begin{table}[!htbp] \centering 
   \caption{\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment).. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.} 
@@ -422,11 +440,16 @@ R$^{2}$ & 0.026 & 0.044 & 0.044 & 0.107 \\
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-11-1.pdf}
-\caption{\label{fig:unnamed-chunk-11}\label{fig:long}Coefficient estimates
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-15-1.pdf}
+\caption{\label{fig:unnamed-chunk-15}\label{fig:long}Coefficient estimates
 for each model. Top pannel indicates variable, x-axis represents model
 specification, and y-axis coefficient estimate.}
 \end{figure}
+
+\subsection{Effort displacement and
+redistribution}\label{effort-displacement-and-redistribution}
+
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-16-1.pdf}
 
 \renewcommand\refname{References}
 \bibliography{references.bib}

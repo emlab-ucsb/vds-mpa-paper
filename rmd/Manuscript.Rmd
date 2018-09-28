@@ -18,6 +18,8 @@ output:
 header-includes:
   - \usepackage{float}
   - \floatplacement{figure,table}{H}
+  - \usepackage{lineno}
+  - \linenumbers
 bibliography: references.bib
 biblio-style: nature
 ---
@@ -25,6 +27,7 @@ biblio-style: nature
 ```{r, echo = F, message = F, warning = F}
 suppressPackageStartupMessages({
   library(startR)
+  library(sf)
   library(tidyverse)
 })
 
@@ -33,6 +36,9 @@ knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE)
 
 options(knitr.table.format = "latex")
+
+source(here::here("scripts", "st_rotate.R"))
+source(here::here("scripts", "sfc_as_cols.R"))
 ```
 
 \clearpage
@@ -144,20 +150,73 @@ effort_by_vessel %>%
 The first analysis focuses on identifying the response of fishing vessels to PIPA closure. Our variables of interests are fishing effort, indicated by total fishing hours per month, and distance traveled (Km) on every fishing trip. We compare fishing hours[^3] before and after the implementation of PIPA using a Difference-in-Differences approach, where we track the variable of interest for vessels that used to fish inside PIPA and vessels that never fished inside PIPA, before and after PIPA implementation. Our specification is the following:
 
 $$
-y_{i,t} = \alpha + \beta Post_t \times Treat_i + \mu_t + \phi_t + \gamma_i + \epsilon_{it}
+y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \mu_t + \phi_t + \gamma_i + \epsilon_{i,t}
 $$
 
-Where $y_{ijkl}$ is the variable of interest for vessel $i$ in time period $t$. $\alpha$ is the standard intercept, and $\beta$ is our parameter of interest: de DiD estimate capturing the treatment effect. A dummy variable $Post_i$ takes the value of 0 for all dates prior to PIPA implementation and a value of 1 por all dates including and following PIPA implementation date. $Treat_i$ is a dummy variable indicating whether a vessel belongs to the control ($Treat_i = 0$) or treatment ($Treat_i = 1$) group. Finally, $\mu_t$, $\phi_t$, and $\gamma_i$ represent month-, year-, and flag-level dummies that account for seasonality or country-level management interventions.
+Where $y_{ijkl}$ is the variable of interest for vessel $i$ in time period $t$. A dummy variable $Post_i$ takes the value of 0 for all dates prior to PIPA implementation and a value of 1 por all dates including and following PIPA implementation. $Treat_i$ is a dummy variable indicating whether a vessel belongs to the control ($Treat_i = 0$) or treatment ($Treat_i = 1$) group. $\alpha$ is the standard intercept, $\beta_1$ captures the *ex post* change, $\beta_2$ captures the difference between treated and control groups, and $\beta_3$ is our parameter of interest: de DiD estimate capturing the treatment effect. Finally, $\mu_t$, $\phi_t$, and $\gamma_i$ represent month-, year-, and flag-level dummies that account for seasonality or country-level management interventions.
 
 [^3]: And soon, distance
 
-<!-- $$ -->
-<!-- H_{ijk} = \alpha + \beta Post_i + \mu_j + \phi_k + \epsilon_{ijk} -->
-<!-- $$ -->
-
-<!-- Where $H_{ijk}$ is a measure of effort (*.i.e.* total hours, fishing hours, distance traveled), $\beta$ captures the change for before ($Post_i = 0$) and after ($Post_i = 1$) implementation of PIPA, $mu_j$ captures the month fixed-effects, and $\phi_k$ captures vessel-level fixed-effects. We use this general model and the nested specifications which drop the month and vessel-level fixed effects to test for differences. -->
-
 ### Vessel displacement and redistribution
+
+```{r}
+displacement_data <- readRDS(file = here::here("data", "displacement_data.rds"))
+```
+
+Our second part of the analyses focuses on the redistribution of fishing effort. In other words, identifying where do vessels that used to fish inside PIPA go after its establishment. We calculate the monthly relative distribution of fishing hours by all treated vessels across all fished EEZs and the high seas. These trends are shown in Figure \ref{fig:redist_trend}. EEZs that had sproadic fishing events were pooled into a group of "others", leaving us with a total of n = `r length(unique(displacement_data$country))` spatially defined regions (*i.e.* EEZs, High Seas, "other EEZs"). Figure \ref{fig:redist_trend_spa} shows the yearly average of the relative spatial allocation of fishing efforts; this is the spatial representation of \ref{fig:redist_trend} averaged by year.
+
+<!-- Explicar cuales EEZs habia en total y cuales quedaron en un pie de nota o algo asi -->
+
+```{r}
+country_groups <- c("COK", "FSM", "KIR", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV")
+
+eez <- read_sf(dsn = here::here("data", "spatial", "EEZ_subset"), layer = "EEZ_subset")
+
+pipa <- read_sf(dsn = here::here("data", "spatial", "PIPA"),
+                layer = "PIPA") %>% 
+  mutate(inside = T) %>% 
+  select(inside) %>% 
+  st_rotate()
+```
+
+```{r, fig.cap = "\\label{fig:redist_trend}"}
+displacement_data %>% 
+  ggplot(aes(x = date, y = h_prop, group = post)) +
+  geom_smooth(method = "lm") +
+  geom_point() +
+  geom_vline(xintercept = lubridate::date(paste(2015, 1, 1, sep = "/")), linetype = "dashed") +
+  scale_fill_brewer(palette = "Paired") +
+  ggtheme_plot() +
+  facet_wrap(~country, scales = "free_y")
+```
+
+```{r, fig.cap = "\\label{fig:redist_trend_spa}Proportion of fishing hours that all vessels spent on each of the EEZs and the high seas.", eval = F}
+pipa_map_disp <- pipa %>% 
+  mutate(country = "PIPA") %>% 
+  left_join(displacement_data, by = "country")
+
+# Los colores del mapa deben estar dados por el Post:Country
+eez %>% 
+  left_join(displacement_data, by = c("ISO_Ter1" = "country")) %>%
+  group_by(year) %>% 
+  summarize(h_prop = mean(h_prop, na.rm = T)) %>% 
+  ggplot() +
+  geom_sf(aes(fill = h_prop, linetype = PNA), size = 1, color = "black") +
+  geom_sf(data = pipa_map_ba_disp, aes(fill = h_prop), linetype = "dashed", color = "red") +
+  ggtheme_plot() +
+  scale_fill_gradientn(colors = colorRamps::matlab.like(10)) +
+  facet_wrap(~year)
+```
+
+<!-- Meter tabla ba_disp aqui -->
+
+To evaluate this change in effort allocation, we regress our variable of interest, fishing hours, on the interaction between a dummy variable indicating the policy intervention and a dummy variable for countries, to obtain the by-country change in proportional allocation of fishing effort:
+
+$$
+y_{i,t} = \alpha + \beta_1Post_t + \beta_2Country_i + \beta3Post_t \times Country_i + \epsilon_{i,t}
+$$
+
+Our variable of interest, $y_{i,t}$ represents the proportion of fishing hours that country $i$ receives at time $t$. $Post$ also represents a policy dummy that takes the value of 0 for all dates before implementation of PIPA, and 1 otherwise. $Country$ is a dummy variable for countries, interpreted as individual EEZs, the high seas, and a group of "other EEZs". Our parameter of interest is $\beta_3$, which captures the country-level change in proportional fishing effort.
 
 
 
@@ -188,7 +247,9 @@ effort_by_vessel %>%
 
 \clearpage
 
-## Purse seiners
+## Change in behavior
+
+### Purse seiners
 
 ```{r, results = "asis", echo = F}
 
@@ -235,7 +296,7 @@ map_df(models, broom::tidy, .id = "model") %>%
 
 \clearpage
 
-## Longliners
+### Longliners
 
 ```{r, results = "asis"}
 
@@ -278,6 +339,40 @@ map_df(models, broom::tidy, .id = "model") %>%
   geom_point(color = "steelblue", size = 3) +
   facet_wrap(~term, scale = "free") +
   theme_bw()
+```
+
+## Effort displacement and redistribution
+
+```{r}
+ba_disp <- displacement_data %>% 
+  group_by(country, post) %>% 
+  summarize(h_prop_m = mean(h_prop)) %>% 
+  spread(post, h_prop_m) %>% 
+  mutate(change = (`TRUE` - `FALSE`) * 100) %>% 
+  select(country, change)
+
+pipa_map_ba_disp <- pipa %>% 
+  mutate(country = "PIPA") %>% 
+  left_join(ba_disp, by = "country")
+
+# Los colores del mapa deben estar dados por el Post:Country
+eez %>% 
+  left_join(ba_disp, by = c("ISO_Ter1" = "country")) %>%
+  filter(!is.na(change)) %>% 
+  ggplot() +
+  geom_sf(aes(fill = change), size = 1, color = "black") +
+  geom_sf(data = pipa_map_ba_disp, aes(fill = change), linetype = "dashed", color = "red") +
+  ggtheme_plot() +
+  scale_fill_gradientn(colors = colorRamps::matlab.like(10))
+```
+
+```{r, eval = F}
+# Dont have this here. Just write the model specification
+
+displacement_data %>% 
+  filter(!is.na(country)) %>% 
+  lm(h_prop ~ post*country, data = .) %>% 
+  summary()
 ```
 
 
