@@ -81,15 +81,15 @@ n_post <- effort_by_vessel %>%
 ```
 
 
-The GFW data contain `r pipa_vessels` purse seiners and longliners that have fished within PIPA waters. From these, only `r n_prev` did so at least once before 2015, but only `r n_post` continued to fish after 2015[^2]. Vessels that fished within PIPA before implementation might stop fishing afterwards, therefore not being observable in the post-treatment period. New vessels might have also entered the fishery after PIPA closure, and were likely not exposed to the policy intervention in the pre-treatment period. Therefore, we define our treatment and control groups as follows. 
-The treatment group contains all vessels that fished within PIPA at least once before the closure, and that continued to fish elsewhere afterwards. The control group has vessels that never fished within PIPA waters, belong to other PNA countries, and have fished in surrounding areas (*i.e.* PNA-countries' EEZ) before and after PIPA closure. Figure \ref{fig:baci_strict} provides a visual representation of the vessel-level that make up each of group through time.
+The GFW data contain `r pipa_vessels` purse seiners and longliners that have fished within PIPA waters. From these, only `r n_prev` did so at least once before 2015, but only `r n_post` continued to fish after 2015[^2]. **What do you mean by continued to fish? Specifically, what is the spatial definition? Continued to fish in Kiribati EEZ/PNA EEZs/anywhere in the world?** Vessels that fished within PIPA before implementation might stop fishing afterwards, therefore not being observable in the post-treatment period. New vessels might have also entered the fishery after PIPA closure, and were likely not exposed to the policy intervention in the pre-treatment period. Therefore, we define our treatment and control groups as follows. 
+The treatment group contains all vessels that fished within PIPA at least once before the closure, and that continued to fish elsewhere afterwards. The control group has vessels that never fished within PIPA waters, belong to other PNA countries, and have fished in surrounding areas (*i.e.* PNA-countries' EEZ) before and after PIPA closure. **Vessels in the control group satisfy all three of these condiitons or at least one of them?** Figure \ref{fig:baci_strict} provides a visual representation of the vessel-level that make up each of group through time.
 
-Tables \ref{tab:baci_n}, \ref{tab:baci_n_s}, and \ref{tab:baci_h} show the number of vessels, number of vessels following a BACI design, and fishing hours, respectively. Tables show data grouped by gear (longlines, purse seines), group (treated, control), and period (before, after). The relative change (After / Before) is also shown. Table \ref{tab:baci_n} shows information for all fishing vessels in the dataset, while Tables \ref{tab:baci_n_s} and \ref{tab:baci_h} show information for vessels that meet the BACI design (i.e. excludes vessels that only appear at one point in time).
+Tables \ref{tab:baci_n}, \ref{tab:baci_n_s}, and \ref{tab:baci_h} show the number of vessels, number of vessels following a BACI design, and fishing hours, respectively. **Is the larger number of longliners surprising? I thought PIPA was known as a purse seining ground and less so for longlining.** Tables show data grouped by gear (longlines, purse seines), group (treated, control), and period (before, after). The relative change (After / Before) is also shown. Table \ref{tab:baci_n} shows information for all fishing vessels in the dataset, while Tables \ref{tab:baci_n_s} and \ref{tab:baci_h} show information for vessels that meet the BACI design (i.e. excludes vessels that only appear at one point in time).
 
 ![\label{fig:baci_strict}Stream of fishing events by vessels (stacked on the y-axis due to space) through time (x-axis). Each dot represent a vessel-month, with colors indicating the pre and post periods, and pannels separating between gear and treated or control groups.](../img/BACI_strict_gear.png)
 
 
-[^2]: The `r n_prev - n_post` missing vessels might have exited the fishery, been decomissioned or sold (therefore chaning their AIS and mmsi), or turned off their AIS transmiters. On either case, we are not able to observe these.
+[^2]: The `r n_prev - n_post` missing vessels might have exited the fishery, been decomissioned or sold (therefore changing their AIS and mmsi), or turned off their AIS transmiters. In either case, we are not able to observe these.
 
 
 ```{r}
@@ -147,7 +147,9 @@ $$
 y_{i,t} = \alpha + \beta Post_t \times Treat_i + \mu_t + \phi_t + \gamma_i + \epsilon_{it}
 $$
 
-Where $y_{ijkl}$ is the variable of interest for vessel $i$ in time period $t$. $\alpha$ is the standard intercept, and $\beta$ is our parameter of interest: de DiD estimate capturing the treatment effect. A dummy variable $Post_i$ takes the value of 0 for all dates prior to PIPA implementation and a value of 1 por all dates including and following PIPA implementation date. $Treat_i$ is a dummy variable indicating whether a vessel belongs to the control ($Treat_i = 0$) or treatment ($Treat_i = 1$) group. Finally, $\mu_t$, $\phi_t$, and $\gamma_i$ represent month-, year-, and flag-level dummies that account for seasonality or country-level management interventions.
+**Need to include separate dummy variables for Post and Treat above**
+
+Where $y_{ijkl}$ is the variable of interest for vessel $i$ in time period $t$. $\alpha$ is the standard intercept, and $\beta$ is our parameter of interest: de DiD estimate capturing the treatment effect. A dummy variable $Post_i$ takes the value of 0 for all dates prior to PIPA implementation and a value of 1 por all dates including and following PIPA implementation date. $Treat_i$ is a dummy variable indicating whether a vessel belongs to the control ($Treat_i = 0$) or treatment ($Treat_i = 1$) group. Finally, $\mu_t$, $\phi_t$, and $\gamma_i$ represent month-, year-, and flag-level dummies that account for seasonality or country-level management interventions. **year fixed effects are going to soak up a lot of the variation in treatment status but we should certianly have at least one column of results that includes them. Why no analysis with vessel fixed effects?**
 
 [^3]: And soon, distance
 
@@ -163,8 +165,13 @@ Where $y_{ijkl}$ is the variable of interest for vessel $i$ in time period $t$. 
 
 # Results
 
-Fig. \ref{fig:all_vessels} shows that mean fishing hours for purse seiners have an abrupt increase, just before January 1st, 2015. This trend is observed for both treated and control groups. Longliners, however, show a more stable trend. The number of mmsi codes increases through time. This can largel be explained by the addition of more satellits, which increasedetectability of vessels. As expected total fishing hours follow a similar trend to that of mmsi numbers. Results of the regressions for each gear type are shown in Tables \ref{tab:purse} and \ref{tab:long}. Column (1) presents the DiD regression with no fixed effects, column (2) includes month fixed effects, column (3) includes month and year fixed effects, and column (4) includes month, year, and flag fixed effects. Figures \ref{fig:puse} and \ref{fig:long} represent the same coefficient estimates.
+Fig. \ref{fig:all_vessels} shows that mean fishing hours for purse seiners have an abrupt increase, just before January 1st, 2015. **Do we know what is causing this? I'm guessing this can't be Blue Paradox stuff because we see it for the control group as well who are supposed to have never fished within PIPA.** This trend is observed for both treated and control groups. Longliners, however, show a more stable trend. The number of mmsi codes increases through time. This can largely be explained by the addition of more satellites, which increases the detectability of vessels. As expected total fishing hours follow a similar trend to that of mmsi numbers. Results of the regressions for each gear type are shown in Tables \ref{tab:purse} and \ref{tab:long}. Column (1) presents the DiD regression with no fixed effects, column (2) includes month fixed effects, column (3) includes month and year fixed effects, and column (4) includes month, year, and flag fixed effects. Figures \ref{fig:puse} and \ref{fig:long} represent the same coefficient estimates.
 
+**We should have a discussion (over the phone and in the paper) about whether a decrease in fishing hours represents a positive or negative impact of PIPA. Without data on catch it might be hard to really know.**
+
+**An additional test to add to the wish list is to see if vessels are fishing closer to each other following the PIPA closure.**
+
+**Nice work so far!**
 
 ```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Fishing hours and number of vessels by month for all vessels. Vertical dashed line indicates PIPA closure."}
 effort_by_vessel %>% 
@@ -217,7 +224,7 @@ stargazer::stargazer(models,
                                       c("Flag FE", "No", "No", "No", "Yes")),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
-                     title = "\\label{tab:purse}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
+                     title = "\\label{tab:purse}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment). Asterisks indicate significance levels. Numbers in parentheses represent heteroskedasticity-robust standard errors.")
 ```
 
 ```{r, fig.cap = "\\label{fig:puse}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate."}
@@ -264,7 +271,7 @@ stargazer::stargazer(models,
                                       c("Flag FE", "No", "No", "No", "Yes")),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
-                     title = "\\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment).. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
+                     title = "\\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
 ```
 
 ```{r, fig.cap = "\\label{fig:long}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate."}
