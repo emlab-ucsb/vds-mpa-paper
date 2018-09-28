@@ -51,9 +51,10 @@ displacement_data <- expand.grid(country = c(unique(ps$country), "HS"),
   left_join(ps, by = c("country", "year", "month")) %>% 
   mutate(h_prop = ifelse(is.na(h_prop), 0, h_prop)) %>% 
   mutate(date = lubridate::date(paste(year, month, 1, sep = "/")),
-         country = fct_relevel(country, c("PIPA", "KIR")),
+         country = fct_relevel(country, c("PIPA", "KIR", "HS")),
          country = fct_relevel(country, "others", after = Inf),
          post = year >= 2015)
 
 saveRDS(object = displacement_data,
         file = here::here("data", "displacement_data.rds"))
+
