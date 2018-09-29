@@ -18,16 +18,19 @@ vessel_info_pna <- read.csv(here::here("data", "vessel_info_mmsi_inside_pna.csv"
   mutate(treated = F)
 
 vessel_info <- rbind(vessel_info_pipa, vessel_info_pna) %>% 
-  rename(gear = inferred_label)
+  rename(gear = inferred_label) %>% 
+  select(mmsi, year, iso3, gear)
 
 ## Get effort data
-effort_by_vessel <- read.csv(here::here("data", "pipa_effort_by_vessel.csv"), stringsAsFactors = F) %>% 
-  rbind(read.csv(here::here("data", "pna_vessels_outside_pipa.csv"), stringsAsFactors = F)) %>% 
-  left_join(vessel_info, by = c("mmsi", "year")) %>% 
-  filter(gear %in% c("purse_seines", "drifting_longlines")) %>%
+effort_by_vessel <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
+  filter(fishing) %>% 
+  group_by(post, treated, year, month, gear, mmsi) %>% 
+  summarize(hours = sum(hours, na.rm = T)) %>% 
+  ungroup() %>% 
+  left_join(vessel_info, by = c("mmsi", "year", "gear")) %>%
   mutate(month_c = as.character(month),
          year_c = as.character(year),
-         date = lubridate::date(date))
+         date = lubridate::date(paste(year, month, 1, sep = "/")))
 
 # Identify vessels suitable for BACI
 # I want to make sure I don't use vessels that appear after 2015 (in the control) or that disappeared after 2015 (in the treatment).
@@ -58,73 +61,20 @@ mmsi_baci_relaxed <- c(tb, ca[ca %in% cb])
 effort_by_vessel %<>%
   mutate(baci_strict = mmsi %in% mmsi_baci_strict,
          baci_relaxed = mmsi %in% mmsi_baci_relaxed) %>% 
-  select(post, treated, baci_relaxed, baci_strict, flag = iso3, mmsi, year, year_c, month, month_c, date, hours, gear, gear_score = label_score, kir)
-
-# Plot it
-
-## All data
-p1 <- group_by(effort_by_vessel, mmsi, date, gear, post, treated) %>%
-  summarize(h = sum(hours, na.rm = T)) %>%
-  arrange(treated, post, mmsi) %>%
-  ggplot(aes(
-    x = date,
-    y = as.character(mmsi),
-    size = h,
-    fill = post,
-    alpha = treated
-  )) +
-  geom_point(color = "black", shape = 21) +
-  theme_bw() +
-  facet_grid(treated ~ gear)
-
-ggsave(p1, filename = here::here("img", "BACI_gear.png"), width = 15, height = 10)
-
-## Just baci_relaxed
-p2 <- filter(effort_by_vessel, baci_relaxed) %>% 
-  group_by(mmsi, date, gear, post, treated) %>%
-  summarize(h = sum(hours, na.rm = T)) %>%
-  arrange(treated, post, mmsi) %>%
-  ggplot(aes(
-    x = date,
-    y = as.character(mmsi),
-    size = h,
-    fill = post,
-    alpha = treated
-  )) +
-  geom_point(color = "black", shape = 21) +
-  theme_bw() +
-  facet_grid(treated ~ gear)
-
-ggsave(p2, filename = here::here("img", "BACI_relaxed_gear.png"), width = 15, height = 10)
-
-## Just baci_strict
-p3 <- filter(effort_by_vessel, baci_strict) %>% 
-  group_by(mmsi, date, gear, post, treated) %>%
-  summarize(h = sum(hours, na.rm = T)) %>%
-  arrange(treated, post, mmsi) %>%
-  ggplot(aes(
-    x = date,
-    y = as.character(mmsi),
-    size = h,
-    fill = post,
-    alpha = treated
-  )) +
-  geom_point(color = "black", shape = 21) +
-  theme_bw() +
-  facet_grid(treated ~ gear)
-
-ggsave(p3, filename = here::here("img", "BACI_strict_gear.png"), width = 15, height = 10)
-
-# Generate a list of mmsis, group (treated-post), and gear.
-# I'll use this one to get the full tracks from BigQuery
-
-vessel_groups <- effort_by_vessel %>% 
-  filter(baci_strict) %>% 
-  group_by(mmsi, treated, gear, flag) %>% 
-  count() %>% 
-  select(-n)
+  select(post, treated, baci_relaxed, baci_strict, flag = iso3, mmsi, year, year_c, month, month_c, date, hours, gear)
 
 # Save data
 
-write.csv(effort_by_vessel, file = here::here("data", "effort_by_vessel.csv"), row.names = F)
-write.csv(vessel_groups, file = here::here("data", "vessel_groups.csv"), row.names = F)
+saveRDS(effort_by_vessel, file = here::here("data", "effort_by_vessel.rds"))
+
+
+# # Generate a list of mmsis, group (treated-post), and gear.
+# # I'll use this one to get the full tracks from BigQuery
+# 
+# vessel_groups <- effort_by_vessel %>% 
+#   filter(baci_strict) %>% 
+#   group_by(mmsi, treated, gear, flag) %>% 
+#   count() %>% 
+#   select(-n)
+#
+# write.csv(vessel_groups, file = here::here("data", "vessel_groups.csv"), row.names = F)

@@ -5,23 +5,21 @@ author: |
   Juan Carlos Villaseñor-Derbez^1^
   John Lynham^2^
 abstract: "Large-scale Marine Protected Areas (LSMPAs) have seen a significant increase over the last years. Fishing effort is effectively eliminated within these protected areas upon implementation. The benefits of reducing effort have been largely studied, and include increases in abundance, biomass, and diversity within the bounded regions. These no-take zones may produce spillover effects, which provide fish for outside areas. However, the economic and ecological implications of displacing fishing effort are not yet fully understood. Novel data products that track fishing effort at the vessel-level allow us to identify changes in fleet- and vessel-level behavior upon the implementation of protected areas, as well as how these redistribute. This papers evaluates the implications of implementing LSMPA, by evaluating changes in fishing hours, showing that vessels in the effected region reduce fishing effort after the implementation of PIPA. Our results are robust to a set of specifications. We also track the relative spatial allocation of fishing events thorugh time, and identify that areas closer to PIPA show an increase in relative fishing hourse due to the displacement of PIPA-fishing vessels. Our results not only provide an impact evaluation of the effect of LSMPAs on fishing activity, but provide insights into vessel redistribution dynamics, which may have ecological and economic implications."
-date: |
-  ^1^Bren School of Environmental Science and Management, University of California Santa Barbara, Santa Barbara, CA
-  ^2^Department of Economics, University of Hawaii at Manoa, Honolulu, HI
+date: "^1^Bren School of Environmental Science and Management, University of California Santa Barbara, Santa Barbara, CA\\newline^2^Department of Economics, University of Hawaii at Manoa, Honolulu, HI"
 output:
   bookdown::pdf_document2:
-    toc: yes
-    toc_depth: 4
+    toc: no
     citation_package: natbib
     keep_tex: yes
     number_sections: no
+fontsize: 12pt
 header-includes:
   - \usepackage{float}
-  - \floatplacement{figure,table}{H}
+  - \floatplacement{figure}{H}
   - \usepackage{lineno}
   - \linenumbers
 bibliography: references.bib
-biblio-style: nature
+# biblio-style: nature
 ---
 
 ```{r, echo = F, message = F, warning = F}
@@ -49,23 +47,21 @@ This work identifies the behavioral changes of fishing vessels due to the implem
 
 # Methods
 
-This section is divided into two main parts. First, we provide a general description of AIS data and the process of identification of vessel-level events done by Global Fishing Watch [^1]. Alongside, we describe the subset of data that we use for these analyses. When relevant, we also point out possible shortcommings in the data, or factors that must be considered in the later analyses. Then we move on to explain our identification strategy, and the main analyses that we undertake.
+This section is divided into two main parts. First, we provide a general description of AIS data and the process of identification of vessel-level events done by Global Fishing Watch[^1]. Alongside, we describe the subset of data that we use for these analyses. When relevant, we also point out possible shortcommings in the data, or factors that must be considered in the later analyses. Then we move on to explain our identification strategy, and the main analyses that we undertake.
 
-[^1]: [Global Fishing Watch](globalfishingwatch.org)
-
+[^1]: Global Fishing Watch: [globalfishingwatch.org](globalfishingwatch.org)
 
 ## Data
 
 ### AIS data
 
-Automatic Identification Systems are on-board devices intended to provide at-sea saftey and prevent ship collisions by broadcasting vessel locations to surrounding vessels. These broadcasted positions can be recorded by satellites and land-based antenas. GFW uses a neural network to infer vessel characteristics and whether each broadcasted position represents a fishing event, thus allowing us to estimate near real-time fishing events globally \citep{kroodsma_2018}. The recent addition of satellites that can receive AIS signals causes an apparent increase in the number of broadcasted AIS messages (*i.e.* points) and therefore fishing hours. It is therefore important to be cautious when comparing temporal trends. The variability in AIS data and dynamic ocean conditions require that temporal trends be taken into account. We do that by incorporating a series of controls, which are defined in the following section.
-
+Automatic Identification Systems are on-board devices intended to provide at-sea saftey and prevent ship collisions by broadcasting vessel locations to surrounding vessels. These broadcasted positions can be recorded by satellites and land-based antenas. GFW uses a neural network to infer vessel characteristics and whether each broadcasted position represents a fishing event, thus allowing us to estimate near real-time fishing events globally since 2012 \citep{kroodsma_2018}. The recent addition of satellites that can receive AIS signals causes an apparent increase in the number of broadcasted AIS messages (*i.e.* points) and therefore fishing hours. The variability in AIS data and ocean conditions require that temporal trends be taken into account. We do that by incorporating a series of controls, which are defined in the following section.
 
 ### PIPA data
 
-
 ```{r}
-effort_by_vessel <- read.csv(file = here::here("data", "effort_by_vessel.csv"))
+effort_by_vessel <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %>% 
+  filter(year < 2018)
 ```
 
 ```{r}
@@ -74,58 +70,54 @@ pipa_vessels <- effort_by_vessel %>%
   filter(treated) %$%
   unique(mmsi) %>% 
   length()
-
-n_prev <- effort_by_vessel %>% 
-  filter(treated, !post) %$%
-  unique(mmsi) %>% 
-  length()
-
-n_post <- effort_by_vessel %>% 
-  filter(treated, post, baci_strict) %$%
-  unique(mmsi) %>% 
-  length()
 ```
 
+Our data contain over 45 million individual AIS messages for 371 purse seiners and longliners. A total of 233 vessels have fished within PIPA waters; 217 did so at least once before 2015. However, not all vessels continued to fish elsewhere after PIPA implementation: 34 vessels have no recorded AIS messages after 2015[^2], leaving us with `r pipa_vessels` vessels that fished inside PIPA before its implementation, and continued to fish elsewhere afterward. Vessels that fished within PIPA before implementation might stop fishing afterwards, therefore not being observable in the post-treatment period. New vessels might have also entered the fishery after PIPA closure, and were likely not exposed to the policy intervention in the pre-treatment period. Therefore, we define our treatment and control groups as follows.
 
-The GFW data contain `r pipa_vessels` purse seiners and longliners that have fished within PIPA waters. From these, only `r n_prev` did so at least once before 2015, but only `r n_post` continued to fish after 2015[^2]. Vessels that fished within PIPA before implementation might stop fishing afterwards, therefore not being observable in the post-treatment period. New vessels might have also entered the fishery after PIPA closure, and were likely not exposed to the policy intervention in the pre-treatment period. Therefore, we define our treatment and control groups as follows. 
-The treatment group contains all vessels that fished within PIPA at least once before the closure, and that continued to fish elsewhere afterwards. The control group has vessels that never fished within PIPA waters, belong to other PNA countries, and have fished in surrounding areas (*i.e.* PNA-countries' EEZ) before and after PIPA closure. Figure \ref{fig:baci_strict} provides a visual representation of the vessel-level that make up each of group through time.
+The treatment group contains all vessels (n = `r pipa_vessels`) that fished within PIPA at least once before the closure, and that continued to fish elsewhere afterwards. Vessels in the control group meet al three of the following conditions: i) Vessels never fished within PIPA waters, ii) vessels belong to other PNA countries, and iii) vessels have fished in surrounding areas (*i.e.* PNA-countries' EEZ) before and after PIPA closure. For each vessel meeting these characteristics, we calculate their total monthly fishing hours. Figure \ref{fig:baci_strict} provides a visual representation of the vessel-level streams of fishing events that make up each group through time. Tables \ref{tab:baci_n_s} and \ref{tab:baci_h} show the number of vessels following a BACI design, and fishing hours, respectively. Tables show data grouped by gear (longlines, purse seines), group (treated, control), and period (before, after). The relative change in fishing hours (After / Before) is also shown.
 
-Tables \ref{tab:baci_n}, \ref{tab:baci_n_s}, and \ref{tab:baci_h} show the number of vessels, number of vessels following a BACI design, and fishing hours, respectively. Tables show data grouped by gear (longlines, purse seines), group (treated, control), and period (before, after). The relative change (After / Before) is also shown. Table \ref{tab:baci_n} shows information for all fishing vessels in the dataset, while Tables \ref{tab:baci_n_s} and \ref{tab:baci_h} show information for vessels that meet the BACI design (i.e. excludes vessels that only appear at one point in time).
+<!-- **Do we know what is causing this? [first sentence in fist paragraph of results] I'm guessing this can't be Blue Paradox stuff because we see it for the control group as well who are supposed to have never fished within PIPA.** -->
 
-![\label{fig:baci_strict}Stream of fishing events by vessels (stacked on the y-axis due to space) through time (x-axis). Each dot represent a vessel-month, with colors indicating the pre and post periods, and pannels separating between gear and treated or control groups.](../img/BACI_strict_gear.png)
+<!-- **Is the larger number of longliners surprising? I thought PIPA was known as a purse seining ground and less so for longlining.** -->
 
+[^2]: The `r n_prev - n_post` missing vessels might have exited the fishery, been decomissioned or sold (therefore changing their AIS and mmsi), or turned off their AIS transmiters. In either case, we are not able to observe these.
 
-[^2]: The `r n_prev - n_post` missing vessels might have exited the fishery, been decomissioned or sold (therefore chaning their AIS and mmsi), or turned off their AIS transmiters. On either case, we are not able to observe these.
-
-
-```{r}
-effort_by_vessel %>% 
-  # filter(baci_strict) %>%
-  group_by(gear, treated, post, mmsi) %>% 
-  count() %>% 
+```{r, fig.width = 8, fig.height = 6, fig.cap = "\\label{fig:baci_strict}Stream of fishing events by vessels through time. Each line represents a vessel, with dots indicating months with fishing activity and colors indicating the pre and post periods. Pannels separating between gear and treated or control groups."}
+filter(effort_by_vessel, baci_strict) %>% 
+  mutate(gear = ifelse(gear == "purse_seines", "Purse seiners", "Drifting longliners")) %>% 
+  group_by(mmsi, date, gear, post, treated) %>%
+  summarize(h = sum(hours, na.rm = T)) %>%
   ungroup() %>% 
-  group_by(gear, treated, post) %>% 
-  summarize(boats = n()) %>% 
-  spread(post, boats) %>% 
-  mutate(change = `TRUE` / `FALSE`) %>% 
-  knitr::kable(col.names = c("Gear", "Treatment", "Before", "After", "Change (A / B)"),
-               caption = "\\label{tab:baci_n}Number of fishing vessels (identified by mmsi) for each gear before and after PIPA implementation.",
-               booktabs = T) %>% 
-  kableExtra::kable_styling(latex_options = "HOLD_position")
+  arrange(treated, post, mmsi) %>%
+  mutate(vessel = group_indices(., paste(gear, treated, mmsi)),
+         treated = ifelse(treated, "Treated", "Control")) %>% 
+  ggplot(aes(
+    x = date,
+    y = vessel,
+    fill = post,
+    color = post,
+    group = paste(vessel, post)
+    )) +
+  geom_point(size = 1) +
+  theme_bw() +
+  facet_wrap(gear ~ treated, scales = "free_y") +
+  ggtheme_plot() +
+  scale_color_brewer(palette = "Set1") +
+  scale_y_continuous(breaks = NULL, labels = NULL) +
+  theme(legend.position = "none")
 ```
+
 
 ```{r}
 effort_by_vessel %>% 
   filter(baci_strict) %>%
-  group_by(gear, treated, post, mmsi) %>% 
+  group_by(gear, treated, mmsi) %>% 
   count() %>% 
   ungroup() %>% 
-  group_by(gear, treated, post) %>% 
+  group_by(gear, treated) %>% 
   summarize(boats = n()) %>% 
-  spread(post, boats) %>% 
-  mutate(change = `TRUE` / `FALSE`) %>% 
-  knitr::kable(col.names = c("Gear", "Treatment", "Before", "After", "Change (A / B)"),
-               caption = "\\label{tab:baci_n_s}Number of fishing vessels (identified by mmsi) for each gear before and after PIPA implementation.",
+  knitr::kable(col.names = c("Gear", "Treatment", "n"),
+               caption = "\\label{tab:baci_n_s}Number of fishing vessels (identified by mmsi) by gear and treatment group.",
                booktabs = T) %>% 
   kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
@@ -138,39 +130,53 @@ effort_by_vessel %>%
   spread(post, hours) %>% 
   mutate(change = `TRUE` / `FALSE`) %>% 
   knitr::kable(col.names = c("Gear", "Treatment", "Before", "After", "Change (A / B)"),
-               caption = "\\label{tab:baci_h}Mean fishing hours for each gear before and after",
+               caption = "\\label{tab:baci_h}Mean fishing hours and relative change by gear and treatment group.",
                booktabs = T) %>% 
   kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
 
 ## Analysis
 
-### Change in behavior
-
 The first analysis focuses on identifying the response of fishing vessels to PIPA closure. Our variables of interests are fishing effort, indicated by total fishing hours per month, and distance traveled (Km) on every fishing trip. We compare fishing hours[^3] before and after the implementation of PIPA using a Difference-in-Differences approach, where we track the variable of interest for vessels that used to fish inside PIPA and vessels that never fished inside PIPA, before and after PIPA implementation. Our specification is the following:
 
 $$
-y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \mu_t + \phi_t + \gamma_i + \epsilon_{i,t}
+y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \mu_1Y_t + \mu_2Y_t^2 + \phi_t + \gamma_i + \epsilon_{i,t}
 $$
 
-Where $y_{ijkl}$ is the variable of interest for vessel $i$ in time period $t$. A dummy variable $Post_i$ takes the value of 0 for all dates prior to PIPA implementation and a value of 1 por all dates including and following PIPA implementation. $Treat_i$ is a dummy variable indicating whether a vessel belongs to the control ($Treat_i = 0$) or treatment ($Treat_i = 1$) group. $\alpha$ is the standard intercept, $\beta_1$ captures the *ex post* change, $\beta_2$ captures the difference between treated and control groups, and $\beta_3$ is our parameter of interest: de DiD estimate capturing the treatment effect. Finally, $\mu_t$, $\phi_t$, and $\gamma_i$ represent month-, year-, and flag-level dummies that account for seasonality or country-level management interventions.
+Where $y_{i,t}$ is the variable of interest for vessel $i$ in time period $t$. A dummy variable $Post_i$ takes the value of 0 for all dates prior to PIPA implementation and a value of 1 por all dates including and following PIPA implementation. $Treat_i$ is a dummy variable indicating whether a vessel belongs to the control ($Treat_i = 0$) or treatment ($Treat_i = 1$) group. $\alpha$ is the standard intercept, $\beta_1$ captures the *ex post* change, $\beta_2$ captures the difference between treated and control groups, and $\beta_3$ is our parameter of interest: de DiD estimate capturing the treatment effect. Finally, $\mu_1$ and $\mu_2$ are coefficients for a second order polynomial for years ($Y_t$)[^4], while $\phi_t$ and $\gamma_i$ represent month-, and flag-level dummies that account for seasonality or country-level management interventions.
 
 [^3]: And soon, distance
 
-### Vessel displacement and redistribution
+[^4]: An earlier specification included years as a dummy variable. Such results are included in the appendx.
 
 ```{r}
-displacement_data <- readRDS(file = here::here("data", "displacement_data.rds"))
+displacement_data <- readRDS(file = here::here("data", "displacement_data.rds")) %>% 
+  filter(year < 2018)
 ```
 
-Our second part of the analyses focuses on the redistribution of fishing effort. In other words, identifying where do vessels that used to fish inside PIPA go after its establishment. We calculate the monthly relative distribution of fishing hours by all treated vessels across all fished EEZs and the high seas. These trends are shown in Figure \ref{fig:redist_trend}. EEZs that had sproadic fishing events were pooled into a group of "others", leaving us with a total of n = `r length(unique(displacement_data$country))` spatially defined regions (*i.e.* EEZs, High Seas, "other EEZs"). Figure \ref{fig:redist_trend_spa} shows the yearly average of the relative spatial allocation of fishing efforts; this is the spatial representation of \ref{fig:redist_trend} averaged by year.
+Our second part of the analyses focuses on the redistribution of fishing effort. In other words, identifying where do vessels that used to fish inside PIPA go after its establishment. We calculate the monthly relative distribution of fishing hours by all treated vessels across all fished EEZs and the high seas. These trends are shown in Figures \ref{fig:redist_trend_ps} and \ref{fig:redist_trend_ll}, and the relative change is presented in Table \ref{tab:ba_disp}. EEZs that had sproadic fishing events were pooled into a group of "others", leaving us with a total of n = `r length(unique(displacement_data$country[displacement_data$gear == "purse_seines"]))` and n = `r length(unique(displacement_data$country[!displacement_data$gear == "purse_seines"]))` spatially defined regions (*i.e.* EEZs, High Seas, "other EEZs") for purse seiners and longliners, respectively.
+
+To evaluate this change in effort allocation, we regress our variable of interest, fishing hours, on the interaction between a dummy variable indicating the policy intervention and a dummy variable for countries, to obtain the by-country change in proportional allocation of fishing effort:
+
+$$
+y_{i,t} = \alpha + \beta_1Post_t + \beta_2Country_i + \beta3Post_t \times Country_i + \epsilon_{i,t}
+$$
+
+Our variable of interest, $y_{i,t}$ represents the proportion of fishing hours that country $i$ receives at time $t$. $Post$ also represents a policy dummy that takes the value of 0 for all dates before implementation of PIPA, and 1 otherwise. $Country$ is a dummy variable for countries, interpreted as individual EEZs, the high seas, and a group of "other EEZs". Our parameter of interest is $\beta_3$, which captures the country-level change in proportional fishing effort.
+
+<!-- Like before, we include a dummy variable for months and allow for a second degree polynomial trend through time. -->
+
+All regression coefficients were estimatedd via ordinary least squares, and heteroskedastic-robust standard errors were calculated. All analyses were performed in R version `r paste(version$major, version$minor, sep = ".")`) \citep{rcore_2018}. Raw data and code used in this work are available on [github](https://github.com/jcvdav/MPA_displacement).
+
+<!-- Figure \ref{fig:redist_trend_spa} shows the yearly average of the relative spatial allocation of fishing efforts; this is the spatial representation of \ref{fig:redist_trend} averaged by year. -->
 
 <!-- Explicar cuales EEZs habia en total y cuales quedaron en un pie de nota o algo asi -->
 
 ```{r}
 country_groups <- c("COK", "FSM", "KIR", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV")
 
-eez <- read_sf(dsn = here::here("data", "spatial", "EEZ_subset"), layer = "EEZ_subset")
+eez <- read_sf(dsn = here::here("data", "spatial", "EEZ_subset"),
+               layer = "EEZ_subset")
 
 pipa <- read_sf(dsn = here::here("data", "spatial", "PIPA"),
                 layer = "PIPA") %>% 
@@ -179,8 +185,174 @@ pipa <- read_sf(dsn = here::here("data", "spatial", "PIPA"),
   st_rotate()
 ```
 
-```{r, fig.cap = "\\label{fig:redist_trend}"}
+```{r}
+ba_disp_ps <- displacement_data %>% 
+  filter(gear == "purse_seines") %>% 
+  group_by(country, post) %>% 
+  summarize(h_prop_m = mean(h_prop)) %>% 
+  spread(post, h_prop_m) %>% 
+  mutate(change = (`TRUE` - `FALSE`) * 100) %>% 
+  select(country, change)
+
+ba_disp_ll <- displacement_data %>% 
+  filter(!gear == "purse_seines") %>% 
+  group_by(country, post) %>% 
+  summarize(h_prop_m = mean(h_prop)) %>% 
+  spread(post, h_prop_m) %>% 
+  mutate(change = (`TRUE` - `FALSE`) * 100) %>% 
+  select(country, change)
+
+ba_disp_ps %>% 
+  mutate(gear = "Purse seiners") %>% 
+  rbind(mutate(ba_disp_ll, gear = "Longliners")) %>% 
+  spread(gear, change) %>% 
+  knitr::kable(digits = 2,
+               booktabs = T,
+               caption = "\\label{tab:ba_disp}") %>% 
+  kableExtra::kable_styling(latex_options = "HOLD_position")
+```
+
+<!-- **An additional test to add to the wish list is to see if vessels are fishing closer to each other following the PIPA closure.** -->
+
+\clearpage
+
+# Results
+
+Our data suggest that purseiners and longliners have different responses to the implementation of a Large-Scale Marine Protected Area. Fig. \ref{fig:all_vessels} shows that mean fishing hours for purse seiners have an abrupt increase, just before January 1st, 2015. This trend is observed for both treated and control groups. Longliners, however, show a more stable trend. The number of mmsi codes increases through time. This can largely be explained by the addition of more satellites, which increase detectability of vessels. As expected, total fishing hours follow a similar trend to that of mmsi numbers.
+
+```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Fishing hours and number of vessels by month for all vessels. Vertical dashed line indicates PIPA closure."}
+effort_by_vessel %>% 
+  filter(baci_strict) %>%
+  group_by(year, gear, treated, post, month) %>% 
+  summarize(total_hours = sum(hours),
+            mean_hours = mean(hours),
+            n_mmsi = n()) %>% 
+  ungroup() %>% 
+  mutate(date = lubridate::date(paste(year, month, "01", sep = "/"))) %>% 
+  select(-year) %>% 
+  gather(variable, value, -c(date, month, post, gear, treated)) %>% 
+  ggplot(aes(x = date, y = value, color = treated)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(gear~variable, scales = "free", ncol = 3) +
+  ggtheme_plot() +
+  scale_color_brewer(palette = "Set1") +
+  geom_vline(xintercept = lubridate::date(paste(2015, 01, "01", sep = "/")), linetype = "dashed")
+```
+
+Our DiD anaylsis shows that treated purse seiners reduce their fishing effort after PIPA implementation in the order of 16 hours per month. This result is robust and significant (*p < 0.05*) for all model specifications, with the effect varying between $\beta_3 = -16.457$ and $\beta_3 = -18.709$. Model specifications that include the year polynomial show lower values for the $\beta_1$ coefficient associated to the $Post_t$ policy dummy, and show positive and negative values for $\mu_1$ and $\mu_2$, the linear and cuadratic terms, respectively. These effectively represent the patterns observed in Figure {fig:all_vessels}.
+
+Longliners show a similar pattern of effort reduction. However, the magnitude of the $\beta_3$ coefficient is smaller (ranging from  $\beta_3 = -9.851$ to $\beta_3 = -14.850$) and not significant across all model specifications. This, along with higher standard error values suggest that longliners have a smaller and more variable response to the implementation of LSMPAs. 
+
+Regressions coefficients for each gear type are shown in Tables \ref{tab:purse} and \ref{tab:long}. Column (1) presents the DiD regression with no fixed effects, column (2) includes month fixed effects, column (3) includes month and the second degree polynomial for years, and column (4) includes all of the above and country-level fixed effects.
+
+```{r, results = "asis", echo = F}
+
+model_data <- effort_by_vessel %>% 
+  filter(baci_strict,
+         gear == "purse_seines") %>% 
+  mutate(post = post * 1,
+         treated = treated * 1,
+         year2 = year^2,
+         mmsi_c = as.factor(mmsi))
+
+m1 <- lm(hours ~ post*treated, data = model_data)
+m2 <- lm(hours ~ post*treated + month_c, data = model_data)
+m3 <- lm(hours ~ post*treated + month_c + year + year2, data = model_data)
+m4 <- lm(hours ~ post*treated + month_c + year + year2 + flag, data = model_data)
+
+models <- list(m1, m2, m3, m4)
+
+stargazer::stargazer(models,
+                     se = commarobust::makerobustseslist(models),
+                     t.auto = T,
+                     p.auto = T,
+                     type = "latex",
+                     omit = c("flag", "month"),
+                     add.lines = list(c("Month FE", "No", "Yes", "Yes", "Yes"),
+                                      c("Flag FE", "No", "No", "No", "Yes")),
+                     omit.stat = c("adj.rsq", "f", "ser"),
+                     header = F,
+                     title = "\\label{tab:purse}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robust standard errors.")
+```
+
+```{r, fig.width = 5, fig.height = 3, fig.cap = "\\label{fig:puse}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate.", eval = F}
+map_df(models, broom::tidy, .id = "model") %>%
+  filter(term %in% c("(Intercept)", "post", "treated", "post:treated")) %>%
+  ggplot(aes(x = model, y = estimate)) +
+  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error),
+                size = 1,
+                width = 0,
+                color = "red") +
+  geom_point(color = "steelblue", size = 3) +
+  facet_wrap(~term, scale = "free") +
+  ggtheme_plot()
+```
+
+```{r, results = "asis"}
+
+model_data <- effort_by_vessel %>% 
+  filter(baci_strict,
+         !gear == "purse_seines") %>% 
+  mutate(post = post * 1,
+         treated = treated * 1,
+         year2 = year^2,
+         mmsi_c = as.factor(mmsi))
+
+m1 <- lm(hours ~ post*treated, data = model_data)
+m2 <- lm(hours ~ post*treated + month_c, data = model_data)
+m3 <- lm(hours ~ post*treated + month_c + year + year2, data = model_data)
+m4 <- lm(hours ~ post*treated + month_c + year + year2 + flag, data = model_data)
+
+models <- list(m1, m2, m3, m4)
+
+stargazer::stargazer(models,
+                     se = commarobust::makerobustseslist(models),
+                     t.auto = T,
+                     p.auto = T,
+                     type = "latex",
+                     omit = c("flag", "month"),
+                     add.lines = list(c("Month FE", "No", "Yes", "Yes", "Yes"),
+                                      c("Flag FE", "No", "No", "No", "Yes")),
+                     omit.stat = c("adj.rsq", "f", "ser"),
+                     header = F,
+                     title = "\\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robust standard errors.")
+```
+
+```{r, fig.width = 5, fig.height = 3, fig.cap = "\\label{fig:long}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate.", eval = F}
+map_df(models, broom::tidy, .id = "model") %>%
+  filter(term %in% c("(Intercept)", "post", "treated", "post:treated")) %>%
+  ggplot(aes(x = model, y = estimate)) +
+  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error),
+                size = 1,
+                width = 0,
+                color = "red") +
+  geom_point(color = "steelblue", size = 3) +
+  facet_wrap(~term, scale = "free") +
+  ggtheme_plot()
+```
+
+<!-- ## Effort displacement and redistribution -->
+
+Recall that to evaluate the redistribution of fishing effort we only track fishing vessels that belong to the treated group. In this case, we calculate the prportion of fishing effort allocated every month to each spatially explicit region outlined by EEZs and the high seas. For purse seiners, these represent 9 main EEZs, PIPA, the high seas, and a group of other EEZs. Figure \ref{fig:redist_trend_ps} shows the monthly relative fishing hours that each region received by all `r pipa_vessels` treated vessels. The top-left pannel shows the change in fishing effort inside PIPA, including the preemtive fishing and immediate reduction previously reported \citep{mcdermott_2018}.
+
+The change in the relative allocation fishing effort by purse seiners increases in eight of the 12 regions after PIPA implementation \ref{tab:disp_mod}. The largest increase is observed for the I-Kiribati EEZ, with an average increase of 0.11 (*p < 0.001*). In other words, the redistribution of treated vessels caused a 10\% increase in the *relative* allocation of fishing effort within I-Kiribati waters. The only decrease is observed for Papua New Guinea, but the coefficient is not significant. Figure \ref{fig:map_change_ps} provides a spatial representation of these changes. It is evident that the increase in relative fishing effort is greater for for regions closer to PIPA.
+
+```{r, fig.cap = "\\label{fig:redist_trend_ps}"}
 displacement_data %>% 
+  filter(gear == "purse_seines") %>% 
+  ggplot(aes(x = date, y = h_prop, group = post)) +
+  geom_smooth(method = "lm", color = "black", size = 0.5, linetype = "dashed") +
+  geom_point(size = 1) +
+  geom_vline(xintercept = lubridate::date(paste(2015, 1, 1, sep = "/")), linetype = "dashed") +
+  scale_fill_brewer(palette = "Paired") +
+  ggtheme_plot() +
+  facet_wrap(~country, scales = "free_y")
+```
+
+```{r, fig.cap = "\\label{fig:redist_trend_ll}", eval = F}
+displacement_data %>% 
+  filter(!gear == "purse_seines") %>% 
   ggplot(aes(x = date, y = h_prop, group = post)) +
   geom_smooth(method = "lm") +
   geom_point() +
@@ -208,48 +380,90 @@ eez %>%
   facet_wrap(~year)
 ```
 
-<!-- Meter tabla ba_disp aqui -->
+```{r, fig.cap = "\\label{fig:map_change_ps}"}
+pipa_map_ba_disp <- pipa %>% 
+  mutate(country = "PIPA") %>% 
+  left_join(ba_disp_ps, by = "country")
 
-To evaluate this change in effort allocation, we regress our variable of interest, fishing hours, on the interaction between a dummy variable indicating the policy intervention and a dummy variable for countries, to obtain the by-country change in proportional allocation of fishing effort:
-
-$$
-y_{i,t} = \alpha + \beta_1Post_t + \beta_2Country_i + \beta3Post_t \times Country_i + \epsilon_{i,t}
-$$
-
-Our variable of interest, $y_{i,t}$ represents the proportion of fishing hours that country $i$ receives at time $t$. $Post$ also represents a policy dummy that takes the value of 0 for all dates before implementation of PIPA, and 1 otherwise. $Country$ is a dummy variable for countries, interpreted as individual EEZs, the high seas, and a group of "other EEZs". Our parameter of interest is $\beta_3$, which captures the country-level change in proportional fishing effort.
-
-
-
-# Results
-
-Fig. \ref{fig:all_vessels} shows that mean fishing hours for purse seiners have an abrupt increase, just before January 1st, 2015. This trend is observed for both treated and control groups. Longliners, however, show a more stable trend. The number of mmsi codes increases through time. This can largel be explained by the addition of more satellits, which increasedetectability of vessels. As expected total fishing hours follow a similar trend to that of mmsi numbers. Results of the regressions for each gear type are shown in Tables \ref{tab:purse} and \ref{tab:long}. Column (1) presents the DiD regression with no fixed effects, column (2) includes month fixed effects, column (3) includes month and year fixed effects, and column (4) includes month, year, and flag fixed effects. Figures \ref{fig:puse} and \ref{fig:long} represent the same coefficient estimates.
-
-
-```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Fishing hours and number of vessels by month for all vessels. Vertical dashed line indicates PIPA closure."}
-effort_by_vessel %>% 
-  filter(baci_strict) %>%
-  group_by(year, gear, treated, post, month) %>% 
-  summarize(total_hours = sum(hours),
-            mean_hours = mean(hours),
-            n_mmsi = n()) %>% 
-  ungroup() %>% 
-  mutate(date = lubridate::date(paste(year, month, "01", sep = "/"))) %>% 
-  select(-year) %>% 
-  gather(variable, value, -c(date, month, post, gear, treated)) %>% 
-  ggplot(aes(x = date, y = value, color = treated)) +
-  geom_line() +
-  geom_point() +
-  facet_wrap(gear~variable, scales = "free", ncol = 3) +
-  theme_bw() +
-  scale_color_brewer(palette = "Set1") +
-  geom_vline(xintercept = lubridate::date(paste(2015, 01, "01", sep = "/")), linetype = "dashed")
+# Los colores del mapa deben estar dados por el Post:Country
+eez %>% 
+  left_join(ba_disp_ps, by = c("ISO_Ter1" = "country")) %>%
+  filter(!is.na(change)) %>% 
+  ggplot() +
+  geom_sf(aes(fill = change), color = "black") +
+  geom_sf(data = pipa_map_ba_disp, aes(fill = change), linetype = "dashed", color = "red") +
+  ggtheme_plot() +
+  scale_fill_gradientn(colors = colorRamps::matlab.like(10))
 ```
+
+```{r, fig.cap = "\\label{fig:map_change_ps}"}
+pipa_map_ba_disp <- pipa %>% 
+  mutate(country = "PIPA") %>% 
+  left_join(ba_disp_ll, by = "country")
+
+# Los colores del mapa deben estar dados por el Post:Country
+eez %>% 
+  left_join(ba_disp_ll, by = c("ISO_Ter1" = "country")) %>%
+  filter(!is.na(change)) %>% 
+  ggplot() +
+  geom_sf(aes(fill = change), color = "black") +
+  geom_sf(data = pipa_map_ba_disp, aes(fill = change), linetype = "dashed", color = "red") +
+  ggtheme_plot() +
+  scale_fill_gradientn(colors = colorRamps::matlab.like(10))
+```
+
+
+```{r, results = "asis"}
+# Dont have this here. Just write the model specification
+
+disp_mod_ps_data <- displacement_data %>% 
+  filter(!is.na(country),
+         gear == "purse_seines") %>% 
+  mutate(post = post *1,
+         year2 = year^2,
+         month_c = as.character(month))
+
+disp_mod_ps1 <- lm(h_prop ~ post*country, data = disp_mod_ps_data)
+
+models <- list(disp_mod_ps1)
+
+stargazer::stargazer(models,
+                     se = commarobust::makerobustseslist(models),
+                     t.auto = T,
+                     p.auto = T,
+                     type = "latex",
+                     omit = "month",
+                     omit.stat = c("adj.rsq", "f", "ser"),
+                     add.lines = list(c("Month FE", "No", "Yes", "Yes")),
+                     header = F,
+                     single.row = T,
+                     title = "\\label{tab:disp_mod}Change in the relative allocation of fishing hours by purse seiners for each region. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robust standard errors.")
+
+```
+
+
+# Discusion
+
+Our findings provide interesting insights into the effect that LSMPAs can have on vessel behavior and the redistribution of fishing effort. These collection of results shows that the implementation of PIPA caused treated vessels to redeuce their fishing hours, and that this effect is greater for purse seiners. Even though treated vessels fish less, their relative allocation of fishing hours increased for all other fishing grouds. This fidnings does not imply that there is more fishing effort, but rather that each region receives a greater portion of the post-PIPA fishing effort (which is lower than pre-PIPA). In this section we discuss the implications of vessel-level reductions in fishing effort and the increase in relative allocation of the remaining effort through space. We also provide plausible explanations as to why purse seiners seem to be more reactive to the spatial closure.
+
+<!-- **We should have a discussion (over the phone and in the paper) about whether a decrease in fishing hours represents a positive or negative impact of PIPA. Without data on catch it might be hard to really know.** -->
+
+Previous studies on insular environments suggest that vessels move to distant places, which might be translated as increased costs \citep{stevenson_2013}. Nevertheless, this study does not use counterfactuals that could help account for system- or fleet-level changes that occur through time. Others have used similar satellite-tracking systems to show that fishing effort accumulates near the edges ospatial closures, yielding greater catches \citep{murawski_2005}. Yet, these vessel tracks do not cover the pre-reserve period, making it difficult identify the contribution of spatial closures to the observed spatial distribution of fishing vessels. Recent work by \citet{elahi_2018} identified that total fishing effort in a focal region where a short-term MPA was implemented showed little change, likely indicating that fishers redistributed fishing effort to compensate for the reduction in available space. Our data is assambled in a similar way, with fishing positions before and after the implementation of PIPA and vessels grouped into treated and control groups. Our BACI design, along with our difference-in-differences analysis allows us to make causal inferences about the effect that large scale marine protected areas have on fishing effort.
+
+The different responses observed between purse seiners and longliners might have two possible explanations. It is likely that PIPA did not contain habitat that longliners would consider optimal. Therefore, the sporadic fishing events that occurred there are of little importance to the fleet, and it is unlikely that the implementation of PIPA has an effect on them. Alternatively, the differences may be due to the nature of each fishing gear. Purse seiners are often constrained by seafloor and termocline depth, and often operate in more restricted areas \citep{kroodsma_2018}. Tuna purse seiners are known to have greater proportion of null sets (*i.e.* where the purse seine is effectively casted arround tuna, but no catch is obtained) during El Niño years, where the termocline deepens in the Eastern Pacific \citep{dreyfusleon_2015}. On the other hand, longliners may be more flexible as to where they can deploy their longlines. \citet{ortuocrespo_2018} evaluated the ecological niche of the pelagic longline fleet, and suggest that the fleet may be underutilizing the ocean, meaning that they can easily redistribute elsewhere.
+
+
+
+<!-- # Notes and things to do -->
+
+<!-- Additionally, run similar regressions on distance traveled, and total vessel hours (not just fishing hours), that could account for the extended "search" time. -->
+
+<div id = "refs"> </div>
 
 \clearpage
 
-## Change in behavior
+# Appendix
 
-### Purse seiners
 
 ```{r, results = "asis", echo = F}
 
@@ -257,13 +471,13 @@ model_data <- effort_by_vessel %>%
   filter(baci_strict,
          gear == "purse_seines") %>% 
   mutate(post = post * 1,
-         treated = treated * 1) %>% 
-  mutate_at(.vars = vars(month, year, mmsi), .funs = as.character)
+         treated = treated * 1,
+         mmsi_c = as.factor(mmsi))
 
 m1 <- lm(hours ~ post*treated, data = model_data)
-m2 <- lm(hours ~ post*treated + month, data = model_data)
-m3 <- lm(hours ~ post*treated + month + year, data = model_data)
-m4 <- lm(hours ~ post*treated + month + year + flag, data = model_data)
+m2 <- lm(hours ~ post*treated + month_c, data = model_data)
+m3 <- lm(hours ~ post*treated + month_c + year_c, data = model_data)
+m4 <- lm(hours ~ post*treated + month_c + year_c + flag, data = model_data)
 
 models <- list(m1, m2, m3, m4)
 
@@ -278,25 +492,8 @@ stargazer::stargazer(models,
                                       c("Flag FE", "No", "No", "No", "Yes")),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
-                     title = "\\label{tab:purse}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
+                     title = "\\label{tab:purse_old}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
 ```
-
-```{r, fig.cap = "\\label{fig:puse}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate."}
-map_df(models, broom::tidy, .id = "model") %>%
-  filter(term %in% c("(Intercept)", "post", "treated", "post:treated")) %>%
-  ggplot(aes(x = model, y = estimate)) +
-  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error),
-                size = 1,
-                width = 0,
-                color = "red") +
-  geom_point(color = "steelblue", size = 3) +
-  facet_wrap(~term, scale = "free") +
-  theme_bw()
-```
-
-\clearpage
-
-### Longliners
 
 ```{r, results = "asis"}
 
@@ -304,13 +501,13 @@ model_data <- effort_by_vessel %>%
   filter(baci_strict,
          !gear == "purse_seines") %>% 
   mutate(post = post * 1,
-         treated = treated * 1) %>% 
-  mutate_at(.vars = vars(month, year, mmsi), .funs = as.character)
+         treated = treated * 1,
+         mmsi_c = as.factor(mmsi))
 
 m1 <- lm(hours ~ post*treated, data = model_data)
-m2 <- lm(hours ~ post*treated + month, data = model_data)
-m3 <- lm(hours ~ post*treated + month + year, data = model_data)
-m4 <- lm(hours ~ post*treated + month + year + flag, data = model_data)
+m2 <- lm(hours ~ post*treated + month_c, data = model_data)
+m3 <- lm(hours ~ post*treated + month_c + year_c, data = model_data)
+m4 <- lm(hours ~ post*treated + month_c + year_c + flag, data = model_data)
 
 models <- list(m1, m2, m3, m4)
 
@@ -327,113 +524,3 @@ stargazer::stargazer(models,
                      header = F,
                      title = "\\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment).. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
 ```
-
-```{r, fig.cap = "\\label{fig:long}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate."}
-map_df(models, broom::tidy, .id = "model") %>%
-  filter(term %in% c("(Intercept)", "post", "treated", "post:treated")) %>%
-  ggplot(aes(x = model, y = estimate)) +
-  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error),
-                size = 1,
-                width = 0,
-                color = "red") +
-  geom_point(color = "steelblue", size = 3) +
-  facet_wrap(~term, scale = "free") +
-  theme_bw()
-```
-
-## Effort displacement and redistribution
-
-```{r}
-ba_disp <- displacement_data %>% 
-  group_by(country, post) %>% 
-  summarize(h_prop_m = mean(h_prop)) %>% 
-  spread(post, h_prop_m) %>% 
-  mutate(change = (`TRUE` - `FALSE`) * 100) %>% 
-  select(country, change)
-
-pipa_map_ba_disp <- pipa %>% 
-  mutate(country = "PIPA") %>% 
-  left_join(ba_disp, by = "country")
-
-# Los colores del mapa deben estar dados por el Post:Country
-eez %>% 
-  left_join(ba_disp, by = c("ISO_Ter1" = "country")) %>%
-  filter(!is.na(change)) %>% 
-  ggplot() +
-  geom_sf(aes(fill = change), size = 1, color = "black") +
-  geom_sf(data = pipa_map_ba_disp, aes(fill = change), linetype = "dashed", color = "red") +
-  ggtheme_plot() +
-  scale_fill_gradientn(colors = colorRamps::matlab.like(10))
-```
-
-```{r, eval = F}
-# Dont have this here. Just write the model specification
-
-displacement_data %>% 
-  filter(!is.na(country)) %>% 
-  lm(h_prop ~ post*country, data = .) %>% 
-  summary()
-```
-
-
-<!-- # Discusion -->
-
-<!-- ### Further work -->
-
-<!-- In order to strengthen this analysis, I would like to identify an appropriate sample of vessels that acccurately represent the PNA. This vessels must meet at least these two points: i) belong to the PNA and ii) Have fished for a significant amount of time inside PIPA, to count as "treated". Ideally, this would get rid of vessels that sporadically fished for insignificant time in PIPA, and are therefore unlikely to be affected. This would include between 12 and  vessels (number of Kiribati vessels vs. number of all vessels who fished in PIPA at least once before 2015). -->
-
-<!-- I would also like to explore the possibility of identifying a plausible counterfactual. That way we could do something like a DiD. I think it is possible to identify counterfactual boats. I would start by identifying vessels who meet at least these four criteria: i) fish in near-by regions, ii) have same gear as vessels from PIPA, and iii) having similar length of data, and iv) never fished inside PIPA. Perhaps an additional one would be that they belong to the PNA. -->
-
-<!-- Additionally, run similar regressions on distance traveled, and total vessel hours (not just fishing hours), that could account for the extended "search" time. -->
-
-<!-- \clearpage -->
-
-<!-- # Possible contributions -->
-
-<!-- As I understand the efforts made so far, there are two straightforward ways in which I could contribute to this study. For the first one I would help strengthen the analysis of NOAA Observer and GFW data for the US PNMs. The second one would involve conducting the analysis of GFW data for PIPA, and translating the results into implications for Palau. I discuss these two in greater detail in the next paragraphs. -->
-
-<!-- ## US Pacific Monuments -->
-
-<!-- In this section I include possible analysis in which I could help. When relevant, I include quotes to provide context. Comments are organized with headings similar to the ones included in the original manuscript. I believe my suggestions would compliment (rather than replace) current analysis, and I acknowledged that you might have already tried some or that due to data constraints not all of them are possible. -->
-
-<!-- ### Total revenue -->
-
-<!-- "It is very clear from the figure that total catch of bigeye has not declined as a result of the 2014 or -->
-<!-- 2016 expansions". Of course, I have not reviewed the data. But is it safe to conclude this? At least through time there isn't an evident decrease, but what would have catches looked like had PMNM not been expanded? -->
-
-<!-- Not sure if the spatial resolution (*i.e.* Catch Blocks) in logbooks allows this comparison, but it would be interesting to see what proportion of catches (or at least sets / hours) originally came from waters inside the PMNM. Perhaps the georeferenced catches from NOAA Observer data can provide insights into this (if not for the entire fleet, at least for the 20% quasi-random subset), or we can use GFW data to see if the proportion of fishing hours inside PMNM roughly corresponds to 10M in revenues (we can test different "catch rates" to account for the fact that catches inside vs outside may not map 1:1). Perhaps this catch efficiency ratio can be extracted from the NOAA Observer data? -->
-
-<!-- On aggregate the fleet brought in more money in 2015 and 1016 than in previous year, but you discuss the possibility that the distributional effects of this might be different. I would assume that vessels who fished the most in the PMNM area were the ones who took the toughest hit. If possible, it might be interesting to birefly look at distributional effects for the discussion. -->
-
-<!-- ### Total costs (TC) -->
-
-<!-- So far this section describes the available data, but it it's not clear whether the empirical strategy is fully developed. Just like the datasets, a there isn't a single best analysis that provides the answer, but looking at it from as many was as possible might help paint a full picture of the effects that vLPAs have had.Here I provide some ideas in which we could use the two main datasets (NOAA and GFW data) to indirectly test the claims made by the fleet. -->
-
-<!-- #### TC from NOAA Observer program -->
-
-<!-- You mention that a drawback of this dataset is that you only observe fishing events, and not the entire trip (*i.e.* the search and travel). It might be worth looking into combining this with GFW data. NOAA observer program would provide real fishing events (as opposed to the ones predicted by GFW's neural net), and GFW would provide the entire track. Given that NOAA data cover 20% and GFW only contain 60 boats, we will not get full coverage. If this doesn't yield better data, it would at least help determine if the three-day space between sets is an appropriate way of grouping them into "trips". -->
-
-<!-- Results in your table 3 suggest that there's been a change of ~ 20 miles (positive or negative depending on model specification), and not significant. Perhaps linking this data to GFW would provide full tracks (of a smaller portion of the fleet) to then account for distance between fishing points but also during the search and set activities. -->
-
-<!-- #### TC form GFW Data -->
-
-<!-- We could also test the increased cost claim by looking at the almost 60 vessels and calculate an estimate of fuel consumption (following @sala_2018), which, paired with fuel prices, might provide cost estimates[^1]. Initially this would just be a regression with a policy dummy (and appropriate vessel- and month-level FE's). We could look into GFW data to identify plausible counterfactuals to include  a control group[^2]. -->
-
-<!-- [^1]: Of course, there are additional costs (*e.g.* crew, ice, bait, gear), but fuel should represent a large portion of this and should scale with some measures of fishing effort (time and distance). If this is not enough, the previous comparison of catches (sets) that came from PMNM waters before the implementation could provide some insights. -->
-
-<!-- [^2]: GFW increased coverage when they added from more satellites, particularly towards the end of 2016 and throughout 2017, I believe. I think it would be important to use counterfactuals in any GFW-related analyses to account for the expected temporal trend in increased effort. -->
-
-<!-- # Other details -->
-
-<!-- - The introduction states that the main objective is to quantify the economic impacts of vLPAs and compare the cost per hectare to vLPAs on land. I think this would provide an interesting benchmark on cost of conservation per unit area in land vs sea. I would perhaps highlight the part about predicting the possible effects of the Palau MPA. -->
-
-<!-- - I think the novelty of the paper can be highlighted even more. @stevenson_2013 evaluated the consequences of fishing displacement from MPAs in Hawaii (a smaller network and totally different fleet). They show that fishing effort was indeed displaced to places further away from ports representing increased costs, but that CPUE also increased. Overall, they don't find a negative impact on the *perceived* socioeconomic well-being of fishers. However, they do not have plausible counterfacutals and rely on before-after comparisons of perceptions. I think the novelty of this paper is not only the size, resolution, and quality of the data, but the fact that it has a BACI design enabling the identification of the net effect that vLPAs have on fishers. And also the larger contribution to vLPAs (and MPAs in general) literature. -->
-<!-- - Recent work by @sala_2018 shows that a large portion of high-seas fishing is only profitable thanks to subsidies. This could compliment @white_2014 and @sumaila_2015 in the introduction. -->
-
-<!-- - "Neither of these datasets is perfect but hopefully combined they will paint a clear picture of what the impact has been". I find this to be a modest (or humble?) and powerful sentence that highlights the efforts made to identify effects from different sources, and that acknowledges possible data limitations. This sentence should be included alongside the "novelty" in the last paragraph of the introduction. -->
-
-<!-- - Findings by @smith_2006 show negative effects, but the reserves were only in place for a short period. I believe they talk about this in their discussion. @edgar_2014-UO and @difranco_2016-Xw show how the effects (at least inside vs outside the reserve) can take up to 10 years. -->
-
-<!-- - I would be cautious on the interpretation of results by @sumaila_2015. They do show that < 0.01% of catch and landed values come *exclusively* from the high seas, but also that 67% and 72% (catch and value) come from Both EEZs and High seas, and the remaining from EEZs only. @pauly_2016 show that ~6% of landings come from the high seas (Fig. \ref{fig:eez-hs}). It's perhaps a minor detail, but thought I'd point it out. -->
-
-# References
