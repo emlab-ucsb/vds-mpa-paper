@@ -1,0 +1,149 @@
+---
+title: "Displacement of fishing effort by Large Scale Marine Protected Areas"
+author:
+  - Juan Carlos Villaseñor-Derbez^1^
+  - John Lynham^2^
+institute:
+  - ^1^Bren School of Environmental Science and Management, UC Santa Barbara
+  - ^2^Department of Economics, University of Hawaii at Manoa
+date: "5/10/2018"
+output: 
+  beamer_presentation: 
+    toc: yes
+    slide_level: 2
+    citation_package: biblatex
+bibliography: references.bib
+biblio-style: authoryear
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE,
+                      eval = TRUE)
+
+suppressPackageStartupMessages({
+  library(startR)
+  library(sf)
+  library(tidyverse)
+})
+
+source(here::here("scripts", "st_rotate.R"))
+```
+
+# Background
+
+## MPAs
+
+- Marine Protected Areas (MPAs): Spatial management of fishing effort
+-Areas > 250,000 Km^2^ are Large Scale (LSMPAs) \footcite{toonen_2013}
+  - Implemented in the pelagic environment
+  - Dominant human activity is industrial fishing \footcite{gray_2017}
+  
+```{r}
+mpas <- sf::read_sf(here::here("raw_data", "spatial", "WDPA_Mar2018"),
+        layer = "WDPA_Mar2018_marine-shapefile-polygons",
+        quiet = T,
+        stringsAsFactors = F) %>% 
+  janitor::clean_names() %>% 
+  filter(gis_m_area > 250000)
+
+coast <- rnaturalearth::ne_countries(returnclass = "sf")
+```
+
+```{r, fig.height = 3.5}
+ggplot() +
+  geom_sf(data = coast) +
+  geom_sf(data = mpas, fill = "red") +
+  ggtheme_plot()
+```
+
+
+## PIPA
+
+- Phoenix Island Protected Area
+  - Part of Kiribati EEZ
+  - Implemented in 2015
+  - Kiribati is part of the PNA, along with other 8 countries
+
+```{r}
+eez <- sf::read_sf(dsn = here::here("data", "spatial", "PNA_EEZ"), layer = "PNA_EEZ") %>% 
+  sf::st_transform(crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
+  st_rotate() %>% 
+  st_buffer(0) %>% 
+  group_by(ISO_Ter1) %>% 
+  summarize()
+
+pipa <- sf::read_sf(dsn = here::here("data", "spatial", "PIPA"), layer = "PIPA") %>% 
+  sf::st_transform(crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
+  st_rotate()
+```
+
+```{r, fig.height = 4}
+ggplot() +
+  geom_sf(data = eez, fill = "gray", alpha = 0.5) +
+  geom_sf(data = pipa, fill = "red") +
+  ggtheme_plot()
+```
+
+## PIPA
+
+- Phoenix Island Protected Area
+  - Part of Kiribati EEZ
+  - Implemented in 2015
+  - Kiribati is part of the PNA, along with other 8 countries
+
+- Recent focus of *Blue paradox* \footcite{mcdermott_2018}
+
+
+```{r, fig.height = 4}
+displacement_data <- readRDS(file = here::here("data", "displacement_data.rds")) %>% 
+  filter(year < 2017)
+
+displacement_data %>% 
+  filter(gear == "purse_seines",
+         country == "PIPA") %>% 
+  ggplot(aes(x = date, y = h_prop, group = post)) +
+  geom_smooth(method = "loess", color = "black", linetype = "dashed") +
+  geom_point(aes(color = post), size = 2) +
+  geom_vline(xintercept = lubridate::date(paste(2015, 1, 1, sep = "/")), linetype = "dashed") +
+  scale_fill_brewer(palette = "Paired") +
+  ggtheme_plot() +
+  ylab("Proportion of total hours by vessels") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_color_brewer(palette = "Set1")
+```
+
+
+```{r}
+effort_by_vessel <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %>% 
+  filter(year < 2018)
+```
+
+
+# Objectives
+
+- How do vessel-level behavior change due to PIPA implementation?
+- What happens to the displaced fishing effort?
+
+# Methods
+
+## Data
+
+## Analyses
+
+$$
+y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \mu_1Y_t + \mu_2Y_t^2 + \phi_t + \gamma_i + \epsilon_{i,t}
+$$
+
+$$
+y_{i,t} = \alpha + \beta_1Post_t + \beta_{2,i}Country_i + \beta_{3,i}Post_t \times Country_i + \epsilon_{i,t}
+$$
+
+# Preliminary results
+
+# Future work
+
+# References
+
+
