@@ -9,11 +9,12 @@ institute:
 date: "5/10/2018"
 output: 
   beamer_presentation: 
-    toc: yes
     slide_level: 2
     citation_package: biblatex
 bibliography: references.bib
 biblio-style: authoryear
+header-includes:
+  - \usepackage{booktabs}
 ---
 
 ```{r setup, include=FALSE}
@@ -22,6 +23,8 @@ knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
                       eval = TRUE)
 
+options(knitr.table.format = "latex")
+
 suppressPackageStartupMessages({
   library(startR)
   library(sf)
@@ -29,6 +32,7 @@ suppressPackageStartupMessages({
 })
 
 source(here::here("scripts", "st_rotate.R"))
+source(here::here("scripts", "sfc_as_cols.R"))
 ```
 
 # Background
@@ -36,11 +40,13 @@ source(here::here("scripts", "st_rotate.R"))
 ## MPAs
 
 - Marine Protected Areas (MPAs): Spatial management of fishing effort
--Areas > 250,000 Km^2^ are Large Scale (LSMPAs) \footcite{toonen_2013}
-  - Implemented in the pelagic environment
-  - Dominant human activity is industrial fishing \footcite{gray_2017}
+- Areas > 250,000 Km^2^ are Large Scale (LSMPAs) \footcite{toonen_2013}
+  - Industrial fishing largest human activity in pelagic environment \footcite{gray_2017}
+  - Recent widespread implementation, unknown implication for fisheries
   
 ```{r}
+countries <- c("PIPA", "KIR", "HS", "ASM", "COK", "FSM", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV", "UMI")
+
 mpas <- sf::read_sf(here::here("raw_data", "spatial", "WDPA_Mar2018"),
         layer = "WDPA_Mar2018_marine-shapefile-polygons",
         quiet = T,
@@ -49,6 +55,24 @@ mpas <- sf::read_sf(here::here("raw_data", "spatial", "WDPA_Mar2018"),
   filter(gis_m_area > 250000)
 
 coast <- rnaturalearth::ne_countries(returnclass = "sf")
+
+small_coast <- coast %>% 
+  filter(sov_a3 %in% countries)
+
+eez <- read_sf(dsn = here::here("data", "spatial", "EEZ_subset"),
+               layer = "EEZ_subset") %>% 
+  filter(ISO_Ter1 %in% countries) %>% 
+  mutate(KIR = ISO_Ter1 == "KIR")
+
+pipa <- sf::read_sf(dsn = here::here("data", "spatial", "PIPA"), layer = "PIPA") %>% 
+  sf::st_transform(crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
+  st_rotate()
+
+effort_by_vessel <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %>% 
+  filter(year < 2017)
+
+displacement_data <- readRDS(file = here::here("data", "displacement_data.rds")) %>% 
+  filter(year < 2017)
 ```
 
 ```{r, fig.height = 3.5}
@@ -58,91 +82,337 @@ ggplot() +
   ggtheme_plot()
 ```
 
+## LSMPAs
+
+- Erroneously assumed to have little social implications due to their remoteness \footcite{agardy_2011}
+- *Blue paradox* shows preemptive fishing\footcite{mcdermott_2018}:
+
+
+```{r, fig.cap = "Preemtive fishing due to MPA implementation (Modified from McDermott et al (2018))", out.width = "180px"}
+knitr::include_graphics(path = "img/BlueParadox.jpg")
+```
+
+## MPAs and fishing effort
+
+Models range from *cookie-cutter* approach to spatially explicit reallocation of fishing effort based on habitat characteristics:
+
+- All these focus on the long term equilibrium \footcite{white_2013}
+- Resource users may show idiosyncratic responses \footcite{cabral_2017}
+- Redistribution of fishing effort may not be optimal, especially over the first years \footcite{stevenson_2013}
+- Not accounting for fisher's behavior may lead to unexpected outcomes \footcite{smith_2003}
+
 
 ## PIPA
 
 - Phoenix Island Protected Area
-  - Part of Kiribati EEZ
+  - Belongs to Kiribati
   - Implemented in 2015
   - Kiribati is part of the PNA, along with other 8 countries
-
-```{r}
-eez <- sf::read_sf(dsn = here::here("data", "spatial", "PNA_EEZ"), layer = "PNA_EEZ") %>% 
-  sf::st_transform(crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
-  st_rotate() %>% 
-  st_buffer(0) %>% 
-  group_by(ISO_Ter1) %>% 
-  summarize()
-
-pipa <- sf::read_sf(dsn = here::here("data", "spatial", "PIPA"), layer = "PIPA") %>% 
-  sf::st_transform(crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
-  st_rotate()
-```
 
 ```{r, fig.height = 4}
 ggplot() +
-  geom_sf(data = eez, fill = "gray", alpha = 0.5) +
+  geom_sf(data = small_coast) +
+  geom_sf(data = eez, aes(color = KIR, linetype = !PNA), fill = "transparent") +
   geom_sf(data = pipa, fill = "red") +
-  ggtheme_plot()
-```
-
-## PIPA
-
-- Phoenix Island Protected Area
-  - Part of Kiribati EEZ
-  - Implemented in 2015
-  - Kiribati is part of the PNA, along with other 8 countries
-
-- Recent focus of *Blue paradox* \footcite{mcdermott_2018}
-
-
-```{r, fig.height = 4}
-displacement_data <- readRDS(file = here::here("data", "displacement_data.rds")) %>% 
-  filter(year < 2017)
-
-displacement_data %>% 
-  filter(gear == "purse_seines",
-         country == "PIPA") %>% 
-  ggplot(aes(x = date, y = h_prop, group = post)) +
-  geom_smooth(method = "loess", color = "black", linetype = "dashed") +
-  geom_point(aes(color = post), size = 2) +
-  geom_vline(xintercept = lubridate::date(paste(2015, 1, 1, sep = "/")), linetype = "dashed") +
-  scale_fill_brewer(palette = "Paired") +
   ggtheme_plot() +
-  ylab("Proportion of total hours by vessels") +
-  scale_y_continuous(labels = scales::percent) +
-  scale_color_brewer(palette = "Set1")
+  scale_color_manual(values = c("black", "red")) +
+  theme(legend.position = "none")
 ```
 
+# Questions
 
-```{r}
-effort_by_vessel <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %>% 
-  filter(year < 2018)
-```
+## Questions
 
-
-# Objectives
-
-- How do vessel-level behavior change due to PIPA implementation?
+- How does vessel-level behavior change due to PIPA implementation?
 - What happens to the displaced fishing effort?
 
 # Methods
 
 ## Data
 
+- On-board Automatic Identification Systems (AIS)
+- Global georeferenced vessel positions (3.1 billion and growing):
+  - Activity (fishing / not fishing)
+  - Time (hours)
+  - Vessel characteristics (flag, gear, length, width)
+
+```{r, fig.cap = "Sample track of Chinese longliner (10K fishing points of ~400K total)", fig.height = 4}
+readRDS(file = "small_data/sample_track.rds") %>% 
+  ggplot() +
+  geom_sf(data = small_coast) +
+  geom_sf(data = eez, aes(color = KIR, linetype = !PNA), fill = "transparent") +
+  geom_sf(data = pipa, fill = "red") +
+  geom_point(aes(x = lon, y = lat), shape = ".") +
+  ggtheme_plot() +
+  scale_color_manual(values = c("black", "red")) +
+  theme(legend.position = "none")
+```
+
+
+## Data
+
+Two groups:
+
+- Treated
+  - Vessels who fished inside PIPA at least once before closure
+  - Continued to fish elsewhere after implementation of PIPA
+- Control:
+  - Vessels never fished within PIPA waters
+  - Vessels belong to other PNA countries
+  - Vessels have fished in surrounding areas (*i.e.* PNA-countries' EEZ) before and after PIPA closure
+  
+- Over 45 million individual AIS messages (positions)
+
+  
+## Data
+
+```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Fishing hours and number of vessels by month for all vessels. Vertical dashed line indicates PIPA closure."}
+effort_by_vessel %>% 
+  filter(baci_strict) %>%
+  group_by(year, gear, treated, post, month) %>% 
+  summarize(total_hours = sum(hours),
+            mean_hours = mean(hours),
+            n_mmsi = n()) %>% 
+  ungroup() %>% 
+  mutate(date = lubridate::date(paste(year, month, "01", sep = "/"))) %>% 
+  select(-year) %>% 
+  gather(variable, value, -c(date, month, post, gear, treated)) %>% 
+  ggplot(aes(x = date, y = value, color = treated)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(gear~variable, scales = "free", ncol = 3) +
+  ggtheme_plot() +
+  scale_color_brewer(palette = "Set1") +
+  geom_vline(xintercept = lubridate::date(paste(2015, 01, "01", sep = "/")), linetype = "dashed")
+```
+
 ## Analyses
 
+### Change in vessel-level behavior with a DiD
+
 $$
-y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \mu_1Y_t + \mu_2Y_t^2 + \phi_t + \gamma_i + \epsilon_{i,t}
+y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \epsilon_{i,t}
 $$
+
+- $y_{i,t}$ monthly fishing hours by vessel $i$ in time period $t$
+- $Post_t$ before-after PIPA dummy
+- $Treat_i$ treatment dummy
+- $\beta_3$ is our DiD estimate
+- month, flag, year controls
+
+## Analyses
+
+### Spatial redistribution
+
+- Treated vessels only
+
 
 $$
 y_{i,t} = \alpha + \beta_1Post_t + \beta_{2,i}Country_i + \beta_{3,i}Post_t \times Country_i + \epsilon_{i,t}
 $$
 
-# Preliminary results
+- $y_{i,t}$ proportion of fishing hours that country $i$ receives at time $t$
+- $Post_t$ before-after PIPA dummy
+- $Country_i$ country dummy
 
-# Future work
+# Preliminary results \newline (Focusing on purse seiners for now)
+
+
+
+## Change in fishing
+
+```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Fishing hours and number of vessels by month for all vessels. Vertical dashed line indicates PIPA closure.", fig.heihgt = 3.5}
+
+effort_by_vessel %>% 
+  filter(baci_strict,
+         gear == "purse_seines") %>% 
+  arrange(!treated) %>% 
+  ggplot(aes(x = date, y = hours, color = treated)) +
+  geom_smooth(method = lm, formula = y ~ splines::bs(x, 4), aes(group = paste(treated, post))) +
+  geom_point(size = 1, position = position_jitter(width = 1, height = 0), alpha = 0.5) +
+  ggtheme_plot() +
+  scale_color_brewer(palette = "Set1") +
+  geom_vline(xintercept = lubridate::date(paste(2015, 01, "01", sep = "/")), linetype = "dashed")
+```
+
+## Change in fishing
+
+```{r, results = "asis"}
+model_data <- effort_by_vessel %>% 
+  filter(baci_strict,
+         gear == "purse_seines") %>% 
+  mutate(post = post * 1,
+         treated = treated * 1,
+         year2 = year^2,
+         mmsi_c = as.factor(mmsi))
+
+m1 <- lm(hours ~ post*treated, data = model_data)
+m2 <- lm(hours ~ post*treated + month_c, data = model_data)
+m3 <- lm(hours ~ post*treated + month_c + year + year2, data = model_data)
+m4 <- lm(hours ~ post*treated + month_c + year + year2 + flag, data = model_data)
+
+models <- list(m1, m2, m3, m4)
+
+stargazer::stargazer(models,
+                     se = commarobust::makerobustseslist(models),
+                     t.auto = T,
+                     p.auto = T,
+                     type = "latex",
+                     omit = c("year", "flag", "month_c"),
+                     add.lines = list(c("Months", "No", "Yes", "Yes", "Yes"),
+                                      c("Year", "No", "No", "Yes", "Yes"),
+                                      c("Country", "No", "No", "No", "Yes")),
+                     omit.stat = c("adj.rsq", "f", "ser"),
+                     header = F,
+                     title = "\\label{tab:purse}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment).",
+                     column.sep.width = "1pt",
+                     font.size = "tiny")
+```
+
+## Effort redistribution
+
+```{r, fig.cap = "\\label{fig:redist_trend_ps}Monthly relative allocation of fishing effort by PIPA-vessels.", fig.height = 4}
+displacement_data %>% 
+  filter(gear == "purse_seines",
+         h_prop > 0) %>%
+  mutate(country = as.character(country),
+         country = ifelse(country %in% countries, country, "OTH"),
+         country = forcats::fct_relevel(country, c("PIPA", "KIR", "HS")),
+         country = forcats::fct_relevel(country, "OTH", after = Inf)) %>% 
+  ggplot(aes(x = date, y = h_prop, group = post)) +
+  geom_smooth(method = "lm", color = "black", size = 0.5, linetype = "dashed") +
+  geom_point(size = 1) +
+  geom_vline(xintercept = lubridate::date(paste(2015, 1, 1, sep = "/")), linetype = "dashed") +
+  scale_fill_brewer(palette = "Paired") +
+  ggtheme_plot() +
+  facet_wrap(~country, scales = "free_y")
+```
+
+## Displacement
+
+```{r}
+# Dont have this here. Just write the model specification
+
+disp_mod_ps_data <- displacement_data %>% 
+  filter(gear == "purse_seines",
+         h_prop > 0) %>%
+  mutate(country = as.character(country),
+         country = ifelse(country %in% countries, country, "OTH"),
+         country = forcats::fct_relevel(country, c("PIPA", "KIR", "HS")),
+         country = forcats::fct_relevel(country, "OTH", after = Inf),
+         post = post *1,
+         year2 = year^2,
+         month_c = as.character(month))
+
+disp_mod_ps1 <- lm(h_prop ~ post * country, data = disp_mod_ps_data)
+
+commarobust::commarobust(disp_mod_ps1) %>% 
+  as.data.frame() %>% 
+  mutate(term = rownames(.)) %>% 
+  mutate(b = str_detect(term, "Intercept"),
+         c = str_detect(term, "post"),
+         a = b*c,
+         p = `Pr(>|t|)`,
+         p1 = ifelse(p < 0.1, "*", ""),
+         p2 = ifelse(p < 0.05, "*", ""),
+         p3 = ifelse(p < 0.01, "*", ""),
+    h_prop = paste0(formatC(Estimate, digits = 3, format = "f"), p1, p2, p3)) %>% 
+  filter(b+c > 0) %>% 
+  select(term, h_prop) %>% 
+  knitr::kable(booktabs = T,
+               caption = "Change in the relative allocation of fishing hours by purse seiners") %>% 
+  kableExtra::kable_styling(latex_options = "HOLD_position",
+                            font_size = 7)
+```
+
+$R^2 = 0.544^{***}; n = 707$
+
+## Displacement
+
+
+```{r, fig.cap = "\\label{fig:map_change_ps}Spatial representation of the mean change in the monthly allocation of fishing effort.", fig.height = 4}
+ba_disp_ps <- displacement_data %>% 
+  filter(gear == "purse_seines") %>% 
+  group_by(country, post) %>% 
+  summarize(h_prop_m = mean(h_prop)) %>% 
+  spread(post, h_prop_m) %>% 
+  mutate(change = (`TRUE` - `FALSE`) * 100) %>% 
+  select(country, change)
+
+pipa_map_ba_disp <- pipa %>% 
+  mutate(country = "PIPA",
+         PNA = F) %>% 
+  left_join(ba_disp_ps, by = "country") %>% 
+  select(country, change, PNA)
+
+HS_disp_poly <- matrix(c(200, 10, 210, 10 ,210 ,20 ,200 ,20 ,200, 10),
+                  ncol=2,
+                  byrow=TRUE) %>%
+  list() %>%
+  st_polygon() %>% 
+  st_sfc(crs = "+proj=longlat +datum=WGS84 +no_defs")
+
+HS_disp <- data.frame(country = "HS",
+                      PNA = F) %>% 
+  left_join(ba_disp_ps, by = "country") %>% 
+  st_set_geometry(HS_disp_poly)
+
+# Los colores del mapa deben estar dados por el Post:Country
+eez %>% 
+  left_join(ba_disp_ps, by = c("ISO_Ter1" = "country")) %>%
+  filter(!is.na(change)) %>% 
+  select(country = ISO_Ter1, change, PNA) %>% 
+  rbind(pipa_map_ba_disp) %>% 
+  rbind(HS_disp) %>% 
+  ggplot() +
+  geom_sf(aes(fill = change, linetype = !PNA), color = "black") +
+  ggtheme_plot() +
+  scale_fill_gradientn(colors = colorRamps::matlab.like(10))
+```
+
+## Displacement
+
+```{r, fig.cap = "Spatial representation of the mean change in the monthly allocation of fishing effort.", fig.height = 4}
+eez %>% 
+  left_join(ba_disp_ps, by = c("ISO_Ter1" = "country")) %>%
+  filter(!is.na(change)) %>% 
+  select(country = ISO_Ter1, change, PNA) %>% 
+  rbind(pipa_map_ba_disp) %>% 
+  rbind(HS_disp) %>% 
+  filter(!country %in% c("HS", "PNG")) %>% 
+  ggplot() +
+  geom_sf(aes(fill = change, linetype = !PNA), color = "black") +
+  ggtheme_plot() +
+  scale_fill_gradientn(colors = colorRamps::matlab.like(10))
+```
+
+
+## Recap
+
+- Treated vessels fish less post-implementation
+  - Only significant for purse seiners
+
+- EEZs receive proportionally more fishing effort than before
+  - Proportional change increases with proximity to PIPA
+
+## Future work
+
+Change in behavior
+
+- Distance traveled
+- non-fishing at-sea hours
+- proportion of fishing / searching
+
+Spatial redistribution
+
+- Proportion is bounded, might try a binomial GLM
+- Measure of "crowdness"
+
+Concerns
+
+- Spillover effects / treatment affecting control
+
+
 
 # References
 
