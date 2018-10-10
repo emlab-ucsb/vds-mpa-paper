@@ -8,6 +8,8 @@ library(magrittr)
 
 # Put it all together
 
+PNA_countries <- c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV")
+
 ## Load and bind vessel info
 vessel_info_pipa <- read.csv(here::here("data", "vessel_info_mmsi_inside_pipa.csv"),
                              stringsAsFactors = F) %>% 
@@ -30,13 +32,14 @@ effort_by_vessel <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) 
   left_join(vessel_info, by = c("mmsi", "year", "gear")) %>%
   mutate(month_c = as.character(month),
          year_c = as.character(year),
-         date = lubridate::date(paste(year, month, 1, sep = "/")))
+         date = lubridate::date(paste(year, month, 1, sep = "/")),
+         PNA = iso3 %in% PNA_countries)
 
 # Identify vessels suitable for BACI
 # I want to make sure I don't use vessels that appear after 2015 (in the control) or that disappeared after 2015 (in the treatment).
 
 tb <- effort_by_vessel %>% 
-  filter(treated, !post) %$%
+  filter(treated, !post, date < lubridate::date("2014/09/01")) %$%
   mmsi %>%
   unique()
 
@@ -45,12 +48,12 @@ ta <- effort_by_vessel  %>%
   mmsi %>%
   unique()
 
-cb <-  effort_by_vessel %>% 
-  filter(!treated, !post) %$%
+cb <- effort_by_vessel %>% 
+  filter(!treated, !post, date < lubridate::date("2014/09/01")) %$%
   mmsi %>%
   unique()
 
-ca <-  effort_by_vessel %>% 
+ca <- effort_by_vessel %>% 
   filter(!treated, post) %$%
   mmsi %>%
   unique()
@@ -71,10 +74,10 @@ saveRDS(effort_by_vessel, file = here::here("data", "effort_by_vessel.rds"))
 # # Generate a list of mmsis, group (treated-post), and gear.
 # # I'll use this one to get the full tracks from BigQuery
 # 
-# vessel_groups <- effort_by_vessel %>% 
-#   filter(baci_strict) %>% 
-#   group_by(mmsi, treated, gear, flag) %>% 
-#   count() %>% 
+# vessel_groups <- effort_by_vessel %>%
+#   filter(baci_strict) %>%
+#   group_by(mmsi, treated, gear, flag) %>%
+#   count() %>%
 #   select(-n)
-#
+# 
 # write.csv(vessel_groups, file = here::here("data", "vessel_groups.csv"), row.names = F)

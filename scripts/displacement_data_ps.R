@@ -9,16 +9,8 @@ source(here::here("scripts", "sfc_as_cols.R"))
 
 vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds"))
 
-eez <- read_sf(dsn = here::here("raw_data", "spatial", "EEZ"), layer = "eez_v10") %>% 
-  filter(ISO_Ter1 %in% unique(vessel_tracks$eez_iso3)) %>% 
-  mutate(PNA = ISO_Ter1 %in% c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV")) %>% 
-  st_rotate()
-
-pipa <- read_sf(dsn = here::here("data", "spatial", "PIPA"),
-                layer = "PIPA") %>% 
-  mutate(inside = T) %>% 
-  select(inside) %>% 
-  st_rotate()
+regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
+                   layer = "regions")
 
 # Cuales estan dentro de PIPA
 
@@ -28,11 +20,10 @@ ps <- vessel_tracks %>%
          fishing) %>% 
   st_as_sf(coords = c(7, 8), crs = "+proj=longlat +datum=WGS84 +no_defs") %>%
   st_rotate() %>% 
-  st_join(pipa) %>% 
+  st_join(regions) %>% 
   sfc_as_cols(names = c("lon", "lat")) %>% 
   st_set_geometry(value = NULL) %>%
-  mutate(country = ifelse(is.na(eez_iso3), "HS", eez_iso3),
-         country = ifelse(is.na(inside), country, "PIPA")) %>%
+  mutate(country = ifelse(is.na(id), "HS", id)) %>%
   group_by(year, month) %>% 
   mutate(total_hours = sum(hours)) %>% 
   ungroup() %>% 
@@ -41,7 +32,7 @@ ps <- vessel_tracks %>%
   mutate(h_prop = h / total_hours) %>% 
   ungroup()
 
-displacement_data_ps <- expand.grid(country = c(unique(ps$country), "HS"),
+displacement_data_ps <- expand.grid(country = ps$country,
                                     year = 2012:2017,
                                     month = 1:12) %>% 
   arrange(country, year, month) %>%
