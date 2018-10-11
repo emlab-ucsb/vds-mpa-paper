@@ -70,7 +70,7 @@ effort_by_vessel <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %
 ```{r}
 # Just to get pipa vessels that fished inside pipa before 2015
 pipa_vessels <- effort_by_vessel %>% 
-  filter(treated) %$%
+  filter(treated, baci_strict) %$%
   unique(mmsi) %>% 
   length()
 ```
@@ -176,8 +176,8 @@ All regression coefficients were estimated via ordinary least squares, and heter
 ```{r}
 country_groups <- c("COK", "FSM", "KIR", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV")
 
-eez <- read_sf(dsn = here::here("data", "spatial", "EEZ_subset"),
-               layer = "EEZ_subset")
+eez <- read_sf(dsn = here::here("data", "spatial", "regions"),
+               layer = "regions")
 
 pipa <- read_sf(dsn = here::here("data", "spatial", "PIPA"),
                 layer = "PIPA") %>% 
@@ -345,9 +345,9 @@ The change in the relative allocation of fishing effort by purse seiners increas
 displacement_data %>% 
   filter(gear == "purse_seines",
          h_prop > 0) %>%
-  mutate(country = as.character(country),
-         country = ifelse(country %in% c("PIPA", "KIR", "HS", "ASM", "COK", "FSM", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV", "UMI"), country, "OTH"),
-         country = forcats::fct_relevel(country, "OTH", after = Inf)) %>% 
+  # mutate(country = as.character(country),
+         # country = ifelse(country %in% c("PIPA", "KIR", "HS", "ASM", "COK", "FSM", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV", "UMI"), country, "OTH"),
+         # country = forcats::fct_relevel(country, "OTH", after = Inf)) %>% 
   ggplot(aes(x = date, y = h_prop, group = post)) +
   geom_smooth(method = "lm", color = "black", size = 0.5, linetype = "dashed") +
   geom_point(size = 1) +
@@ -369,36 +369,15 @@ displacement_data %>%
   facet_wrap(~country, scales = "free_y")
 ```
 
-```{r, fig.cap = "\\label{fig:redist_trend_spa}Proportion of fishing hours that all vessels spent on each of the EEZs and the high seas.", eval = F}
-pipa_map_disp <- pipa %>% 
-  mutate(country = "PIPA") %>% 
-  left_join(displacement_data, by = "country")
-
-# Los colores del mapa deben estar dados por el Post:Country
-eez %>% 
-  left_join(displacement_data, by = c("ISO_Ter1" = "country")) %>%
-  group_by(year) %>% 
-  summarize(h_prop = mean(h_prop, na.rm = T)) %>% 
-  ggplot() +
-  geom_sf(aes(fill = h_prop, linetype = PNA), size = 1, color = "black") +
-  geom_sf(data = pipa_map_ba_disp, aes(fill = h_prop), linetype = "dashed", color = "red") +
-  ggtheme_plot() +
-  scale_fill_gradientn(colors = colorRamps::matlab.like(10)) +
-  facet_wrap(~year)
-```
 
 ```{r, fig.cap = "\\label{fig:map_change_ps}Spatial representation of the mean change in the monthly allocation of fishing effort for purse seiners."}
-pipa_map_ba_disp <- pipa %>% 
-  mutate(country = "PIPA") %>% 
-  left_join(ba_disp_ps, by = "country")
 
 # Los colores del mapa deben estar dados por el Post:Country
 eez %>% 
-  left_join(ba_disp_ps, by = c("ISO_Ter1" = "country")) %>%
-  filter(!is.na(change)) %>% 
+  left_join(ba_disp_ps, by = c("id" = "country")) %>%
+  # filter(!is.na(change)) %>% 
   ggplot() +
   geom_sf(aes(fill = change), color = "black") +
-  geom_sf(data = pipa_map_ba_disp, aes(fill = change), linetype = "dashed", color = "red") +
   ggtheme_plot() +
   scale_fill_gradientn(colors = colorRamps::matlab.like(10))
 ```

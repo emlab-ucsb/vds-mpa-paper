@@ -9,8 +9,9 @@ institute:
 date: "5/10/2018"
 output: 
   beamer_presentation: 
-    slide_level: 2
     citation_package: biblatex
+    slide_level: 2
+    theme: Berkeley
 bibliography: references.bib
 biblio-style: authoryear
 header-includes:
