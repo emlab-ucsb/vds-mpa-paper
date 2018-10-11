@@ -18,6 +18,7 @@ ps <- vessel_tracks %>%
   filter(gear == "purse_seines",
          treated,
          fishing) %>% 
+  sample_n(1000) %>% 
   st_as_sf(coords = c(7, 8), crs = "+proj=longlat +datum=WGS84 +no_defs") %>%
   st_rotate() %>% 
   st_join(regions) %>% 
@@ -40,8 +41,6 @@ displacement_data_ps <- expand.grid(country = ps$country,
   left_join(ps, by = c("country", "year", "month")) %>% 
   mutate(h_prop = ifelse(is.na(h_prop), 0, h_prop)) %>% 
   mutate(date = lubridate::date(paste(year, month, 1, sep = "/")),
-         country = fct_relevel(country, c("PIPA", "KIR", "HS")),
-         country = fct_relevel(country, "others", after = Inf),
          post = year >= 2015) %>% 
   mutate(gear = "purse_seines")
 

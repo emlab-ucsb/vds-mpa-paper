@@ -54,7 +54,9 @@ eez_wo_pipa <- eez %>%
   mutate(source = "EEZ",
          PNA = substr(x = id, start = 1, 3) %in% PNA_countries)
 
-regions <- rbind(pipa, eez_wo_pipa, hs_b)
+regions <- rbind(pipa, eez_wo_pipa, hs_b) %>% 
+  mutate(country = id,
+         id = paste(source, id))
 
 st_write(regions, dsn = here::here("data", "spatial", "regions", "regions.shp"))
 
