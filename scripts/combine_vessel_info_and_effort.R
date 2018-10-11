@@ -23,16 +23,19 @@ vessel_info <- rbind(vessel_info_pipa, vessel_info_pna) %>%
   rename(gear = inferred_label) %>% 
   select(mmsi, year, iso3, gear)
 
+memory.limit(size = 8e6)
+
 ## Get effort data
-effort_by_vessel <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
+effort_by_vessel <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>%
   filter(fishing) %>% 
-  group_by(post, treated, year, month, gear, mmsi) %>% 
+  group_by(post, treated, year, month, date, gear, mmsi) %>% 
   summarize(hours = sum(hours, na.rm = T)) %>% 
   ungroup() %>% 
   left_join(vessel_info, by = c("mmsi", "year", "gear")) %>%
   mutate(month_c = as.character(month),
          year_c = as.character(year),
-         date = lubridate::date(paste(year, month, 1, sep = "/")),
+         year_month = lubridate::date(paste(year, month, 1, sep = "/")),
+         quarter = lubridate::quarter(date, with_year = T),
          PNA = iso3 %in% PNA_countries)
 
 # Identify vessels suitable for BACI
@@ -63,8 +66,28 @@ mmsi_baci_relaxed <- c(tb, ca[ca %in% cb])
 
 effort_by_vessel %<>%
   mutate(baci_strict = mmsi %in% mmsi_baci_strict,
-         baci_relaxed = mmsi %in% mmsi_baci_relaxed) %>% 
-  select(post, treated, baci_relaxed, baci_strict, flag = iso3, mmsi, year, year_c, month, month_c, date, hours, gear)
+         baci_relaxed = mmsi %in% mmsi_baci_relaxed,
+         experiment1 = PNA,
+         experiment2 = treated | (!treated & iso3 == "TWN"),
+         experiment3 = treated | (!treated & !iso3 == "CHN")) %>% 
+  select(year,
+         month,
+         year_month,
+         quarter,
+         date,
+         gear,
+         flag = iso3,
+         mmsi,
+         hours,
+         treated,
+         post,
+         baci_strict,
+         baci_relaxed,
+         month_c,
+         year_c,
+         experiment1,
+         experiment2,
+         experiment3)
 
 # Save data
 
