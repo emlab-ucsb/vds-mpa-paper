@@ -18,7 +18,6 @@ ps <- vessel_tracks %>%
   filter(gear == "purse_seines",
          treated,
          fishing) %>% 
-  sample_n(1000) %>% 
   st_as_sf(coords = c(7, 8), crs = "+proj=longlat +datum=WGS84 +no_defs") %>%
   st_rotate() %>% 
   st_join(regions) %>% 

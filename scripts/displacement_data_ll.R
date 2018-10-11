@@ -7,15 +7,13 @@ library(tidyverse)
 source(here::here("scripts", "st_rotate.R"))
 source(here::here("scripts", "sfc_as_cols.R"))
 
+## Load vessel tracks
 vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds"))
 
 regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
                    layer = "regions")
 
 # Longliners
-
-memory.limit(size = 8e6)
-
 ll <- vessel_tracks %>% 
   filter(!gear == "purse_seines",
          treated,
