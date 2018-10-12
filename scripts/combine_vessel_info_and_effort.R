@@ -69,7 +69,8 @@ effort_by_vessel %<>%
          baci_relaxed = mmsi %in% mmsi_baci_relaxed,
          experiment1 = PNA,
          experiment2 = treated | (!treated & iso3 == "TWN"),
-         experiment3 = treated | (!treated & !iso3 == "CHN")) %>% 
+         experiment3 = treated | (!treated & !iso3 == "CHN"),
+         iso3 = ifelse(iso3 == "" | is.na(iso3), "OTH", iso3)) %>% 
   select(year,
          month,
          year_month,
