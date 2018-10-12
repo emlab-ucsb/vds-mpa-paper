@@ -149,7 +149,7 @@ Where $y_{i,t}$ is the variable of interest for vessel $i$ in time period $t$. A
 [^4]: An earlier specification included years as a dummy variable. Such results are included in the appendix, but are similar to the ones found under current specification.
 
 ```{r}
-displacement_data <- readRDS(file = here::here("data", "displacement_data.rds")) %>% 
+displacement_data <- readRDS(file = here::here("data", "displacement_data_ps.rds")) %>% 
   filter(year < 2018)
 ```
 
@@ -178,12 +178,6 @@ country_groups <- c("COK", "FSM", "KIR", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV
 
 eez <- read_sf(dsn = here::here("data", "spatial", "regions"),
                layer = "regions")
-
-pipa <- read_sf(dsn = here::here("data", "spatial", "PIPA"),
-                layer = "PIPA") %>% 
-  mutate(inside = T) %>% 
-  select(inside) %>% 
-  st_rotate()
 ```
 
 ```{r}
@@ -195,22 +189,22 @@ ba_disp_ps <- displacement_data %>%
   mutate(change = (`TRUE` - `FALSE`) * 100) %>% 
   select(country, change)
 
-ba_disp_ll <- displacement_data %>% 
-  filter(!gear == "purse_seines") %>% 
-  group_by(country, post) %>% 
-  summarize(h_prop_m = mean(h_prop)) %>% 
-  spread(post, h_prop_m) %>% 
-  mutate(change = (`TRUE` - `FALSE`) * 100) %>% 
-  select(country, change)
-
-ba_disp_ps %>% 
-  mutate(gear = "Purse seiners") %>% 
-  rbind(mutate(ba_disp_ll, gear = "Longliners")) %>% 
-  spread(gear, change) %>% 
-  knitr::kable(digits = 2,
-               booktabs = T,
-               caption = "\\label{tab:ba_disp}Changes in the relative allocation of fishing effort by region (EEZ, PIPA, high seas) and gear.") %>% 
-  kableExtra::kable_styling(latex_options = "HOLD_position")
+# ba_disp_ll <- displacement_data %>% 
+#   filter(!gear == "purse_seines") %>% 
+#   group_by(country, post) %>% 
+#   summarize(h_prop_m = mean(h_prop)) %>% 
+#   spread(post, h_prop_m) %>% 
+#   mutate(change = (`TRUE` - `FALSE`) * 100) %>% 
+#   select(country, change)
+# 
+# ba_disp_ps %>% 
+#   mutate(gear = "Purse seiners") %>% 
+#   rbind(mutate(ba_disp_ll, gear = "Longliners")) %>% 
+#   spread(gear, change) %>% 
+#   knitr::kable(digits = 2,
+#                booktabs = T,
+#                caption = "\\label{tab:ba_disp}Changes in the relative allocation of fishing effort by region (EEZ, PIPA, high seas) and gear.") %>% 
+#   kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
 
 <!-- **An additional test to add to the wish list is to see if vessels are fishing closer to each other following the PIPA closure.** -->
@@ -251,59 +245,60 @@ Regressions coefficients for each gear type are shown in Tables \ref{tab:purse} 
 
 ```{r, results = "asis", echo = F}
 
-model_data1 <- effort_by_vessel %>% 
+model_base <- effort_by_vessel %>% 
   filter(baci_strict,
          gear == "purse_seines") %>% 
   mutate(post = post * 1,
          treated = treated * 1,
+         year2 = year * year,
          year_month_c = as.character(year_month),
-         quarter_c = as.character(quarter))
+         quarter_c = as.character(quarter),
+         flag_fe = !flag %in% c("JPN", "MEX", "NIC", "NZL", "PHL", "USA", "KIR", "PNG"),
+         flag_fe_oth = flag_fe & !flag == "OTH")
 
-model_data2 <- effort_by_vessel %>% 
-  filter(baci_strict,
-         gear == "purse_seines",
-         experiment1) %>% 
-  mutate(post = post * 1,
-         treated = treated * 1,
-         year_month_c = as.character(year_month),
-         quarter_c = as.character(quarter))
+# See file combine_vessel_info_and_effort to see how experiment columns are created ~line 70
+## Controls are PNA
+experiment1 <- model_base %>% 
+  filter(experiment1)
 
-model_data3 <- effort_by_vessel %>% 
-  filter(baci_strict,
-         gear == "purse_seines",
-         experiment2) %>% 
-  mutate(post = post * 1,
-         treated = treated * 1,
-         year_month_c = as.character(year_month),
-         quarter_c = as.character(quarter))
+## Controls are Taiwanese
+experiment2 <- model_base %>% 
+  filter(experiment2)
 
-model_data4 <- effort_by_vessel %>% 
-  filter(baci_strict,
-         gear == "purse_seines",
-         experiment3) %>% 
-  mutate(post = post * 1,
-         treated = treated * 1,
-         year_month_c = as.character(year_month),
-         quarter_c = as.character(quarter))
+## Controls are everything BUT Chinese
+experiment3 <- model_base %>% 
+  filter(experiment3)
 
-m1.1 <- lm(hours ~ post*treated, data = model_data1)
-m2.1 <- lm(hours ~ year_month_c*treated, data = model_data1)
-m3.1 <- lm(hours ~ quarter_c*treated, data = model_data1)
+## Fit the models
 
-m1.2 <- lm(hours ~ post*treated, data = model_data2)
-m2.2 <- lm(hours ~ year_month_c*treated, data = model_data2)
-m3.2 <- lm(hours ~ quarter_c*treated, data = model_data2)
+source(here::here("scripts", "did.R"))
+source(here::here("scripts", "did_quarter.R"))
+source(here::here("scripts", "did_yearmonth.R"))
+source(here::here("scripts", "termplot.R"))
 
-m1.3 <- lm(hours ~ post*treated, data = model_data3)
-m2.3 <- lm(hours ~ year_month_c*treated, data = model_data3)
-m3.3 <- lm(hours ~ quarter_c*treated, data = model_data3)
 
-m1.4 <- lm(hours ~ post*treated, data = model_data4)
-m2.4 <- lm(hours ~ year_month_c*treated, data = model_data4)
-m3.4 <- lm(hours ~ quarter_c*treated, data = model_data4)
+## Simple dids for each data
+models_exp0_did <- model_base %>% did()
+models_exp1_did <- experiment1 %>% did()
+models_exp2_did <- experiment2 %>% did()
+models_exp3_did <- experiment3 %>% did()
 
-models <- list(m1.1, m1.2, m1.3, m1.4)
+# Quarterly did
+models_exp0_did_q <- model_base %>% did_quarter()
+models_exp1_did_q <- experiment1 %>% did_quarter()
+models_exp2_did_q <- experiment2 %>% did_quarter()
+models_exp3_did_q <- experiment3 %>% did_quarter()
 
+# Monthly did
+models_exp0_did_ym <- model_base %>% did_yearmonth()
+models_exp1_did_ym <- experiment1 %>% did_yearmonth()
+models_exp2_did_ym <- experiment2 %>% did_yearmonth()
+models_exp3_did_ym <- experiment3 %>% did_yearmonth()
+
+# map(models_exp3_did, summary)
+```
+
+```{r, eval = F}
 stargazer::stargazer(models,
                      se = commarobust::makerobustseslist(models),
                      t.auto = T,
@@ -316,80 +311,8 @@ stargazer::stargazer(models,
                      header = F,
                      title = "DiD",
                      out = "DID.html")
-
-models <- list(m2.1, m2.2, m2.3, m2.4)
-stargazer::stargazer(models,
-                     se = commarobust::makerobustseslist(models),
-                     t.auto = T,
-                     p.auto = T,
-                     type = "latex",
-                     omit = c("flag", "month"),
-                     add.lines = list(c("Month FE", "No", "Yes", "Yes", "Yes"),
-                                      c("Flag FE", "No", "No", "No", "Yes")),
-                     omit.stat = c("adj.rsq", "f", "ser"),
-                     header = F,
-                     title = "DiD - months",
-                     out = "months.html")
-
-models <- list(m3.1, m2.2, m3.3, m3.4)
-stargazer::stargazer(models,
-                     se = commarobust::makerobustseslist(models),
-                     t.auto = T,
-                     p.auto = T,
-                     type = "latex",
-                     omit = c("flag", "month"),
-                     add.lines = list(c("Month FE", "No", "Yes", "Yes", "Yes"),
-                                      c("Flag FE", "No", "No", "No", "Yes")),
-                     omit.stat = c("adj.rsq", "f", "ser"),
-                     header = F,
-                     title = "DiD - quarters",
-                     out = "quarters.html")
 ```
 
-
-
-```{r, fig.width = 5, fig.height = 3, fig.cap = "\\label{fig:puse}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate.", eval = F}
-map_df(models, broom::tidy, .id = "model") %>%
-  filter(term %in% c("(Intercept)", "post", "treated", "post:treated")) %>%
-  ggplot(aes(x = model, y = estimate)) +
-  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error),
-                size = 1,
-                width = 0,
-                color = "red") +
-  geom_point(color = "steelblue", size = 3) +
-  facet_wrap(~term, scale = "free") +
-  ggtheme_plot()
-```
-
-```{r, results = "asis"}
-
-model_data <- effort_by_vessel %>% 
-  filter(baci_strict,
-         !gear == "purse_seines") %>% 
-  mutate(post = post * 1,
-         treated = treated * 1,
-         year2 = year^2,
-         mmsi_c = as.factor(mmsi))
-
-m1 <- lm(hours ~ post*treated, data = model_data)
-m2 <- lm(hours ~ post*treated + month_c, data = model_data)
-m3 <- lm(hours ~ post*treated + month_c + year + year2, data = model_data)
-m4 <- lm(hours ~ post*treated + month_c + year + year2 + flag, data = model_data)
-
-models <- list(m1, m2, m3, m4)
-
-stargazer::stargazer(models,
-                     se = commarobust::makerobustseslist(models),
-                     t.auto = T,
-                     p.auto = T,
-                     type = "latex",
-                     omit = c("flag", "month"),
-                     add.lines = list(c("Month FE", "No", "Yes", "Yes", "Yes"),
-                                      c("Flag FE", "No", "No", "No", "Yes")),
-                     omit.stat = c("adj.rsq", "f", "ser"),
-                     header = F,
-                     title = "\\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robust standard errors.")
-```
 
 ```{r, fig.width = 5, fig.height = 3, fig.cap = "\\label{fig:long}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate.", eval = F}
 map_df(models, broom::tidy, .id = "model") %>%
@@ -444,14 +367,14 @@ displacement_data %>%
 # Los colores del mapa deben estar dados por el Post:Country
 eez %>% 
   left_join(ba_disp_ps, by = c("id" = "country")) %>%
-  # filter(!is.na(change)) %>% 
+  filter(!is.na(change)) %>%
   ggplot() +
   geom_sf(aes(fill = change), color = "black") +
   ggtheme_plot() +
   scale_fill_gradientn(colors = colorRamps::matlab.like(10))
 ```
 
-```{r, fig.cap = "\\label{fig:map_change_ps}Spatial representation of the mean change in the monthly allocation of fishing effort for longliners. **This are preliminar results, contingent on the spatial analysis currently being run**"}
+```{r, fig.cap = "\\label{fig:map_change_ps}Spatial representation of the mean change in the monthly allocation of fishing effort for longliners. **This are preliminar results, contingent on the spatial analysis currently being run**", eval = F}
 pipa_map_ba_disp <- pipa %>% 
   mutate(country = "PIPA") %>% 
   left_join(ba_disp_ll, by = "country")
@@ -519,6 +442,10 @@ Our work suggests that the implementation of LSMPAs can have important implicati
 
 # Appendix
 
+## Other model specifications
+
+### Year as dummy variables
+
 ```{r, results = "asis", echo = F}
 
 model_data <- effort_by_vessel %>% 
@@ -578,5 +505,34 @@ stargazer::stargazer(models,
                      header = F,
                      title = "\\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment).. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
 ```
+
+
+```{r}
+models_exp0_did
+models_exp1_did
+models_exp2_did
+models_exp3_did
+```
+
+
+```{r}
+# Quarterly did
+models_exp0_did_q %>% termplot(q = T)
+models_exp1_did_q %>% termplot(q = T)
+models_exp2_did_q %>% termplot(q = T)
+models_exp3_did_q %>% termplot(q = T)
+```
+
+
+```{r}
+# Monthly did
+models_exp0_did_ym %>% termplot()
+models_exp1_did_ym %>% termplot()
+models_exp2_did_ym %>% termplot()
+models_exp3_did_ym %>% termplot()
+```
+
+
+
 
 \clearpage
