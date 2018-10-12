@@ -79,7 +79,7 @@
   \title{Displacement of fishing effort by Large Scale Marine Protected Areas}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
-  \subtitle{Updated on 2018-09-29}
+  \subtitle{Updated on 2018-10-11}
   \author{Juan Carlos Villaseñor-Derbez\textsuperscript{1} John
 Lynham\textsuperscript{2}}
     \preauthor{\centering\large\emph}
@@ -88,7 +88,7 @@ Lynham\textsuperscript{2}}
   \postdate{\par}
     \date{\textsuperscript{1}Bren School of Environmental Science and Management,
 University of California Santa Barbara, Santa Barbara,
-CA\newline\textsuperscript{2}Department of Economics, University of
+CA\newline \textsuperscript{2}Department of Economics, University of
 Hawaii at Manoa, Honolulu, HI}
 
 \usepackage{float}
@@ -122,7 +122,8 @@ activity, but provide insights into vessel redistribution dynamics,
 which may have ecological and economic implications.
 \end{abstract}
 
-\section{Introduction}\label{introduction}
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
 
 Marine Protected Areas (MPAs) are intended to safeguard parts of the
 ocean from extractive activities such as fishing. Current international
@@ -132,7 +133,7 @@ increase in MPA coverage \citep{wood_2008,sala_2018b}. A significant
 part of this rapid increase can be attributed to the designation of a
 small number of Large Scale Marine Protected Areas {[}LSMPAs;
 \citep{gray_2017}{]}. These are defined as MPAS with at least 250,000
-km\textsuperscript{2} \citep{toonen_2013} in extension, and are often
+km\textsuperscript{2} in extension \citep{toonen_2013}, and are often
 implemented in the pelagic environment, where the dominant human
 activity is industrial fishing \citep{gray_2017}.
 
@@ -179,7 +180,8 @@ effort that existed within PIPA before its implementation. This work
 provides novel empirical insights into fisher's responses to the
 implementation of LSMPAs, and can help guide future interventions.
 
-\section{Methods}\label{methods}
+\hypertarget{methods}{%
+\section{Methods}\label{methods}}
 
 This section is divided into two main parts. First, we provide a general
 description of AIS data and the process of identification of
@@ -191,7 +193,8 @@ be considered in the later analyses. We then move on to explain our
 empirical strategy for the identification of the behavioral changes and
 redistribution of fishing effort.
 
-\subsection{Data}\label{data}
+\hypertarget{data}{%
+\subsection{Data}\label{data}}
 
 Automatic Identification Systems are on-board devices intended to
 provide at-sea safety and prevent ship collisions by broadcasting vessel
@@ -217,7 +220,7 @@ implementation: 34 vessels have no recorded AIS messages after
 2015\footnote{The 34 missing vessels might have exited the fishery, been
   decommissioned or sold (therefore changing their AIS and mmsi), or
   turned off their AIS transmitters. In either case, we are not able to
-  observe these.}, leaving us with 183 vessels that fished inside PIPA
+  observe these.}, leaving us with 176 vessels that fished inside PIPA
 before its implementation, and continued to fish elsewhere afterward.
 New vessels might have also entered the fishery after PIPA closure, and
 were likely not exposed to the policy intervention in the pre-treatment
@@ -226,7 +229,7 @@ track since before the implementation of PIPA, and categorize them as
 treated or control vessels. Our treatment and control groups are defined
 as follows.
 
-The treatment group contains all vessels (n = 183) that fished within
+The treatment group contains all vessels (n = 176) that fished within
 PIPA at least once before the closure, and that continued to fish
 elsewhere afterwards. Vessels in the control group meet all three of the
 following conditions: i) vessels never fished within PIPA waters, ii)
@@ -241,32 +244,33 @@ and after PIPA.
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-4-1.pdf}
-\caption{\label{fig:unnamed-chunk-4}\label{fig:baci_strict}Stream of fishing
-events by vessels through time. Each line represents a vessel, with dots
-indicating months with fishing activity and colors indicating the pre
-and post periods.}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-20-1.pdf}
+\caption{\label{fig:unnamed-chunk-20}\label{fig:baci_strict}Stream of
+fishing events by vessels through time. Each line represents a vessel,
+with dots indicating months with fishing activity and colors indicating
+the pre and post periods.}
 \end{figure}
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-5}\label{tab:baci_n_s}Number of fishing vessels and fishing hours by gear and treatment group before and after PIPA.}
+\caption{\label{tab:unnamed-chunk-21}\label{tab:baci_n_s}Number of fishing vessels and fishing hours by gear and treatment group before and after PIPA.}
 \centering
 \begin{tabular}[t]{llrrrr}
 \toprule
 Gear & Treatment & n & Before & After & Change (A / B)\\
 \midrule
-drifting\_longlines & FALSE & 85 & 474.47780 & 462.5491 & 0.9748593\\
-drifting\_longlines & TRUE & 115 & 544.61935 & 522.8392 & 0.9600085\\
-purse\_seines & FALSE & 36 & 59.49026 & 154.5776 & 2.5983673\\
-purse\_seines & TRUE & 68 & 52.91534 & 131.5452 & 2.4859561\\
+drifting\_longlines & FALSE & 77 & 39.03181 & 37.79044 & 0.9681958\\
+drifting\_longlines & TRUE & 115 & 41.62659 & 40.43857 & 0.9714600\\
+purse\_seines & FALSE & 26 & 11.73804 & 20.13247 & 1.7151474\\
+purse\_seines & TRUE & 61 & 10.66939 & 18.36289 & 1.7210820\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \clearpage
 
-\subsection{Analysis}\label{analysis}
+\hypertarget{analysis}{%
+\subsection{Analysis}\label{analysis}}
 
 The first analysis focuses on identifying the response of fishing
 vessels to PIPA closure. Our variables of interests are fishing effort,
@@ -306,8 +310,8 @@ relative distribution of fishing hours by all treated vessels across all
 fished EEZs and the high seas. These trends are shown in Figure
 \ref{fig:redist_trend_ps}, and the relative temporal change is presented
 in Table \ref{tab:ba_disp}. EEZs that had sporadic fishing events were
-pooled into a group of ``others'', leaving us with a total of n = 12 and
-n = 10\footnote{This number is likely to change upon finalizing the
+pooled into a group of ``others'', leaving us with a total of n = 23 and
+n = 0\footnote{This number is likely to change upon finalizing the
   spatial analysis of longliners, which is currently running.} spatially
 defined regions (\emph{i.e.} EEZs, High Seas, ``other EEZs'', and PIPA)
 for purse seiners and longliners, respectively.
@@ -336,35 +340,10 @@ were performed in R version 3.5.1 \citep{rcore_2018}. Raw data and code
 used in this work are available on
 \href{https://github.com/jcvdav/MPA_displacement}{github}.
 
-\begin{table}[H]
-
-\caption{\label{tab:unnamed-chunk-8}\label{tab:ba_disp}Changes in the relative allocation of fishing effort by region (EEZ, PIPA, high seas) and gear.}
-\centering
-\begin{tabular}[t]{lrr}
-\toprule
-country & Longliners & Purse seiners\\
-\midrule
-PIPA & -11.48 & -8.54\\
-KIR & 1.28 & 2.76\\
-HS & 0.00 & 0.00\\
-COK & 0.00 & 0.34\\
-FSM & 0.00 & 0.55\\
-\addlinespace
-MHL & NA & -0.55\\
-NRU & 0.00 & 0.16\\
-PNG & 0.00 & -10.02\\
-SLB & -8.48 & 2.13\\
-TKL & NA & 0.19\\
-\addlinespace
-TUV & 7.23 & 1.47\\
-others & 22.55 & 11.51\\
-\bottomrule
-\end{tabular}
-\end{table}
-
 \clearpage
 
-\section{Results}\label{results}
+\hypertarget{results}{%
+\section{Results}\label{results}}
 
 Our data suggest that purse seiners and longliners have different
 responses to the implementation of a Large-Scale Marine Protected Areas.
@@ -387,9 +366,9 @@ plausible counterfactual.
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-9-1.pdf}
-\caption{\label{fig:unnamed-chunk-9}\label{fig:all_vessels}Fishing hours and
-number of vessels by month for all vessels. Vertical dashed line
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-25-1.pdf}
+\caption{\label{fig:unnamed-chunk-25}\label{fig:all_vessels}Fishing hours
+and number of vessels by month for all vessels. Vertical dashed line
 indicates PIPA closure.}
 \end{figure}
 
@@ -418,93 +397,13 @@ effects, column (3) includes month and the second degree polynomial for
 years, and column (4) includes all of the above and country-level fixed
 effects.
 
-\begin{table}[!htbp] \centering 
-  \caption{\label{tab:purse}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robust standard errors.} 
-  \label{} 
-\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-5} 
-\\[-1.8ex] & \multicolumn{4}{c}{hours} \\ 
-\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
-\hline \\[-1.8ex] 
- post & 95.087$^{***}$ & 99.232$^{***}$ & 38.349$^{***}$ & 41.920$^{***}$ \\ 
-  & (5.877) & (5.453) & (7.423) & (8.214) \\ 
-  & & & & \\ 
- treated & $-$6.575 & $-$5.597 & $-$3.811 & 6.541 \\ 
-  & (4.985) & (4.564) & (4.247) & (5.195) \\ 
-  & & & & \\ 
- year &  &  & 12,828.900$^{***}$ & 16,665.590$^{***}$ \\ 
-  &  &  & (2,451.444) & (3,717.658) \\ 
-  & & & & \\ 
- year2 &  &  & $-$3.178$^{***}$ & $-$4.131$^{***}$ \\ 
-  &  &  & (0.609) & (0.923) \\ 
-  & & & & \\ 
- post:treated & $-$16.457$^{**}$ & $-$16.739$^{***}$ & $-$17.304$^{***}$ & $-$18.709$^{***}$ \\ 
-  & (6.856) & (6.460) & (6.254) & (6.787) \\ 
-  & & & & \\ 
- Constant & 59.490$^{***}$ & 65.485$^{***}$ & $-$12,946,334.000$^{***}$ & $-$16,807,078.000$^{***}$ \\ 
-  & (4.422) & (6.132) & (2,473,372.000) & (3,759,572.000) \\ 
-  & & & & \\ 
-\hline \\[-1.8ex] 
-Month FE & No & Yes & Yes & Yes \\ 
-Flag FE & No & No & No & Yes \\ 
-Observations & 3,867 & 3,867 & 3,867 & 3,481 \\ 
-R$^{2}$ & 0.171 & 0.243 & 0.281 & 0.299 \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{table}
-
-\begin{table}[!htbp] \centering 
-  \caption{\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robust standard errors.} 
-  \label{} 
-\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-5} 
-\\[-1.8ex] & \multicolumn{4}{c}{hours} \\ 
-\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
-\hline \\[-1.8ex] 
- post & $-$11.929 & $-$6.968 & $-$15.550 & $-$6.761 \\ 
-  & (7.969) & (7.975) & (10.181) & (11.289) \\ 
-  & & & & \\ 
- treated & 70.142$^{***}$ & 72.314$^{***}$ & 71.985$^{***}$ & 14.026$^{*}$ \\ 
-  & (7.200) & (7.200) & (7.279) & (7.988) \\ 
-  & & & & \\ 
- year &  &  & $-$6,673.971$^{*}$ & 21,188.090$^{***}$ \\ 
-  &  &  & (3,606.793) & (5,631.642) \\ 
-  & & & & \\ 
- year2 &  &  & 1.657$^{*}$ & $-$5.259$^{***}$ \\ 
-  &  &  & (0.894) & (1.398) \\ 
-  & & & & \\ 
- post:treated & $-$9.851 & $-$12.290 & $-$12.779 & $-$14.850 \\ 
-  & (9.294) & (9.262) & (9.334) & (9.563) \\ 
-  & & & & \\ 
- Constant & 474.478$^{***}$ & 449.960$^{***}$ & 6,719,355.000$^{*}$ & $-$21,341,371.000$^{***}$ \\ 
-  & (6.328) & (9.440) & (3,633,994.000) & (5,644,837.000) \\ 
-  & & & & \\ 
-\hline \\[-1.8ex] 
-Month FE & No & Yes & Yes & Yes \\ 
-Flag FE & No & No & No & Yes \\ 
-Observations & 9,460 & 9,460 & 9,460 & 8,269 \\ 
-R$^{2}$ & 0.027 & 0.041 & 0.042 & 0.094 \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{table}
-
 Recall that to evaluate the redistribution of fishing effort we only
 track fishing vessels that belong to the treated group. In this case, we
 calculate the proportion of fishing effort allocated every month to each
 spatially explicit region outlined by EEZs and the high seas. For purse
 seiners, these represent 9 main EEZs, PIPA, the high seas, and a group
 of other EEZs. Figure \ref{fig:redist_trend_ps} shows the monthly
-relative fishing hours that each region received by all 183 treated
+relative fishing hours that each region received by all 176 treated
 vessels. The top-left panel shows the change in fishing effort inside
 PIPA, including the preemptive fishing and immediate reduction
 previously reported \citep{mcdermott_2018}.
@@ -523,27 +422,18 @@ closer to PIPA.
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-14-1.pdf}
-\caption{\label{fig:unnamed-chunk-14}\label{fig:redist_trend_ps}Monthly
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-29-1.pdf}
+\caption{\label{fig:unnamed-chunk-29}\label{fig:redist_trend_ps}Monthly
 relative allocation of fishing effort by PIPA-fishing vessels before and
 after PIPA for 9 EEZs, PIPA, the high seas and `other EEZs'.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-17-1.pdf}
-\caption{\label{fig:unnamed-chunk-17}\label{fig:map_change_ps}Spatial
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-31-1.pdf}
+\caption{\label{fig:unnamed-chunk-31}\label{fig:map_change_ps}Spatial
 representation of the mean change in the monthly allocation of fishing
 effort for purse seiners.}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-18-1.pdf}
-\caption{\label{fig:unnamed-chunk-18}\label{fig:map_change_ps}Spatial
-representation of the mean change in the monthly allocation of fishing
-effort for longliners. \textbf{This are preliminar results, contingent
-on the spatial analysis currently being run}}
 \end{figure}
 
 \begin{table}[!htbp] \centering 
@@ -556,33 +446,55 @@ on the spatial analysis currently being run}}
 \cline{2-2} 
 \\[-1.8ex] & h\_prop \\ 
 \hline \\[-1.8ex] 
- post & $-$0.085$^{***}$ (0.018) \\ 
-  countryKIR & 0.251$^{***}$ (0.036) \\ 
-  countryHS & $-$0.089$^{***}$ (0.018) \\ 
-  countryCOK & $-$0.085$^{***}$ (0.018) \\ 
-  countryFSM & $-$0.034 (0.021) \\ 
-  countryMHL & $-$0.063$^{***}$ (0.019) \\ 
-  countryNRU & $-$0.039$^{**}$ (0.020) \\ 
-  countryPNG & 0.098$^{***}$ (0.034) \\ 
-  countrySLB & $-$0.023 (0.026) \\ 
-  countryTKL & $-$0.072$^{***}$ (0.018) \\ 
-  countryTUV & $-$0.024 (0.021) \\ 
-  countryothers & 0.016 (0.021) \\ 
-  post:countryKIR & 0.113$^{**}$ (0.045) \\ 
-  post:countryHS & 0.085$^{***}$ (0.018) \\ 
-  post:countryCOK & 0.089$^{***}$ (0.018) \\ 
-  post:countryFSM & 0.091$^{***}$ (0.025) \\ 
-  post:countryMHL & 0.080$^{***}$ (0.021) \\ 
-  post:countryNRU & 0.087$^{***}$ (0.021) \\ 
-  post:countryPNG & $-$0.015 (0.037) \\ 
-  post:countrySLB & 0.107$^{***}$ (0.031) \\ 
-  post:countryTKL & 0.087$^{***}$ (0.019) \\ 
-  post:countryTUV & 0.100$^{***}$ (0.025) \\ 
-  post:countryothers & 0.201$^{***}$ (0.028) \\ 
-  Constant & 0.089$^{***}$ (0.018) \\ 
+ post & 0.005$^{***}$ (0.001) \\ 
+  countryEEZ FSM 1 & 0.052$^{***}$ (0.001) \\ 
+  countryEEZ KIR 1 & 0.067$^{***}$ (0.002) \\ 
+  countryEEZ KIR 2 & 0.020$^{***}$ (0.001) \\ 
+  countryEEZ KIR 3 & 0.250$^{***}$ (0.003) \\ 
+  countryEEZ MHL 1 & 0.022$^{***}$ (0.001) \\ 
+  countryEEZ NRU 1 & 0.049$^{***}$ (0.001) \\ 
+  countryEEZ PNG 2 & 0.184$^{***}$ (0.004) \\ 
+  countryEEZ SLB 1 & 0.062$^{***}$ (0.002) \\ 
+  countryEEZ TUV 1 & 0.059$^{***}$ (0.001) \\ 
+  countryHS & 0.073$^{***}$ (0.001) \\ 
+  countryHS COK 1 & 0.001$^{***}$ (0.0004) \\ 
+  countryHS FSM 1 & $-$0.004$^{***}$ (0.0003) \\ 
+  countryHS KIR 1 & 0.015$^{***}$ (0.001) \\ 
+  countryHS KIR 2 & $-$0.001$^{*}$ (0.0003) \\ 
+  countryHS KIR 3 & 0.002$^{***}$ (0.0004) \\ 
+  countryHS MHL 1 & $-$0.004$^{***}$ (0.0003) \\ 
+  countryHS MUS 1 & $-$0.004$^{***}$ (0.0003) \\ 
+  countryHS NRU 1 & $-$0.003$^{***}$ (0.001) \\ 
+  countryHS PNG 2 & $-$0.001$^{*}$ (0.001) \\ 
+  countryHS SLB 1 & $-$0.003$^{***}$ (0.0003) \\ 
+  countryHS TUV 1 & $-$0.003$^{***}$ (0.0003) \\ 
+  countryPIPA PIPA 1 & 0.083$^{***}$ (0.002) \\ 
+  post:countryEEZ FSM 1 & 0.003 (0.002) \\ 
+  post:countryEEZ KIR 1 & $-$0.007$^{***}$ (0.002) \\ 
+  post:countryEEZ KIR 2 & 0.040$^{***}$ (0.003) \\ 
+  post:countryEEZ KIR 3 & $-$0.033$^{***}$ (0.005) \\ 
+  post:countryEEZ MHL 1 & $-$0.010$^{***}$ (0.002) \\ 
+  post:countryEEZ NRU 1 & $-$0.005$^{***}$ (0.002) \\ 
+  post:countryEEZ PNG 2 & $-$0.096$^{***}$ (0.004) \\ 
+  post:countryEEZ SLB 1 & 0.026$^{***}$ (0.004) \\ 
+  post:countryEEZ TUV 1 & 0.007$^{***}$ (0.002) \\ 
+  post:countryHS & 0.034$^{***}$ (0.002) \\ 
+  post:countryHS COK 1 & $-$0.005$^{***}$ (0.001) \\ 
+  post:countryHS FSM 1 & $-$0.005$^{***}$ (0.001) \\ 
+  post:countryHS KIR 1 & 0.024$^{***}$ (0.001) \\ 
+  post:countryHS KIR 2 & 0.005$^{***}$ (0.001) \\ 
+  post:countryHS KIR 3 & 0.020$^{***}$ (0.001) \\ 
+  post:countryHS MHL 1 & $-$0.004$^{***}$ (0.001) \\ 
+  post:countryHS MUS 1 & $-$0.005$^{***}$ (0.001) \\ 
+  post:countryHS NRU 1 & $-$0.006$^{***}$ (0.001) \\ 
+  post:countryHS PNG 2 & $-$0.007$^{***}$ (0.001) \\ 
+  post:countryHS SLB 1 & $-$0.006$^{***}$ (0.001) \\ 
+  post:countryHS TUV 1 & $-$0.005$^{***}$ (0.001) \\ 
+  post:countryPIPA PIPA 1 & $-$0.088$^{***}$ (0.002) \\ 
+  Constant & 0.004$^{***}$ (0.0003) \\ 
  \hline \\[-1.8ex] 
-Observations & 864 \\ 
-R$^{2}$ & 0.557 \\ 
+Observations & 69,048 \\ 
+R$^{2}$ & 0.370 \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
@@ -591,7 +503,8 @@ R$^{2}$ & 0.557 \\
 
 \clearpage
 
-\section{Discusion}\label{discusion}
+\hypertarget{discusion}{%
+\section{Discusion}\label{discusion}}
 
 Our findings provide interesting insights into the effect that LSMPAs
 can have on vessel behavior and the redistribution of fishing effort.
@@ -674,7 +587,15 @@ overfishing in adjacent waters.
 
 \clearpage
 
-\section{Appendix}\label{appendix}
+\hypertarget{appendix}{%
+\section{Appendix}\label{appendix}}
+
+\hypertarget{other-model-specifications}{%
+\subsection{Other model
+specifications}\label{other-model-specifications}}
+
+\hypertarget{year-as-dummy-variables}{%
+\subsubsection{Year as dummy variables}\label{year-as-dummy-variables}}
 
 \begin{table}[!htbp] \centering 
   \caption{\label{tab:purse_old}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.} 
@@ -687,24 +608,24 @@ overfishing in adjacent waters.
 \\[-1.8ex] & \multicolumn{4}{c}{hours} \\ 
 \\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
 \hline \\[-1.8ex] 
- post & 95.087$^{***}$ & 99.232$^{***}$ & 146.372$^{***}$ & 119.222$^{***}$ \\ 
-  & (5.877) & (5.453) & (6.926) & (6.717) \\ 
+ post & 8.394$^{***}$ & 9.334$^{***}$ & 14.934$^{***}$ & 17.284$^{***}$ \\ 
+  & (0.267) & (0.254) & (0.312) & (0.403) \\ 
   & & & & \\ 
- treated & $-$6.575 & $-$5.597 & $-$6.050 & 2.925 \\ 
-  & (4.985) & (4.564) & (4.095) & (5.052) \\ 
+ treated & $-$1.069$^{***}$ & $-$0.770$^{***}$ & $-$0.993$^{***}$ & 0.259 \\ 
+  & (0.249) & (0.234) & (0.219) & (0.269) \\ 
   & & & & \\ 
- post:treated & $-$16.457$^{**}$ & $-$16.739$^{***}$ & $-$14.748$^{**}$ & $-$16.231$^{**}$ \\ 
-  & (6.856) & (6.460) & (6.152) & (6.692) \\ 
+ post:treated & $-$0.701$^{**}$ & $-$0.899$^{***}$ & $-$0.530$^{*}$ & $-$0.580$^{**}$ \\ 
+  & (0.308) & (0.295) & (0.283) & (0.292) \\ 
   & & & & \\ 
- Constant & 59.490$^{***}$ & 65.485$^{***}$ & 36.643$^{***}$ & 53.138$^{***}$ \\ 
-  & (4.422) & (6.132) & (6.462) & (10.394) \\ 
+ Constant & 11.738$^{***}$ & 11.281$^{***}$ & 7.574$^{***}$ & 10.077$^{***}$ \\ 
+  & (0.220) & (0.292) & (0.318) & (0.422) \\ 
   & & & & \\ 
 \hline \\[-1.8ex] 
 Month FE & No & Yes & Yes & Yes \\ 
 Year FE & No & No & Yes & Yes \\ 
 Flag FE & No & No & No & Yes \\ 
-Observations & 3,867 & 3,867 & 3,867 & 3,481 \\ 
-R$^{2}$ & 0.171 & 0.243 & 0.301 & 0.320 \\ 
+Observations & 37,840 & 37,840 & 37,840 & 37,840 \\ 
+R$^{2}$ & 0.087 & 0.136 & 0.179 & 0.192 \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
@@ -722,29 +643,209 @@ R$^{2}$ & 0.171 & 0.243 & 0.301 & 0.320 \\
 \\[-1.8ex] & \multicolumn{4}{c}{hours} \\ 
 \\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
 \hline \\[-1.8ex] 
- post & $-$11.929 & $-$6.968 & 8.201 & 17.751$^{*}$ \\ 
-  & (7.969) & (7.975) & (11.119) & (10.388) \\ 
+ post & $-$1.241$^{***}$ & $-$1.026$^{***}$ & $-$0.944$^{***}$ & 13.292$^{***}$ \\ 
+  & (0.116) & (0.116) & (0.157) & (0.330) \\ 
   & & & & \\ 
- treated & 70.142$^{***}$ & 72.314$^{***}$ & 72.243$^{***}$ & 13.875$^{*}$ \\ 
-  & (7.200) & (7.200) & (7.283) & (7.992) \\ 
+ treated & 2.595$^{***}$ & 2.708$^{***}$ & 2.639$^{***}$ & 1.493$^{***}$ \\ 
+  & (0.101) & (0.101) & (0.102) & (0.116) \\ 
   & & & & \\ 
- post:treated & $-$9.851 & $-$12.290 & $-$13.287 & $-$14.750 \\ 
-  & (9.294) & (9.262) & (9.344) & (9.569) \\ 
+ post:treated & 0.053 & $-$0.069 & $-$0.029 & $-$0.060 \\ 
+  & (0.133) & (0.133) & (0.134) & (0.135) \\ 
   & & & & \\ 
- Constant & 474.478$^{***}$ & 449.960$^{***}$ & 449.666$^{***}$ & 429.919$^{***}$ \\ 
-  & (6.328) & (9.440) & (11.122) & (27.606) \\ 
+ Constant & 39.032$^{***}$ & 38.105$^{***}$ & 38.388$^{***}$ & 36.993$^{***}$ \\ 
+  & (0.089) & (0.131) & (0.150) & (0.178) \\ 
   & & & & \\ 
 \hline \\[-1.8ex] 
 Month FE & No & Yes & Yes & Yes \\ 
 Year FE & No & No & Yes & Yes \\ 
 Flag FE & No & No & No & Yes \\ 
-Observations & 9,460 & 9,460 & 9,460 & 8,269 \\ 
-R$^{2}$ & 0.027 & 0.041 & 0.042 & 0.094 \\ 
+Observations & 227,873 & 227,873 & 227,873 & 227,873 \\ 
+R$^{2}$ & 0.010 & 0.015 & 0.016 & 0.030 \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
 \end{table}
+
+\begin{verbatim}
+## [[1]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated, data = data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated  post:treated  
+##      11.7380        8.3944       -1.0687       -0.7009  
+## 
+## 
+## [[2]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated + month_c, data = data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated     month_c10     month_c11  
+##      11.2808        9.3338       -0.7699        2.8855        3.6875  
+##    month_c12      month_c2      month_c3      month_c4      month_c5  
+##       3.0010       -0.9889       -2.2384       -3.6433       -4.5904  
+##     month_c6      month_c7      month_c8      month_c9  post:treated  
+##      -4.4198       -3.5805        0.3173        2.8648       -0.8990  
+## 
+## 
+## [[3]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated + month_c + flag, data = flag_data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated     month_c10     month_c11  
+##     13.94161       9.13865       0.04064       2.63902       3.55558  
+##    month_c12      month_c2      month_c3      month_c4      month_c5  
+##      2.59370      -1.06244      -2.41158      -4.00798      -4.91378  
+##     month_c6      month_c7      month_c8      month_c9       flagECU  
+##     -4.97737      -3.35106       0.20410       2.30467      -6.18817  
+##      flagESP       flagFSM       flagKOR       flagMHL       flagOTH  
+##     -2.94857      -4.72899      -3.70832      -1.87867      -2.24359  
+##      flagTWN  post:treated  
+##     -2.49301      -0.90817
+\end{verbatim}
+
+\begin{verbatim}
+## [[1]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated, data = data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated  post:treated  
+##     11.41504       8.22194      -0.01516      -2.01435  
+## 
+## 
+## [[2]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated + month_c, data = data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated     month_c10     month_c11  
+##      10.9718        8.6646        0.0589        3.1399        4.2030  
+##    month_c12      month_c2      month_c3      month_c4      month_c5  
+##       2.8778       -0.8801       -2.1805       -4.0561       -4.0234  
+##     month_c6      month_c7      month_c8      month_c9  post:treated  
+##      -4.7427       -4.4566        0.9716        4.9466       -2.0474  
+## 
+## 
+## [[3]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated + month_c + flag, data = flag_data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated     month_c10     month_c11  
+##        8.160         8.923         2.910         3.489         4.775  
+##    month_c12      month_c2      month_c3      month_c4      month_c5  
+##        3.087        -1.082        -1.776        -4.186        -4.108  
+##     month_c6      month_c7      month_c8      month_c9       flagMHL  
+##       -5.336        -4.115         1.249         4.322         2.969  
+## post:treated  
+##       -2.984
+\end{verbatim}
+
+\begin{verbatim}
+## [[1]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated, data = data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated  post:treated  
+##      11.1998        9.0182       -0.5304       -1.3247  
+## 
+## 
+## [[2]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated + month_c, data = data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated     month_c10     month_c11  
+##     10.74814      10.57403      -0.03924       2.43719       3.37646  
+##    month_c12      month_c2      month_c3      month_c4      month_c5  
+##      2.62526      -1.19664      -2.77934      -3.76747      -4.65285  
+##     month_c6      month_c7      month_c8      month_c9  post:treated  
+##     -4.79738      -3.64640       0.15290       3.15125      -2.13569  
+## 
+## 
+## [[3]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated + month_c + flag, data = flag_data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated     month_c10     month_c11  
+##      14.3391       10.4923        0.4295        2.2241        3.1505  
+##    month_c12      month_c2      month_c3      month_c4      month_c5  
+##       2.0719       -1.2564       -2.8501       -4.0129       -5.0320  
+##     month_c6      month_c7      month_c8      month_c9       flagECU  
+##      -5.3231       -3.4871       -0.2020        2.2869       -5.4622  
+##      flagESP       flagFSM       flagKOR       flagMHL       flagOTH  
+##      -3.3566       -1.4486       -4.2977       -2.3611       -3.3106  
+##      flagTWN  post:treated  
+##      -3.2657       -2.2534
+\end{verbatim}
+
+\begin{verbatim}
+## [[1]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated, data = data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated  post:treated  
+##      11.4202        7.8750       -0.7508       -0.1815  
+## 
+## 
+## [[2]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated + month_c, data = data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated     month_c10     month_c11  
+##      10.9725        8.7780       -0.4452        2.8476        3.6473  
+##    month_c12      month_c2      month_c3      month_c4      month_c5  
+##       3.0113       -1.1434       -2.4295       -3.5424       -4.4423  
+##     month_c6      month_c7      month_c8      month_c9  post:treated  
+##      -4.5243       -3.6704        0.2277        3.0019       -0.3310  
+## 
+## 
+## [[3]]
+## 
+## Call:
+## lm(formula = hours ~ post * treated + month_c + flag, data = flag_data)
+## 
+## Coefficients:
+##  (Intercept)          post       treated     month_c10     month_c11  
+##    14.036151      8.770151      0.557241      2.444760      3.320156  
+##    month_c12      month_c2      month_c3      month_c4      month_c5  
+##     2.456643     -1.307835     -2.707138     -4.024565     -4.841901  
+##     month_c6      month_c7      month_c8      month_c9       flagECU  
+##    -5.275270     -3.545459      0.001697      2.319940     -6.396277  
+##      flagESP       flagFSM       flagKOR       flagMHL       flagOTH  
+##    -3.432356     -4.833825     -4.212230     -1.836510     -3.284000  
+##      flagTWN  post:treated  
+##    -2.637666     -0.454598
+\end{verbatim}
+
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-37-1.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-37-2.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-37-3.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-37-4.pdf}
+
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-38-1.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-38-2.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-38-3.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-38-4.pdf}
 
 \clearpage
 
