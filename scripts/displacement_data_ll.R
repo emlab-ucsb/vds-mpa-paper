@@ -15,13 +15,22 @@ regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
 
 # Longliners
 ll <- vessel_tracks %>% 
+  sample_n(1000) %>% 
   filter(!gear == "purse_seines",
          treated,
          fishing) %>% 
   st_as_sf(coords = c(7, 8), crs = "+proj=longlat +datum=WGS84 +no_defs") %>%
   st_rotate() %>% 
-  st_join(regions) %>% 
-  sfc_as_cols(names = c("lon", "lat")) %>% 
+  st_join(regions)
+
+saveRDS(object = ll,
+        file = here::here("data", "ll.rds"))
+
+gc()
+
+print("finished join")
+  
+ll %<>%  sfc_as_cols(names = c("lon", "lat")) %>% 
   st_set_geometry(value = NULL) %>%
   mutate(country = ifelse(is.na(id), "HS", id)) %>%
   group_by(year, month) %>% 
@@ -31,6 +40,13 @@ ll <- vessel_tracks %>%
   summarize(h = sum(hours)) %>% 
   mutate(h_prop = h / total_hours) %>% 
   ungroup()
+
+saveRDS(object = ll,
+        file = here::here("data", "ll2.rds"))
+
+gc()
+
+print("finished grouping")
 
 displacement_data_ll <- expand.grid(country = ll$country,
                                     year = 2012:2017,
@@ -43,6 +59,12 @@ displacement_data_ll <- expand.grid(country = ll$country,
          post = year >= 2015) %>% 
   mutate(gear = "long_lines")
 
+gc()
+
+print("finished data")
+
 saveRDS(object = displacement_data_ll,
         file = here::here("data", "displacement_data_ll.rds"))
+
+print("Done!")
 
