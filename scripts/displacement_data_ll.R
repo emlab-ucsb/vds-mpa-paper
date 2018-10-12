@@ -15,7 +15,6 @@ regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
 
 # Longliners
 ll <- vessel_tracks %>% 
-  sample_n(1000) %>% 
   filter(!gear == "purse_seines",
          treated,
          fishing) %>% 
