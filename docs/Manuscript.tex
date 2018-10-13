@@ -1,4 +1,4 @@
-\documentclass[12pt,]{article}
+\documentclass[11pt,]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -49,7 +49,7 @@
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{0}
+\setcounter{secnumdepth}{5}
 % Redefines (sub)paragraphs to behave more like sections
 \ifx\paragraph\undefined\else
 \let\oldparagraph\paragraph
@@ -79,7 +79,7 @@
   \title{Displacement of fishing effort by Large Scale Marine Protected Areas}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
-  \subtitle{Updated on 2018-10-11}
+  \subtitle{Updated on 2018-10-12}
   \author{Juan Carlos Villaseñor-Derbez\textsuperscript{1} John
 Lynham\textsuperscript{2}}
     \preauthor{\centering\large\emph}
@@ -126,25 +126,25 @@ which may have ecological and economic implications.
 \section{Introduction}\label{introduction}}
 
 Marine Protected Areas (MPAs) are intended to safeguard parts of the
-ocean from extractive activities such as fishing. Current international
-goals aim to ``effectively protect 10\% of the ocean environments by
-2020''. In an effort to meet this target, the world has seen a rapid
-increase in MPA coverage \citep{wood_2008,sala_2018b}. A significant
-part of this rapid increase can be attributed to the designation of a
-small number of Large Scale Marine Protected Areas {[}LSMPAs;
-\citep{gray_2017}{]}. These are defined as MPAS with at least 250,000
-km\textsuperscript{2} in extension \citep{toonen_2013}, and are often
-implemented in the pelagic environment, where the dominant human
-activity is industrial fishing \citep{gray_2017}.
+ocean from fishing and other extractive activities. Current
+international goals aim to ``effectively protect 10\% of the ocean
+environments by 2020''. In an effort to meet this target, the world has
+seen a rapid increase in MPA coverage \citep{wood_2008,sala_2018}. A
+significant part of this rapid increase can be attributed to the
+designation of a small number of Large Scale Marine Protected Areas
+{[}LSMPAs; \citep{gray_2017}{]}. These are defined as MPAS with at least
+250,000 Km\textsuperscript{2} in extension (Fig. \ref{fig:LSMPAs_map}),
+and are often implemented in the pelagic environment, where the dominant
+human activity is industrial fishing
+\citep{toonen_2013,gray_2017,kroodsma_2018}.
 
 Due to weak property rights, limited habitat transformation, and
-potentially lower management costs, pelagic MPAs provide a great
-opportunity to safeguard the oceans \citet{game_2009}{[}\^{}d{]}. A
-growing body of literature has also shown that closing the high seas to
-all fishing -effectively, turning them into a LSMPA- could increase
-fishery yields and profitability of fisheries, without negligible costs
-to food security
-\citep{white_2014,sumaila_2015,sala_2018,schiller_2018}. However, as
+potentially lower management costs, pelagic MPAs provide an opportunity
+to safeguard the oceans \citet{game_2009}. A growing body of literature
+has shown that closing the high seas to all fishing -effectively,
+turning them into a LSMPA- could increase fishery yields and
+profitability of fisheries, with negligible costs to food security
+\citep{white_2014,sumaila_2015,sala_2018a,schiller_2018}. However, as
 with customary MPAs, it is important that we understand the
 socioeconomic implications of management interventions.
 
@@ -156,29 +156,103 @@ However, the anticipation of a LSMPA can lead to preemptive overfishing,
 which can erode or delay the expected benefits of the intervention
 \citep{mcdermott_2018}. LSMPAs have received great attention in terms of
 governance and enforcement, but are yet to be the focus of economic
-analyses \citep{gray_2017}. For example, \citet{mcdermott_2018} show
-that fishing effort within the Phoenix Islands Marine Protected Area
-(PIPA) is effectively reduced after implementation, and describe changes
-in fishing behavior pre-implementation. \citet{cabral_2017} analyse the
-redistribution of fishing and non-fishing vessels following the
-implementation of MPAs in California, and find that responses are
-idiosyncratic; commercial dive boats follow a fishing-the-line pattern,
-while some fishing boats follow an ideal free distribution. The way in
-which fishers react to a spatial closure can have major implications in
-its outcome \citep{hilborn_2006,krueck_2017,viana_2017}. This highlights
-the need to understand how fishers react to the implementation of a
-LSMPA, and fishing effort changes and is spatially redistributed.
+analyses \citep{gray_2017}.
 
-The main objective of this paper is to identify how fishers adapt to the
-implementation of LSMPAs. We combine novel vessel tracking technologies
-and causal inference techniques to identify behavioral changes of
-fishing vessels due to the implementation of PIPA. We focus on fishing
-hours and distance traveled as outcome variables that fishers might
-adjust following implementation of a LSMPA in an impact-evaluation
-fashion. Additionally, we evaluate the spatial redistribution of fishing
-effort that existed within PIPA before its implementation. This work
-provides novel empirical insights into fisher's responses to the
-implementation of LSMPAs, and can help guide future interventions.
+Research on LSMPAs have been the focus of analysing X, Y, and Z.
+However, no studies look into displacement of fishing effort.
+Redistribution of fishing effort has been evaluated in ssf by X, Y ,and
+Z. \citet{cabral_2017} analyse the redistribution of fishing and
+non-fishing vessels following the implementation of MPAs in California,
+and find that responses are idiosyncratic; commercial dive boats follow
+a fishing-the-line pattern, while some fishing boats follow an ideal
+free distribution. The way in which fishers react to a spatial closure
+can have major implications in its outcome
+\citep{smith_2003,hilborn_2006}. This highlights the need to understand
+how fishers react to the implementation of a LSMPA, and fishing effort
+changes and is spatially redistributed.
+
+The main objective of this paper is to identify how fishers change their
+behavior due to the implementation of LSMPAs. We combine novel vessel
+tracking technologies and causal inference techniques to identify
+behavioral changes of fishing vessels due to the implementation of PIPA.
+We focus on fishing hours and distance traveled as outcome variables
+that fishers might adjust following implementation of a LSMPA in an
+impact-evaluation fashion. Additionally, we evaluate the spatial
+redistribution of fishing effort that existed within PIPA before its
+implementation. This work provides novel empirical insights into
+fisher's responses to the implementation of LSMPAs, and can help guide
+future interventions. Our work is novel in the sense that it provides
+empirical evidence of the effect of large-acale Marine Protected Areas
+in fishing behavior and distribution.
+
+The next sections are as follows: Section \ref{background} provides an
+overview of the Nauru Agreement and associated countries, a description
+of the fleet that operates in the region, and a brief history of PIPA.
+Section \ref{methods} describes our data and identification strategy.
+Section \ref{results} presents our results, section \ref{discussion}
+provides an extension of our results to other LSMPAs and discusses our
+results.
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-2-1.pdf}
+\caption{\label{fig:unnamed-chunk-2}\label{fig:LSMPAs_map}}
+\end{figure}
+
+\hypertarget{background}{%
+\section{Background}\label{background}}
+
+The Nauru Agreement was established in 1982 by Pacific island nations to
+manage their important tuna resources. PNA Members include Federated
+States of Micronesia, Kiribati, Marshall Islands, Nauru, Palau, Papua
+New Guinea, Solomon Islands, and Tuvalu.The Nauru Agreement regulated
+access of foreign vessels (\emph{i.e.} those from non-PNA countries).
+Holding \textasciitilde{}80\% of the historical purse seining grounds
+within their Exclusive Economic Zones, PNA countries gained bargaining
+power when providing access to foreign fleets \citep{havice_2010}.
+
+The cooperation that emerged thanks to the PNA allowed for subsequent
+agreements that strengthened fisheries management, like the Palau
+Agreement, which limited the number of purse seiners at 205 vessels from
+1995-2007\footnote{See \citet{havice_2010} for a detailed description of
+  the Nauru, Palau, and Federal States of Micronesia agreements, their
+  objectives, and outcomes.}. However, the most notable regulation is
+their approach to manage fishing effort: a Vessel Day Scheme (VDS)
+implemented in 2007 \citep{havice_2013}. This effectively modified how
+fishing effort was managed, from number of vessels under the Palau
+Agreement to fishing hours. The VDS works as follows: Each year,
+scientific advisors recomend a total number of fishing vessel-days per
+year. Hours are allocated to each PNA country based on catch history,
+and they then sell fishing rights to other non-PNA countries
+\citep{aqorau_2018}. While the effectiveness of this scheme has been
+debated in terms of meeting their fishery management and conservation
+objectives, the licensing significantly contributes to the economy of
+these island nations \citep{havice_2010}.
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-3-1.pdf}
+\caption{\label{fig:unnamed-chunk-3}\label{fig:PNA_map}}
+\end{figure}
+
+The main tuna species caught in the region are skipjack
+(\emph{Katsuwonus pelamis}), yellowfin (\emph{Thunnus albacares}),
+albacore (\emph{Thunnus alalunga}) and bigeye (\emph{Thunnus obesus}).
+From these, the first two are amongst the top-10 species represented in
+global fisheries production statistics, with catches increasing relative
+to the 2005-2014 average \citep{fao_2018}. The pacific region has
+historically accounted for a large portion of tuna species production
+\citep{aqorau_1997}. Today, the PNA controls close to 50\% of the global
+skipjack tuna production \citep{pna_website_2018}. A large portion of
+these catches derive from purse seine vessels licensed under the VDS.
+Fishing vessels from Australia, New Zeland, China, France, Korea, Japan,
+the Philippines, Taiwan and the United States participate in the
+purse-seining vessel day schemes.
+
+For example, \citet{mcdermott_2018} show that fishing effort within the
+Phoenix Islands Marine Protected Area (PIPA) is effectively reduced
+after implementation, and describe changes in fishing behavior
+pre-implementation.
 
 \hypertarget{methods}{%
 \section{Methods}\label{methods}}
@@ -244,16 +318,16 @@ and after PIPA.
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-20-1.pdf}
-\caption{\label{fig:unnamed-chunk-20}\label{fig:baci_strict}Stream of
-fishing events by vessels through time. Each line represents a vessel,
-with dots indicating months with fishing activity and colors indicating
-the pre and post periods.}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-6-1.pdf}
+\caption{\label{fig:unnamed-chunk-6}\label{fig:baci_strict}Stream of fishing
+events by vessels through time. Each line represents a vessel, with dots
+indicating months with fishing activity and colors indicating the pre
+and post periods.}
 \end{figure}
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-21}\label{tab:baci_n_s}Number of fishing vessels and fishing hours by gear and treatment group before and after PIPA.}
+\caption{\label{tab:unnamed-chunk-7}\label{tab:baci_n_s}Number of fishing vessels and fishing hours by gear and treatment group before and after PIPA.}
 \centering
 \begin{tabular}[t]{llrrrr}
 \toprule
@@ -366,8 +440,8 @@ plausible counterfactual.
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-25-1.pdf}
-\caption{\label{fig:unnamed-chunk-25}\label{fig:all_vessels}Fishing hours
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-11-1.pdf}
+\caption{\label{fig:unnamed-chunk-11}\label{fig:all_vessels}Fishing hours
 and number of vessels by month for all vessels. Vertical dashed line
 indicates PIPA closure.}
 \end{figure}
@@ -422,16 +496,16 @@ closer to PIPA.
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-29-1.pdf}
-\caption{\label{fig:unnamed-chunk-29}\label{fig:redist_trend_ps}Monthly
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-15-1.pdf}
+\caption{\label{fig:unnamed-chunk-15}\label{fig:redist_trend_ps}Monthly
 relative allocation of fishing effort by PIPA-fishing vessels before and
 after PIPA for 9 EEZs, PIPA, the high seas and `other EEZs'.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-31-1.pdf}
-\caption{\label{fig:unnamed-chunk-31}\label{fig:map_change_ps}Spatial
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-17-1.pdf}
+\caption{\label{fig:unnamed-chunk-17}\label{fig:map_change_ps}Spatial
 representation of the mean change in the monthly allocation of fishing
 effort for purse seiners.}
 \end{figure}
@@ -503,8 +577,8 @@ R$^{2}$ & 0.370 \\
 
 \clearpage
 
-\hypertarget{discusion}{%
-\section{Discusion}\label{discusion}}
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
 
 Our findings provide interesting insights into the effect that LSMPAs
 can have on vessel behavior and the redistribution of fishing effort.
@@ -668,184 +742,372 @@ R$^{2}$ & 0.010 & 0.015 & 0.016 & 0.030 \\
 \end{table}
 
 \begin{verbatim}
-## [[1]]
 ## 
-## Call:
-## lm(formula = hours ~ post * treated, data = data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated  post:treated  
-##      11.7380        8.3944       -1.0687       -0.7009  
-## 
-## 
-## [[2]]
-## 
-## Call:
-## lm(formula = hours ~ post * treated + month_c, data = data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated     month_c10     month_c11  
-##      11.2808        9.3338       -0.7699        2.8855        3.6875  
-##    month_c12      month_c2      month_c3      month_c4      month_c5  
-##       3.0010       -0.9889       -2.2384       -3.6433       -4.5904  
-##     month_c6      month_c7      month_c8      month_c9  post:treated  
-##      -4.4198       -3.5805        0.3173        2.8648       -0.8990  
-## 
-## 
-## [[3]]
-## 
-## Call:
-## lm(formula = hours ~ post * treated + month_c + flag, data = flag_data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated     month_c10     month_c11  
-##     13.94161       9.13865       0.04064       2.63902       3.55558  
-##    month_c12      month_c2      month_c3      month_c4      month_c5  
-##      2.59370      -1.06244      -2.41158      -4.00798      -4.91378  
-##     month_c6      month_c7      month_c8      month_c9       flagECU  
-##     -4.97737      -3.35106       0.20410       2.30467      -6.18817  
-##      flagESP       flagFSM       flagKOR       flagMHL       flagOTH  
-##     -2.94857      -4.72899      -3.70832      -1.87867      -2.24359  
-##      flagTWN  post:treated  
-##     -2.49301      -0.90817
+## % Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+## % Date and time: vie., oct. 12, 2018 - 06:16:13 p. m.
+## \begin{table}[!htbp] \centering 
+##   \caption{} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+##  & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+## \cline{2-4} 
+## \\[-1.8ex] & \multicolumn{3}{c}{hours} \\ 
+## \\[-1.8ex] & (1) & (2) & (3)\\ 
+## \hline \\[-1.8ex] 
+##  post & 8.394$^{***}$ & 9.334$^{***}$ & 9.139$^{***}$ \\ 
+##   & (0.271) & (0.265) & (0.300) \\ 
+##   & & & \\ 
+##  treated & $-$1.069$^{***}$ & $-$0.770$^{***}$ & 0.041 \\ 
+##   & (0.259) & (0.253) & (0.317) \\ 
+##   & & & \\ 
+##  month\_c10 &  & 2.885$^{***}$ & 2.639$^{***}$ \\ 
+##   &  & (0.302) & (0.335) \\ 
+##   & & & \\ 
+##  month\_c11 &  & 3.687$^{***}$ & 3.556$^{***}$ \\ 
+##   &  & (0.304) & (0.335) \\ 
+##   & & & \\ 
+##  month\_c12 &  & 3.001$^{***}$ & 2.594$^{***}$ \\ 
+##   &  & (0.309) & (0.339) \\ 
+##   & & & \\ 
+##  month\_c2 &  & $-$0.989$^{***}$ & $-$1.062$^{***}$ \\ 
+##   &  & (0.308) & (0.334) \\ 
+##   & & & \\ 
+##  month\_c3 &  & $-$2.238$^{***}$ & $-$2.412$^{***}$ \\ 
+##   &  & (0.313) & (0.340) \\ 
+##   & & & \\ 
+##  month\_c4 &  & $-$3.643$^{***}$ & $-$4.008$^{***}$ \\ 
+##   &  & (0.317) & (0.345) \\ 
+##   & & & \\ 
+##  month\_c5 &  & $-$4.590$^{***}$ & $-$4.914$^{***}$ \\ 
+##   &  & (0.316) & (0.349) \\ 
+##   & & & \\ 
+##  month\_c6 &  & $-$4.420$^{***}$ & $-$4.977$^{***}$ \\ 
+##   &  & (0.332) & (0.368) \\ 
+##   & & & \\ 
+##  month\_c7 &  & $-$3.580$^{***}$ & $-$3.351$^{***}$ \\ 
+##   &  & (0.336) & (0.366) \\ 
+##   & & & \\ 
+##  month\_c8 &  & 0.317 & 0.204 \\ 
+##   &  & (0.311) & (0.346) \\ 
+##   & & & \\ 
+##  month\_c9 &  & 2.865$^{***}$ & 2.305$^{***}$ \\ 
+##   &  & (0.309) & (0.341) \\ 
+##   & & & \\ 
+##  flagECU &  &  & $-$6.188$^{***}$ \\ 
+##   &  &  & (0.434) \\ 
+##   & & & \\ 
+##  flagESP &  &  & $-$2.949$^{***}$ \\ 
+##   &  &  & (0.497) \\ 
+##   & & & \\ 
+##  flagFSM &  &  & $-$4.729$^{***}$ \\ 
+##   &  &  & (0.470) \\ 
+##   & & & \\ 
+##  flagKOR &  &  & $-$3.708$^{***}$ \\ 
+##   &  &  & (0.289) \\ 
+##   & & & \\ 
+##  flagMHL &  &  & $-$1.879$^{***}$ \\ 
+##   &  &  & (0.310) \\ 
+##   & & & \\ 
+##  flagOTH &  &  & $-$2.244$^{***}$ \\ 
+##   &  &  & (0.290) \\ 
+##   & & & \\ 
+##  flagTWN &  &  & $-$2.493$^{***}$ \\ 
+##   &  &  & (0.332) \\ 
+##   & & & \\ 
+##  post:treated & $-$0.701$^{**}$ & $-$0.899$^{***}$ & $-$0.908$^{***}$ \\ 
+##   & (0.314) & (0.306) & (0.344) \\ 
+##   & & & \\ 
+##  Constant & 11.738$^{***}$ & 11.281$^{***}$ & 13.942$^{***}$ \\ 
+##   & (0.229) & (0.313) & (0.422) \\ 
+##   & & & \\ 
+## \hline \\[-1.8ex] 
+## Observations & 37,840 & 37,840 & 30,359 \\ 
+## R$^{2}$ & 0.087 & 0.136 & 0.151 \\ 
+## Adjusted R$^{2}$ & 0.087 & 0.136 & 0.150 \\ 
+## Residual Std. Error & 12.752 (df = 37836) & 12.405 (df = 37825) & 12.257 (df = 30337) \\ 
+## F Statistic & 1,203.929$^{***}$ (df = 3; 37836) & 427.020$^{***}$ (df = 14; 37825) & 256.286$^{***}$ (df = 21; 30337) \\ 
+## \hline 
+## \hline \\[-1.8ex] 
+## \textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+## \end{tabular} 
+## \end{table}
 \end{verbatim}
 
 \begin{verbatim}
-## [[1]]
 ## 
-## Call:
-## lm(formula = hours ~ post * treated, data = data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated  post:treated  
-##     11.41504       8.22194      -0.01516      -2.01435  
-## 
-## 
-## [[2]]
-## 
-## Call:
-## lm(formula = hours ~ post * treated + month_c, data = data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated     month_c10     month_c11  
-##      10.9718        8.6646        0.0589        3.1399        4.2030  
-##    month_c12      month_c2      month_c3      month_c4      month_c5  
-##       2.8778       -0.8801       -2.1805       -4.0561       -4.0234  
-##     month_c6      month_c7      month_c8      month_c9  post:treated  
-##      -4.7427       -4.4566        0.9716        4.9466       -2.0474  
-## 
-## 
-## [[3]]
-## 
-## Call:
-## lm(formula = hours ~ post * treated + month_c + flag, data = flag_data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated     month_c10     month_c11  
-##        8.160         8.923         2.910         3.489         4.775  
-##    month_c12      month_c2      month_c3      month_c4      month_c5  
-##        3.087        -1.082        -1.776        -4.186        -4.108  
-##     month_c6      month_c7      month_c8      month_c9       flagMHL  
-##       -5.336        -4.115         1.249         4.322         2.969  
-## post:treated  
-##       -2.984
+## % Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+## % Date and time: vie., oct. 12, 2018 - 06:16:13 p. m.
+## \begin{table}[!htbp] \centering 
+##   \caption{} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+##  & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+## \cline{2-4} 
+## \\[-1.8ex] & \multicolumn{3}{c}{hours} \\ 
+## \\[-1.8ex] & (1) & (2) & (3)\\ 
+## \hline \\[-1.8ex] 
+##  post & 8.222$^{***}$ & 8.665$^{***}$ & 8.923$^{***}$ \\ 
+##   & (0.444) & (0.431) & (0.429) \\ 
+##   & & & \\ 
+##  treated & $-$0.015 & 0.059 & 2.910$^{***}$ \\ 
+##   & (0.475) & (0.462) & (0.602) \\ 
+##   & & & \\ 
+##  month\_c10 &  & 3.140$^{***}$ & 3.489$^{***}$ \\ 
+##   &  & (0.711) & (0.877) \\ 
+##   & & & \\ 
+##  month\_c11 &  & 4.203$^{***}$ & 4.775$^{***}$ \\ 
+##   &  & (0.695) & (0.828) \\ 
+##   & & & \\ 
+##  month\_c12 &  & 2.878$^{***}$ & 3.087$^{***}$ \\ 
+##   &  & (0.699) & (0.837) \\ 
+##   & & & \\ 
+##  month\_c2 &  & $-$0.880 & $-$1.082 \\ 
+##   &  & (0.739) & (0.885) \\ 
+##   & & & \\ 
+##  month\_c3 &  & $-$2.181$^{***}$ & $-$1.776$^{**}$ \\ 
+##   &  & (0.740) & (0.891) \\ 
+##   & & & \\ 
+##  month\_c4 &  & $-$4.056$^{***}$ & $-$4.186$^{***}$ \\ 
+##   &  & (0.745) & (0.893) \\ 
+##   & & & \\ 
+##  month\_c5 &  & $-$4.023$^{***}$ & $-$4.108$^{***}$ \\ 
+##   &  & (0.730) & (0.891) \\ 
+##   & & & \\ 
+##  month\_c6 &  & $-$4.743$^{***}$ & $-$5.336$^{***}$ \\ 
+##   &  & (0.779) & (0.968) \\ 
+##   & & & \\ 
+##  month\_c7 &  & $-$4.457$^{***}$ & $-$4.115$^{***}$ \\ 
+##   &  & (0.815) & (1.022) \\ 
+##   & & & \\ 
+##  month\_c8 &  & 0.972 & 1.249 \\ 
+##   &  & (0.724) & (0.895) \\ 
+##   & & & \\ 
+##  month\_c9 &  & 4.947$^{***}$ & 4.322$^{***}$ \\ 
+##   &  & (0.714) & (0.878) \\ 
+##   & & & \\ 
+##  flagMHL &  &  & 2.969$^{***}$ \\ 
+##   &  &  & (0.467) \\ 
+##   & & & \\ 
+##  post:treated & $-$2.014$^{***}$ & $-$2.047$^{***}$ & $-$2.984$^{***}$ \\ 
+##   & (0.610) & (0.592) & (0.766) \\ 
+##   & & & \\ 
+##  Constant & 11.415$^{***}$ & 10.972$^{***}$ & 8.160$^{***}$ \\ 
+##   & (0.342) & (0.616) & (0.835) \\ 
+##   & & & \\ 
+## \hline \\[-1.8ex] 
+## Observations & 7,756 & 7,756 & 5,288 \\ 
+## R$^{2}$ & 0.069 & 0.132 & 0.145 \\ 
+## Adjusted R$^{2}$ & 0.069 & 0.131 & 0.142 \\ 
+## Residual Std. Error & 13.095 (df = 7752) & 12.652 (df = 7741) & 12.518 (df = 5272) \\ 
+## F Statistic & 191.591$^{***}$ (df = 3; 7752) & 84.244$^{***}$ (df = 14; 7741) & 59.406$^{***}$ (df = 15; 5272) \\ 
+## \hline 
+## \hline \\[-1.8ex] 
+## \textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+## \end{tabular} 
+## \end{table}
 \end{verbatim}
 
 \begin{verbatim}
-## [[1]]
 ## 
-## Call:
-## lm(formula = hours ~ post * treated, data = data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated  post:treated  
-##      11.1998        9.0182       -0.5304       -1.3247  
-## 
-## 
-## [[2]]
-## 
-## Call:
-## lm(formula = hours ~ post * treated + month_c, data = data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated     month_c10     month_c11  
-##     10.74814      10.57403      -0.03924       2.43719       3.37646  
-##    month_c12      month_c2      month_c3      month_c4      month_c5  
-##      2.62526      -1.19664      -2.77934      -3.76747      -4.65285  
-##     month_c6      month_c7      month_c8      month_c9  post:treated  
-##     -4.79738      -3.64640       0.15290       3.15125      -2.13569  
-## 
-## 
-## [[3]]
-## 
-## Call:
-## lm(formula = hours ~ post * treated + month_c + flag, data = flag_data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated     month_c10     month_c11  
-##      14.3391       10.4923        0.4295        2.2241        3.1505  
-##    month_c12      month_c2      month_c3      month_c4      month_c5  
-##       2.0719       -1.2564       -2.8501       -4.0129       -5.0320  
-##     month_c6      month_c7      month_c8      month_c9       flagECU  
-##      -5.3231       -3.4871       -0.2020        2.2869       -5.4622  
-##      flagESP       flagFSM       flagKOR       flagMHL       flagOTH  
-##      -3.3566       -1.4486       -4.2977       -2.3611       -3.3106  
-##      flagTWN  post:treated  
-##      -3.2657       -2.2534
+## % Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+## % Date and time: vie., oct. 12, 2018 - 06:16:14 p. m.
+## \begin{table}[!htbp] \centering 
+##   \caption{} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+##  & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+## \cline{2-4} 
+## \\[-1.8ex] & \multicolumn{3}{c}{hours} \\ 
+## \\[-1.8ex] & (1) & (2) & (3)\\ 
+## \hline \\[-1.8ex] 
+##  post & 9.018$^{***}$ & 10.574$^{***}$ & 10.492$^{***}$ \\ 
+##   & (0.746) & (0.727) & (0.722) \\ 
+##   & & & \\ 
+##  treated & $-$0.530 & $-$0.039 & 0.430 \\ 
+##   & (0.629) & (0.612) & (0.683) \\ 
+##   & & & \\ 
+##  month\_c10 &  & 2.437$^{***}$ & 2.224$^{***}$ \\ 
+##   &  & (0.347) & (0.386) \\ 
+##   & & & \\ 
+##  month\_c11 &  & 3.376$^{***}$ & 3.150$^{***}$ \\ 
+##   &  & (0.350) & (0.389) \\ 
+##   & & & \\ 
+##  month\_c12 &  & 2.625$^{***}$ & 2.072$^{***}$ \\ 
+##   &  & (0.357) & (0.394) \\ 
+##   & & & \\ 
+##  month\_c2 &  & $-$1.197$^{***}$ & $-$1.256$^{***}$ \\ 
+##   &  & (0.354) & (0.386) \\ 
+##   & & & \\ 
+##  month\_c3 &  & $-$2.779$^{***}$ & $-$2.850$^{***}$ \\ 
+##   &  & (0.360) & (0.395) \\ 
+##   & & & \\ 
+##  month\_c4 &  & $-$3.767$^{***}$ & $-$4.013$^{***}$ \\ 
+##   &  & (0.361) & (0.397) \\ 
+##   & & & \\ 
+##  month\_c5 &  & $-$4.653$^{***}$ & $-$5.032$^{***}$ \\ 
+##   &  & (0.362) & (0.402) \\ 
+##   & & & \\ 
+##  month\_c6 &  & $-$4.797$^{***}$ & $-$5.323$^{***}$ \\ 
+##   &  & (0.381) & (0.426) \\ 
+##   & & & \\ 
+##  month\_c7 &  & $-$3.646$^{***}$ & $-$3.487$^{***}$ \\ 
+##   &  & (0.381) & (0.417) \\ 
+##   & & & \\ 
+##  month\_c8 &  & 0.153 & $-$0.202 \\ 
+##   &  & (0.358) & (0.399) \\ 
+##   & & & \\ 
+##  month\_c9 &  & 3.151$^{***}$ & 2.287$^{***}$ \\ 
+##   &  & (0.354) & (0.393) \\ 
+##   & & & \\ 
+##  flagECU &  &  & $-$5.462$^{***}$ \\ 
+##   &  &  & (0.585) \\ 
+##   & & & \\ 
+##  flagESP &  &  & $-$3.357$^{***}$ \\ 
+##   &  &  & (0.557) \\ 
+##   & & & \\ 
+##  flagFSM &  &  & $-$1.449$^{**}$ \\ 
+##   &  &  & (0.675) \\ 
+##   & & & \\ 
+##  flagKOR &  &  & $-$4.298$^{***}$ \\ 
+##   &  &  & (0.379) \\ 
+##   & & & \\ 
+##  flagMHL &  &  & $-$2.361$^{***}$ \\ 
+##   &  &  & (0.501) \\ 
+##   & & & \\ 
+##  flagOTH &  &  & $-$3.311$^{***}$ \\ 
+##   &  &  & (0.402) \\ 
+##   & & & \\ 
+##  flagTWN &  &  & $-$3.266$^{***}$ \\ 
+##   &  &  & (0.473) \\ 
+##   & & & \\ 
+##  post:treated & $-$1.325$^{*}$ & $-$2.136$^{***}$ & $-$2.253$^{***}$ \\ 
+##   & (0.762) & (0.742) & (0.742) \\ 
+##   & & & \\ 
+##  Constant & 11.200$^{***}$ & 10.748$^{***}$ & 14.339$^{***}$ \\ 
+##   & (0.617) & (0.654) & (0.812) \\ 
+##   & & & \\ 
+## \hline \\[-1.8ex] 
+## Observations & 28,315 & 28,315 & 22,766 \\ 
+## R$^{2}$ & 0.083 & 0.134 & 0.144 \\ 
+## Adjusted R$^{2}$ & 0.083 & 0.133 & 0.143 \\ 
+## Residual Std. Error & 12.672 (df = 28311) & 12.322 (df = 28300) & 12.231 (df = 22744) \\ 
+## F Statistic & 857.512$^{***}$ (df = 3; 28311) & 311.587$^{***}$ (df = 14; 28300) & 182.169$^{***}$ (df = 21; 22744) \\ 
+## \hline 
+## \hline \\[-1.8ex] 
+## \textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+## \end{tabular} 
+## \end{table}
 \end{verbatim}
 
 \begin{verbatim}
-## [[1]]
 ## 
-## Call:
-## lm(formula = hours ~ post * treated, data = data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated  post:treated  
-##      11.4202        7.8750       -0.7508       -0.1815  
-## 
-## 
-## [[2]]
-## 
-## Call:
-## lm(formula = hours ~ post * treated + month_c, data = data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated     month_c10     month_c11  
-##      10.9725        8.7780       -0.4452        2.8476        3.6473  
-##    month_c12      month_c2      month_c3      month_c4      month_c5  
-##       3.0113       -1.1434       -2.4295       -3.5424       -4.4423  
-##     month_c6      month_c7      month_c8      month_c9  post:treated  
-##      -4.5243       -3.6704        0.2277        3.0019       -0.3310  
-## 
-## 
-## [[3]]
-## 
-## Call:
-## lm(formula = hours ~ post * treated + month_c + flag, data = flag_data)
-## 
-## Coefficients:
-##  (Intercept)          post       treated     month_c10     month_c11  
-##    14.036151      8.770151      0.557241      2.444760      3.320156  
-##    month_c12      month_c2      month_c3      month_c4      month_c5  
-##     2.456643     -1.307835     -2.707138     -4.024565     -4.841901  
-##     month_c6      month_c7      month_c8      month_c9       flagECU  
-##    -5.275270     -3.545459      0.001697      2.319940     -6.396277  
-##      flagESP       flagFSM       flagKOR       flagMHL       flagOTH  
-##    -3.432356     -4.833825     -4.212230     -1.836510     -3.284000  
-##      flagTWN  post:treated  
-##    -2.637666     -0.454598
+## % Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+## % Date and time: vie., oct. 12, 2018 - 06:16:14 p. m.
+## \begin{table}[!htbp] \centering 
+##   \caption{} 
+##   \label{} 
+## \begin{tabular}{@{\extracolsep{5pt}}lccc} 
+## \\[-1.8ex]\hline 
+## \hline \\[-1.8ex] 
+##  & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+## \cline{2-4} 
+## \\[-1.8ex] & \multicolumn{3}{c}{hours} \\ 
+## \\[-1.8ex] & (1) & (2) & (3)\\ 
+## \hline \\[-1.8ex] 
+##  post & 7.875$^{***}$ & 8.778$^{***}$ & 8.770$^{***}$ \\ 
+##   & (0.303) & (0.296) & (0.336) \\ 
+##   & & & \\ 
+##  treated & $-$0.751$^{***}$ & $-$0.445$^{*}$ & 0.557 \\ 
+##   & (0.269) & (0.262) & (0.345) \\ 
+##   & & & \\ 
+##  month\_c10 &  & 2.848$^{***}$ & 2.445$^{***}$ \\ 
+##   &  & (0.317) & (0.356) \\ 
+##   & & & \\ 
+##  month\_c11 &  & 3.647$^{***}$ & 3.320$^{***}$ \\ 
+##   &  & (0.319) & (0.355) \\ 
+##   & & & \\ 
+##  month\_c12 &  & 3.011$^{***}$ & 2.457$^{***}$ \\ 
+##   &  & (0.324) & (0.358) \\ 
+##   & & & \\ 
+##  month\_c2 &  & $-$1.143$^{***}$ & $-$1.308$^{***}$ \\ 
+##   &  & (0.326) & (0.357) \\ 
+##   & & & \\ 
+##  month\_c3 &  & $-$2.430$^{***}$ & $-$2.707$^{***}$ \\ 
+##   &  & (0.331) & (0.364) \\ 
+##   & & & \\ 
+##  month\_c4 &  & $-$3.542$^{***}$ & $-$4.025$^{***}$ \\ 
+##   &  & (0.332) & (0.365) \\ 
+##   & & & \\ 
+##  month\_c5 &  & $-$4.442$^{***}$ & $-$4.842$^{***}$ \\ 
+##   &  & (0.332) & (0.371) \\ 
+##   & & & \\ 
+##  month\_c6 &  & $-$4.524$^{***}$ & $-$5.275$^{***}$ \\ 
+##   &  & (0.349) & (0.392) \\ 
+##   & & & \\ 
+##  month\_c7 &  & $-$3.670$^{***}$ & $-$3.545$^{***}$ \\ 
+##   &  & (0.354) & (0.389) \\ 
+##   & & & \\ 
+##  month\_c8 &  & 0.228 & 0.002 \\ 
+##   &  & (0.328) & (0.368) \\ 
+##   & & & \\ 
+##  month\_c9 &  & 3.002$^{***}$ & 2.320$^{***}$ \\ 
+##   &  & (0.324) & (0.362) \\ 
+##   & & & \\ 
+##  flagECU &  &  & $-$6.396$^{***}$ \\ 
+##   &  &  & (0.515) \\ 
+##   & & & \\ 
+##  flagESP &  &  & $-$3.432$^{***}$ \\ 
+##   &  &  & (0.552) \\ 
+##   & & & \\ 
+##  flagFSM &  &  & $-$4.834$^{***}$ \\ 
+##   &  &  & (0.553) \\ 
+##   & & & \\ 
+##  flagKOR &  &  & $-$4.212$^{***}$ \\ 
+##   &  &  & (0.378) \\ 
+##   & & & \\ 
+##  flagMHL &  &  & $-$1.837$^{***}$ \\ 
+##   &  &  & (0.442) \\ 
+##   & & & \\ 
+##  flagOTH &  &  & $-$3.284$^{***}$ \\ 
+##   &  &  & (0.401) \\ 
+##   & & & \\ 
+##  flagTWN &  &  & $-$2.638$^{***}$ \\ 
+##   &  &  & (0.439) \\ 
+##   & & & \\ 
+##  post:treated & $-$0.182 & $-$0.331 & $-$0.455 \\ 
+##   & (0.342) & (0.333) & (0.379) \\ 
+##   & & & \\ 
+##  Constant & 11.420$^{***}$ & 10.972$^{***}$ & 14.036$^{***}$ \\ 
+##   & (0.239) & (0.329) & (0.548) \\ 
+##   & & & \\ 
+## \hline \\[-1.8ex] 
+## Observations & 34,489 & 34,489 & 27,008 \\ 
+## R$^{2}$ & 0.082 & 0.133 & 0.147 \\ 
+## Adjusted R$^{2}$ & 0.082 & 0.132 & 0.147 \\ 
+## Residual Std. Error & 12.712 (df = 34485) & 12.359 (df = 34474) & 12.188 (df = 26986) \\ 
+## F Statistic & 1,031.434$^{***}$ (df = 3; 34485) & 377.251$^{***}$ (df = 14; 34474) & 222.044$^{***}$ (df = 21; 26986) \\ 
+## \hline 
+## \hline \\[-1.8ex] 
+## \textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+## \end{tabular} 
+## \end{table}
 \end{verbatim}
 
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-37-1.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-37-2.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-37-3.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-37-4.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-1.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-2.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-3.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-4.pdf}
 
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-38-1.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-38-2.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-38-3.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-38-4.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-24-1.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-24-2.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-24-3.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-24-4.pdf}
 
 \clearpage
 

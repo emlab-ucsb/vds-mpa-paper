@@ -13,8 +13,8 @@ output:
     toc: no
     citation_package: natbib
     keep_tex: yes
-    number_sections: no
-fontsize: 12pt
+    number_sections: true
+fontsize: 11pt
 header-includes:
   - \usepackage{float}
   - \floatplacement{figure}{H}
@@ -44,13 +44,83 @@ source(here::here("scripts", "sfc_as_cols.R"))
 
 # Introduction
 
-Marine Protected Areas (MPAs) are intended to safeguard parts of the ocean from extractive activities such as fishing. Current international goals aim to "effectively protect 10\% of the ocean environments by 2020". In an effort to meet this target, the world has seen a rapid increase in MPA coverage \citep{wood_2008,sala_2018b}. A significant part of this rapid increase can be attributed to the designation of a small number of Large Scale Marine Protected Areas [LSMPAs; \citep{gray_2017}]. These are defined as MPAS with at least 250,000 km^2^ in extension \citep{toonen_2013}, and are often implemented in the pelagic environment, where the dominant human activity is industrial fishing \citep{gray_2017}.
+Marine Protected Areas (MPAs) are intended to safeguard parts of the ocean from fishing and other extractive activities. Current international goals aim to "effectively protect 10\% of the ocean environments by 2020". In an effort to meet this target, the world has seen a rapid increase in MPA coverage \citep{wood_2008,sala_2018}. A significant part of this rapid increase can be attributed to the designation of a small number of Large Scale Marine Protected Areas [LSMPAs; \citep{gray_2017}]. These are defined as MPAS with at least 250,000 Km^2^ in extension (Fig. \ref{fig:LSMPAs_map}), and are often implemented in the pelagic environment, where the dominant human activity is industrial fishing \citep{toonen_2013,gray_2017,kroodsma_2018}.
 
-Due to weak property rights, limited habitat transformation, and potentially lower management costs, pelagic MPAs provide a great opportunity to safeguard the oceans \citet{game_2009}[^d]. A growing body of literature has also shown that closing the high seas to all fishing -effectively, turning them into a LSMPA- could increase fishery yields and profitability of fisheries, without negligible costs to food security \citep{white_2014,sumaila_2015,sala_2018,schiller_2018}. However, as with customary MPAs, it is important that we understand the socioeconomic implications of management interventions.
+Due to weak property rights, limited habitat transformation, and potentially lower management costs, pelagic MPAs provide an opportunity to safeguard the oceans \citet{game_2009}. A growing body of literature has shown that closing the high seas to all fishing -effectively, turning them into a LSMPA- could increase fishery yields and profitability of fisheries, with negligible costs to food security \citep{white_2014,sumaila_2015,sala_2018a,schiller_2018}. However, as with customary MPAs, it is important that we understand the socioeconomic implications of management interventions.
 
-Given the relatively recent establishment of most LSMPAs, very little is known about their human dimensions and implication for fisheries \citep{gray_2017}. LSMPAs were erroneously assumed to have little social implications due to their remoteness \citep{agardy_2011,gray_2017}. However, the anticipation of a LSMPA can lead to preemptive overfishing, which can erode or delay the expected benefits of the intervention \citep{mcdermott_2018}. LSMPAs have received great attention in terms of governance and enforcement, but are yet to be the focus of economic analyses \citep{gray_2017}. For example, \citet{mcdermott_2018} show that fishing effort within the Phoenix Islands Marine Protected Area (PIPA) is effectively reduced after implementation, and describe changes in fishing behavior pre-implementation. \citet{cabral_2017} analyse the redistribution of fishing and non-fishing vessels following the implementation of MPAs in California, and find that responses are idiosyncratic; commercial dive boats follow a fishing-the-line pattern, while some fishing boats follow an ideal free distribution. The way in which fishers react to a spatial closure can have major implications in its outcome \citep{hilborn_2006,krueck_2017,viana_2017}. This highlights the need to understand how fishers react to the implementation of a LSMPA, and fishing effort changes and is spatially redistributed.
+Given the relatively recent establishment of most LSMPAs, very little is known about their human dimensions and implication for fisheries \citep{gray_2017}. LSMPAs were erroneously assumed to have little social implications due to their remoteness \citep{agardy_2011,gray_2017}. However, the anticipation of a LSMPA can lead to preemptive overfishing, which can erode or delay the expected benefits of the intervention \citep{mcdermott_2018}. LSMPAs have received great attention in terms of governance and enforcement, but are yet to be the focus of economic analyses \citep{gray_2017}.
 
-The main objective of this paper is to identify how fishers adapt to the implementation of LSMPAs. We combine novel vessel tracking technologies and causal inference techniques to identify behavioral changes of fishing vessels due to the implementation of PIPA. We focus on fishing hours and distance traveled as outcome variables that fishers might adjust following implementation of a LSMPA in an impact-evaluation fashion. Additionally, we evaluate the spatial redistribution of fishing effort that existed within PIPA before its implementation. This work provides novel empirical insights into fisher's responses to the implementation of LSMPAs, and can help guide future interventions.
+Research on LSMPAs have been the focus of analysing X, Y, and Z. However, no studies look into displacement of fishing effort. Redistribution of fishing effort has been evaluated in ssf by X, Y ,and Z. \citet{cabral_2017} analyse the redistribution of fishing and non-fishing vessels following the implementation of MPAs in California, and find that responses are idiosyncratic; commercial dive boats follow a fishing-the-line pattern, while some fishing boats follow an ideal free distribution. The way in which fishers react to a spatial closure can have major implications in its outcome \citep{smith_2003,hilborn_2006}. This highlights the need to understand how fishers react to the implementation of a LSMPA, and fishing effort changes and is spatially redistributed.
+
+The main objective of this paper is to identify how fishers change their behavior due to the implementation of LSMPAs. We combine novel vessel tracking technologies and causal inference techniques to identify behavioral changes of fishing vessels due to the implementation of PIPA. We focus on fishing hours and distance traveled as outcome variables that fishers might adjust following implementation of a LSMPA in an impact-evaluation fashion. Additionally, we evaluate the spatial redistribution of fishing effort that existed within PIPA before its implementation. This work provides novel empirical insights into fisher's responses to the implementation of LSMPAs, and can help guide future interventions. Our work is novel in the sense that it provides empirical evidence of the effect of large-acale Marine Protected Areas in fishing behavior and distribution.
+
+The next sections are as follows: Section \ref{background} provides an overview of the Nauru Agreement and associated countries, a description of the fleet that operates in the region, and a brief history of PIPA. Section \ref{methods} describes our data and identification strategy. Section \ref{results} presents our results, section \ref{discussion} provides an extension of our results to other LSMPAs and discusses our results.
+
+```{r, fig.cap = "\\label{fig:LSMPAs_map}"}
+
+mpas <- read_sf(dsn = here::here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>% 
+  st_rotate() %>% 
+  mutate(PIPA = wdpaid == 309888)
+
+coast <- map_data('world', wrap=c(-20,340), ylim=c(-85,75))%>%
+  select(group, lat, long) %>%
+  st_as_sf(coords = c("long", "lat"), crs = 4326) %>%
+  group_by(group) %>% 
+  summarize(geometry = st_combine(geometry)) %>%
+  st_cast("POLYGON") %>% 
+  mutate(a = 1) %>% 
+  group_by(a) %>% 
+  summarize() %>% 
+  ungroup()
+
+pipa <- sf::read_sf(dsn = here::here("data", "spatial", "PIPA"), layer = "PIPA") %>% 
+  sf::st_transform(crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
+  st_rotate()
+
+ggplot() +
+  geom_sf(data = coast) +
+  geom_sf(data = mpas, fill = "transparent", color = "black", size = 1) +
+  geom_sf(data = mpas, aes(fill = PIPA), color = "transparent") +
+  ggtheme_map() +
+  scale_fill_brewer(palette = "Set1", direction = -1) +
+  theme(legend.position = "none")
+```
+
+# Background
+
+The Nauru Agreement was established in 1982 by Pacific island nations to manage their important tuna resources. PNA Members include Federated States of Micronesia, Kiribati, Marshall Islands, Nauru, Palau, Papua New Guinea, Solomon Islands, and Tuvalu.The Nauru Agreement regulated access of foreign vessels (*i.e.* those from non-PNA countries). Holding ~80% of the historical purse seining grounds within their Exclusive Economic Zones, PNA countries gained bargaining power when providing access to foreign fleets \citep{havice_2010}.
+
+The cooperation that emerged thanks to the PNA allowed for subsequent agreements that strengthened fisheries management, like the Palau Agreement, which limited the number of purse seiners at 205 vessels from 1995-2007[^a]. However, the most notable regulation is their approach to manage fishing effort: a Vessel Day Scheme (VDS) implemented in 2007 \citep{havice_2013}. This effectively modified how fishing effort was managed, from number of vessels under the Palau Agreement to fishing hours. The VDS works as follows: Each year, scientific advisors recomend a total number of fishing vessel-days per year. Hours are allocated to each PNA country based on catch history, and they then sell fishing rights to other non-PNA countries \citep{aqorau_2018}. While the effectiveness of this scheme has been debated in terms of meeting their fishery management and conservation objectives, the licensing significantly contributes to the economy of these island nations \citep{havice_2010}.
+
+[^a]: See \citet{havice_2010} for a detailed description of the Nauru, Palau, and Federal States of Micronesia agreements, their objectives, and outcomes.
+
+```{r, fig.cap = "\\label{fig:PNA_map}"}
+countries <- c("PIPA", "KIR", "HS", "ASM", "COK", "FSM", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV", "UMI")
+
+small_coast <- rnaturalearth::ne_countries(returnclass = "sf") %>% 
+  filter(sov_a3 %in% countries) %>% 
+  st_rotate()
+
+eez <- read_sf(dsn = here::here("data", "spatial", "EEZ_subset"),
+               layer = "EEZ_subset") %>% 
+  filter(ISO_Ter1 %in% countries) %>% 
+  mutate(KIR = ISO_Ter1 == "KIR") %>% 
+  group_by(ISO_Ter1, PNA, KIR) %>% 
+  summarize()
+
+ggplot() +
+  geom_sf(data = small_coast) +
+  geom_sf(data = eez, aes(color = KIR, linetype = !PNA), fill = "transparent") +
+  geom_sf(data = pipa, fill = "red") +
+  ggtheme_plot() +
+  scale_color_manual(values = c("black", "red")) +
+  theme(legend.position = "none")
+```
+
+The main tuna species caught in the region are skipjack (*Katsuwonus pelamis*), yellowfin (*Thunnus albacares*), albacore (*Thunnus alalunga*) and bigeye (*Thunnus obesus*). From these, the first two are amongst the top-10 species represented in global fisheries production statistics, with catches increasing relative to the 2005-2014 average \citep{fao_2018}. The pacific region has historically accounted for a large portion of tuna species production \citep{aqorau_1997}. Today, the PNA controls close to 50% of the global skipjack tuna production \citep{pna_website_2018}. A large portion of these catches derive from purse seine vessels licensed under the VDS. Fishing vessels from Australia, New Zeland, China, France, Korea, Japan, the Philippines, Taiwan and the United States participate in the purse-seining vessel day schemes.
+
+For example, \citet{mcdermott_2018} show that fishing effort within the Phoenix Islands Marine Protected Area (PIPA) is effectively reduced after implementation, and describe changes in fishing behavior pre-implementation. 
+
 
 # Methods
 
@@ -62,12 +132,12 @@ This section is divided into two main parts. First, we provide a general descrip
 
 Automatic Identification Systems are on-board devices intended to provide at-sea safety and prevent ship collisions by broadcasting vessel position, course, and activities to surrounding vessels. These broadcasted messages can be received by satellites and land-based antennas. GFW uses a neural network to infer vessel characteristics and whether each broadcasted position represents a fishing event, thus allowing us to estimate near real-time fishing events globally since 2012 \citep{kroodsma_2018}. Our data contain information for 2012 - 2017. The recent addition of satellites that can receive AIS signals causes an apparent increase in the number of broadcasted AIS messages (*i.e.* points), and therefore number of vessels and fishing hours. The variability in AIS data and ocean conditions require that temporal trends be taken into account. We do that by obtaining a subset of data that meet a BACI design, which gives us the full tracks for vessels affected and unaffected by the implementation of PIPA.
 
-```{r}
+```{r, eval = T}
 effort_by_vessel <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %>% 
   filter(year < 2018)
 ```
 
-```{r}
+```{r, eval = T}
 # Just to get pipa vessels that fished inside pipa before 2015
 pipa_vessels <- effort_by_vessel %>% 
   filter(treated, baci_strict) %$%
@@ -420,7 +490,7 @@ stargazer::stargazer(models,
 
 \clearpage
 
-# Discusion
+# Discussion
 
 Our findings provide interesting insights into the effect that LSMPAs can have on vessel behavior and the redistribution of fishing effort. These collection of results shows that the implementation of PIPA caused treated vessels to reduce their fishing hours, and that this effect is greater for purse seiners than longliners. Even though treated vessels fish less, their relative allocation of fishing hours increased for all other fishing grounds. This does not imply that there is more fishing effort exerted by treated vessels, but rather that each region receives a greater portion of the post-PIPA fishing effort of these same vessels, which is lower than pre-PIPA levels. In this section we discuss the implications of vessel-level reductions in fishing effort and the increase in relative allocation of the remaining effort through space. We also provide plausible explanations as to why purse seiners seem to be more reactive to the spatial closure.
 
@@ -508,10 +578,10 @@ stargazer::stargazer(models,
 
 
 ```{r}
-models_exp0_did
-models_exp1_did
-models_exp2_did
-models_exp3_did
+models_exp0_did %>% stargazer::stargazer()
+models_exp1_did %>% stargazer::stargazer()
+models_exp2_did %>% stargazer::stargazer()
+models_exp3_did %>% stargazer::stargazer()
 ```
 
 
