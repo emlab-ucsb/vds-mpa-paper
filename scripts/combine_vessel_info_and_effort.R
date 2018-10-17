@@ -67,7 +67,7 @@ mmsi_baci_relaxed <- c(tb, ca[ca %in% cb])
 effort_by_vessel %<>%
   mutate(baci_strict = mmsi %in% mmsi_baci_strict,
          baci_relaxed = mmsi %in% mmsi_baci_relaxed,
-         experiment1 = PNA,
+         experiment1 = treated | PNA,
          experiment2 = treated | (!treated & iso3 == "TWN"),
          experiment3 = treated | (!treated & !iso3 == "CHN"),
          iso3 = ifelse(iso3 == "" | is.na(iso3), "OTH", iso3)) %>% 

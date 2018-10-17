@@ -13,7 +13,8 @@ termplot<- function(model_list, q = F, title = deparse(substitute(model_list))){
       ggtheme_plot() +
       geom_hline(yintercept = 0, linetype = "dashed") +
       geom_vline(xintercept = 2015, linetype = "dashed") +
-      ggtitle(label = title)
+      ggtitle(label = title) +
+      scale_color_brewer(palette = "Set1")
     
   } else {
     map_df(model_list, broom::tidy, .id = "model") %>%
@@ -26,7 +27,8 @@ termplot<- function(model_list, q = F, title = deparse(substitute(model_list))){
       ggtheme_plot() +
       geom_hline(yintercept = 0, linetype = "dashed") +
       geom_vline(xintercept = lubridate::date(paste(2015, 01, 01, sep = "/")), linetype = "dashed") +
-      ggtitle(label = title)
+      ggtitle(label = title) +
+      scale_color_brewer(palette = "Set1")
     }
 }
 
