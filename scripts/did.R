@@ -9,9 +9,9 @@ did <- function(data, filter_oth = F){
   flag_data <- data %>% 
     filter(flag_fe)
   
-  m1 <- lm(hours ~ post*treated, data = data)
-  m2 <- lm(hours ~ post*treated + month_c, data = data)
-  m3 <- lm(hours ~ post*treated + month_c + flag, data = flag_data)
+  m1 <- lm(hours ~ post*treated + sate, data = data)
+  m2 <- lm(hours ~ post*treated + sate + month_c, data = data)
+  m3 <- lm(hours ~ post*treated + sate + month_c + flag, data = flag_data)
   
   return(list(m1, m2, m3))
 }
