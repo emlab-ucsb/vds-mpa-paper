@@ -55,11 +55,19 @@ source(here::here("scripts", "sfc_as_cols.R"))
 
 # Introduction
 
-Marine Protected Areas (MPAs) are intended to safeguard parts of the ocean from fishing and other extractive activities. Current international goals aim to protect 10\% of the ocean environments by 2020. In an effort to meet this target, the world has seen a rapid increase in MPA coverage \citep{wood_2008,sala_2018}, largely driven by a small number of Large Scale Marine Protected Areas (LSMPA) \citet{singleton_2014,boonzaier_2016,alger_2017}). Due to weak property rights, limited habitat transformation, and potentially lower management costs, LSMPAs provide an opportunity to safeguard the oceans \citet{game_2009}. Today, a small number of LSMPAs make up at least 80% of the managed areas in the ocean \citet{toonen_2013}. 
+Marine Protected Areas (MPAs) are intended to safeguard parts of the ocean from fishing and other extractive activities. Current international goals aim to protect 10\% of the ocean environments by 2020. In an effort to meet this target, the world has seen a rapid increase in MPA coverage \citep{wood_2008,sala_2018}, largely driven by a small number of Large Scale Marine Protected Areas (LSMPA) \citet{singleton_2014,boonzaier_2016,alger_2017}). Due to weak property rights, limited habitat transformation, and potentially lower management costs, LSMPAs provide an opportunity to safeguard the oceans \citet{game_2009}. Today, a small number of LSMPAs make up at least 80% of the managed areas in the ocean \citet{toonen_2013}. LSMPAs may be instrumental in helping us achieve the 10\% target by 2020 \citep{mccauley_2016}.
 
-Given the relatively recent establishment of most LSMPAs, very little is known about their human dimensions and implication for fisheries \citep{gray_2017}. As with customary MPAs, it is important that we understand the socioeconomic implications of management interventions. One issue of particular importance is that of the displacement or redistribution of fishing effort, which may influence the outcomes of an MPA \citep{smith_2003}. Theoretical models make different assumptions about the way in which fishers will reallocate fishing effort after an area closure. The few empirical works focus on small-scale fisheries and rarely incorporate spatially explicit data. Despite these efforts, marine conservation is yet to identify the implications of these management interventions.
+Given the relatively recent establishment of most LSMPAs, very little is known about their human dimensions and implication for fisheries \citep{gray_2017}. As with customary MPAs, it is important that we understand the socioeconomic implications of management interventions. One issue of particular importance is that of the displacement or redistribution of fishing effort, which may influence the outcomes of an MPA \citep{smith_2003}. Theoretical models make different assumptions about the way in which fishers will reallocate fishing effort after an area closure. The few empirical works focus on small-scale fisheries and rarely incorporate spatially explicit data. Despite these efforts, marine conservation is yet to identify the response in fishing effort and its management implications.
 
-Here, we ask, how do fishers respond to the implementation of LSMPA? After a closure, and if they continue to fish, where do they reallocate fishing effort? We use novel satellite technologies and causal inference techniques to identify the behavioral changes and spatial redistribution of the industrial tuna purse seine fleet due to the implementation of a Large Scale Marine Protected Areas in the Western and Central Pacific Ocean (WCPO).
+Recent advances in satellite tracking technologies and near real-time identification of fishing activity provide us with an opportunity to tackle increase governance and answer long-lasting questions. Here, we ask, how do fishers respond to the implementation of LSMPA? After a closure, and if they continue to fish, where do they reallocate fishing effort? We use identification of fishing activity via Automatic Identification Systems (AIS) and causal inference techniques to describe the behavioral changes and spatial redistribution of the industrial tuna purse seine fleet due to the implementation of a Large Scale Marine Protected Areas in the Pacific Ocean.
+
+Our work is novel in the sense that it provides empirical evidence of the effect of Large Scale Marine Protected Areas in fishing behavior and distribution and can help guide future interventions as countries march towards meeting the targeted 10\% of ocean protection. Understanding how effort is displaced from LSMPAs might provide insights into how the industrial fleet would react to a high seas closure.
+
+The paper is outlined as follows: Section \ref{background} provides more information on Large Scale Marine Protected Areas and background on empirical studies of effort redistribution. An overview of the Nauru Agreement and associated countries, a description of the fleet that operates in the region, and a brief history of PIPA is also included. Section \ref{methods} describes our data and identification strategy. Section \ref{results} presents our results, section \ref{discussion} provides an extension of our results to other LSMPAs\footnote{Not yet. but I think this would be interesting} and discusses our results\footnote{I might also include a section, after the background, where I explain the different theoretical models of effort redistribution and behavioral responses}.
+
+# Background
+
+## Large Scale Marine Protected Areas
 
 The cutoff at which an MPA is considered to be a LSMPA ranges from areas larger than 30,000 km^2^ as defined by \citet{desanto_2013} or areas larger than 250,000 km^2^, as defined by \citep{toonen_2013}. Figure \ref{fig:LSMPAs_map} shows LSMPAs that meet the later, and that are fully no take. LSMPAs are often implemented in the pelagic environment, where the dominant human activity is industrial fishing \citep{gray_2017,kroodsma_2018}. The early literature on LSMPAs focused on the inherent challenges and difficulties that come with a pelagic environment. \citet{kaplan_2010} claimed that very large MPAs would result in excessive opportunity costs and that these would be difficult to enforce. \citet{game_2009} suggested that most of the challenges could be overcome with the incorporation of technology, in what then became known as Dynamic Ocean Management \citep{maxwell_2015}. The effectiveness and difficulties of implementating LSMPAs are not the focus of this paper \footnote{But see \citet{singleton_2014}, who provide an objective discussion of pros and cons of LSMPAs.}. Instead, we focus on the effect and implications of the ones that *have been* implemented.
 
@@ -104,15 +112,13 @@ ggplot() +
   guides(fill = guide_legend(ncol = 3))
 ```
 
-LSMPAs were erroneously assumed to have little social implications due to their remoteness. However, there have been calls to incorporate the human dimensions into LSMPAs management and evaluation \citep{agardy_2011,gray_2017}. Most research incorporating these dimensions has focused on governance and enforcement of LSMPAs (*i.e.* \citet{alger_2017,christie_2017}), but they are yet to be the focus of economic analyses \citep{gray_2017}. Overall, there has been little empirical work regarding LSMPAs. Recent technological advances in vessel-detection systems allows for the discovery and advancement of many important facets of LSMPAs. For example, \citep{mcdermott_2018} show that the anticipation of a LSMPA can lead to preemptive overfishing, which can erode or delay the expected benefits of the intervention. \citet{white_2017} combine shark tags and vessel-tracking data to demonstrate that the fairly large Palmyra Atoll National Wildlife Refuge (54,000 Km^2^) protectes two thrids of the tagged grey reef sharks by effectively excluding fishing effort. More recently, \citep{bradley_2018} use similar data to highlight cases of illegal shark fishing *inside* a 2 million km^2^ shark sanctuary. To date, no studies have evaluated the displacement of fishing effort due to LSMPA implementation.
+LSMPAs were erroneously assumed to have little social implications due to their remoteness. However, there have been calls to incorporate the human dimensions into LSMPAs management and evaluation \citep{agardy_2011,gray_2017}. Most research incorporating these dimensions has focused on governance and enforcement of LSMPAs (*i.e.* \citet{alger_2017,christie_2017}), but they are yet to be the focus of economic analyses \citep{gray_2017}. Overall, there has been little empirical work regarding LSMPAs. Recent technological advances in vessel-detection systems allows for the discovery and advancement of many important facets of LSMPAs. For example, \citep{mcdermott_2018} show that the anticipation of a LSMPA can lead to preemptive overfishing, which can erode or delay the expected benefits of the intervention. \citet{white_2017} combine shark tags and vessel-tracking data to demonstrate that the fairly large Palmyra Atoll National Wildlife Refuge (54,000 Km^2^) protectes two thrids of the tagged grey reef sharks by effectively excluding fishing effort. More recently, \citep{bradley_2018} use similar data to highlight cases of potential illegal shark fishing *inside* a 2 million km^2^ shark sanctuary. To date, no studies have evaluated the displacement of fishing effort due to LSMPA implementation.
 
-The exclusion of these LSMPAs is likely to change fisher's behavior. Theoretical models of fishing effort redistribution range from the simplistic assumption that effort inside the bounded region disappears, to spatially explicit models that reallocate fishing effort based on habitat characteristics, presence of other vessels, and expected returns \citep{smith_2003,hilborn_2006}. However, these focus on the long term optimal equilibrium and redistribution of fishing effort may not be optimal, especially over the first years \citep{stevenson_2013}. The empirical research that has been done in custumary sized MPAs suggest that resource users may show idiosyncratic responses. For example, \citet{stevenson_2013} show that a network of MPAs displaced fishing effort farther away from ports, resulting in higher *perceived* costs, and increases in catch per unit effort. \citet{cabral_2017} analyse the redistribution of fishing and non-fishing vessels following the implementation of a network of MPAs in California, and find that commercial dive boats follow a fishing-the-line pattern, while some fishing boats follow an ideal free distribution. The way in which fishers react to a spatial closure can have major implications in its outcome \citep{smith_2003,hilborn_2006} highlighting the need to understand how fishers react to the implementation of LSMPAs, and fishing effort changes and is spatially redistributed.
+Spatial closures of this magnitude are likely to induce changes in fishers' behavior. Theoretical models of fishing effort redistribution range from the simplistic assumption that effort inside the bounded region disappears, to spatially explicit models that reallocate fishing effort based on habitat characteristics, presence of other vessels, and expected returns \citep{smith_2003,hilborn_2006}. However, these focus on the long term optimal equilibrium, and redistribution of fishing effort may not always be optimal, especially over the first years \citep{stevenson_2013}.
 
-Our work is novel in the sense that it provides empirical evidence of the effect of large-acale Marine Protected Areas in fishing behavior and distribution and can help guide future interventions as countries march towards meetings the targeted 10\% of protection. Furthermore, a growing body of literature suggests that closing the high seas to all fishing could increase fishery yields and profitability of fisheries, with negligible costs to food security \citep{white_2014,sumaila_2015,sala_2018a,schiller_2018}. Understanding how effort is displaced from LSMPAs might provide insights into how the industrial fleet would react to a high seas closure.
+The empirical research that has been done in custumary sized MPAs suggest that resource users may show idiosyncratic responses. For example, \citet{stevenson_2013} show that a network of MPAs displaced fishing effort farther away from ports, resulting in higher *perceived* costs, and increases in catch per unit effort. \citet{cabral_2017} analyse the redistribution of fishing and non-fishing vessels following the implementation of a network of MPAs in California, and find that commercial dive boats follow a fishing-the-line pattern, while some fishing boats follow an ideal free distribution. More recently \citet{elahi_2018} used satellite tracking data to show that a temporal spatial closure caused trawlers to maintain effort but apply it more intensively elsewhere, particularly along the borders and closer to shore. The way in which fishers react to a spatial closure can have major implications in its outcome \citep{smith_2003,hilborn_2006} highlighting the need to understand how fishers react to the implementation of LSMPAs, and fishing effort changes and is spatially redistributed. However, all these closures took place within Exlcusive Economic Zones, where other regulations exist. This may not always be the case for LSMPAs, where often the entire EEZ is converted into a LSMPA, leaving fishers with the options of moving to the high seas or other countries' EEZs.
 
-The paper is outlined as follows: Section \ref{background} provides an overview of the Nauru Agreement and associated countries, a description of the fleet that operates in the region, and a brief history of PIPA. Section \ref{methods} describes our data and identification strategy. Section \ref{results} presents our results, section \ref{discussion} provides an extension of our results to other LSMPAs\footnote{Not yet. but I think this would be interesting} and discusses our results\footnote{I might also include a section, after the background, where I explain the different theoretical models of effort redistribution and behavioral responses}.
-
-# Background
+## Nauru agreement and the Phoenix Island Protected Area
 
 The Nauru Agreement was established in 1982 by a select group of Pacific island nations to manage their important tuna resources. PNA Members include Federated States of Micronesia, Kiribati, Marshall Islands, Nauru, Palau, Papua New Guinea, Solomon Islands, and Tuvalu. The Nauru Agreement regulated access of foreign vessels (*i.e.* those from non-PNA countries). Holding ~80% of the historical purse seining grounds within their Exclusive Economic Zones, PNA countries gained bargaining power when providing access to foreign fleets \citep{havice_2010}.
 
@@ -147,7 +153,7 @@ The main tuna species caught in the region are skipjack (*Katsuwonus pelamis*), 
 
 One of the most notable and recent management interventions in the region is the implementation of the Phoenix Island Protected Area (PIPA) by the government of Kiribati. PIPA was first declared in 2006, and established in 2008 with only 4% of it was declared as no-take. In January 1^st^, 2015, the no-take area within PIPA was expanded to a total area of 397,447 km^2^, roughly 1.5 times the size of Ecuador. Figure \ref{fig:PNA_map} shows a map of the PNA countries and the Phoenix Island Protected Area.
 
-The closure of such a large area in one of the most important fishing regions in the world provides a great opportunity to evaluate the behavioral responses and redistribution of fishing effort by vessels that used to fish there. \citet{mcdermott_2018} showed that fishing effort within the Phoenix Islands Marine Protected Area (PIPA) increased between the anouncement (September 1^st^, 2014) and its implementation in Janyary 1^st^, 2015. Likewise, they demonstrate that fishing effort is effectively reduced after implementation. To this, we pose two questions: How do individual vessels respond to the sudden exclusion of such a big area? And where did all the vessels go? In the next sections we describe the data and methods used to answer this questions.
+The closure of such a large area in one of the most important fishing regions in the world provides a great opportunity to evaluate the behavioral responses and redistribution of fishing effort by vessels that used to fish there. PIPA has been the focus of previous research, showing that fishing effort is effectively reduced after implementation \citep{mccauley_2016,mcdermott_2018}. To this, we pose two questions: How do individual vessels respond to the sudden exclusion of such a big area? And where did all the vessels go? In the next sections we describe the data and methods used to answer this questions.
 
 # Methods
 
@@ -178,8 +184,7 @@ pipa_vessels <- effort_by_vessel %>%
   length()
 ```
 
-
-Our analysis focuses on purse seiner vessels, the most important fishery for PNA countries\footnote{We perform some of the same analyses for longliners and include them in the Appendix}. We identify a total of 103 purse seiners that fished in PNA waters at least once before 2015\footnote{New vessels that entered the fishery after 2015 were not exposed to the policy intervention in the pre-treatment period and are therefore exlcuded from our analyses.}. These vessels represent over 26 million individual observations for the 2012 - 2017 period. We identify 65 vessels that have fished inside PIPA at least once since 2012. From these, 62 did so before the anouncement (*i.e.* 09/01/2014 *sensu* \citep{mcdermott_2018}) but are only able to track 61 for the complete periof of study before and after its implementation\footnote{1 vessel never fished again after August 18, 2013.}. On the other hand, 38 vessels never fished inside PIPA but we only have data for 26 vessels before and after.
+Our analysis focuses on purse seine vessels, the most important fishery for PNA countries\footnote{We perform some of the same analyses for longliners and include them in the Appendix}. We identify a total of 103 purse seiners that fished in PNA waters at least once before 2015\footnote{New vessels that entered the fishery after 2015 were not exposed to the policy intervention in the pre-treatment period and are therefore exlcuded from our analyses.}. These vessels represent over 26 million individual observations for the 2012 - 2017 period. We identify 65 vessels that have fished inside PIPA at least once since 2012. From these, 62 did so before the anouncement (*i.e.* 09/01/2014 *sensu* \citep{mcdermott_2018}) but are only able to track 61 for the complete periof of study before and after its implementation\footnote{1 vessel never fished again after August 18, 2013.}. On the other hand, 38 vessels never fished inside PIPA but we only have data for 26 vessels before and after.
 
 Therefore, our treatment group contains all purse seiners (n = 61) that fished within PIPA at least once before the anouncement, and that continued to fish elsewhere after the January 2015 implementation. Vessels in the control group meet the following two conditions: i) vessels never fished within PIPA waters, and ii) vessels have fished in surrounding areas (*i.e.* PNA-countries' EEZ) before and after PIPA closure (n = 26).
 
@@ -241,7 +246,9 @@ effort_by_vessel %>%
 
 <!-- antes de 06/01/14 habian 3 sats, despues 6 hasta 12/31/15, luego 10 hasta 2017 y ahora hay muchos jaja -->
 
-The first analysis focuses on identifying the response of fishing vessels to PIPA closure. Our variables of interests are daily fishing hours, and daily distance traveled (km). We compare our variable of interest before and after the implementation of PIPA using a Difference-in-Differences approach, where we track the variable of interest for vessels that used to fish inside PIPA and vessels that never fished inside PIPA, before and after PIPA implementation. Our specification is the following:
+The first analysis focuses on identifying the response of fishing vessels to PIPA closure. A spatial closure might cause fishers to modify their behavior as they adapt to a new state of the world. Some may have to travel further distances to find new fishing grounds, which would lead them to fish harder to compensate for the associated extra fuel costs. If fishers had developed experience for fishing in particular sites, being excluded might impose a learning cost on them, as they identify new fishing grounds. This would result in increased search times. However, if the area of influence of a vessel is significantly larger than that of the spatial closure, they might already know other places and times where to fish. Our variables of interests intend to caputre these possible reactions.
+
+We use daily fishing hours, daily proportion of fishing vs. non-fishing hours, and daily distance traveled (km). We compare our variable of interest before and after the implementation of PIPA using a Difference-in-Differences approach, where we track the variable of interest for vessels described in the previous section. Our specification is the following:
 
 $$
 y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \epsilon_{i,t}
@@ -329,7 +336,10 @@ displacement_data <- readRDS(file = here::here("data", "displacement_data_ps.rds
          !country %in% regions_few_points)
 ```
 
-Our second part of the analyses focuses on the redistribution of fishing effort. In other words, identifying where do vessels that used to fish inside PIPA go after its establishment. We discretize spatial units by using a polygon for PIPA \footnote{we would expect to see a decrease here} and distinct spatial units for each EEZ of each country. Some vessels might shift from EEZs into the high seas, but we are interested in knowing *where* in the high seas, so we incorporate additional regions by using a 1 degree buffer of the high seas arround each of the EEZ regions. The rest of the high seas are merged into a single spatial unit. For example, if we were to do this only for Kiribati, we would have 8 spatial units: PIPA, three EEZs, three 1-degree buffers of high seas arround each EEZs, and the rest of the high seas. Whenever the buffers overlapped between themselves, we randocmply clipped one on to the other. EEZs that had sporadic fishing events were pooled into a group of "others".
+Our second part of the analyses focuses on the redistribution of fishing effort. The role of institutions may play an important role. As stated before, LSMPAs often span the entirety of an EEZ. In the case of purse seining in the PNA, vessels purchase access to the fishery at the beginning of the season. If a vessel decides to fish within the PNA, they've already made the decission to pay for access, expecting higher returns from fishing there than in the High Seas. In the particular case of PIPA, one would expect that a vessel holding a permit to fish in I-Kiribati waters would then move to other fishing grounds within Kiribati after the closure. Alternatively, if a vessel fishes illegaly in I-Kiribati waters before the implementation, one would expect them to reallocate to other regions with equal or less enforcement. In this case, they might then choose to move to other I-Kiribati waters, waters of countries that have similar enforcement levels, or the High Seas.
+
+
+We discretize spatial units by using a polygon for PIPA \footnote{we would expect to see a decrease here} and distinct spatial units for each EEZ of each country. Some vessels might shift from EEZs into the high seas, but we are interested in knowing *where* in the high seas, so we incorporate additional regions by using a 1 degree buffer of the high seas arround each of the EEZ regions. The rest of the high seas are merged into a single spatial unit. For example, if we were to do this only for Kiribati, we would have 8 spatial units: PIPA, three EEZs, three 1-degree buffers of high seas arround each EEZs, and the rest of the high seas. Whenever the buffers overlapped between themselves, we randocmply clipped one on to the other. EEZs that had sporadic fishing events were pooled into a group of "others".
 
 To evaluate this change in effort allocation, we regress our variable of interest (*i.e.* fishing hours) on the interaction between a dummy variable indicating the policy intervention and a dummy variable for countries. This gives us the by-country change in proportional allocation of fishing effort:
 
@@ -346,13 +356,6 @@ All regression coefficients were estimated via ordinary least squares, and heter
 <!-- Figure \ref{fig:redist_trend_spa} shows the yearly average of the relative spatial allocation of fishing efforts; this is the spatial representation of \ref{fig:redist_trend} averaged by year. -->
 
 <!-- Explicar cuales EEZs habia en total y cuales quedaron en un pie de nota o algo asi -->
-
-```{r}
-# country_groups <- c("COK", "FSM", "KIR", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV")
-
-eez <- read_sf(dsn = here::here("data", "spatial", "regions"),
-               layer = "regions")
-```
 
 ```{r}
 ba_disp <- displacement_data %>% 
@@ -453,6 +456,26 @@ Recall that to evaluate the redistribution of fishing effort we only track fishi
 
 The change in the relative allocation of fishing effort by purse seiners increases in eight of the 12 regions after PIPA implementation (Table \ref{tab:disp_mod}). The largest increase is observed for the I-Kiribati EEZ, with an average increase of 0.11 (*p < 0.001*). In other words, the redistribution of treated vessels caused a 10\% increase in the *relative* allocation of fishing effort within I-Kiribati waters. The only decrease is observed for Papua New Guinea, but the coefficient is not significant. Figure \ref{fig:map_change_ps} provides a spatial representation of these changes. It is evident that the increase in relative fishing effort is greater for for regions closer to PIPA.
 
+```{r, fig.width = 6, fig.height = 9}
+mpas_WCPO <- mpas %>% 
+  filter(wdpaid %in% c(309888, 400011))
+
+fishing_raster <- readRDS(here::here("data", "fishing_raster_BACI.rds"))
+
+ggplot() +
+  geom_raster(data = fishing_raster, mapping = aes(x = lon, y = lat, fill = hours_norm)) +
+  geom_sf(data = eez, fill = "transparent", color = "black") +
+  geom_sf(data = mpas_WCPO, fill = "transparent", color = "red") +
+  # geom_sf(data = small_coast, color = "black") +
+  # scale_fill_gradientn(colours = colorRamps::matlab.like2(50), trans = "log10") +
+  scale_fill_viridis_c(trans = "log10") +
+  facet_grid(year~treated, switch = "y") +
+  # coord_equal() +
+  ggtheme_map() +
+  theme(legend.position = "bottom")
+```
+
+
 ```{r, fig.cap = "\\label{fig:redist_trend_ps}Monthly relative allocation of fishing effort by PIPA-fishing vessels before and after PIPA for 9 EEZs, PIPA, the high seas and 'other EEZs'.", eval = T}
 displacement_data %>% 
   filter(gear == "purse_seines",
@@ -484,8 +507,11 @@ HS_disp <- data.frame(country = "HS",
 
 eezs_exclude <- c("HS MUS 1", "EEZ MUS 1", "EEZ MDG 1", "EEZ MDG 2", "HS MDG 1", "HS MDG 2", "HS MOZ 1", "EEZ MOZ 1")
 
+regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
+               layer = "regions")
+
 # I AM EXCLUDING MUS WHICH SHOULD BE PUT INTO EEZ
-eez %>% 
+regions %>% 
   rbind(HS_disp) %>% 
   left_join(ba_disp, by = c("id" = "country")) %>%
   filter(!id %in% eezs_exclude) %>%
@@ -549,6 +575,8 @@ Previous studies on insular environments suggest that vessels move to distant pl
 The different responses observed between purse seiners and longliners might have two possible explanations. It is likely that PIPA did not contain habitat that longliners would consider optimal. Therefore, the sporadic fishing events that occurred there are of little importance to the fleet, and it is unlikely that the implementation of PIPA has an effect on them. Alternatively, the differences may be due to the nature of each fishing gear. Purse seiners are often constrained by seafloor and termocline depth, and have a smaller spatial footprint \citep{kroodsma_2018}. Tuna purse seiners are known to have greater proportion of null sets (*i.e.* where purse seines effectively cast their nets, but no catch is obtained) during El Niño years, where the termocline deepens in the Eastern Pacific \citep{dreyfusleon_2015}. On the other hand, longliners may be more flexible as to where they can deploy their longlines. \citet{ortuocrespo_2018} evaluated the ecological niche of the pelagic longline fleet, and suggest that the fleet may be under-utilizing the ocean, meaning that they can easily redistribute elsewhere.
 
 Our work suggests that the implementation of LSMPAs can have important implications for purse seiners, and less so for longliners. We also show that fishing effort is redistributed to areas close by. Future management interventions that aim to close large portion of the oceans should consider how fishing effort will change in space and through time, and the ecological implications of this redistribution to ensure that fishing effort is not just displaced elsewhere, leading to overfishing in adjacent waters.
+
+Furthermore, a growing body of literature suggests that closing the high seas to all fishing could increase fishery yields and profitability of fisheries, with negligible costs to food security \citep{white_2014,sumaila_2015,sala_2018a,schiller_2018}.
 
 <!-- # Notes and things to do -->
 

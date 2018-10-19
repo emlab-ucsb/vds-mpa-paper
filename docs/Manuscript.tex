@@ -141,7 +141,9 @@ a small number of Large Scale Marine Protected Areas (LSMPA)
 rights, limited habitat transformation, and potentially lower management
 costs, LSMPAs provide an opportunity to safeguard the oceans
 \citet{game_2009}. Today, a small number of LSMPAs make up at least 80\%
-of the managed areas in the ocean \citet{toonen_2013}.
+of the managed areas in the ocean \citet{toonen_2013}. LSMPAs may be
+instrumental in helping us achieve the 10\% target by 2020
+\citep{mccauley_2016}.
 
 Given the relatively recent establishment of most LSMPAs, very little is
 known about their human dimensions and implication for fisheries
@@ -153,16 +155,45 @@ MPA \citep{smith_2003}. Theoretical models make different assumptions
 about the way in which fishers will reallocate fishing effort after an
 area closure. The few empirical works focus on small-scale fisheries and
 rarely incorporate spatially explicit data. Despite these efforts,
-marine conservation is yet to identify the implications of these
-management interventions.
+marine conservation is yet to identify the response in fishing effort
+and its management implications.
 
-Here, we ask, how do fishers respond to the implementation of LSMPA?
-After a closure, and if they continue to fish, where do they reallocate
-fishing effort? We use novel satellite technologies and causal inference
-techniques to identify the behavioral changes and spatial redistribution
-of the industrial tuna purse seine fleet due to the implementation of a
-Large Scale Marine Protected Areas in the Western and Central Pacific
-Ocean (WCPO).
+Recent advances in satellite tracking technologies and near real-time
+identification of fishing activity provide us with an opportunity to
+tackle increase governance and answer long-lasting questions. Here, we
+ask, how do fishers respond to the implementation of LSMPA? After a
+closure, and if they continue to fish, where do they reallocate fishing
+effort? We use identification of fishing activity via Automatic
+Identification Systems (AIS) and causal inference techniques to describe
+the behavioral changes and spatial redistribution of the industrial tuna
+purse seine fleet due to the implementation of a Large Scale Marine
+Protected Areas in the Pacific Ocean.
+
+Our work is novel in the sense that it provides empirical evidence of
+the effect of Large Scale Marine Protected Areas in fishing behavior and
+distribution and can help guide future interventions as countries march
+towards meeting the targeted 10\% of ocean protection. Understanding how
+effort is displaced from LSMPAs might provide insights into how the
+industrial fleet would react to a high seas closure.
+
+The paper is outlined as follows: Section \ref{background} provides more
+information on Large Scale Marine Protected Areas and background on
+empirical studies of effort redistribution. An overview of the Nauru
+Agreement and associated countries, a description of the fleet that
+operates in the region, and a brief history of PIPA is also included.
+Section \ref{methods} describes our data and identification strategy.
+Section \ref{results} presents our results, section \ref{discussion}
+provides an extension of our results to other
+LSMPAs\footnote{Not yet. but I think this would be interesting} and
+discusses our
+results\footnote{I might also include a section, after the background, where I explain the different theoretical models of effort redistribution and behavioral responses}.
+
+\hypertarget{background}{%
+\section{Background}\label{background}}
+
+\hypertarget{large-scale-marine-protected-areas}{%
+\subsection{Large Scale Marine Protected
+Areas}\label{large-scale-marine-protected-areas}}
 
 The cutoff at which an MPA is considered to be a LSMPA ranges from areas
 larger than 30,000 km\textsuperscript{2} as defined by
@@ -185,9 +216,9 @@ Instead, we focus on the effect and implications of the ones that
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-27-1.pdf}
-\caption{\label{fig:unnamed-chunk-27}\label{fig:LSMPAs_map}Large Scale
-Marine Protected Areas. The map shows all areas larger than 250,000
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-3-1.pdf}
+\caption{\label{fig:unnamed-chunk-3}\label{fig:LSMPAs_map}Large Scale Marine
+Protected Areas. The map shows all areas larger than 250,000
 Km\textsuperscript{2}. Areas in dark blue meet at least one of these
 conditions: reported no take area is greater than 0, are categorized as
 IUCN Ia or Ib, their designated english name is `Protected Area'.}
@@ -210,56 +241,46 @@ vessel-tracking data to demonstrate that the fairly large Palmyra Atoll
 National Wildlife Refuge (54,000 Km\textsuperscript{2}) protectes two
 thrids of the tagged grey reef sharks by effectively excluding fishing
 effort. More recently, \citep{bradley_2018} use similar data to
-highlight cases of illegal shark fishing \emph{inside} a 2 million
-km\textsuperscript{2} shark sanctuary. To date, no studies have
+highlight cases of potential illegal shark fishing \emph{inside} a 2
+million km\textsuperscript{2} shark sanctuary. To date, no studies have
 evaluated the displacement of fishing effort due to LSMPA
 implementation.
 
-The exclusion of these LSMPAs is likely to change fisher's behavior.
-Theoretical models of fishing effort redistribution range from the
-simplistic assumption that effort inside the bounded region disappears,
-to spatially explicit models that reallocate fishing effort based on
-habitat characteristics, presence of other vessels, and expected returns
-\citep{smith_2003,hilborn_2006}. However, these focus on the long term
-optimal equilibrium and redistribution of fishing effort may not be
-optimal, especially over the first years \citep{stevenson_2013}. The
-empirical research that has been done in custumary sized MPAs suggest
-that resource users may show idiosyncratic responses. For example,
-\citet{stevenson_2013} show that a network of MPAs displaced fishing
-effort farther away from ports, resulting in higher \emph{perceived}
-costs, and increases in catch per unit effort. \citet{cabral_2017}
-analyse the redistribution of fishing and non-fishing vessels following
-the implementation of a network of MPAs in California, and find that
-commercial dive boats follow a fishing-the-line pattern, while some
-fishing boats follow an ideal free distribution. The way in which
-fishers react to a spatial closure can have major implications in its
-outcome \citep{smith_2003,hilborn_2006} highlighting the need to
-understand how fishers react to the implementation of LSMPAs, and
-fishing effort changes and is spatially redistributed.
+Spatial closures of this magnitude are likely to induce changes in
+fishers' behavior. Theoretical models of fishing effort redistribution
+range from the simplistic assumption that effort inside the bounded
+region disappears, to spatially explicit models that reallocate fishing
+effort based on habitat characteristics, presence of other vessels, and
+expected returns \citep{smith_2003,hilborn_2006}. However, these focus
+on the long term optimal equilibrium, and redistribution of fishing
+effort may not always be optimal, especially over the first years
+\citep{stevenson_2013}.
 
-Our work is novel in the sense that it provides empirical evidence of
-the effect of large-acale Marine Protected Areas in fishing behavior and
-distribution and can help guide future interventions as countries march
-towards meetings the targeted 10\% of protection. Furthermore, a growing
-body of literature suggests that closing the high seas to all fishing
-could increase fishery yields and profitability of fisheries, with
-negligible costs to food security
-\citep{white_2014,sumaila_2015,sala_2018a,schiller_2018}. Understanding
-how effort is displaced from LSMPAs might provide insights into how the
-industrial fleet would react to a high seas closure.
+The empirical research that has been done in custumary sized MPAs
+suggest that resource users may show idiosyncratic responses. For
+example, \citet{stevenson_2013} show that a network of MPAs displaced
+fishing effort farther away from ports, resulting in higher
+\emph{perceived} costs, and increases in catch per unit effort.
+\citet{cabral_2017} analyse the redistribution of fishing and
+non-fishing vessels following the implementation of a network of MPAs in
+California, and find that commercial dive boats follow a
+fishing-the-line pattern, while some fishing boats follow an ideal free
+distribution. More recently \citet{elahi_2018} used satellite tracking
+data to show that a temporal spatial closure caused trawlers to maintain
+effort but apply it more intensively elsewhere, particularly along the
+borders and closer to shore. The way in which fishers react to a spatial
+closure can have major implications in its outcome
+\citep{smith_2003,hilborn_2006} highlighting the need to understand how
+fishers react to the implementation of LSMPAs, and fishing effort
+changes and is spatially redistributed. However, all these closures took
+place within Exlcusive Economic Zones, where other regulations exist.
+This may not always be the case for LSMPAs, where often the entire EEZ
+is converted into a LSMPA, leaving fishers with the options of moving to
+the high seas or other countries' EEZs.
 
-The paper is outlined as follows: Section \ref{background} provides an
-overview of the Nauru Agreement and associated countries, a description
-of the fleet that operates in the region, and a brief history of PIPA.
-Section \ref{methods} describes our data and identification strategy.
-Section \ref{results} presents our results, section \ref{discussion}
-provides an extension of our results to other
-LSMPAs\footnote{Not yet. but I think this would be interesting} and
-discusses our
-results\footnote{I might also include a section, after the background, where I explain the different theoretical models of effort redistribution and behavioral responses}.
-
-\hypertarget{background}{%
-\section{Background}\label{background}}
+\hypertarget{nauru-agreement-and-the-phoenix-island-protected-area}{%
+\subsection{Nauru agreement and the Phoenix Island Protected
+Area}\label{nauru-agreement-and-the-phoenix-island-protected-area}}
 
 The Nauru Agreement was established in 1982 by a select group of Pacific
 island nations to manage their important tuna resources. PNA Members
@@ -291,8 +312,8 @@ these island nations \citep{havice_2010}.
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-28-1.pdf}
-\caption{\label{fig:unnamed-chunk-28}\label{fig:PNA_map}Map of the Exclusive
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-4-1.pdf}
+\caption{\label{fig:unnamed-chunk-4}\label{fig:PNA_map}Map of the Exclusive
 Economic Zones (EEZs) of the region of interest. A solid line indicates
 countries that belong to the PNA, while a dashed line indicates all
 others. A red line indicates the Kiribati EEZ, and a solid red polygon
@@ -325,15 +346,12 @@ PNA countries and the Phoenix Island Protected Area.
 The closure of such a large area in one of the most important fishing
 regions in the world provides a great opportunity to evaluate the
 behavioral responses and redistribution of fishing effort by vessels
-that used to fish there. \citet{mcdermott_2018} showed that fishing
-effort within the Phoenix Islands Marine Protected Area (PIPA) increased
-between the anouncement (September 1\textsuperscript{st}, 2014) and its
-implementation in Janyary 1\textsuperscript{st}, 2015. Likewise, they
-demonstrate that fishing effort is effectively reduced after
-implementation. To this, we pose two questions: How do individual
-vessels respond to the sudden exclusion of such a big area? And where
-did all the vessels go? In the next sections we describe the data and
-methods used to answer this questions.
+that used to fish there. PIPA has been the focus of previous research,
+showing that fishing effort is effectively reduced after implementation
+\citep{mccauley_2016,mcdermott_2018}. To this, we pose two questions:
+How do individual vessels respond to the sudden exclusion of such a big
+area? And where did all the vessels go? In the next sections we describe
+the data and methods used to answer this questions.
 
 \hypertarget{methods}{%
 \section{Methods}\label{methods}}
@@ -373,7 +391,7 @@ in our identification strategy and using a subset of data that meet a
 BACI design -which gives us the full tracks for vessels affected and
 unaffected by the implementation of PIPA.
 
-Our analysis focuses on purse seiner vessels, the most important fishery
+Our analysis focuses on purse seine vessels, the most important fishery
 for PNA
 countries\footnote{We perform some of the same analyses for longliners and include them in the Appendix}.
 We identify a total of 103 purse seiners that fished in PNA waters at
@@ -424,7 +442,7 @@ following section describes our empirical identification strategies.
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-31}\label{tab:baci_n_s}Number of fishing vessels and mean daily fishing hours by group before and after PIPA implementation.}
+\caption{\label{tab:unnamed-chunk-7}\label{tab:baci_n_s}Number of fishing vessels and mean daily fishing hours by group before and after PIPA implementation.}
 \centering
 \begin{tabular}[t]{lrrrr}
 \toprule
@@ -438,9 +456,9 @@ Treatment & 61 & 10.67 & 18.36 & 1.72\\
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-32-1.pdf}
-\caption{\label{fig:unnamed-chunk-32}\label{fig:all_vessels}Fishing hours
-and number of vessels by month for all vessels. Vertical dashed lines
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-8-1.pdf}
+\caption{\label{fig:unnamed-chunk-8}\label{fig:all_vessels}Fishing hours and
+number of vessels by month for all vessels. Vertical dashed lines
 indicates dates when satellites were added, solid line indicates PIPA
 closurePIPA closure.}
 \end{figure}
@@ -449,12 +467,23 @@ closurePIPA closure.}
 \subsection{Analyses}\label{analyses}}
 
 The first analysis focuses on identifying the response of fishing
-vessels to PIPA closure. Our variables of interests are daily fishing
+vessels to PIPA closure. A spatial closure might cause fishers to modify
+their behavior as they adapt to a new state of the world. Some may have
+to travel further distances to find new fishing grounds, which would
+lead them to fish harder to compensate for the associated extra fuel
+costs. If fishers had developed experience for fishing in particular
+sites, being excluded might impose a learning cost on them, as they
+identify new fishing grounds. This would result in increased search
+times. However, if the area of influence of a vessel is significantly
+larger than that of the spatial closure, they might already know other
+places and times where to fish. Our variables of interests intend to
+caputre these possible reactions.
+
+We use daily fishing hours, daily proportion of fishing vs.~non-fishing
 hours, and daily distance traveled (km). We compare our variable of
 interest before and after the implementation of PIPA using a
 Difference-in-Differences approach, where we track the variable of
-interest for vessels that used to fish inside PIPA and vessels that
-never fished inside PIPA, before and after PIPA implementation. Our
+interest for vessels described in the previous section. Our
 specification is the following:
 
 \[
@@ -477,8 +506,34 @@ interventions\footnote{We test for other more complex specifications that intera
 
 Our second part of the analyses focuses on the redistribution of fishing
 effort. In other words, identifying where do vessels that used to fish
-inside PIPA go after its establishment. We discretize spatial units by
-using a polygon for PIPA
+inside PIPA go after its establishment.
+
+Furthermore, the presence and reaction of other vessels may in turn
+affect a fishers decission making process, seeking to avoid crowded
+areas. Additionally, if fishers show high site fidelity or their ability
+to fish is highly linkted to a few spatial portions, there might be an
+associated cost of learning to identify new suitable fishing grounds.
+For example, \citet{elahi_2018} showed that redistributed effort was
+higher along the borders of the closure, indicative of a possible
+habitat-dependency.
+
+However, the role of institutions must also be considered. The spatial
+closure described by \citet{elahi_2018} occured within an EEZ. As stated
+before LSMPAs, often span the entirety of an EEZ. In the case of purse
+seining in the PNA, vessels purchase access to the fishery at the
+beginning of the season. If a vessel decides to fish within the PNA,
+they've already made the decission to pay for access, expecting higher
+returns from fishing there than in the High Seas. In the particular case
+of PIPA, one would expect that a vessel holding a permit to fish in
+I-Kiribati waters would then move to other fishing grounds within
+Kiribati after the closure. Alternatively, if a vessel fishes illegaly
+in I-Kiribati waters before the implementation, one would expect them to
+reallocate to other where probability of being caught is equal or lower.
+In this case, they might then choose to move to other I-Kiribati waters,
+waters of countries that have similar enforcement levels, or the High
+Seas.
+
+We discretize spatial units by using a polygon for PIPA
 \footnote{we would expect to see a decrease here} and distinct spatial
 units for each EEZ of each country. Some vessels might shift from EEZs
 into the high seas, but we are interested in knowing \emph{where} in the
@@ -517,7 +572,7 @@ used in this work are available on
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-35}\label{tab:ba_disp}Changes in the relative allocation of fishing effort by region (EEZ, PIPA, high seas) and gear.}
+\caption{\label{tab:unnamed-chunk-10}\label{tab:ba_disp}Changes in the relative allocation of fishing effort by region (EEZ, PIPA, high seas) and gear.}
 \centering
 \begin{tabular}[t]{lr}
 \toprule
@@ -580,8 +635,8 @@ reject the null hypotheses of no change (Figures
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-36-1.pdf}
-\caption{\label{fig:unnamed-chunk-36}\label{fig:all_vessels}Daily fishing
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-11-1.pdf}
+\caption{\label{fig:unnamed-chunk-11}\label{fig:all_vessels}Daily fishing
 hours for all vessels in our main treatment-control groups. Solid
 straight lines show a linear trend by period (pre-psot) and treatment.
 The other red and blue lines show monthly avarages. Vertical dashed line
@@ -639,8 +694,8 @@ R$^{2}$ & 0.171 & 0.200 & 0.208 & 0.178 & 0.208 & 0.215 & 0.173 & 0.203 & 0.211 
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-38-1.pdf}
-\caption{\label{fig:unnamed-chunk-38}\label{fig:long}Coefficient estimates
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-13-1.pdf}
+\caption{\label{fig:unnamed-chunk-13}\label{fig:long}Coefficient estimates
 for each model. Top pannel indicates variable, x-axis represents model
 specification, and y-axis coefficient estimate.}
 \end{figure}
@@ -668,25 +723,27 @@ provides a spatial representation of these changes. It is evident that
 the increase in relative fishing effort is greater for for regions
 closer to PIPA.
 
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-14-1.pdf}
+
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-39-1.pdf}
-\caption{\label{fig:unnamed-chunk-39}\label{fig:redist_trend_ps}Monthly
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-15-1.pdf}
+\caption{\label{fig:unnamed-chunk-15}\label{fig:redist_trend_ps}Monthly
 relative allocation of fishing effort by PIPA-fishing vessels before and
 after PIPA for 9 EEZs, PIPA, the high seas and `other EEZs'.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-40-1.pdf}
-\caption{\label{fig:unnamed-chunk-40}\label{fig:map_change_ps}Spatial
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-16-1.pdf}
+\caption{\label{fig:unnamed-chunk-16}\label{fig:map_change_ps}Spatial
 representation of the mean change in the monthly allocation of fishing
 effort for purse seiners.}
 \end{figure}
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-41}Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1, p < 0.001)}
+\caption{\label{tab:unnamed-chunk-17}Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1, p < 0.001)}
 \centering
 \begin{tabular}[t]{ll}
 \toprule
@@ -802,6 +859,11 @@ time, and the ecological implications of this redistribution to ensure
 that fishing effort is not just displaced elsewhere, leading to
 overfishing in adjacent waters.
 
+Furthermore, a growing body of literature suggests that closing the high
+seas to all fishing could increase fishery yields and profitability of
+fisheries, with negligible costs to food security
+\citep{white_2014,sumaila_2015,sala_2018a,schiller_2018}.
+
 \clearpage
 
 \hypertarget{refs}{}
@@ -819,8 +881,8 @@ period}\label{stream-of-data-by-vessel-group-and-period}}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-42-1.pdf}
-\caption{\label{fig:unnamed-chunk-42}\label{fig:baci_strict}Stream of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-18-1.pdf}
+\caption{\label{fig:unnamed-chunk-18}\label{fig:baci_strict}Stream of
 fishing events by vessels through time. Each line represents a vessel,
 with dots indicating months with fishing activity and colors indicating
 the pre and post periods.}
@@ -937,29 +999,29 @@ interactions}\label{quarterly-did-interactions}}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-45-1.pdf}
-\caption{\label{fig:unnamed-chunk-45}\label{fig:q1}Interaction of quarters
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-21-1.pdf}
+\caption{\label{fig:unnamed-chunk-21}\label{fig:q1}Interaction of quarters
 and treatment. Control group is all vessels.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-46-1.pdf}
-\caption{\label{fig:unnamed-chunk-46}\label{fig:q2}Interaction of quarters
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-22-1.pdf}
+\caption{\label{fig:unnamed-chunk-22}\label{fig:q2}Interaction of quarters
 and treatment. Control group is vessels from PNA.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-47-1.pdf}
-\caption{\label{fig:unnamed-chunk-47}\label{fig:q3}Interaction of quarters
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-1.pdf}
+\caption{\label{fig:unnamed-chunk-23}\label{fig:q3}Interaction of quarters
 and treatment. Control group excludes Chinese vessels.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-48-1.pdf}
-\caption{\label{fig:unnamed-chunk-48}\label{fig:q4}Interaction of quarters
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-24-1.pdf}
+\caption{\label{fig:unnamed-chunk-24}\label{fig:q4}Interaction of quarters
 and treatment. Control group is japanese vessels.}
 \end{figure}
 
@@ -969,29 +1031,29 @@ interactions}\label{year-month-did-interactions}}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-49-1.pdf}
-\caption{\label{fig:unnamed-chunk-49}\label{fig:ym1}Interaction of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-25-1.pdf}
+\caption{\label{fig:unnamed-chunk-25}\label{fig:ym1}Interaction of
 year-month and treatment. Control group is all vessels.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-50-1.pdf}
-\caption{\label{fig:unnamed-chunk-50}\label{fig:ym2}Interaction of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-26-1.pdf}
+\caption{\label{fig:unnamed-chunk-26}\label{fig:ym2}Interaction of
 year-month and treatment. Control group is vessels from PNA.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-51-1.pdf}
-\caption{\label{fig:unnamed-chunk-51}\label{fig:ym3}Interaction of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-27-1.pdf}
+\caption{\label{fig:unnamed-chunk-27}\label{fig:ym3}Interaction of
 year-month and treatment. Control group excludes Chinese vessels.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-52-1.pdf}
-\caption{\label{fig:unnamed-chunk-52}\label{fig:ym4}Interaction of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-28-1.pdf}
+\caption{\label{fig:unnamed-chunk-28}\label{fig:ym4}Interaction of
 year-month and treatment. Control group is japanese vessels.}
 \end{figure}
 
