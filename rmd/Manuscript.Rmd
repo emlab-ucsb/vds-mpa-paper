@@ -10,7 +10,7 @@ date: "
 ^2^Department of Economics, University of Hawaii at Manoa, Honolulu, HI"
 output:
   bookdown::pdf_document2:
-    fig_height: 4
+    fig_height: 3.5
     fig_width: 6
     toc: no
     citation_package: natbib
@@ -165,6 +165,8 @@ The amount of data gathered is dependent on the number of antennas and satellite
 effort_by_vessel <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %>% 
   filter(year < 2018,
          gear == "purse_seines")
+
+effort_by_vessel_JPN <- readRDS(file = here::here("raw_data", "JPN_effort_by_vessel.rds"))
 ```
 
 ```{r, eval = T}
@@ -179,7 +181,11 @@ pipa_vessels <- effort_by_vessel %>%
 
 Our analysis focuses on purse seiner vessels, the most important fishery for PNA countries\footnote{We perform some of the same analyses for longliners and include them in the Appendix}. We identify a total of 103 purse seiners that fished in PNA waters at least once before 2015\footnote{New vessels that entered the fishery after 2015 were not exposed to the policy intervention in the pre-treatment period and are therefore exlcuded from our analyses.}. These vessels represent over 26 million individual observations for the 2012 - 2017 period. We identify 65 vessels that have fished inside PIPA at least once since 2012. From these, 62 did so before the anouncement (*i.e.* 09/01/2014 *sensu* \citep{mcdermott_2018}) but are only able to track 61 for the complete periof of study before and after its implementation\footnote{1 vessel never fished again after August 18, 2013.}. On the other hand, 38 vessels never fished inside PIPA but we only have data for 26 vessels before and after.
 
-Therefore, our treatment group contains all purse seiners (n = 61) that fished within PIPA at least once before the anouncement, and that continued to fish elsewhere after the January 2015 implementation. Vessels in the control group meet the following two conditions: i) vessels never fished within PIPA waters, and ii) vessels have fished in surrounding areas (*i.e.* PNA-countries' EEZ) before and after PIPA closure (n = 26). During our causal identification, we also use other two definitions of control groups, which further reduce our sample sizes: one with only vessels that belong to PNA countries (n = 7), and one that excludes Chinese vessels (n = 21). Our definition of treatment and control groups leaves us with 61 and 21 treated and control vessels, which have just over 22 million observations where about 22% are identified as fishing events. For each of the remainig vessels, we calculate their total daily fishing hours and obtain pannel data with 37,800 observations. Table \ref{tab:baci_n_s} shows the number of vessels following a BACI design, as well as the fishing hours, before and after PIPA. Fig. \ref{fig:all_vessels} shows that mean fishing hours for purse seiners have an abrupt increase, just before January 1st, 2015. This trend is observed for both treated and control groups. Across all measures, the treatment and control vessels follow similar patterns, confirming our claim that the control group provides a plausible counterfactual. Figure \ref{fig:baci_strict} provides a visual representation of the vessel-level fishing events that make up each group through time. 
+Therefore, our treatment group contains all purse seiners (n = 61) that fished within PIPA at least once before the anouncement, and that continued to fish elsewhere after the January 2015 implementation. Vessels in the control group meet the following two conditions: i) vessels never fished within PIPA waters, and ii) vessels have fished in surrounding areas (*i.e.* PNA-countries' EEZ) before and after PIPA closure (n = 26).
+
+We include three additional definitions of control groups as a robustness check: one with only vessels that belong to PNA countries (n = 7), and one that excludes Chinese vessels (n = 21). Our third control is made up of Japanese purse seiners that fish in the Pacific but that never fished inside PIPA (n = 27)\footnote{Using Taiwanese vessels was the original idea, but there are only 4 vessels with pre-2015 data. I need to further identify propper Taiwanese vessels, as I am currently using the entire Pacific ocean}. Our definition of treatment and control groups leaves us with 61 and 21 treated and control vessels, which have just over 22 million observations where about 22% are identified as fishing events.
+
+For each vessel we calculate total daily fishing hours and obtain pannel data with 37,800 observations. Table \ref{tab:baci_n_s} shows the number of vessels following a BACI design, as well as the fishing hours, before and after PIPA. Fig. \ref{fig:all_vessels} shows that mean fishing hours for purse seiners have an abrupt increase, just before January 1st, 2015. This trend is observed for both treated and control groups. Across all measures, the treatment and control vessels follow similar patterns, confirming our claim that the control group provides a plausible counterfactual. Figure \ref{fig:baci_strict} provides a visual representation of the vessel-level fishing events that make up each group through time. We use this data to answer our key questions: How do the 61 purse seiners modify their behavior as compared to the different control groups, and where do they go after the spatial closure? The following section describes our empirical identification strategies.
 
 ```{r, eval = T}
 hours <- effort_by_vessel %>%
@@ -235,13 +241,85 @@ effort_by_vessel %>%
 
 <!-- antes de 06/01/14 habian 3 sats, despues 6 hasta 12/31/15, luego 10 hasta 2017 y ahora hay muchos jaja -->
 
-The first analysis focuses on identifying the response of fishing vessels to PIPA closure. Our variables of interests are daily fishing hours, and daily distance traveled (Km). We compare our variable of interest before and after the implementation of PIPA using a Difference-in-Differences approach, where we track the variable of interest for vessels that used to fish inside PIPA and vessels that never fished inside PIPA, before and after PIPA implementation. Our specification is the following:
+The first analysis focuses on identifying the response of fishing vessels to PIPA closure. Our variables of interests are daily fishing hours, and daily distance traveled (km). We compare our variable of interest before and after the implementation of PIPA using a Difference-in-Differences approach, where we track the variable of interest for vessels that used to fish inside PIPA and vessels that never fished inside PIPA, before and after PIPA implementation. Our specification is the following:
 
 $$
-y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \theta_i + \epsilon_{i,t}
+y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \epsilon_{i,t}
 $$
 
-Where $y_{i,t}$ is the variable of interest for vessel $i$ in time period $t$. A dummy variable $Post_t$ takes the value of 0 for all dates prior to PIPA implementation and a value of 1 for all dates including and following PIPA implementation. $Treat_i$ is a dummy variable indicating whether a vessel belongs to the control ($Treat_i = 0$) or treatment ($Treat_i = 1$) group. $\alpha$ is the standard intercept, $\beta_1$ captures the temporal trend change, $\beta_2$ captures the difference between treated and control groups, and $\beta_3$ is our parameter of interest: de DiD estimate capturing the treatment effect. Finally, $\phi_t$ and $\gamma_i$ represent month-, and flag-level dummies that account for seasonality or country-level management interventions, and $\theta_i$ are a set of dummies that account for the addition of more satellites\footnote{We test for other more complex specifications that interact a quarterly or year-month variable with the treatment group and find qualitativel the same results.}.
+Where $y_{i,t}$ is the variable of interest for vessel $i$ in time period $t$. A dummy variable $Post_t$ takes the value of 0 for all dates prior to PIPA implementation and a value of 1 for all dates including and following PIPA implementation. $Treat_i$ is a dummy variable indicating whether a vessel belongs to the control ($Treat_i = 0$) or treatment ($Treat_i = 1$) group. $\alpha$ is the standard intercept, $\beta_1$ captures the temporal trend change, $\beta_2$ captures the difference between treated and control groups, and $\beta_3$ is our parameter of interest: de DiD estimate capturing the treatment effect. Finally, $\phi_t$ and $\gamma_i$ represent month-, and flag-level dummies that account for seasonality or country-level management interventions\footnote{We test for other more complex specifications that interact a quarterly dummy or year-month dummies with the treatment group and find qualitatively the same results.}.
+
+```{r, model_fitting1}
+model_base <- effort_by_vessel %>% 
+  filter(baci_strict,
+         gear == "purse_seines") %>% 
+  mutate(post = post * 1,
+         treated = treated * 1,
+         year2 = year * year,
+         year_month_c = as.character(year_month),
+         quarter_c = as.character(quarter),
+         flag_fe = !flag %in% c("JPN", "MEX", "NIC", "NZL", "PHL", "USA", "KIR", "PNG"),
+         flag_fe_oth = flag_fe & !flag == "OTH",
+         sate = case_when(date < lubridate::date("2014/06/01") ~ "1",
+                          date > lubridate::date("2015/12/31") ~ "3",
+                          T ~ "2"))
+
+# See file combine_vessel_info_and_effort to see how experiment columns are created ~line 70
+## Controls are PNA
+experiment1 <- model_base %>% 
+  filter(experiment1)
+
+## Controls are everything BUT Chinese
+experiment2 <- model_base %>% 
+  filter(experiment3)
+
+## Controls are Taiwanese
+experiment3 <- effort_by_vessel_JPN %>% 
+  select(-PNA) %>% 
+  mutate(post = post * 1,
+         treated = treated * 1,
+         year2 = year * year,
+         year_month_c = as.character(year_month),
+         quarter_c = as.character(quarter),
+         flag_fe = F,
+         flag_fe_oth = F,
+         sate = case_when(date < lubridate::date("2014/06/01") ~ "1",
+                          date > lubridate::date("2015/12/31") ~ "3",
+                          T ~ "2"),
+         baci_strict = T,
+         experiment1 = F,
+         experiment2 = F,
+         experiment3 = F,
+         flag = "JPN",
+         baci_relaxed = T) %>% 
+  rbind(filter(model_base, treated == 1))
+
+## Fit the models
+
+source(here::here("scripts", "did.R"))
+source(here::here("scripts", "did_quarter.R"))
+source(here::here("scripts", "did_yearmonth.R"))
+source(here::here("scripts", "termplot.R"))
+
+
+## Simple dids for each data
+models_exp0_did <- model_base %>% did()
+models_exp1_did <- experiment1 %>% did()
+models_exp2_did <- experiment2 %>% did()
+models_exp3_did <- experiment3 %>% did(flag_fe = F)
+
+# Quarterly did
+models_exp0_did_q <- model_base %>% did_quarter()
+models_exp1_did_q <- experiment1 %>% did_quarter()
+models_exp2_did_q <- experiment2 %>% did_quarter()
+models_exp3_did_q <- experiment3 %>% did_quarter()
+
+# Monthly did
+models_exp0_did_ym <- model_base %>% did_yearmonth()
+models_exp1_did_ym <- experiment1 %>% did_yearmonth()
+models_exp2_did_ym <- experiment2 %>% did_yearmonth()
+models_exp3_did_ym <- experiment3 %>% did_yearmonth()
+```
 
 ```{r, eval = T}
 regions_few_points <- c("HS FSM 1", "HS MHL 1", "HS MUS 1", "HS NRU 1", "HS PNG 2", "HS SLB 1", "HS TUV 1")
@@ -256,10 +334,10 @@ Our second part of the analyses focuses on the redistribution of fishing effort.
 To evaluate this change in effort allocation, we regress our variable of interest (*i.e.* fishing hours) on the interaction between a dummy variable indicating the policy intervention and a dummy variable for countries. This gives us the by-country change in proportional allocation of fishing effort:
 
 $$
-y_{i,t} = \alpha + \beta_1Post + \beta_{2,i}Country + \beta_{3,i}Post_t \times Country_i + \theta_i + \epsilon_{i,t}
+y_{i,t} = \alpha + \beta_1Post + \beta_{2,i}Country + \beta_{3,i}Post_t \times Country_i + \epsilon_{i,t}
 $$
 
-Our variable of interest, $y_{i,t}$ represents the proportion of fishing hours that country $i$ receives at time $t$. $Post$ also represents a policy dummy that takes the value of 0 for all dates before implementation of PIPA, and 1 otherwise. $Country$ is a dummy variable for countries for the spatial units defined above. Our parameter of interest is $\beta_{1,i}$, which captures the country-level change in proportional fishing effort. $\theta_i$ accounts for the addition of satellites.
+Our variable of interest, $y_{i,t}$ represents the proportion of fishing hours that country $i$ receives at time $t$. $Post$ also represents a policy dummy that takes the value of 0 for all dates before implementation of PIPA, and 1 otherwise. $Country$ is a dummy variable for countries for the spatial units defined above. Our parameter of interest is $\beta_{1,i}$, which captures the country-level change in proportional fishing effort.
 
 <!-- Like before, we include a dummy variable for months and allow for a second degree polynomial trend through time. -->
 
@@ -298,76 +376,21 @@ knitr::kable(x = ba_disp,
 
 # Results
 
-```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Fishing hours and number of vessels by month for all vessels. Vertical dashed line indicates PIPA closure.", fig.heihgt = 3.5}
+Our DiD analysis shows an overall increase in purse seine fishing hours, even after accounting for the introduction of new satellites (Table \ref{tab:did}). This coefficient estimate is consistent for different model specifications and across groups of treatment and controls. These effectively represent the patterns observed in Figure \ref{fig:all_vessels}. The $\beta_3$ coefficient indicating our treatment effect suggests that, relative to the control, treated vessels fish less, in the order of 0.5 hours per day. Another way to interpret this is that the increase in fishing effort by treated vessels has ocurred at a lower rate than control vessels. This result is robust and significant ($p < 0.05$) for all model specifications using our main control group, with the effect varying between $\beta_3 = -0.515$ and $\beta_3 = -0.934$. These values are equivalent to a 15 - 28 reduction in fishing hours per month.
 
+Regressions coefficients for our DiD analysis are shown in Table \ref{tab:did}. Columns 1 -3 use all data for controls. Columns 4 - 6 use only PNA vessels as controls, and columns 7 - 9 exclude Chinese vessels. Columns 10 and 11 use Japanese vessels in the Pacific as controls, and hence don't include flag FEs to avoid perfect colinearity between Japanese flag and control\footnote{Results of the same analysis is shown for longliners in \ref{tab:long}}. It must be noted, however, that when reducing the linear structure of the $Pre \times Post$ design and instead interacting the treatment dummy with quarterly or year-month combinations we are not able to reject the null hypotheses of no change (Figures \ref{fig:q1,fig:q2,fig:q3,fig:q4,fig:ym1,fig:ym2,fig:ym3,fig:ym4}).
+
+```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Daily fishing hours for all vessels in our main treatment-control groups. Solid straight lines show a linear trend by period (pre-psot) and treatment. The other red and blue lines show monthly avarages. Vertical dashed line indicates PIPA closure."}
 effort_by_vessel %>% 
-  filter(baci_strict,
-         gear == "purse_seines") %>% 
-  arrange(!treated) %>% 
+  filter(baci_strict) %>% 
+  mutate(date = lubridate::date(paste(year, month, 15, sep = "/"))) %>%
   ggplot(aes(x = date, y = hours, color = treated)) +
-  geom_point(size = 1, position = position_jitter(width = 1, height = 0), alpha = 0.1) +
-  geom_smooth(method = lm, formula = y ~ splines::bs(x, 4), aes(group = paste(treated, post))) +
+  geom_jitter(shape = ".", height = 0, alpha = 0.1) +
+  stat_summary(geom = "line", fun.y = mean, size = 1) +
+  geom_smooth(method = "lm", aes(group = paste(treated, post))) +
   ggtheme_plot() +
   scale_color_brewer(palette = "Set1") +
-  geom_vline(xintercept = lubridate::date(paste(2015, 01, "01", sep = "/")), linetype = "dashed")
-```
-
-Our DiD analysis shows that treated purse seiners reduce their fishing effort after PIPA implementation in the order of 16 hours per month. This result is robust and significant (*p < 0.05*) for all model specifications, with the effect varying between $\beta_3 = -16.457$ and $\beta_3 = -18.709$. Model specifications that include the year polynomial show lower values for the $\beta_1$ coefficient associated to the $Post_t$ policy dummy, and show positive and negative values for $\mu_1$ and $\mu_2$, the linear and quadratic terms for $Y_t$, respectively. These effectively represent the patterns observed in Figure \ref{fig:all_vessels}.
-
-<!-- Longliners show a similar pattern of effort reduction. However, the magnitude of the $\beta_3$ coefficient is smaller (ranging from  $\beta_3 = -9.851$ to $\beta_3 = -14.850$) and not significant across all model specifications. This, along with higher standard error values suggest that longliners have a smaller and more variable response to the implementation of LSMPAs.  -->
-
-Regressions coefficients for each gear type are shown in Tables \ref{tab:purse} and \ref{tab:long}. Column (1) presents the DiD regression with no fixed effects, column (2) includes month fixed effects, column (3) includes month and the second degree polynomial for years, and column (4) includes all of the above and country-level fixed effects.
-
-```{r}
-model_base <- effort_by_vessel %>% 
-  filter(baci_strict,
-         gear == "purse_seines") %>% 
-  mutate(post = post * 1,
-         treated = treated * 1,
-         year2 = year * year,
-         year_month_c = as.character(year_month),
-         quarter_c = as.character(quarter),
-         flag_fe = !flag %in% c("JPN", "MEX", "NIC", "NZL", "PHL", "USA", "KIR", "PNG"),
-         flag_fe_oth = flag_fe & !flag == "OTH",
-         sate = case_when(date < lubridate::date("2014/06/01") ~ "1",
-                          date > lubridate::date("2015/12/31") ~ "3",
-                          T ~ "2"))
-
-# See file combine_vessel_info_and_effort to see how experiment columns are created ~line 70
-## Controls are PNA
-experiment1 <- model_base %>% 
-  filter(experiment1)
-
-## Controls are Taiwanese
-experiment2 <- model_base %>% 
-  filter(experiment2)
-
-## Controls are everything BUT Chinese
-experiment3 <- model_base %>% 
-  filter(experiment3)
-
-## Fit the models
-
-source(here::here("scripts", "did.R"))
-source(here::here("scripts", "did_quarter.R"))
-source(here::here("scripts", "did_yearmonth.R"))
-source(here::here("scripts", "termplot.R"))
-
-
-## Simple dids for each data
-models_exp0_did <- model_base %>% did()
-models_exp1_did <- experiment1 %>% did()
-models_exp3_did <- experiment3 %>% did()
-
-# Quarterly did
-models_exp0_did_q <- model_base %>% did_quarter()
-models_exp1_did_q <- experiment1 %>% did_quarter()
-models_exp3_did_q <- experiment3 %>% did_quarter()
-
-# Monthly did
-models_exp0_did_ym <- model_base %>% did_yearmonth()
-models_exp1_did_ym <- experiment1 %>% did_yearmonth()
-models_exp3_did_ym <- experiment3 %>% did_yearmonth()
+  geom_vline(xintercept = lubridate::date(paste(2015, 01, 01, sep = "/")), linetype = "dashed")
 ```
 
 \clearpage
@@ -377,6 +400,7 @@ models_exp3_did_ym <- experiment3 %>% did_yearmonth()
 
 models <- c(models_exp0_did,
             models_exp1_did,
+            models_exp2_did,
             models_exp3_did)
 
 stargazer::stargazer(models,
@@ -385,28 +409,32 @@ stargazer::stargazer(models,
                      p.auto = T,
                      intercept.bottom = F,
                      column.sep.width = "1pt",
-                     font.size = "small",
+                     font.size = "footnotesize",
                      type = "latex",
                      omit = c("flag", "month"),
                      add.lines = list(
-                       c("Control", rep("All", 3), rep("PNA", 3), rep("-CHN", 3)),
-                       c("Month FE", rep(c("No", "Yes", "Yes"), 3)),
-                       c("Flag FE", rep(c("No", "No", "Yes"), 3))),
+                       c("Control", rep("All", 3), rep("PNA", 3), rep("-CHN", 3), rep("JPN", 2)),
+                       c("Month FE", rep(c("No", "Yes", "Yes"), 4)),
+                       c("Flag FE", rep(c("No", "No", "Yes"), 4))),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
                      # float.env = "sidewaystable",
-                     title = "Difference-in-differences estimates for 3 different controls and 3 different specifications. The first three columns use all data for controls. Columns 4 - 6 use only Taiwanese vessels as controls, and columns 7 - 9 exclude Chinese vessels. Numbers in parentheses are heteroskedastic-robust standard errors.")
+                     title = "\\label{tab:did}Difference-in-differences estimates for 3 different controls and 3 different specifications. The first three columns use all data for controls. Columns 4 - 6 use only PNA vessels as controls, and columns 7 - 9 exclude Chinese vessels. Columns 10 and 11 use Japanese vessels in the Pacific as controls, and hence don't include flag FEs. Numbers in parentheses are heteroskedastic-robust standard errors.",
+                     out = "DID.html")
 ```
 
 \end{landscape}
 \clearpage
 
 ```{r, fig.width = 5, fig.height = 3, fig.cap = "\\label{fig:long}Coefficient estimates for each model. Top pannel indicates variable, x-axis represents model specification, and y-axis coefficient estimate."}
-map_df(models, commarobust::commarobust_tidy, .id = "model") %>%
+map_df(models,
+       commarobust::commarobust_tidy, .id = "model") %>%
   filter(term %in% c("(Intercept)", "post", "treated", "post:treated")) %>%
-  mutate(control = case_when(model < 4 ~ "All",
-                             model > 6 ~ "-CHN",
-                             T ~ "TWN")) %>% 
+  mutate(model = as.numeric(model),
+         control = case_when(model < 4 ~ "All",
+                             model > 3 & model < 7 ~ "PNA",
+                             model > 6 & model < 10 ~ "-CHN",
+                             T ~ "JPN")) %>% 
   ggplot(aes(x = model, y = est)) +
   geom_errorbar(aes(ymin = est - se, ymax = est + se),
                 size = 1,
@@ -415,7 +443,8 @@ map_df(models, commarobust::commarobust_tidy, .id = "model") %>%
   geom_point(aes(color = control), size = 3, alpha = 0.7) +
   facet_wrap(~term, scale = "free") +
   ggtheme_plot() +
-  geom_hline(yintercept = 0, linetype = "dashed")
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  scale_color_brewer(palette = "Set1")
 ```
 
 <!-- ## Effort displacement and redistribution -->
@@ -429,7 +458,6 @@ displacement_data %>%
   filter(gear == "purse_seines",
          h_prop > 0) %>%
   ggplot(aes(x = date, y = h_prop, group = post, color = post)) +
-  # geom_smooth(method = "lm", color = "black", size = 0.5, linetype = "dashed") +
   geom_point() +
   geom_vline(xintercept = lubridate::date(paste(2015, 1, 1, sep = "/")), linetype = "dashed") +
   scale_fill_brewer(palette = "Paired") +
@@ -468,8 +496,6 @@ eez %>%
 ```
 
 ```{r, results = "asis"}
-# Dont have this here. Just write the model specification
-
 disp_mod_ps_data <- displacement_data %>% 
   filter(!is.na(country),
          gear == "purse_seines",
@@ -503,7 +529,7 @@ commarobust::commarobust_tidy(disp_mod_ps1) %>%
   filter(b+c+d > 0) %>% 
   select(term, h_prop) %>% 
   knitr::kable(booktabs = T,
-               caption = "Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1), p < 0.001") %>% 
+               caption = "Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1, p < 0.001)") %>% 
   kableExtra::kable_styling(latex_options = "HOLD_position")
 
 ```
@@ -530,9 +556,15 @@ Our work suggests that the implementation of LSMPAs can have important implicati
 
 \clearpage
 
+<div id = "refs"></div>
+
+\clearpage
+
 # Appendix
 
 \beginsupplement
+
+## Stream of data by vessel, group, and period
 
 ```{r, fig.width = 8, fig.height = 6, fig.cap = "\\label{fig:baci_strict}Stream of fishing events by vessels through time. Each line represents a vessel, with dots indicating months with fishing activity and colors indicating the pre and post periods.", eval = T}
 filter(effort_by_vessel, baci_strict) %>% 
@@ -559,13 +591,77 @@ filter(effort_by_vessel, baci_strict) %>%
   theme(legend.position = "none")
 ```
 
-## Other model specifications
+\clearpage
+
+## Longliners
+
+Longliners show a similar pattern of effort reduction. However, the magnitude of the $\beta_3$ coefficient is smaller (ranging from  $\beta_3 = -0.98$ to $\beta_3 = -1.125$) and not significant unless including month and flag FEs for the general treatment-control groups, or when excluding Chinese vessels. This, along with higher standard error values suggest that longliners have a smaller and more variable response to the implementation of LSMPAs.
+
+```{r, results = "asis"}
+model_base <- effort_by_vessel <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %>% 
+  filter(year < 2018,
+         !gear == "purse_seines",
+         baci_strict) %>% 
+  mutate(post = post * 1,
+         treated = treated * 1,
+         year2 = year * year,
+         year_month_c = as.character(year_month),
+         quarter_c = as.character(quarter),
+         flag_fe = !flag %in% c("JPN", "MEX", "NIC", "NZL", "PHL", "USA", "KIR", "PNG"),
+         flag_fe_oth = flag_fe & !flag == "OTH",
+         sate = case_when(date < lubridate::date("2014/06/01") ~ "1",
+                          date > lubridate::date("2015/12/31") ~ "3",
+                          T ~ "2"))
+
+# See file combine_vessel_info_and_effort to see how experiment columns are created ~line 70
+
+## Controls are everything BUT Chinese
+experiment2 <- model_base %>% 
+  filter(experiment3)
+
+
+## Simple dids for each data
+ll_models_exp0_did <- model_base %>% did()
+ll_models_exp2_did <- experiment2 %>% did()
+
+models <- c(ll_models_exp0_did,
+            ll_models_exp2_did)
+
+stargazer::stargazer(models,
+                     se = commarobust::makerobustseslist(models),
+                     t.auto = T,
+                     p.auto = T,
+                     intercept.bottom = F,
+                     column.sep.width = "1pt",
+                     font.size = "small",
+                     type = "latex",
+                     omit = c("flag", "month"),
+                     add.lines = list(
+                       c("Control", rep("All", 3), rep("-CHN", 3), rep("JPN", 2)),
+                       c("Month FE", rep(c("No", "Yes", "Yes"), 3)),
+                       c("Flag FE", rep(c("No", "No", "Yes"), 3))),
+                     omit.stat = c("adj.rsq", "f", "ser"),
+                     header = F,
+                     # float.env = "sidewaystable",
+                     title = "\\label{tab:long}Difference-in-differences estimates for 2 different controls and 3 different specifications. The first three columns use all data for controls. Columns 4 - 6 exclude Chinese vessels. Numbers in parentheses are heteroskedastic-robust standard errors.",
+                     out = "DID_ll.html")
+```
+
+\clearpage
+
+## Other model specifications for purse seiners
+
+We include a second degree polinomial for years as:
+
+$$
+y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \omega Y_t + \Omega Y_t^2 + \epsilon_{i,t}
+$$
 
 ```{r, results = "asis"}
 model_data <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %>%
   filter(year < 2018,
          baci_strict,
-         !gear == "purse_seines") %>% 
+         gear == "purse_seines") %>% 
   mutate(post = post * 1,
          treated = treated * 1,
          mmsi_c = as.factor(mmsi))
@@ -588,45 +684,45 @@ stargazer::stargazer(models,
                                       c("Flag FE", "No", "No", "No", "Yes")),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
-                     title = "\\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.")
+                     title = "\\label{tab:purse}Fishing hours from GFW for purse_seiners. Asterisks indicate significance levels. Numbers in parentheses represent heteroskedastic-robust standard errors.")
 ```
 
+### Quarterly DID interactions
 
-```{r, eval = F}
-models_q <- list(models_exp0_did_q,
-                 models_exp1_did_q,
-                 models_exp3_did_q)
-
-stargazer::stargazer(models_q,
-                     se = commarobust::makerobustseslist(models_q[[1]]),
-                     t.auto = T,
-                     p.auto = T,
-                     intercept.bottom = F,
-                     type = "latex",
-                     omit = c("flag", "month"),
-                     add.lines = list(
-                       c("Control", rep("All", 2), rep("PNA", 2), rep("-CHN", 2)),
-                       c("Flag FE", rep(c("No", "Yes"), 3))),
-                     omit.stat = c("adj.rsq", "f", "ser"),
-                     header = F,
-                     title = "Difference-in-differences estimates for 3 different controls and 3 different specifications. The first three columns use all data for controls. Columns 4 - 6 use only Taiwanese vessels as controls, and columns 7 - 9 exclude Chinese vessels. Numbers in parentheses are heteroskedastic-robust standard errors.",
-                     out = "DID_q.html")
-```
-
-
-```{r}
+```{r, fig.cap = "\\label{fig:q1}Interaction of quarters and treatment. Control group is all vessels."}
 # Quarterly did
-models_exp0_did_q %>% termplot(q = T)
-models_exp1_did_q %>% termplot(q = T)
-models_exp3_did_q %>% termplot(q = T)
+termplot(models_exp0_did_q, q = T)
 ```
 
+```{r, fig.cap = "\\label{fig:q2}Interaction of quarters and treatment. Control group is vessels from PNA."}
+termplot(models_exp1_did_q, q = T)
+```
 
-```{r}
+```{r, fig.cap = "\\label{fig:q3}Interaction of quarters and treatment. Control group excludes Chinese vessels."}
+termplot(models_exp2_did_q, q = T)
+```
+
+```{r, fig.cap = "\\label{fig:q4}Interaction of quarters and treatment. Control group is japanese vessels."}
+termplot(models_exp3_did_q, q = T)
+```
+
+### Year-month DID interactions
+
+```{r, fig.cap = "\\label{fig:ym1}Interaction of year-month and treatment. Control group is all vessels."}
 # Monthly did
-models_exp0_did_ym %>% termplot()
-models_exp1_did_ym %>% termplot()
-models_exp3_did_ym %>% termplot()
+termplot(models_exp0_did_ym)
+```
+
+```{r, fig.cap = "\\label{fig:ym2}Interaction of year-month and treatment. Control group is vessels from PNA."}
+termplot(models_exp1_did_ym)
+```
+
+```{r, fig.cap = "\\label{fig:ym3}Interaction of year-month and treatment. Control group excludes Chinese vessels."}
+termplot(models_exp2_did_ym)
+```
+
+```{r, fig.cap = "\\label{fig:ym4}Interaction of year-month and treatment. Control group is japanese vessels."}
+termplot(models_exp3_did_ym)
 ```
 
 

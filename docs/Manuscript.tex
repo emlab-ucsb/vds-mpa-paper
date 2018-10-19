@@ -80,7 +80,7 @@
 Areas\footnote{Work in progress, do not circulate}}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
-  \subtitle{Updated on 2018-10-18}
+  \subtitle{Updated on 2018-10-19}
   \author{Juan Carlos Villaseñor-Derbez\textsuperscript{1} John
 Lynham\textsuperscript{2}}
     \preauthor{\centering\large\emph}
@@ -151,10 +151,10 @@ One issue of particular importance is that of the displacement or
 redistribution of fishing effort, which may influence the outcomes of an
 MPA \citep{smith_2003}. Theoretical models make different assumptions
 about the way in which fishers will reallocate fishing effort after an
-area closure \citep{}. The few empirical works focus on small-scale
-fisheries and rarely incorporate spatially explicit data. Despite these
-efforts, marine conservation is yet to identify the implications of
-these management interventions.
+area closure. The few empirical works focus on small-scale fisheries and
+rarely incorporate spatially explicit data. Despite these efforts,
+marine conservation is yet to identify the implications of these
+management interventions.
 
 Here, we ask, how do fishers respond to the implementation of LSMPA?
 After a closure, and if they continue to fish, where do they reallocate
@@ -185,9 +185,9 @@ Instead, we focus on the effect and implications of the ones that
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-2-1.pdf}
-\caption{\label{fig:unnamed-chunk-2}\label{fig:LSMPAs_map}Large Scale Marine
-Protected Areas. The map shows all areas larger than 250,000
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-27-1.pdf}
+\caption{\label{fig:unnamed-chunk-27}\label{fig:LSMPAs_map}Large Scale
+Marine Protected Areas. The map shows all areas larger than 250,000
 Km\textsuperscript{2}. Areas in dark blue meet at least one of these
 conditions: reported no take area is greater than 0, are categorized as
 IUCN Ia or Ib, their designated english name is `Protected Area'.}
@@ -291,8 +291,8 @@ these island nations \citep{havice_2010}.
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-3-1.pdf}
-\caption{\label{fig:unnamed-chunk-3}\label{fig:PNA_map}Map of the Exclusive
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-28-1.pdf}
+\caption{\label{fig:unnamed-chunk-28}\label{fig:PNA_map}Map of the Exclusive
 Economic Zones (EEZs) of the region of interest. A solid line indicates
 countries that belong to the PNA, while a dashed line indicates all
 others. A red line indicates the Kiribati EEZ, and a solid red polygon
@@ -322,15 +322,15 @@ expanded to a total area of 397,447 km\textsuperscript{2}, roughly 1.5
 times the size of Ecuador. Figure \ref{fig:PNA_map} shows a map of the
 PNA countries and the Phoenix Island Protected Area.
 
-The implementation of such a large conservation area in one of the most
-important fishing regions in the world provides a great opportunity to
-evaluate the behavioral responses and redistribution of fishing effort
-by vessels that used to fish there. \citet{mcdermott_2018} showed that
-fishing effort within the Phoenix Islands Marine Protected Area (PIPA)
-increased between the anouncement (September 1\textsuperscript{st},
-2014) and its implementation in Janyary 1\textsuperscript{st}, 2015.
-Likewise, they demonstrate that fishing effort is effectively reduced
-after implementation. To this, we pose two questions: How do individual
+The closure of such a large area in one of the most important fishing
+regions in the world provides a great opportunity to evaluate the
+behavioral responses and redistribution of fishing effort by vessels
+that used to fish there. \citet{mcdermott_2018} showed that fishing
+effort within the Phoenix Islands Marine Protected Area (PIPA) increased
+between the anouncement (September 1\textsuperscript{st}, 2014) and its
+implementation in Janyary 1\textsuperscript{st}, 2015. Likewise, they
+demonstrate that fishing effort is effectively reduced after
+implementation. To this, we pose two questions: How do individual
 vessels respond to the sudden exclusion of such a big area? And where
 did all the vessels go? In the next sections we describe the data and
 methods used to answer this questions.
@@ -342,82 +342,89 @@ This section is divided into two main parts. First, we provide a general
 description of AIS data and the process of identification of
 vessel-level fishing events done by Global Fishing Watch\footnote{Global
   Fishing Watch: \url{globalfishingwatch.org}}. Alongside, we describe
-the subset of data that we use for these analyses. When relevant, we
-also point out possible shortcomings in the data, or factors that must
-be considered in the later analyses. We then move on to explain our
+the subset of data used on our analyses. When relevant, we also point
+out possible shortcomings in the data, or factors that must be
+considered in the later analyses. We then move on to explain our
 empirical strategy for the identification of the behavioral changes and
 redistribution of fishing effort.
 
 \hypertarget{data}{%
 \subsection{Data}\label{data}}
 
-Automatic Identification Systems are on-board devices intended to
-provide at-sea safety and prevent ship collisions by broadcasting vessel
-position, course, and activities to surrounding vessels. These
-broadcasted messages can be received by satellites and land-based
-antennas. GFW uses convolutional neural networks to infer vessel
-characteristics and whether each broadcasted position represents a
-fishing event, thus allowing us to estimate near real-time fishing
-events globally since 2012 \citep{kroodsma_2018}. Our data contain
-information for 2012 - 2017. The amount of data gathered is dependent on
-the number of antenas and satellites that can pick up the signals. In
-June 1\textsuperscript{st} 2014 satellite count increased from 3 to 6,
-and then to 10 in January 1\textsuperscript{st} 2016. This causes an
-apparent increase in the number of broadcasted AIS messages (\emph{i.e.}
-points), and therefore number of vessels and fishing hours. The
+Automatic Identification Systems (AIS) are on-board devices that provide
+at-sea safety and prevent ship collisions by broadcasting vessel
+position, course, and activity to surrounding vessels. These broadcasted
+messages can be received by satellites and land-based antennas. GFW uses
+convolutional neural networks to infer vessel characteristics and
+whether each broadcasted position represents a fishing event, thus
+allowing us to estimate near real-time fishing events globally since
+2012 \citep{kroodsma_2018}.
+
+The amount of data gathered is dependent on the number of antennas and
+satellites that can pick up the signals. In June 1\textsuperscript{st}
+2014 satellite count increased from 3 to 6, and then to 10 in January
+1\textsuperscript{st} 2016. This causes an increase in the number of
+\emph{received} AIS messages (\emph{i.e.} points), and therefore an
+apparent increase in the number of vessels and fishing hours. However,
+the addition of satellites ``affects'' all vessels in the same way. The
 variability in AIS data and ocean conditions require that temporal
 trends be taken into account. We do that by including specific controls
 in our identification strategy and using a subset of data that meet a
 BACI design -which gives us the full tracks for vessels affected and
 unaffected by the implementation of PIPA.
 
-Our data contain over 45 million individual AIS messages (\emph{i.e.}
-positions) for 371 fishing vessels that at some point fished in PNA
-waters. A total of 233 vessels have fished within PIPA waters; 217 did
-so at least once before 2015. However, not all vessels continued to fish
-elsewhere after PIPA implementation: 34 vessels have no recorded AIS
-messages after 2015, leaving us with 176 vessels that fished inside PIPA
-before its implementation, and continued to fish elsewhere
-afterward\footnote{The 34 missing vessels might have exited the fishery, been decommissioned or sold (therefore changing their AIS and mmsi), or turned off their AIS transmitters. In either case, we are not able to observe these.}.
-From these, we focus on purse seiners -the most important for PNA
-countries- and are left with 61
-vessels\footnote{We perform some of the same analyses for longliners and include them in the Appendix}.
-New vessels might have also entered the fishery after PIPA closure, and
-were likely not exposed to the policy intervention in the pre-treatment
-period. To account for this, we identify a subset of vessels which we
-track since before the implementation of PIPA, and categorize them as
-treated or control vessels. Our treatment and control groups are defined
-as follows.
+Our analysis focuses on purse seiner vessels, the most important fishery
+for PNA
+countries\footnote{We perform some of the same analyses for longliners and include them in the Appendix}.
+We identify a total of 103 purse seiners that fished in PNA waters at
+least once before
+2015\footnote{New vessels that entered the fishery after 2015 were not exposed to the policy intervention in the pre-treatment period and are therefore exlcuded from our analyses.}.
+These vessels represent over 26 million individual observations for the
+2012 - 2017 period. We identify 65 vessels that have fished inside PIPA
+at least once since 2012. From these, 62 did so before the anouncement
+(\emph{i.e.} 09/01/2014 \emph{sensu} \citep{mcdermott_2018}) but are
+only able to track 61 for the complete periof of study before and after
+its
+implementation\footnote{1 vessel never fished again after August 18, 2013.}.
+On the other hand, 38 vessels never fished inside PIPA but we only have
+data for 26 vessels before and after.
 
-The treatment group contains all purse seiners (n = 61) that fished
-within PIPA at least once before the anouncement (09/01/2014), and that
+Therefore, our treatment group contains all purse seiners (n = 61) that
+fished within PIPA at least once before the anouncement, and that
 continued to fish elsewhere after the January 2015 implementation.
 Vessels in the control group meet the following two conditions: i)
 vessels never fished within PIPA waters, and ii) vessels have fished in
 surrounding areas (\emph{i.e.} PNA-countries' EEZ) before and after PIPA
-closure. This definition of control vessels provides us with 26 purse
-seiners that never fished inside PIPA but fished in other PNA waters
-before and after PIPA implementation. During our causal identification,
-we also use two more strict definitions of control groups: one with only
-vessels that belong to PNA countries (n = 7), and one that excludes
-Chinese vessels (n = 21). Our definition of treatment and control groups
-leaves us with 61 and 21 treated and control vessels, which have just
-over 22 million observations where about 22\% are identified as fishing
-events. For each of the remainig vessels, we calculate their total daily
-fishing hours and obtain pannel data with 37,800 observations. Table
-\ref{tab:baci_n_s} shows the number of vessels following a BACI design,
-as well as the fishing hours, before and after PIPA. Fig.
-\ref{fig:all_vessels} shows that mean fishing hours for purse seiners
-have an abrupt increase, just before January 1st, 2015. This trend is
-observed for both treated and control groups. Across all measures, the
-treatment and control vessels follow similar patterns, confirming our
-claim that the control group provides a plausible counterfactual. Figure
-\ref{fig:baci_strict} provides a visual representation of the
-vessel-level fishing events that make up each group through time.
+closure (n = 26).
+
+We include three additional definitions of control groups as a
+robustness check: one with only vessels that belong to PNA countries (n
+= 7), and one that excludes Chinese vessels (n = 21). Our third control
+is made up of Japanese purse seiners that fish in the Pacific but that
+never fished inside PIPA (n =
+27)\footnote{Using Taiwanese vessels was the original idea, but there are only 4 vessels with pre-2015 data. I need to further identify propper Taiwanese vessels, as I am currently using the entire Pacific ocean}.
+Our definition of treatment and control groups leaves us with 61 and 21
+treated and control vessels, which have just over 22 million
+observations where about 22\% are identified as fishing events.
+
+For each vessel we calculate total daily fishing hours and obtain pannel
+data with 37,800 observations. Table \ref{tab:baci_n_s} shows the number
+of vessels following a BACI design, as well as the fishing hours, before
+and after PIPA. Fig. \ref{fig:all_vessels} shows that mean fishing hours
+for purse seiners have an abrupt increase, just before January 1st,
+2015. This trend is observed for both treated and control groups. Across
+all measures, the treatment and control vessels follow similar patterns,
+confirming our claim that the control group provides a plausible
+counterfactual. Figure \ref{fig:baci_strict} provides a visual
+representation of the vessel-level fishing events that make up each
+group through time. We use this data to answer our key questions: How do
+the 61 purse seiners modify their behavior as compared to the different
+control groups, and where do they go after the spatial closure? The
+following section describes our empirical identification strategies.
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-6}\label{tab:baci_n_s}Number of fishing vessels and mean daily fishing hours by group before and after PIPA implementation.}
+\caption{\label{tab:unnamed-chunk-31}\label{tab:baci_n_s}Number of fishing vessels and mean daily fishing hours by group before and after PIPA implementation.}
 \centering
 \begin{tabular}[t]{lrrrr}
 \toprule
@@ -431,9 +438,9 @@ Treatment & 61 & 10.67 & 18.36 & 1.72\\
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-7-1.pdf}
-\caption{\label{fig:unnamed-chunk-7}\label{fig:all_vessels}Fishing hours and
-number of vessels by month for all vessels. Vertical dashed lines
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-32-1.pdf}
+\caption{\label{fig:unnamed-chunk-32}\label{fig:all_vessels}Fishing hours
+and number of vessels by month for all vessels. Vertical dashed lines
 indicates dates when satellites were added, solid line indicates PIPA
 closurePIPA closure.}
 \end{figure}
@@ -443,7 +450,7 @@ closurePIPA closure.}
 
 The first analysis focuses on identifying the response of fishing
 vessels to PIPA closure. Our variables of interests are daily fishing
-hours, and daily distance traveled (Km). We compare our variable of
+hours, and daily distance traveled (km). We compare our variable of
 interest before and after the implementation of PIPA using a
 Difference-in-Differences approach, where we track the variable of
 interest for vessels that used to fish inside PIPA and vessels that
@@ -451,7 +458,7 @@ never fished inside PIPA, before and after PIPA implementation. Our
 specification is the following:
 
 \[
-y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \theta_i + \epsilon_{i,t}
+y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \epsilon_{i,t}
 \]
 
 Where \(y_{i,t}\) is the variable of interest for vessel \(i\) in time
@@ -465,9 +472,8 @@ the standard intercept, \(\beta_1\) captures the temporal trend change,
 and \(\beta_3\) is our parameter of interest: de DiD estimate capturing
 the treatment effect. Finally, \(\phi_t\) and \(\gamma_i\) represent
 month-, and flag-level dummies that account for seasonality or
-country-level management interventions, and \(\theta_i\) are a set of
-dummies that account for the addition of more
-satellites\footnote{We test for other more complex specifications that interact a quarterly or year-month variable with the treatment group and find qualitativel the same results.}.
+country-level management
+interventions\footnote{We test for other more complex specifications that interact a quarterly dummy or year-month dummies with the treatment group and find qualitatively the same results.}.
 
 Our second part of the analyses focuses on the redistribution of fishing
 effort. In other words, identifying where do vessels that used to fish
@@ -492,7 +498,7 @@ countries. This gives us the by-country change in proportional
 allocation of fishing effort:
 
 \[
-y_{i,t} = \alpha + \beta_1Post + \beta_{2,i}Country + \beta_{3,i}Post_t \times Country_i + \theta_i + \epsilon_{i,t}
+y_{i,t} = \alpha + \beta_1Post + \beta_{2,i}Country + \beta_{3,i}Post_t \times Country_i + \epsilon_{i,t}
 \]
 
 Our variable of interest, \(y_{i,t}\) represents the proportion of
@@ -501,8 +507,7 @@ represents a policy dummy that takes the value of 0 for all dates before
 implementation of PIPA, and 1 otherwise. \(Country\) is a dummy variable
 for countries for the spatial units defined above. Our parameter of
 interest is \(\beta_{1,i}\), which captures the country-level change in
-proportional fishing effort. \(\theta_i\) accounts for the addition of
-satellites.
+proportional fishing effort.
 
 All regression coefficients were estimated via ordinary least squares,
 and heteroskedastic-robust standard errors were calculated. All analyses
@@ -512,7 +517,7 @@ used in this work are available on
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-10}\label{tab:ba_disp}Changes in the relative allocation of fishing effort by region (EEZ, PIPA, high seas) and gear.}
+\caption{\label{tab:unnamed-chunk-35}\label{tab:ba_disp}Changes in the relative allocation of fishing effort by region (EEZ, PIPA, high seas) and gear.}
 \centering
 \begin{tabular}[t]{lr}
 \toprule
@@ -545,75 +550,87 @@ PIPA PIPA 1 & -8.25\\
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
+Our DiD analysis shows an overall increase in purse seine fishing hours,
+even after accounting for the introduction of new satellites (Table
+\ref{tab:did}). This coefficient estimate is consistent for different
+model specifications and across groups of treatment and controls. These
+effectively represent the patterns observed in Figure
+\ref{fig:all_vessels}. The \(\beta_3\) coefficient indicating our
+treatment effect suggests that, relative to the control, treated vessels
+fish less, in the order of 0.5 hours per day. Another way to interpret
+this is that the increase in fishing effort by treated vessels has
+ocurred at a lower rate than control vessels. This result is robust and
+significant (\(p < 0.05\)) for all model specifications using our main
+control group, with the effect varying between \(\beta_3 = -0.515\) and
+\(\beta_3 = -0.934\). These values are equivalent to a 15 - 28 reduction
+in fishing hours per month.
+
+Regressions coefficients for our DiD analysis are shown in Table
+\ref{tab:did}. Columns 1 -3 use all data for controls. Columns 4 - 6 use
+only PNA vessels as controls, and columns 7 - 9 exclude Chinese vessels.
+Columns 10 and 11 use Japanese vessels in the Pacific as controls, and
+hence don't include flag FEs to avoid perfect colinearity between
+Japanese flag and
+control\footnote{Results of the same analysis is shown for longliners in \ref{tab:long}}.
+It must be noted, however, that when reducing the linear structure of
+the \(Pre \times Post\) design and instead interacting the treatment
+dummy with quarterly or year-month combinations we are not able to
+reject the null hypotheses of no change (Figures
+\ref{fig:q1,fig:q2,fig:q3,fig:q4,fig:ym1,fig:ym2,fig:ym3,fig:ym4}).
+
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-11-1.pdf}
-\caption{\label{fig:unnamed-chunk-11}\label{fig:all_vessels}Fishing hours
-and number of vessels by month for all vessels. Vertical dashed line
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-36-1.pdf}
+\caption{\label{fig:unnamed-chunk-36}\label{fig:all_vessels}Daily fishing
+hours for all vessels in our main treatment-control groups. Solid
+straight lines show a linear trend by period (pre-psot) and treatment.
+The other red and blue lines show monthly avarages. Vertical dashed line
 indicates PIPA closure.}
 \end{figure}
-
-Our DiD analysis shows that treated purse seiners reduce their fishing
-effort after PIPA implementation in the order of 16 hours per month.
-This result is robust and significant (\emph{p \textless{} 0.05}) for
-all model specifications, with the effect varying between
-\(\beta_3 = -16.457\) and \(\beta_3 = -18.709\). Model specifications
-that include the year polynomial show lower values for the \(\beta_1\)
-coefficient associated to the \(Post_t\) policy dummy, and show positive
-and negative values for \(\mu_1\) and \(\mu_2\), the linear and
-quadratic terms for \(Y_t\), respectively. These effectively represent
-the patterns observed in Figure \ref{fig:all_vessels}.
-
-Regressions coefficients for each gear type are shown in Tables
-\ref{tab:purse} and \ref{tab:long}. Column (1) presents the DiD
-regression with no fixed effects, column (2) includes month fixed
-effects, column (3) includes month and the second degree polynomial for
-years, and column (4) includes all of the above and country-level fixed
-effects.
 
 \clearpage
 \begin{landscape}
 
 
 \begin{table}[!htbp] \centering 
-  \caption{Difference-in-differences estimates for 3 different controls and 3 different specifications. The first three columns use all data for controls. Columns 4 - 6 use only Taiwanese vessels as controls, and columns 7 - 9 exclude Chinese vessels. Numbers in parentheses are heteroskedastic-robust standard errors.} 
+  \caption{\label{tab:did}Difference-in-differences estimates for 3 different controls and 3 different specifications. The first three columns use all data for controls. Columns 4 - 6 use only PNA vessels as controls, and columns 7 - 9 exclude Chinese vessels. Columns 10 and 11 use Japanese vessels in the Pacific as controls, and hence don't include flag FEs. Numbers in parentheses are heteroskedastic-robust standard errors.} 
   \label{} 
-\small 
-\begin{tabular}{@{\extracolsep{1pt}}lccccccccc} 
+\footnotesize 
+\begin{tabular}{@{\extracolsep{1pt}}lccccccccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
- & \multicolumn{9}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-10} 
-\\[-1.8ex] & \multicolumn{9}{c}{hours} \\ 
-\\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9)\\ 
+ & \multicolumn{11}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-12} 
+\\[-1.8ex] & \multicolumn{11}{c}{hours} \\ 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9) & (10) & (11)\\ 
 \hline \\[-1.8ex] 
- Constant & 6.345$^{***}$ & 7.863$^{***}$ & 10.322$^{***}$ & 7.124$^{***}$ & 9.007$^{***}$ & 9.933$^{***}$ & 6.057$^{***}$ & 7.584$^{***}$ & 10.194$^{***}$ \\ 
-  & (0.186) & (0.274) & (0.404) & (0.265) & (0.341) & (0.620) & (0.193) & (0.279) & (0.538) \\ 
-  & & & & & & & & & \\ 
- post & $-$0.052 & 1.134$^{***}$ & 1.115$^{***}$ & $-$1.199$^{***}$ & $-$0.279 & 0.124 & $-$0.284 & 1.013$^{***}$ & 1.166$^{***}$ \\ 
-  & (0.303) & (0.304) & (0.339) & (0.435) & (0.429) & (0.436) & (0.318) & (0.318) & (0.357) \\ 
-  & & & & & & & & & \\ 
- treated & $-$1.142$^{***}$ & $-$0.839$^{***}$ & 0.010 & $-$1.977$^{***}$ & $-$1.675$^{***}$ & 0.626 & $-$0.877$^{***}$ & $-$0.536$^{**}$ & 0.150 \\ 
-  & (0.214) & (0.209) & (0.281) & (0.284) & (0.274) & (0.416) & (0.221) & (0.215) & (0.297) \\ 
-  & & & & & & & & & \\ 
- sate2 & 12.579$^{***}$ & 11.589$^{***}$ & 11.340$^{***}$ & 12.709$^{***}$ & 11.850$^{***}$ & 11.749$^{***}$ & 12.631$^{***}$ & 11.599$^{***}$ & 11.349$^{***}$ \\ 
-  & (0.197) & (0.199) & (0.232) & (0.212) & (0.213) & (0.246) & (0.199) & (0.201) & (0.235) \\ 
-  & & & & & & & & & \\ 
- sate3 & 14.675$^{***}$ & 13.587$^{***}$ & 13.328$^{***}$ & 14.799$^{***}$ & 13.894$^{***}$ & 13.795$^{***}$ & 14.958$^{***}$ & 13.804$^{***}$ & 13.566$^{***}$ \\ 
-  & (0.260) & (0.262) & (0.307) & (0.286) & (0.287) & (0.329) & (0.264) & (0.266) & (0.315) \\ 
-  & & & & & & & & & \\ 
- post:treated & $-$0.515$^{*}$ & $-$0.833$^{***}$ & $-$0.934$^{***}$ & 0.562 & 0.373 & $-$0.176 & $-$0.439 & $-$0.814$^{***}$ & $-$1.084$^{***}$ \\ 
-  & (0.281) & (0.276) & (0.310) & (0.413) & (0.402) & (0.407) & (0.293) & (0.287) & (0.326) \\ 
-  & & & & & & & & & \\ 
+ Constant & 6.345$^{***}$ & 7.863$^{***}$ & 10.322$^{***}$ & 7.124$^{***}$ & 9.007$^{***}$ & 9.933$^{***}$ & 6.057$^{***}$ & 7.584$^{***}$ & 10.194$^{***}$ & 22.625$^{***}$ & 24.731$^{***}$ \\ 
+  & (0.186) & (0.274) & (0.404) & (0.265) & (0.341) & (0.620) & (0.193) & (0.279) & (0.538) & (0.629) & (0.683) \\ 
+  & & & & & & & & & & & \\ 
+ post & $-$0.052 & 1.134$^{***}$ & 1.115$^{***}$ & $-$1.199$^{***}$ & $-$0.279 & 0.124 & $-$0.284 & 1.013$^{***}$ & 1.166$^{***}$ & 2.330$^{***}$ & 3.991$^{***}$ \\ 
+  & (0.303) & (0.304) & (0.339) & (0.435) & (0.429) & (0.436) & (0.318) & (0.318) & (0.357) & (0.890) & (0.877) \\ 
+  & & & & & & & & & & & \\ 
+ treated & $-$1.142$^{***}$ & $-$0.839$^{***}$ & 0.010 & $-$1.977$^{***}$ & $-$1.675$^{***}$ & 0.626 & $-$0.877$^{***}$ & $-$0.536$^{**}$ & 0.150 & $-$18.190$^{***}$ & $-$18.257$^{***}$ \\ 
+  & (0.214) & (0.209) & (0.281) & (0.284) & (0.274) & (0.416) & (0.221) & (0.215) & (0.297) & (0.673) & (0.661) \\ 
+  & & & & & & & & & & & \\ 
+ sate2 & 12.579$^{***}$ & 11.589$^{***}$ & 11.340$^{***}$ & 12.709$^{***}$ & 11.850$^{***}$ & 11.749$^{***}$ & 12.631$^{***}$ & 11.599$^{***}$ & 11.349$^{***}$ & 14.346$^{***}$ & 12.967$^{***}$ \\ 
+  & (0.197) & (0.199) & (0.232) & (0.212) & (0.213) & (0.246) & (0.199) & (0.201) & (0.235) & (0.303) & (0.309) \\ 
+  & & & & & & & & & & & \\ 
+ sate3 & 14.675$^{***}$ & 13.587$^{***}$ & 13.328$^{***}$ & 14.799$^{***}$ & 13.894$^{***}$ & 13.795$^{***}$ & 14.958$^{***}$ & 13.804$^{***}$ & 13.566$^{***}$ & 15.187$^{***}$ & 13.719$^{***}$ \\ 
+  & (0.260) & (0.262) & (0.307) & (0.286) & (0.287) & (0.329) & (0.264) & (0.266) & (0.315) & (0.402) & (0.410) \\ 
+  & & & & & & & & & & & \\ 
+ post:treated & $-$0.515$^{*}$ & $-$0.833$^{***}$ & $-$0.934$^{***}$ & 0.562 & 0.373 & $-$0.176 & $-$0.439 & $-$0.814$^{***}$ & $-$1.084$^{***}$ & $-$3.209$^{***}$ & $-$3.715$^{***}$ \\ 
+  & (0.281) & (0.276) & (0.310) & (0.413) & (0.402) & (0.407) & (0.293) & (0.287) & (0.326) & (0.811) & (0.799) \\ 
+  & & & & & & & & & & & \\ 
 \hline \\[-1.8ex] 
-Control & All & All & All & PNA & PNA & PNA & -CHN & -CHN & -CHN \\ 
-Month FE & No & Yes & Yes & No & Yes & Yes & No & Yes & Yes \\ 
-Flag FE & No & No & Yes & No & No & Yes & No & No & Yes \\ 
-Observations & 37,840 & 37,840 & 30,359 & 30,583 & 30,583 & 25,034 & 36,415 & 36,415 & 28,934 \\ 
-R$^{2}$ & 0.171 & 0.200 & 0.208 & 0.178 & 0.208 & 0.215 & 0.173 & 0.203 & 0.211 \\ 
+Control & All & All & All & PNA & PNA & PNA & -CHN & -CHN & -CHN & JPN & JPN \\ 
+Month FE & No & Yes & Yes & No & Yes & Yes & No & Yes & Yes & No & Yes \\ 
+Flag FE & No & No & Yes & No & No & Yes & No & No & Yes & No & No \\ 
+Observations & 37,840 & 37,840 & 30,359 & 30,583 & 30,583 & 25,034 & 36,415 & 36,415 & 28,934 & 34,047 & 34,047 \\ 
+R$^{2}$ & 0.171 & 0.200 & 0.208 & 0.178 & 0.208 & 0.215 & 0.173 & 0.203 & 0.211 & 0.260 & 0.280 \\ 
 \hline 
 \hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{9}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\textit{Note:}  & \multicolumn{11}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
 \end{table} 
 
@@ -622,8 +639,8 @@ R$^{2}$ & 0.171 & 0.200 & 0.208 & 0.178 & 0.208 & 0.215 & 0.173 & 0.203 & 0.211 
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-14-1.pdf}
-\caption{\label{fig:unnamed-chunk-14}\label{fig:long}Coefficient estimates
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-38-1.pdf}
+\caption{\label{fig:unnamed-chunk-38}\label{fig:long}Coefficient estimates
 for each model. Top pannel indicates variable, x-axis represents model
 specification, and y-axis coefficient estimate.}
 \end{figure}
@@ -634,7 +651,7 @@ calculate the proportion of fishing effort allocated every month to each
 spatially explicit region outlined by EEZs and the high seas. For purse
 seiners, these represent 9 main EEZs, PIPA, the high seas, and a group
 of other EEZs. Figure \ref{fig:redist_trend_ps} shows the monthly
-relative fishing hours that each region received by all 176 treated
+relative fishing hours that each region received by all 61 treated
 vessels. The top-left panel shows the change in fishing effort inside
 PIPA, including the preemptive fishing and immediate reduction
 previously reported \citep{mcdermott_2018}.
@@ -653,23 +670,23 @@ closer to PIPA.
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-15-1.pdf}
-\caption{\label{fig:unnamed-chunk-15}\label{fig:redist_trend_ps}Monthly
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-39-1.pdf}
+\caption{\label{fig:unnamed-chunk-39}\label{fig:redist_trend_ps}Monthly
 relative allocation of fishing effort by PIPA-fishing vessels before and
 after PIPA for 9 EEZs, PIPA, the high seas and `other EEZs'.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-16-1.pdf}
-\caption{\label{fig:unnamed-chunk-16}\label{fig:map_change_ps}Spatial
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-40-1.pdf}
+\caption{\label{fig:unnamed-chunk-40}\label{fig:map_change_ps}Spatial
 representation of the mean change in the monthly allocation of fishing
 effort for purse seiners.}
 \end{figure}
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-17}Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1), p < 0.001}
+\caption{\label{tab:unnamed-chunk-41}Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1, p < 0.001)}
 \centering
 \begin{tabular}[t]{ll}
 \toprule
@@ -787,27 +804,100 @@ overfishing in adjacent waters.
 
 \clearpage
 
+\hypertarget{refs}{}
+
+\clearpage
+
 \hypertarget{appendix}{%
 \section{Appendix}\label{appendix}}
 
 \setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
 
+\hypertarget{stream-of-data-by-vessel-group-and-period}{%
+\subsection{Stream of data by vessel, group, and
+period}\label{stream-of-data-by-vessel-group-and-period}}
+
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-18-1.pdf}
-\caption{\label{fig:unnamed-chunk-18}\label{fig:baci_strict}Stream of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-42-1.pdf}
+\caption{\label{fig:unnamed-chunk-42}\label{fig:baci_strict}Stream of
 fishing events by vessels through time. Each line represents a vessel,
 with dots indicating months with fishing activity and colors indicating
 the pre and post periods.}
 \end{figure}
 
-\hypertarget{other-model-specifications}{%
-\subsection{Other model
-specifications}\label{other-model-specifications}}
+\clearpage
+
+\hypertarget{longliners}{%
+\subsection{Longliners}\label{longliners}}
+
+Longliners show a similar pattern of effort reduction. However, the
+magnitude of the \(\beta_3\) coefficient is smaller (ranging from
+\(\beta_3 = -0.98\) to \(\beta_3 = -1.125\)) and not significant unless
+including month and flag FEs for the general treatment-control groups,
+or when excluding Chinese vessels. This, along with higher standard
+error values suggest that longliners have a smaller and more variable
+response to the implementation of LSMPAs.
 
 \begin{table}[!htbp] \centering 
-  \caption{\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.} 
+  \caption{\label{tab:long}Difference-in-differences estimates for 2 different controls and 3 different specifications. The first three columns use all data for controls. Columns 4 - 6 exclude Chinese vessels. Numbers in parentheses are heteroskedastic-robust standard errors.} 
   \label{} 
+\small 
+\begin{tabular}{@{\extracolsep{1pt}}lcccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{6}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-7} 
+\\[-1.8ex] & \multicolumn{6}{c}{hours} \\ 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6)\\ 
+\hline \\[-1.8ex] 
+ Constant & 39.192$^{***}$ & 38.411$^{***}$ & 36.520$^{***}$ & 39.402$^{***}$ & 38.636$^{***}$ & 34.402$^{***}$ \\ 
+  & (0.095) & (0.132) & (0.169) & (0.102) & (0.140) & (0.236) \\ 
+  & & & & & & \\ 
+ post & $-$1.014$^{***}$ & $-$0.189 & 0.710$^{***}$ & $-$1.400$^{***}$ & $-$0.574$^{***}$ & 0.896$^{***}$ \\ 
+  & (0.143) & (0.145) & (0.158) & (0.163) & (0.165) & (0.186) \\ 
+  & & & & & & \\ 
+ treated & 2.544$^{***}$ & 2.570$^{***}$ & 2.724$^{***}$ & 2.349$^{***}$ & 2.391$^{***}$ & 3.299$^{***}$ \\ 
+  & (0.101) & (0.101) & (0.121) & (0.110) & (0.110) & (0.135) \\ 
+  & & & & & & \\ 
+ sate2 & $-$0.495$^{***}$ & $-$1.488$^{***}$ & $-$0.898$^{***}$ & $-$0.561$^{***}$ & $-$1.497$^{***}$ & $-$1.015$^{***}$ \\ 
+  & (0.099) & (0.105) & (0.110) & (0.104) & (0.110) & (0.114) \\ 
+  & & & & & & \\ 
+ sate3 & $-$0.313$^{**}$ & $-$1.150$^{***}$ & 0.050 & $-$0.375$^{***}$ & $-$1.129$^{***}$ & 0.001 \\ 
+  & (0.129) & (0.132) & (0.143) & (0.134) & (0.138) & (0.149) \\ 
+  & & & & & & \\ 
+ post:treated & 0.098 & 0.056 & $-$1.125$^{***}$ & 0.532$^{***}$ & 0.427$^{***}$ & $-$1.280$^{***}$ \\ 
+  & (0.134) & (0.134) & (0.148) & (0.149) & (0.149) & (0.171) \\ 
+  & & & & & & \\ 
+\hline \\[-1.8ex] 
+Control & All & All & All & -CHN & -CHN & -CHN \\ 
+Month FE & No & Yes & Yes & No & Yes & Yes \\ 
+Flag FE & No & No & Yes & No & No & Yes \\ 
+Observations & 227,873 & 227,873 & 217,467 & 209,135 & 209,135 & 198,729 \\ 
+R$^{2}$ & 0.010 & 0.016 & 0.022 & 0.010 & 0.016 & 0.023 \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{6}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table}
+
+\clearpage
+
+\hypertarget{other-model-specifications-for-purse-seiners}{%
+\subsection{Other model specifications for purse
+seiners}\label{other-model-specifications-for-purse-seiners}}
+
+We include a second degree polinomial for years as:
+
+\[
+y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \omega Y_t + \Omega Y_t^2 + \epsilon_{i,t}
+\]
+
+\textbackslash{}begin\{table\}{[}!htbp{]} \centering 
+\textbackslash{}caption\{\label{tab:purse}Fishing hours from GFW for
+purse\_seiners. Asterisks indicate significance levels. Numbers in
+parentheses represent heteroskedastic-robust standard errors.\} \label{}
+
 \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
@@ -816,37 +906,94 @@ specifications}\label{other-model-specifications}}
 \\[-1.8ex] & \multicolumn{4}{c}{hours} \\ 
 \\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
 \hline \\[-1.8ex] 
- post & $-$1.241$^{***}$ & $-$1.026$^{***}$ & $-$0.944$^{***}$ & 13.292$^{***}$ \\ 
-  & (0.116) & (0.116) & (0.157) & (0.330) \\ 
+ post & 8.394$^{***}$ & 9.334$^{***}$ & 14.934$^{***}$ & 17.284$^{***}$ \\ 
+  & (0.267) & (0.254) & (0.312) & (0.403) \\ 
   & & & & \\ 
- treated & 2.595$^{***}$ & 2.708$^{***}$ & 2.639$^{***}$ & 1.493$^{***}$ \\ 
-  & (0.101) & (0.101) & (0.102) & (0.116) \\ 
+ treated & $-$1.069$^{***}$ & $-$0.770$^{***}$ & $-$0.993$^{***}$ & 0.259 \\ 
+  & (0.249) & (0.234) & (0.219) & (0.269) \\ 
   & & & & \\ 
- post:treated & 0.053 & $-$0.069 & $-$0.029 & $-$0.060 \\ 
-  & (0.133) & (0.133) & (0.134) & (0.135) \\ 
+ post:treated & $-$0.701$^{**}$ & $-$0.899$^{***}$ & $-$0.530$^{*}$ & $-$0.580$^{**}$ \\ 
+  & (0.308) & (0.295) & (0.283) & (0.292) \\ 
   & & & & \\ 
- Constant & 39.032$^{***}$ & 38.105$^{***}$ & 38.388$^{***}$ & 36.993$^{***}$ \\ 
-  & (0.089) & (0.131) & (0.150) & (0.178) \\ 
+ Constant & 11.738$^{***}$ & 11.281$^{***}$ & 7.574$^{***}$ & 10.077$^{***}$ \\ 
+  & (0.220) & (0.292) & (0.318) & (0.422) \\ 
   & & & & \\ 
 \hline \\[-1.8ex] 
 Month FE & No & Yes & Yes & Yes \\ 
 Year FE & No & No & Yes & Yes \\ 
 Flag FE & No & No & No & Yes \\ 
-Observations & 227,873 & 227,873 & 227,873 & 227,873 \\ 
-R$^{2}$ & 0.010 & 0.015 & 0.016 & 0.030 \\ 
+Observations & 37,840 & 37,840 & 37,840 & 37,840 \\ 
+R$^{2}$ & 0.087 & 0.136 & 0.179 & 0.192 \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{table}
+\end{tabular}
 
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-21-1.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-21-2.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-21-3.pdf}
+\textbackslash{}end\{table\}
 
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-22-1.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-22-2.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-22-3.pdf}
+\hypertarget{quarterly-did-interactions}{%
+\subsubsection{Quarterly DID
+interactions}\label{quarterly-did-interactions}}
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-45-1.pdf}
+\caption{\label{fig:unnamed-chunk-45}\label{fig:q1}Interaction of quarters
+and treatment. Control group is all vessels.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-46-1.pdf}
+\caption{\label{fig:unnamed-chunk-46}\label{fig:q2}Interaction of quarters
+and treatment. Control group is vessels from PNA.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-47-1.pdf}
+\caption{\label{fig:unnamed-chunk-47}\label{fig:q3}Interaction of quarters
+and treatment. Control group excludes Chinese vessels.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-48-1.pdf}
+\caption{\label{fig:unnamed-chunk-48}\label{fig:q4}Interaction of quarters
+and treatment. Control group is japanese vessels.}
+\end{figure}
+
+\hypertarget{year-month-did-interactions}{%
+\subsubsection{Year-month DID
+interactions}\label{year-month-did-interactions}}
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-49-1.pdf}
+\caption{\label{fig:unnamed-chunk-49}\label{fig:ym1}Interaction of
+year-month and treatment. Control group is all vessels.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-50-1.pdf}
+\caption{\label{fig:unnamed-chunk-50}\label{fig:ym2}Interaction of
+year-month and treatment. Control group is vessels from PNA.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-51-1.pdf}
+\caption{\label{fig:unnamed-chunk-51}\label{fig:ym3}Interaction of
+year-month and treatment. Control group excludes Chinese vessels.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-52-1.pdf}
+\caption{\label{fig:unnamed-chunk-52}\label{fig:ym4}Interaction of
+year-month and treatment. Control group is japanese vessels.}
+\end{figure}
 
 \clearpage
 
