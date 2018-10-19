@@ -76,10 +76,11 @@
 
 \setlength{\droptitle}{-2em}
 
-  \title{Displacement of fishing effort by Large Scale Marine Protected Areas}
+  \title{Displacement of fishing effort by Large Scale Marine Protected
+Areas\footnote{Work in progress, do not circulate}}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
-  \subtitle{Updated on 2018-10-16}
+  \subtitle{Updated on 2018-10-18}
   \author{Juan Carlos Villaseñor-Derbez\textsuperscript{1} John
 Lynham\textsuperscript{2}}
     \preauthor{\centering\large\emph}
@@ -95,6 +96,8 @@ Hawaii at Manoa, Honolulu, HI}
 \floatplacement{figure}{H}
 \usepackage{lineno}
 \linenumbers
+\usepackage[bottom]{footmisc}
+\usepackage{pdflscape}
 \newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
 
 \begin{document}
@@ -123,6 +126,8 @@ activity, but provide insights into vessel redistribution dynamics,
 which may have ecological and economic implications.
 \end{abstract}
 
+\clearpage
+
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
@@ -130,51 +135,68 @@ Marine Protected Areas (MPAs) are intended to safeguard parts of the
 ocean from fishing and other extractive activities. Current
 international goals aim to protect 10\% of the ocean environments by
 2020. In an effort to meet this target, the world has seen a rapid
-increase in MPA coverage \citep{wood_2008,sala_2018}. A significant part
-of this rapid increase can be attributed to the designation of a small
-number of Large Scale Marine Protected Areas (LSMPAs;
-\citet{boonzaier_2016,singleton_2014,gray_2017}). These are defined as
-MPAS larger than 250,000 Km\textsuperscript{2} in extension (Fig.
-\ref{fig:LSMPAs_map}), and are often implemented in the pelagic
-environment, where the dominant human activity is industrial fishing
-\citep{toonen_2013,gray_2017,kroodsma_2018}.
+increase in MPA coverage \citep{wood_2008,sala_2018}, largely driven by
+a small number of Large Scale Marine Protected Areas (LSMPA)
+\citet{singleton_2014,boonzaier_2016,alger_2017}). Due to weak property
+rights, limited habitat transformation, and potentially lower management
+costs, LSMPAs provide an opportunity to safeguard the oceans
+\citet{game_2009}. Today, a small number of LSMPAs make up at least 80\%
+of the managed areas in the ocean \citet{toonen_2013}.
 
 Given the relatively recent establishment of most LSMPAs, very little is
 known about their human dimensions and implication for fisheries
-\citep{gray_2017}. Moreover, the world has seen a widespread increase in
-the implementation of LSMPAs, likely as a way to rapidly achieve the
-10\% target \citep{boonzaier_2016,alger_2017,sala_2018}. However, as
-with customary MPAs, it is important that we understand the
-socioeconomic implications of management interventions that result in
-the spatial displacement of fishing effort. They \textbf{key gap in the
-literature is X}. We adress it here by using new stuff and find results
-that are of relevance to policy makers and advance our knowledge, which
-should be incorporated when designing and planning for LSMPAs.
+\citep{gray_2017}. As with customary MPAs, it is important that we
+understand the socioeconomic implications of management interventions.
+One issue of particular importance is that of the displacement or
+redistribution of fishing effort, which may influence the outcomes of an
+MPA \citep{smith_2003}. Theoretical models make different assumptions
+about the way in which fishers will reallocate fishing effort after an
+area closure \citep{}. The few empirical works focus on small-scale
+fisheries and rarely incorporate spatially explicit data. Despite these
+efforts, marine conservation is yet to identify the implications of
+these management interventions.
 
-Due to weak property rights, limited habitat transformation, and
-potentially lower management costs, pelagic MPAs provide an opportunity
-to safeguard the oceans \citet{game_2009}. A growing body of literature
-has shown that closing the high seas to all fishing could increase
-fishery yields and profitability of fisheries, with negligible costs to
-food security \citep{white_2014,sumaila_2015,sala_2018a,schiller_2018}.
+Here, we ask, how do fishers respond to the implementation of LSMPA?
+After a closure, and if they continue to fish, where do they reallocate
+fishing effort? We use novel satellite technologies and causal inference
+techniques to identify the behavioral changes and spatial redistribution
+of the industrial tuna purse seine fleet due to the implementation of a
+Large Scale Marine Protected Areas in the Western and Central Pacific
+Ocean (WCPO).
 
-The early literature on LSMPAs focused on the inherent difficulties that
-come with a pelagic (\emph{i.e.} open water) environment, where
-organisms typically have large home ranges. \citet{game_2009} suggest
-that most of the challenges can be overcome with the incorporation of
-technology, in what then became known as Dynamic Ocean Management
-\citep{maxwell_2015}. \citet{kaplan_2009} claim that very large MPAs
-would result in excessive opportunity costs and that these would be
-difficult to enforce. \citet{toonen_2013} show that just a small number
-of LSMPAs made up 80\% of the managed areas in the ocean in 2013, and
-that these can help achieve the CBD Aichi targets faster.
-\citet{singleton_2014} provide an objective discussion of pros and cons
-of LSMPAs.
+The cutoff at which an MPA is considered to be a LSMPA ranges from areas
+larger than 30,000 km\textsuperscript{2} as defined by
+\citet{desanto_2013} or areas larger than 250,000 km\textsuperscript{2},
+as defined by \citep{toonen_2013}. Figure \ref{fig:LSMPAs_map} shows
+LSMPAs that meet the later, and that are fully no take. LSMPAs are often
+implemented in the pelagic environment, where the dominant human
+activity is industrial fishing \citep{gray_2017,kroodsma_2018}. The
+early literature on LSMPAs focused on the inherent challenges and
+difficulties that come with a pelagic environment. \citet{kaplan_2010}
+claimed that very large MPAs would result in excessive opportunity costs
+and that these would be difficult to enforce. \citet{game_2009}
+suggested that most of the challenges could be overcome with the
+incorporation of technology, in what then became known as Dynamic Ocean
+Management \citep{maxwell_2015}. The effectiveness and difficulties of
+implementating LSMPAs are not the focus of this paper
+\footnote{But see \citet{singleton_2014}, who provide an objective discussion of pros and cons of LSMPAs.}.
+Instead, we focus on the effect and implications of the ones that
+\emph{have been} implemented.
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-2-1.pdf}
+\caption{\label{fig:unnamed-chunk-2}\label{fig:LSMPAs_map}Large Scale Marine
+Protected Areas. The map shows all areas larger than 250,000
+Km\textsuperscript{2}. Areas in dark blue meet at least one of these
+conditions: reported no take area is greater than 0, are categorized as
+IUCN Ia or Ib, their designated english name is `Protected Area'.}
+\end{figure}
 
 LSMPAs were erroneously assumed to have little social implications due
 to their remoteness. However, there have been calls to incorporate the
 human dimensions into LSMPAs management and evaluation
-\citep{agardy_2011,gray_2017}. Most research incorporating these human
+\citep{agardy_2011,gray_2017}. Most research incorporating these
 dimensions has focused on governance and enforcement of LSMPAs
 (\emph{i.e.} \citet{alger_2017,christie_2017}), but they are yet to be
 the focus of economic analyses \citep{gray_2017}. Overall, there has
@@ -187,8 +209,11 @@ of the intervention. \citet{white_2017} combine shark tags and
 vessel-tracking data to demonstrate that the fairly large Palmyra Atoll
 National Wildlife Refuge (54,000 Km\textsuperscript{2}) protectes two
 thrids of the tagged grey reef sharks by effectively excluding fishing
-effort. No studies have evaluated the displacement of fishing effort due
-to LSMPA implementation.
+effort. More recently, \citep{bradley_2018} use similar data to
+highlight cases of illegal shark fishing \emph{inside} a 2 million
+km\textsuperscript{2} shark sanctuary. To date, no studies have
+evaluated the displacement of fishing effort due to LSMPA
+implementation.
 
 The exclusion of these LSMPAs is likely to change fisher's behavior.
 Theoretical models of fishing effort redistribution range from the
@@ -197,63 +222,54 @@ to spatially explicit models that reallocate fishing effort based on
 habitat characteristics, presence of other vessels, and expected returns
 \citep{smith_2003,hilborn_2006}. However, these focus on the long term
 optimal equilibrium and redistribution of fishing effort may not be
-optimal, especially over the first years \citep{stevenson_2013}. The few
-empirical works suggest that resource users may show idiosyncratic
-responses. For example, \citet{stevenson_2013} show that a network of
-MPAs displaced fishing effort farther away from ports resulting in
-higher \emph{perceived} costs, but that catch per unit effort also
-increased. \citet{cabral_2017} analyse the redistribution of fishing and
-non-fishing vessels following the implementation of MPAs in California,
-and find that commercial dive boats follow a fishing-the-line pattern,
-while some fishing boats follow an ideal free distribution. The way in
-which fishers react to a spatial closure can have major implications in
-its outcome \citep{smith_2003,hilborn_2006} highlighting the need to
+optimal, especially over the first years \citep{stevenson_2013}. The
+empirical research that has been done in custumary sized MPAs suggest
+that resource users may show idiosyncratic responses. For example,
+\citet{stevenson_2013} show that a network of MPAs displaced fishing
+effort farther away from ports, resulting in higher \emph{perceived}
+costs, and increases in catch per unit effort. \citet{cabral_2017}
+analyse the redistribution of fishing and non-fishing vessels following
+the implementation of a network of MPAs in California, and find that
+commercial dive boats follow a fishing-the-line pattern, while some
+fishing boats follow an ideal free distribution. The way in which
+fishers react to a spatial closure can have major implications in its
+outcome \citep{smith_2003,hilborn_2006} highlighting the need to
 understand how fishers react to the implementation of LSMPAs, and
 fishing effort changes and is spatially redistributed.
 
-The main objective of this paper is to identify behavioral responses to
-the implementation of LSMPAs. We combine novel vessel tracking
-technologies and causal inference techniques to identify behavioral
-changes of fishing vessels due to the implementation of PIPA. We focus
-on fishing hours and distance traveled as outcome variables that fishers
-might adjust following implementation of a LSMPA in an impact-evaluation
-fashion. Additionally, we evaluate the spatial redistribution of fishing
-effort that existed within PIPA before its implementation. This work
-provides novel empirical insights into fisher's responses to the
-implementation of LSMPAs, and can help guide future interventions. Our
-work is novel in the sense that it provides empirical evidence of the
-effect of large-acale Marine Protected Areas in fishing behavior and
-distribution.
+Our work is novel in the sense that it provides empirical evidence of
+the effect of large-acale Marine Protected Areas in fishing behavior and
+distribution and can help guide future interventions as countries march
+towards meetings the targeted 10\% of protection. Furthermore, a growing
+body of literature suggests that closing the high seas to all fishing
+could increase fishery yields and profitability of fisheries, with
+negligible costs to food security
+\citep{white_2014,sumaila_2015,sala_2018a,schiller_2018}. Understanding
+how effort is displaced from LSMPAs might provide insights into how the
+industrial fleet would react to a high seas closure.
 
-The next sections are as follows: Section \ref{background} provides an
+The paper is outlined as follows: Section \ref{background} provides an
 overview of the Nauru Agreement and associated countries, a description
 of the fleet that operates in the region, and a brief history of PIPA.
 Section \ref{methods} describes our data and identification strategy.
 Section \ref{results} presents our results, section \ref{discussion}
-provides an extension of our results to other LSMPAs and discusses our
-results.
-
-\begin{figure}
-\centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-2-1.pdf}
-\caption{\label{fig:unnamed-chunk-2}\label{fig:LSMPAs_map}Large Scale Marine
-Protected Areas. The map shows all areas larger than 250,000
-Km\textsuperscript{2}. Areas in dark blue meet at least one of these
-conditions: reported no take area is greater than 0, are categorized as
-IUCN Ia or Ib, their designated english name is `Protected Area'.}
-\end{figure}
+provides an extension of our results to other
+LSMPAs\footnote{Not yet. but I think this would be interesting} and
+discusses our
+results\footnote{I might also include a section, after the background, where I explain the different theoretical models of effort redistribution and behavioral responses}.
 
 \hypertarget{background}{%
 \section{Background}\label{background}}
 
-The Nauru Agreement was established in 1982 by Pacific island nations to
-manage their important tuna resources. PNA Members include Federated
-States of Micronesia, Kiribati, Marshall Islands, Nauru, Palau, Papua
-New Guinea, Solomon Islands, and Tuvalu.The Nauru Agreement regulated
-access of foreign vessels (\emph{i.e.} those from non-PNA countries).
-Holding \textasciitilde{}80\% of the historical purse seining grounds
-within their Exclusive Economic Zones, PNA countries gained bargaining
-power when providing access to foreign fleets \citep{havice_2010}.
+The Nauru Agreement was established in 1982 by a select group of Pacific
+island nations to manage their important tuna resources. PNA Members
+include Federated States of Micronesia, Kiribati, Marshall Islands,
+Nauru, Palau, Papua New Guinea, Solomon Islands, and Tuvalu. The Nauru
+Agreement regulated access of foreign vessels (\emph{i.e.} those from
+non-PNA countries). Holding \textasciitilde{}80\% of the historical
+purse seining grounds within their Exclusive Economic Zones, PNA
+countries gained bargaining power when providing access to foreign
+fleets \citep{havice_2010}.
 
 The cooperation that emerged thanks to the PNA allowed for subsequent
 agreements that strengthened fisheries management, like the Palau
@@ -267,7 +283,7 @@ fishing effort was managed, from number of vessels under the Palau
 Agreement to fishing hours. The VDS works as follows: Each year,
 scientific advisors recomend a total number of fishing vessel-days per
 year. Hours are allocated to each PNA country based on catch history,
-and they then sell fishing rights to other non-PNA countries
+and they then use or sell fishing rights to other non-PNA countries
 \citep{aqorau_2018}. While the effectiveness of this scheme has been
 debated in terms of meeting their fishery management and conservation
 objectives, the licensing significantly contributes to the economy of
@@ -288,34 +304,36 @@ The main tuna species caught in the region are skipjack
 albacore (\emph{Thunnus alalunga}) and bigeye (\emph{Thunnus obesus}).
 From these, the first two are amongst the top-10 species represented in
 global fisheries production statistics, with 2016 catches increasing
-relative to the 2005-2014 average \citep{fao_2018}. The pacific region
-has historically accounted for a large portion of tuna species
-production \citep{aqorau_1997}. Today, the PNA controls close to 50\% of
-the global skipjack tuna production \citep{pna_website_2018}. A large
-portion of these catches derive from purse seine vessels licensed under
-the VDS. Fishing vessels from Australia, New Zeland, China, France,
-Korea, Japan, the Philippines, Taiwan, and the United States participate
-in the purse-seining VDS.
+relative to the 2005-2014 average \citep{fao_2018}. Theis region of the
+Pacific has historically accounted for a large portion of tuna catches
+\citep{aqorau_1997}. Today, the PNA controls close to 50\% of the global
+skipjack tuna production \citep{pna_website_2018}. A large portion of
+these catches derive from purse seine vessels licensed under the VDS.
+Fishing vessels from Australia, New Zeland, China, France, Korea, Japan,
+the Philippines, Taiwan, and the United States participate in the
+purse-seining VDS.
 
 One of the most notable and recent management interventions in the
 region is the implementation of the Phoenix Island Protected Area (PIPA)
 by the government of Kiribati. PIPA was first declared in 2006, and
 established in 2008 with only 4\% of it was declared as no-take. In
 January 1\textsuperscript{st}, 2015, the no-take area within PIPA was
-expanded to a total area of 397,447 Km\textsuperscript{2}, roughly 1.5
-times the size of Ecuador. The implementation of such a large
-conservation area in one of the most important fishing regions in the
-world provides a great opportunity to evaluate the behavioral responses
-and redistribution of fishing effort by vessels that used to fish there.
-\citet{mcdermott_2018} showed that fishing effort within the Phoenix
-Islands Marine Protected Area (PIPA) increased between the anouncement
-(September 1\textsuperscript{st}, 2014) and its implementation in
-Janyary 1\textsuperscript{st}, 2015. Likewise, they demonstrate that
-fishing effort is effectively reduced after implementation. To this, we
-pose two questions: How do individual vessels respond to the sudden
-exclusion of such a big area? And where did all the vessels go? In the
-next sections we describe the data and methods used to answer this
-questions.
+expanded to a total area of 397,447 km\textsuperscript{2}, roughly 1.5
+times the size of Ecuador. Figure \ref{fig:PNA_map} shows a map of the
+PNA countries and the Phoenix Island Protected Area.
+
+The implementation of such a large conservation area in one of the most
+important fishing regions in the world provides a great opportunity to
+evaluate the behavioral responses and redistribution of fishing effort
+by vessels that used to fish there. \citet{mcdermott_2018} showed that
+fishing effort within the Phoenix Islands Marine Protected Area (PIPA)
+increased between the anouncement (September 1\textsuperscript{st},
+2014) and its implementation in Janyary 1\textsuperscript{st}, 2015.
+Likewise, they demonstrate that fishing effort is effectively reduced
+after implementation. To this, we pose two questions: How do individual
+vessels respond to the sudden exclusion of such a big area? And where
+did all the vessels go? In the next sections we describe the data and
+methods used to answer this questions.
 
 \hypertarget{methods}{%
 \section{Methods}\label{methods}}
@@ -337,17 +355,21 @@ Automatic Identification Systems are on-board devices intended to
 provide at-sea safety and prevent ship collisions by broadcasting vessel
 position, course, and activities to surrounding vessels. These
 broadcasted messages can be received by satellites and land-based
-antennas. GFW uses a neural network to infer vessel characteristics and
-whether each broadcasted position represents a fishing event, thus
-allowing us to estimate near real-time fishing events globally since
-2012 \citep{kroodsma_2018}. Our data contain information for 2012 -
-2017. The recent addition of satellites that can receive AIS signals
-causes an apparent increase in the number of broadcasted AIS messages
-(\emph{i.e.} points), and therefore number of vessels and fishing hours.
-The variability in AIS data and ocean conditions require that temporal
-trends be taken into account. We do that by obtaining a subset of data
-that meet a BACI design, which gives us the full tracks for vessels
-affected and unaffected by the implementation of PIPA.
+antennas. GFW uses convolutional neural networks to infer vessel
+characteristics and whether each broadcasted position represents a
+fishing event, thus allowing us to estimate near real-time fishing
+events globally since 2012 \citep{kroodsma_2018}. Our data contain
+information for 2012 - 2017. The amount of data gathered is dependent on
+the number of antenas and satellites that can pick up the signals. In
+June 1\textsuperscript{st} 2014 satellite count increased from 3 to 6,
+and then to 10 in January 1\textsuperscript{st} 2016. This causes an
+apparent increase in the number of broadcasted AIS messages (\emph{i.e.}
+points), and therefore number of vessels and fishing hours. The
+variability in AIS data and ocean conditions require that temporal
+trends be taken into account. We do that by including specific controls
+in our identification strategy and using a subset of data that meet a
+BACI design -which gives us the full tracks for vessels affected and
+unaffected by the implementation of PIPA.
 
 Our data contain over 45 million individual AIS messages (\emph{i.e.}
 positions) for 371 fishing vessels that at some point fished in PNA
@@ -382,9 +404,14 @@ Chinese vessels (n = 21). Our definition of treatment and control groups
 leaves us with 61 and 21 treated and control vessels, which have just
 over 22 million observations where about 22\% are identified as fishing
 events. For each of the remainig vessels, we calculate their total daily
-fishing hours and obtain a pannel data with 38,200 observations. Table
+fishing hours and obtain pannel data with 37,800 observations. Table
 \ref{tab:baci_n_s} shows the number of vessels following a BACI design,
-as well as the fishing hours, before and after PIPA. Figure
+as well as the fishing hours, before and after PIPA. Fig.
+\ref{fig:all_vessels} shows that mean fishing hours for purse seiners
+have an abrupt increase, just before January 1st, 2015. This trend is
+observed for both treated and control groups. Across all measures, the
+treatment and control vessels follow similar patterns, confirming our
+claim that the control group provides a plausible counterfactual. Figure
 \ref{fig:baci_strict} provides a visual representation of the
 vessel-level fishing events that make up each group through time.
 
@@ -402,6 +429,15 @@ Treatment & 61 & 10.67 & 18.36 & 1.72\\
 \end{tabular}
 \end{table}
 
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-7-1.pdf}
+\caption{\label{fig:unnamed-chunk-7}\label{fig:all_vessels}Fishing hours and
+number of vessels by month for all vessels. Vertical dashed lines
+indicates dates when satellites were added, solid line indicates PIPA
+closurePIPA closure.}
+\end{figure}
+
 \hypertarget{analyses}{%
 \subsection{Analyses}\label{analyses}}
 
@@ -415,7 +451,7 @@ never fished inside PIPA, before and after PIPA implementation. Our
 specification is the following:
 
 \[
-y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \epsilon_{i,t}
+y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \theta_i + \epsilon_{i,t}
 \]
 
 Where \(y_{i,t}\) is the variable of interest for vessel \(i\) in time
@@ -429,8 +465,9 @@ the standard intercept, \(\beta_1\) captures the temporal trend change,
 and \(\beta_3\) is our parameter of interest: de DiD estimate capturing
 the treatment effect. Finally, \(\phi_t\) and \(\gamma_i\) represent
 month-, and flag-level dummies that account for seasonality or
-country-level management
-interventions\footnote{We test for other more complex specifications that interact a quarterly or year-month variable with the treatment group and find qualitativel the same results.}
+country-level management interventions, and \(\theta_i\) are a set of
+dummies that account for the addition of more
+satellites\footnote{We test for other more complex specifications that interact a quarterly or year-month variable with the treatment group and find qualitativel the same results.}.
 
 Our second part of the analyses focuses on the redistribution of fishing
 effort. In other words, identifying where do vessels that used to fish
@@ -438,13 +475,13 @@ inside PIPA go after its establishment. We discretize spatial units by
 using a polygon for PIPA
 \footnote{we would expect to see a decrease here} and distinct spatial
 units for each EEZ of each country. Some vessels might shift from EEZs
-into the High Seas, but we are interested in knowing \emph{where} in the
-High Seas, so we incorporate additional regions by using a 1 degree
-buffer of the High Seas arround each of the EEZ regions. The rest of the
+into the high seas, but we are interested in knowing \emph{where} in the
+high seas, so we incorporate additional regions by using a 1 degree
+buffer of the high seas arround each of the EEZ regions. The rest of the
 high seas are merged into a single spatial unit. For example, if we were
 to do this only for Kiribati, we would have 8 spatial units: PIPA, three
-EEZs, three 1-degree buffers of High Seas arround each EEZs, and the
-rest of the High Seas. Whenever the buffers overlapped between
+EEZs, three 1-degree buffers of high seas arround each EEZs, and the
+rest of the high seas. Whenever the buffers overlapped between
 themselves, we randocmply clipped one on to the other. EEZs that had
 sporadic fishing events were pooled into a group of ``others''.
 
@@ -455,7 +492,7 @@ countries. This gives us the by-country change in proportional
 allocation of fishing effort:
 
 \[
-y_{i,t} = \alpha + \beta_1Post + \beta_{2,i}Country + \beta_{3,i}Post_t \times Country_i + \epsilon_{i,t}
+y_{i,t} = \alpha + \beta_1Post + \beta_{2,i}Country + \beta_{3,i}Post_t \times Country_i + \theta_i + \epsilon_{i,t}
 \]
 
 Our variable of interest, \(y_{i,t}\) represents the proportion of
@@ -464,7 +501,8 @@ represents a policy dummy that takes the value of 0 for all dates before
 implementation of PIPA, and 1 otherwise. \(Country\) is a dummy variable
 for countries for the spatial units defined above. Our parameter of
 interest is \(\beta_{1,i}\), which captures the country-level change in
-proportional fishing effort.
+proportional fishing effort. \(\theta_i\) accounts for the addition of
+satellites.
 
 All regression coefficients were estimated via ordinary least squares,
 and heteroskedastic-robust standard errors were calculated. All analyses
@@ -474,7 +512,7 @@ used in this work are available on
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-9}\label{tab:ba_disp}Changes in the relative allocation of fishing effort by region (EEZ, PIPA, high seas) and gear.}
+\caption{\label{tab:unnamed-chunk-10}\label{tab:ba_disp}Changes in the relative allocation of fishing effort by region (EEZ, PIPA, high seas) and gear.}
 \centering
 \begin{tabular}[t]{lr}
 \toprule
@@ -494,18 +532,9 @@ EEZ TUV 1 & 1.27\\
 \addlinespace
 HS & 3.93\\
 HS COK 1 & 0.06\\
-HS FSM 1 & 0.01\\
 HS KIR 1 & 2.96\\
 HS KIR 2 & 1.07\\
-\addlinespace
 HS KIR 3 & 2.53\\
-HS MHL 1 & 0.11\\
-HS MUS 1 & 0.00\\
-HS NRU 1 & -0.08\\
-HS PNG 2 & -0.20\\
-\addlinespace
-HS SLB 1 & -0.02\\
-HS TUV 1 & 0.01\\
 PIPA PIPA 1 & -8.25\\
 \bottomrule
 \end{tabular}
@@ -515,33 +544,6 @@ PIPA PIPA 1 & -8.25\\
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
-
-Our data suggest that purse seiners and longliners have different
-responses to the implementation of a Large-Scale Marine Protected Areas.
-Fig. \ref{fig:all_vessels} shows that mean fishing hours for purse
-seiners have an abrupt increase, just before January 1st, 2015. This
-trend is observed for both treated and control groups. The pattern
-closely corresponds with the increase in total hours, but the total
-number of vessels doesn't entirely follow this pattern. The increase in
-fishing hours might be caused by the increased number of
-satellites\footnote{Need to check this. Not sure any satellites were
-  incorporated during 2014. It is also possible that PNA countries
-  started enforcing the requirement of having an AIS unit. On either
-  case, both treatment and control groups seem to be affected equally.}.
-Longliners, however, show no apparent trend with a clear seasonality
-\citep{ortuocrespo_2018}. The number of mmsi codes also increases
-slightly through time, but becomes stable after 2015. For both gears and
-across all measures, the treatment and control vessels follow similar
-patterns, confirming our claim that the control group provides a
-plausible counterfactual.
-
-\begin{figure}
-\centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-10-1.pdf}
-\caption{\label{fig:unnamed-chunk-10}\label{fig:all_vessels}Fishing hours
-and number of vessels by month for all vessels. Vertical dashed line
-indicates PIPA closure.}
-\end{figure}
 
 \begin{figure}
 \centering
@@ -568,6 +570,63 @@ regression with no fixed effects, column (2) includes month fixed
 effects, column (3) includes month and the second degree polynomial for
 years, and column (4) includes all of the above and country-level fixed
 effects.
+
+\clearpage
+\begin{landscape}
+
+
+\begin{table}[!htbp] \centering 
+  \caption{Difference-in-differences estimates for 3 different controls and 3 different specifications. The first three columns use all data for controls. Columns 4 - 6 use only Taiwanese vessels as controls, and columns 7 - 9 exclude Chinese vessels. Numbers in parentheses are heteroskedastic-robust standard errors.} 
+  \label{} 
+\small 
+\begin{tabular}{@{\extracolsep{1pt}}lccccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{9}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-10} 
+\\[-1.8ex] & \multicolumn{9}{c}{hours} \\ 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9)\\ 
+\hline \\[-1.8ex] 
+ Constant & 6.345$^{***}$ & 7.863$^{***}$ & 10.322$^{***}$ & 7.124$^{***}$ & 9.007$^{***}$ & 9.933$^{***}$ & 6.057$^{***}$ & 7.584$^{***}$ & 10.194$^{***}$ \\ 
+  & (0.186) & (0.274) & (0.404) & (0.265) & (0.341) & (0.620) & (0.193) & (0.279) & (0.538) \\ 
+  & & & & & & & & & \\ 
+ post & $-$0.052 & 1.134$^{***}$ & 1.115$^{***}$ & $-$1.199$^{***}$ & $-$0.279 & 0.124 & $-$0.284 & 1.013$^{***}$ & 1.166$^{***}$ \\ 
+  & (0.303) & (0.304) & (0.339) & (0.435) & (0.429) & (0.436) & (0.318) & (0.318) & (0.357) \\ 
+  & & & & & & & & & \\ 
+ treated & $-$1.142$^{***}$ & $-$0.839$^{***}$ & 0.010 & $-$1.977$^{***}$ & $-$1.675$^{***}$ & 0.626 & $-$0.877$^{***}$ & $-$0.536$^{**}$ & 0.150 \\ 
+  & (0.214) & (0.209) & (0.281) & (0.284) & (0.274) & (0.416) & (0.221) & (0.215) & (0.297) \\ 
+  & & & & & & & & & \\ 
+ sate2 & 12.579$^{***}$ & 11.589$^{***}$ & 11.340$^{***}$ & 12.709$^{***}$ & 11.850$^{***}$ & 11.749$^{***}$ & 12.631$^{***}$ & 11.599$^{***}$ & 11.349$^{***}$ \\ 
+  & (0.197) & (0.199) & (0.232) & (0.212) & (0.213) & (0.246) & (0.199) & (0.201) & (0.235) \\ 
+  & & & & & & & & & \\ 
+ sate3 & 14.675$^{***}$ & 13.587$^{***}$ & 13.328$^{***}$ & 14.799$^{***}$ & 13.894$^{***}$ & 13.795$^{***}$ & 14.958$^{***}$ & 13.804$^{***}$ & 13.566$^{***}$ \\ 
+  & (0.260) & (0.262) & (0.307) & (0.286) & (0.287) & (0.329) & (0.264) & (0.266) & (0.315) \\ 
+  & & & & & & & & & \\ 
+ post:treated & $-$0.515$^{*}$ & $-$0.833$^{***}$ & $-$0.934$^{***}$ & 0.562 & 0.373 & $-$0.176 & $-$0.439 & $-$0.814$^{***}$ & $-$1.084$^{***}$ \\ 
+  & (0.281) & (0.276) & (0.310) & (0.413) & (0.402) & (0.407) & (0.293) & (0.287) & (0.326) \\ 
+  & & & & & & & & & \\ 
+\hline \\[-1.8ex] 
+Control & All & All & All & PNA & PNA & PNA & -CHN & -CHN & -CHN \\ 
+Month FE & No & Yes & Yes & No & Yes & Yes & No & Yes & Yes \\ 
+Flag FE & No & No & Yes & No & No & Yes & No & No & Yes \\ 
+Observations & 37,840 & 37,840 & 30,359 & 30,583 & 30,583 & 25,034 & 36,415 & 36,415 & 28,934 \\ 
+R$^{2}$ & 0.171 & 0.200 & 0.208 & 0.178 & 0.208 & 0.215 & 0.173 & 0.203 & 0.211 \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{9}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+\end{landscape}
+\clearpage
+
+\begin{figure}
+\centering
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-14-1.pdf}
+\caption{\label{fig:unnamed-chunk-14}\label{fig:long}Coefficient estimates
+for each model. Top pannel indicates variable, x-axis represents model
+specification, and y-axis coefficient estimate.}
+\end{figure}
 
 Recall that to evaluate the redistribution of fishing effort we only
 track fishing vessels that belong to the treated group. In this case, we
@@ -610,14 +669,34 @@ effort for purse seiners.}
 
 \begin{table}[H]
 
-\caption{\label{tab:unnamed-chunk-17}Change in the relative allocation of fishing hours by purse seiners ()}
+\caption{\label{tab:unnamed-chunk-17}Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1), p < 0.001}
 \centering
-\fontsize{7}{9}\selectfont
 \begin{tabular}[t]{ll}
 \toprule
 term & h\_prop\\
-
-
+\midrule
+(Intercept) & 0.087 (0.002)***\\
+post & -0.081 (0.003)***\\
+sate2 & -0.003 (0.001)***\\
+sate3 & -0.002 (0.001)\\
+post:countryEEZ COK 1 & 0.088 (0.002)***\\
+\addlinespace
+post:countryEEZ FSM 1 & 0.091 (0.003)***\\
+post:countryEEZ KIR 1 & 0.081 (0.003)***\\
+post:countryEEZ KIR 2 & 0.127 (0.004)***\\
+post:countryEEZ KIR 3 & 0.055 (0.005)***\\
+post:countryEEZ MHL 1 & 0.078 (0.003)***\\
+\addlinespace
+post:countryEEZ NRU 1 & 0.083 (0.003)***\\
+post:countryEEZ PNG 2 & -0.008 (0.005)*\\
+post:countryEEZ SLB 1 & 0.114 (0.004)***\\
+post:countryEEZ TUV 1 & 0.095 (0.003)***\\
+post:countryHS & 0.122 (0.003)***\\
+\addlinespace
+post:countryHS COK 1 & 0.083 (0.002)***\\
+post:countryHS KIR 1 & 0.112 (0.003)***\\
+post:countryHS KIR 2 & 0.093 (0.002)***\\
+post:countryHS KIR 3 & 0.108 (0.003)***\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -726,46 +805,8 @@ the pre and post periods.}
 \subsection{Other model
 specifications}\label{other-model-specifications}}
 
-\hypertarget{year-as-dummy-variables}{%
-\subsubsection{Year as dummy variables}\label{year-as-dummy-variables}}
-
 \begin{table}[!htbp] \centering 
-  \caption{\label{tab:purse_old}Fishing hours from GFW for purse seiners (n = 106; 38 control, 68 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.} 
-  \label{} 
-\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-5} 
-\\[-1.8ex] & \multicolumn{4}{c}{hours} \\ 
-\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
-\hline \\[-1.8ex] 
- post & 8.394$^{***}$ & 9.334$^{***}$ & 14.934$^{***}$ & 17.284$^{***}$ \\ 
-  & (0.267) & (0.254) & (0.312) & (0.403) \\ 
-  & & & & \\ 
- treated & $-$1.069$^{***}$ & $-$0.770$^{***}$ & $-$0.993$^{***}$ & 0.259 \\ 
-  & (0.249) & (0.234) & (0.219) & (0.269) \\ 
-  & & & & \\ 
- post:treated & $-$0.701$^{**}$ & $-$0.899$^{***}$ & $-$0.530$^{*}$ & $-$0.580$^{**}$ \\ 
-  & (0.308) & (0.295) & (0.283) & (0.292) \\ 
-  & & & & \\ 
- Constant & 11.738$^{***}$ & 11.281$^{***}$ & 7.574$^{***}$ & 10.077$^{***}$ \\ 
-  & (0.220) & (0.292) & (0.318) & (0.422) \\ 
-  & & & & \\ 
-\hline \\[-1.8ex] 
-Month FE & No & Yes & Yes & Yes \\ 
-Year FE & No & No & Yes & Yes \\ 
-Flag FE & No & No & No & Yes \\ 
-Observations & 37,840 & 37,840 & 37,840 & 37,840 \\ 
-R$^{2}$ & 0.087 & 0.136 & 0.179 & 0.192 \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{table}
-
-\begin{table}[!htbp] \centering 
-  \caption{\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment).. Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.} 
+  \caption{\label{tab:long}Fishing hours from GFW for longliners (n = 203; 88 control, 115 treatment). Asterisks indicate significance levels. Numbers in parenthesis represent heteroskedastic-robuste standard errors.} 
   \label{} 
 \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
 \\[-1.8ex]\hline 
@@ -799,15 +840,13 @@ R$^{2}$ & 0.010 & 0.015 & 0.016 & 0.030 \\
 \end{tabular} 
 \end{table}
 
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-21-1.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-21-2.pdf}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-21-3.pdf}
+
 \includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-22-1.pdf}
 \includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-22-2.pdf}
 \includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-22-3.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-22-4.pdf}
-
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-1.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-2.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-3.pdf}
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-4.pdf}
 
 \clearpage
 
