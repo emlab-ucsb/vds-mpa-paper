@@ -16,7 +16,9 @@ pipa <- read_sf(dsn = here::here("data", "spatial", "PIPA"),
 
 vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
   filter(fishing,
-         !is.na(eez_iso3)) %>% 
+         gear == "purse_seines",
+         !is.na(eez_iso3),
+         year < 2018) %>% 
   group_by(eez_iso3) %>% 
   summarize(h = sum(hours)) %>% 
   arrange(desc(h)) %>% 
@@ -24,7 +26,7 @@ vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>%
   filter(prop <= 0.99)
 
 eez <- read_sf(dsn = here::here("raw_data", "spatial", "EEZ"), layer = "eez_v10") %>% 
-  filter(ISO_Ter1 %in% unique(vessel_tracks$eez_iso3)) %>% 
+  filter(ISO_Ter1 %in% c(unique(vessel_tracks$eez_iso3), "FJI")) %>% 
   st_rotate() %>% 
   select(ISO_Ter1) %>%
   group_by(ISO_Ter1) %>%

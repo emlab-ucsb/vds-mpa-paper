@@ -127,7 +127,7 @@ The cooperation that emerged thanks to the PNA allowed for subsequent agreements
 [^a]: See \citet{havice_2010} for a detailed description of the Nauru, Palau, and Federal States of Micronesia agreements, their objectives, and outcomes.
 
 ```{r, fig.cap = "\\label{fig:PNA_map}Map of the Exclusive Economic Zones (EEZs) of the region of interest. A solid line indicates countries that belong to the PNA, while a dashed line indicates all others. A red line indicates the Kiribati EEZ, and a solid red polygon delineates PIPA."}
-countries <- c("PIPA", "KIR", "HS", "ASM", "COK", "FSM", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV", "UMI")
+countries <- c("PIPA", "KIR", "HS", "ASM", "COK", "FSM", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV", "UMI"< "FJI")
 
 small_coast <- rnaturalearth::ne_countries(scale = "large", returnclass = "sf") %>% 
   filter(sov_a3 %in% countries) %>% 
@@ -381,7 +381,7 @@ knitr::kable(x = ba_disp,
 
 Our DiD analysis shows an overall increase in purse seine fishing hours, even after accounting for the introduction of new satellites (Table \ref{tab:did}). This coefficient estimate is consistent for different model specifications and across groups of treatment and controls. These effectively represent the patterns observed in Figure \ref{fig:all_vessels}. The $\beta_3$ coefficient indicating our treatment effect suggests that, relative to the control, treated vessels fish less, in the order of 0.5 hours per day. Another way to interpret this is that the increase in fishing effort by treated vessels has ocurred at a lower rate than control vessels. This result is robust and significant ($p < 0.05$) for all model specifications using our main control group, with the effect varying between $\beta_3 = -0.515$ and $\beta_3 = -0.934$. These values are equivalent to a 15 - 28 reduction in fishing hours per month.
 
-Regressions coefficients for our DiD analysis are shown in Table \ref{tab:did}. Columns 1 -3 use all data for controls. Columns 4 - 6 use only PNA vessels as controls, and columns 7 - 9 exclude Chinese vessels. Columns 10 and 11 use Japanese vessels in the Pacific as controls, and hence don't include flag FEs to avoid perfect colinearity between Japanese flag and control\footnote{Results of the same analysis is shown for longliners in \ref{tab:long}}. It must be noted, however, that when reducing the linear structure of the $Pre \times Post$ design and instead interacting the treatment dummy with quarterly or year-month combinations we are not able to reject the null hypotheses of no change (Figures \ref{fig:q1,fig:q2,fig:q3,fig:q4,fig:ym1,fig:ym2,fig:ym3,fig:ym4}).
+Regressions coefficients for our DiD analysis are shown in Table \ref{tab:did}. Columns 1 -3 use all data for controls. Columns 4 - 6 use only PNA vessels as controls, and columns 7 - 9 exclude Chinese vessels. Columns 10 and 11 use Japanese vessels in the Pacific as controls, and hence don't include flag FEs to avoid perfect colinearity between Japanese flag and control\footnote{Results of the same analysis is shown for longliners in \ref{tab:long}}. It must be noted, however, that when reducing the linear structure of the $Pre \times Post$ design and instead interacting the treatment dummy with quarterly or year-month combinations we are not able to reject the null hypotheses of no change (Figures \ref{fig:q1}-\ref{fig:ym4}).
 
 ```{r, echo = F, fig.cap = "\\label{fig:all_vessels}Daily fishing hours for all vessels in our main treatment-control groups. Solid straight lines show a linear trend by period (pre-psot) and treatment. The other red and blue lines show monthly avarages. Vertical dashed line indicates PIPA closure."}
 effort_by_vessel %>% 
@@ -454,22 +454,21 @@ map_df(models,
 
 Recall that to evaluate the redistribution of fishing effort we only track fishing vessels that belong to the treated group. Figure \ref{fig:fishing_raster} provides a spatial representation of these changes. Note that 2013 effort distribution is roughly similar across vessels. Then in 2014 there is a sharp increase in fishing hours by treated vessels inside PIPA (blue paradox). In 2015 treated vessels then allocate more effort to the easternmost Kiribati EEZ (see Figure \label{fig:PNA_map}) and the high seas. In 2016 spatial distribution of fishing effort is again similar across groups. It is evident that the increase in relative fishing effort is greater for for regions closer to PIPA, and.
 
-Four our empirical identification we calculated the proportion of fishing effort allocated every month to each spatially explicit regions defined in section \ref{methods}. For purse seiners, these represent 9 main EEZs, PIPA, the high seas, and a group of other EEZs. Figure \ref{fig:redist_trend_ps} shows the monthly relative fishing hours that each region received by all `r pipa_vessels` treated vessels. The top-left panel shows the change in fishing effort inside PIPA, including the preemptive fishing and immediate reduction previously reported \citep{mcdermott_2018}. The change in the relative allocation of fishing effort by purse seiners increases in eight of the 12 regions after PIPA implementation (Table \ref{tab:disp_mod}, fig:map_change_ps). The largest increase is observed for the I-Kiribati EEZ, with an average increase of 0.11 (*p < 0.001*). In other words, the redistribution of treated vessels caused a 10\% increase in the *relative* allocation of fishing effort within I-Kiribati waters. The only decrease is observed for Papua New Guinea, but the coefficient is not significant.
-
+For our empirical identification we ... The XXX shows the change in fishing effort inside PIPA, including the preemptive fishing and immediate reduction previously reported \citep{mcdermott_2018}. The change in the relative allocation of fishing effort by purse seiners increases for most regions after PIPA implementation (Table \ref{tab:disp_mod}, \ref{fig:mean_change}). The largest increase is observed for the I-Kiribati EEZ, with an average increase of 0.11 (*p < 0.001*). In other words, the redistribution of treated vessels caused a 10\% increase in the *relative* allocation of fishing effort within I-Kiribati waters. The only decrease is observed for Papua New Guinea, but the coefficient is not significant.
 
 ```{r, fig.width = 7.5, fig.height = 9, fig.cap = "\\label{fig:fishing_raster}Yearly spatial distribution of fishing effort by treated and control vessels. Colors have been adjusted relative to the maximum observed by group and year. "}
 mpas_WCPO <- mpas %>% 
   filter(wdpaid %in% c(309888, 400011))
 
-fishing_raster <- readRDS(here::here("data", "fishing_raster_BACI.rds"))
+fishing_raster <- readRDS(file = here::here("data", "rasterized_effort_by_region.rds"))
 
 fishing_raster %>% 
   filter(between(year, 2013, 2016)) %>% 
   ggplot() +
-  geom_raster(mapping = aes(x = lon, y = lat, fill = hours_norm)) +
+  geom_raster(mapping = aes(x = x, y = y, fill = hours_norm)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas_WCPO, fill = "transparent", color = "red") +
-  # geom_sf(data = small_coast, color = "black") +
+  geom_sf(data = small_coast, color = "black") +
   # scale_fill_gradientn(colours = colorRamps::matlab.like2(50), trans = "log10") +
   scale_fill_viridis_c(trans = "log10") +
   facet_grid(year~treated, switch = "y") +
@@ -492,74 +491,25 @@ displacement_data %>%
   scale_color_brewer(palette = "Set1")
 ```
 
+```{r, fig.cap = "\\label{fig:mean_change}"}
+raster_month_region <- readRDS(file = here::here("data", "monthly_rasterized_effort_by_region.rds"))
 
-```{r, fig.cap = "\\label{fig:map_change_ps}Spatial representation of the mean change in the monthly allocation of fishing effort for purse seiners."}
-HS_disp_poly <- matrix(c(200, 10, 210, 10 ,210 ,20 ,200 ,20 ,200, 10),
-                  ncol=2,
-                  byrow=TRUE) %>%
-  list() %>%
-  st_polygon() %>% 
-  st_sfc(crs = "+proj=longlat +datum=WGS84 +no_defs")
+model <- lm(hours ~ year_c * id, data = raster_month_region)
 
-HS_disp <- data.frame(country = "HS",
-                      PNA = F) %>% 
-  st_set_geometry(HS_disp_poly) %>% 
-  mutate(id = country, source = country, PNA = F) %>% 
-  select(id, source, PNA, country)
+pd <- position_dodge(width = 0.2)
 
-eezs_exclude <- c("HS MUS 1", "EEZ MUS 1", "EEZ MDG 1", "EEZ MDG 2", "HS MDG 1", "HS MDG 2", "HS MOZ 1", "EEZ MOZ 1")
-
-regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
-               layer = "regions")
-
-# I AM EXCLUDING MUS WHICH SHOULD BE PUT INTO EEZ
-regions %>% 
-  rbind(HS_disp) %>% 
-  left_join(ba_disp, by = c("id" = "country")) %>%
-  filter(!id %in% eezs_exclude) %>%
-  ggplot() +
-  geom_sf(aes(fill = change), color = "black") +
+commarobust::commarobust_tidy(model) %>%
+  filter(str_detect(term, ":")) %>%
+  mutate(year = as.numeric(str_extract(term, "[:digit:]+")),
+         term = str_extract(term, pattern = "[:alpha:]+ [:alpha:]+ [:digit:]"),
+         p = ifelse(p < 0.05, "p < 0.05", "p > 0.05")) %>%
+  ggplot(aes(x = year, y = est, color = term)) +
+  geom_errorbar(aes(ymin = est - se, ymax = est + se), width = 0, position = pd, size = 1) +
+  geom_point(aes(shape = p), size = 2, position = pd) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
   ggtheme_plot() +
-  scale_fill_gradientn(colors = colorRamps::matlab.like(10))
-```
-
-```{r, results = "asis"}
-disp_mod_ps_data <- displacement_data %>% 
-  filter(!is.na(country),
-         gear == "purse_seines",
-         !country %in% regions_few_points) %>% 
-  mutate(post = post *1,
-         year2 = year^2,
-         month_c = as.character(month),
-         country = fct_relevel(country, "PIPA PIPA 1"),
-         sate = case_when(date < lubridate::date("2014/06/01") ~ "1",
-                          date > lubridate::date("2015/12/31") ~ "3",
-                          T ~ "2"))
-
-disp_mod_ps1 <- lm(h_prop ~ post*country + sate, data = disp_mod_ps_data)
-
-
-commarobust::commarobust_tidy(disp_mod_ps1) %>% 
-  mutate(b = str_detect(term, "Intercept"),
-         c = str_detect(term, "post"),
-         d = str_detect(term, "sate"),
-         a = b*c,
-         p1 = ifelse(p < 0.1, "*", ""),
-         p2 = ifelse(p < 0.05, "*", ""),
-         p3 = ifelse(p < 0.01, "*", ""),
-    h_prop = paste0(formatC(est, digits = 3, format = "f"),
-                    " (",
-                    formatC(se, digits = 3, format = "f"),
-                    ")",
-                    p1,
-                    p2,
-                    p3)) %>% 
-  filter(b+c+d > 0) %>% 
-  select(term, h_prop) %>% 
-  knitr::kable(booktabs = T,
-               caption = "\\label{tab:disp_mod}Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1, p < 0.001)") %>% 
-  kableExtra::kable_styling(latex_options = "HOLD_position")
-
+  guides(color = guide_legend(ncol = 2, order = 2),
+         shape = guide_legend(order = 1))
 ```
 
 \clearpage
@@ -687,7 +637,8 @@ $$
 y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \omega Y_t + \Omega Y_t^2 + \epsilon_{i,t}
 $$
 
-```{r, results = "asis"}
+
+```{r}
 model_data <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %>%
   filter(year < 2018,
          baci_strict,
@@ -700,7 +651,9 @@ m1 <- lm(hours ~ post*treated, data = model_data)
 m2 <- lm(hours ~ post*treated + month_c, data = model_data)
 m3 <- lm(hours ~ post*treated + month_c + year_c, data = model_data)
 m4 <- lm(hours ~ post*treated + month_c + year_c + flag, data = model_data)
+```
 
+```{r, results = "asis"}
 models <- list(m1, m2, m3, m4)
 
 stargazer::stargazer(models,
@@ -716,6 +669,7 @@ stargazer::stargazer(models,
                      header = F,
                      title = "\\label{tab:purse}Fishing hours from GFW for purse_seiners. Asterisks indicate significance levels. Numbers in parentheses represent heteroskedastic-robust standard errors.")
 ```
+
 
 ### Quarterly DID interactions
 
@@ -759,7 +713,7 @@ termplot(models_exp3_did_ym)
 
 ```{r, fig.width = 7, fig.height = 10.5, fig.cap = "\\label{fig:fishing_raster_full}"}
 ggplot() +
-  geom_raster(data = fishing_raster, mapping = aes(x = lon, y = lat, fill = hours_norm)) +
+  geom_raster(data = fishing_raster, mapping = aes(x = x, y = y, fill = hours_norm)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas_WCPO, fill = "transparent", color = "red") +
   geom_sf(data = small_coast, color = "black") +

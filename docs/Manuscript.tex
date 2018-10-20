@@ -698,23 +698,17 @@ fishing effort is again similar across groups. It is evident that the
 increase in relative fishing effort is greater for for regions closer to
 PIPA, and.
 
-Four our empirical identification we calculated the proportion of
-fishing effort allocated every month to each spatially explicit regions
-defined in section \ref{methods}. For purse seiners, these represent 9
-main EEZs, PIPA, the high seas, and a group of other EEZs. Figure
-\ref{fig:redist_trend_ps} shows the monthly relative fishing hours that
-each region received by all 61 treated vessels. The top-left panel shows
-the change in fishing effort inside PIPA, including the preemptive
-fishing and immediate reduction previously reported
-\citep{mcdermott_2018}. The change in the relative allocation of fishing
-effort by purse seiners increases in eight of the 12 regions after PIPA
-implementation (Table \ref{tab:disp_mod}, fig:map\_change\_ps). The
-largest increase is observed for the I-Kiribati EEZ, with an average
-increase of 0.11 (\emph{p \textless{} 0.001}). In other words, the
-redistribution of treated vessels caused a 10\% increase in the
-\emph{relative} allocation of fishing effort within I-Kiribati waters.
-The only decrease is observed for Papua New Guinea, but the coefficient
-is not significant.
+For our empirical identification we \ldots{} The XXX shows the change in
+fishing effort inside PIPA, including the preemptive fishing and
+immediate reduction previously reported \citep{mcdermott_2018}. The
+change in the relative allocation of fishing effort by purse seiners
+increases for most regions after PIPA implementation (Table
+\ref{tab:disp_mod}, \ref{fig:mean_change}). The largest increase is
+observed for the I-Kiribati EEZ, with an average increase of 0.11
+(\emph{p \textless{} 0.001}). In other words, the redistribution of
+treated vessels caused a 10\% increase in the \emph{relative} allocation
+of fishing effort within I-Kiribati waters. The only decrease is
+observed for Papua New Guinea, but the coefficient is not significant.
 
 \begin{figure}
 \centering
@@ -736,44 +730,8 @@ after PIPA for 9 EEZs, PIPA, the high seas and `other EEZs'.}
 \begin{figure}
 \centering
 \includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-15-1.pdf}
-\caption{\label{fig:unnamed-chunk-15}\label{fig:map_change_ps}Spatial
-representation of the mean change in the monthly allocation of fishing
-effort for purse seiners.}
+\caption{\label{fig:unnamed-chunk-15}\label{fig:mean_change}}
 \end{figure}
-
-\begin{table}[H]
-
-\caption{\label{tab:unnamed-chunk-16}\label{tab:disp_mod}Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1, p < 0.001)}
-\centering
-\begin{tabular}[t]{ll}
-\toprule
-term & h\_prop\\
-\midrule
-(Intercept) & 0.087 (0.002)***\\
-post & -0.081 (0.003)***\\
-sate2 & -0.003 (0.001)***\\
-sate3 & -0.002 (0.001)\\
-post:countryEEZ COK 1 & 0.088 (0.002)***\\
-\addlinespace
-post:countryEEZ FSM 1 & 0.091 (0.003)***\\
-post:countryEEZ KIR 1 & 0.081 (0.003)***\\
-post:countryEEZ KIR 2 & 0.127 (0.004)***\\
-post:countryEEZ KIR 3 & 0.055 (0.005)***\\
-post:countryEEZ MHL 1 & 0.078 (0.003)***\\
-\addlinespace
-post:countryEEZ NRU 1 & 0.083 (0.003)***\\
-post:countryEEZ PNG 2 & -0.008 (0.005)*\\
-post:countryEEZ SLB 1 & 0.114 (0.004)***\\
-post:countryEEZ TUV 1 & 0.095 (0.003)***\\
-post:countryHS & 0.122 (0.003)***\\
-\addlinespace
-post:countryHS COK 1 & 0.083 (0.002)***\\
-post:countryHS KIR 1 & 0.112 (0.003)***\\
-post:countryHS KIR 2 & 0.093 (0.002)***\\
-post:countryHS KIR 3 & 0.108 (0.003)***\\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \clearpage
 
@@ -881,8 +839,8 @@ period}\label{stream-of-data-by-vessel-group-and-period}}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-17-1.pdf}
-\caption{\label{fig:unnamed-chunk-17}\label{fig:baci_strict}Stream of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-16-1.pdf}
+\caption{\label{fig:unnamed-chunk-16}\label{fig:baci_strict}Stream of
 fishing events by vessels through time. Each line represents a vessel,
 with dots indicating months with fishing activity and colors indicating
 the pre and post periods.}
@@ -999,29 +957,29 @@ interactions}\label{quarterly-did-interactions}}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-20-1.pdf}
-\caption{\label{fig:unnamed-chunk-20}\label{fig:q1}Interaction of quarters
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-19-1.pdf}
+\caption{\label{fig:unnamed-chunk-19}\label{fig:q1}Interaction of quarters
 and treatment. Control group is all vessels.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-21-1.pdf}
-\caption{\label{fig:unnamed-chunk-21}\label{fig:q2}Interaction of quarters
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-20-1.pdf}
+\caption{\label{fig:unnamed-chunk-20}\label{fig:q2}Interaction of quarters
 and treatment. Control group is vessels from PNA.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-22-1.pdf}
-\caption{\label{fig:unnamed-chunk-22}\label{fig:q3}Interaction of quarters
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-21-1.pdf}
+\caption{\label{fig:unnamed-chunk-21}\label{fig:q3}Interaction of quarters
 and treatment. Control group excludes Chinese vessels.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-1.pdf}
-\caption{\label{fig:unnamed-chunk-23}\label{fig:q4}Interaction of quarters
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-22-1.pdf}
+\caption{\label{fig:unnamed-chunk-22}\label{fig:q4}Interaction of quarters
 and treatment. Control group is japanese vessels.}
 \end{figure}
 
@@ -1031,29 +989,29 @@ interactions}\label{year-month-did-interactions}}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-24-1.pdf}
-\caption{\label{fig:unnamed-chunk-24}\label{fig:ym1}Interaction of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-23-1.pdf}
+\caption{\label{fig:unnamed-chunk-23}\label{fig:ym1}Interaction of
 year-month and treatment. Control group is all vessels.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-25-1.pdf}
-\caption{\label{fig:unnamed-chunk-25}\label{fig:ym2}Interaction of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-24-1.pdf}
+\caption{\label{fig:unnamed-chunk-24}\label{fig:ym2}Interaction of
 year-month and treatment. Control group is vessels from PNA.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-26-1.pdf}
-\caption{\label{fig:unnamed-chunk-26}\label{fig:ym3}Interaction of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-25-1.pdf}
+\caption{\label{fig:unnamed-chunk-25}\label{fig:ym3}Interaction of
 year-month and treatment. Control group excludes Chinese vessels.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-27-1.pdf}
-\caption{\label{fig:unnamed-chunk-27}\label{fig:ym4}Interaction of
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-26-1.pdf}
+\caption{\label{fig:unnamed-chunk-26}\label{fig:ym4}Interaction of
 year-month and treatment. Control group is japanese vessels.}
 \end{figure}
 
@@ -1062,8 +1020,8 @@ year-month and treatment. Control group is japanese vessels.}
 
 \begin{figure}
 \centering
-\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-28-1.pdf}
-\caption{\label{fig:unnamed-chunk-28}\label{fig:fishing_raster_full}}
+\includegraphics{C:/Users/JC/Documents/GitHub/MPA_displacement/docs/Manuscript_files/figure-latex/unnamed-chunk-27-1.pdf}
+\caption{\label{fig:unnamed-chunk-27}\label{fig:fishing_raster_full}}
 \end{figure}
 
 \clearpage

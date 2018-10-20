@@ -17,10 +17,11 @@ rasterize_df <- function(x, r, fun = "sum"){
     return()
 }
 
-extract_raster <- function(r, year){
+extract_raster <- function(r, year, treated){
   as.data.frame(r, xy = T) %>%
     rename(hours = layer) %>% 
-    mutate(year = year) %>% 
+    mutate(year = year,
+           treated = treated) %>% 
     return()
 }
 
@@ -41,100 +42,81 @@ regions_with_HS <- regions %>%
   rbind(data.frame(id = "HS", source = "HS", PNA = 0, country = "HS", unique = 0))
 
 regions_raster_df <- as.data.frame(regions_raster, xy = T) %>% 
-  left_join(regions_df, by = c("layer" = "unique"))
+  left_join(regions_with_HS, by = c("layer" = "unique"))
 
-plot(regions_raster)
-
-vessel_tracks <- vessel_tracks %>%  #readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
+vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
   filter(gear == "purse_seines",
          year < 2018,
-         fishing,
-         treated)
+         fishing) %>% 
+  mutate(treated = ifelse(treated, "Treated", "Control"))
 
-vessel_tracks_2012 <- vessel_tracks %>% 
-  filter(year == 2012) %>% 
-  drop_na() %>%
-  rasterize_df(r = regions_raster)
+# Vector of dates to iterate over
+years <- 2012:2017
+# Vector of groups to iterate over
+groups <- c("Treated", "Control")
 
-vessel_tracks_2013 <- vessel_tracks %>% 
-  filter(year == 2013) %>% 
-  drop_na() %>%
-  rasterize_df(r = regions_raster)
+# iniialize empty df
+yearly_effort_raster <- data.frame(x = NULL,
+                                    y = NULL,
+                                    hours = NULL,
+                                    year = NULL,
+                                    treated = NULL)
 
-vessel_tracks_2014 <- vessel_tracks %>% 
-  filter(year == 2014) %>% 
-  drop_na() %>%
-  rasterize_df(r = regions_raster)
+for(j in groups){
+  for(i in years){
+    # Rasterize the points for month i
+    raster_j_i <- vessel_tracks %>% 
+      filter(year == i,
+             treated == j) %>% 
+      rasterize_df(r = regions_raster)
+    
+    # Export raster in case this thing breaks
+    writeRaster(x = raster_j_i,
+                filename = here::here("data",
+                                      "spatial",
+                                      "yearly_rasterized_effort_by_region",
+                                      paste0(j, "_", i, ".tif")),
+                overwrite = TRUE)
+    
+    # Convert raster into data.frame
+    raster_j_i_df <- raster_j_i %>% 
+      extract_raster(year = i,
+                     treated = j) %>% 
+      drop_na(hours)
+    
+    # Allow data.frame to grow so that it has 72 months times nrow times ncol in the raster
+    yearly_effort_raster <- rbind(yearly_effort_raster, raster_j_i_df)
+  }
+}
 
-vessel_tracks_2015 <- vessel_tracks %>% 
-  filter(year == 2015) %>% 
-  drop_na() %>%
-  rasterize_df(r = regions_raster)
-
-vessel_tracks_2016 <- vessel_tracks %>% 
-  filter(year == 2016) %>% 
-  drop_na() %>%
-  rasterize_df(r = regions_raster)
-
-vessel_tracks_2017 <- vessel_tracks %>% 
-  filter(year == 2017) %>% 
-  drop_na() %>%
-  rasterize_df(r = regions_raster)
-
-
-# eezs_exclude <- c("HS MUS 1", "EEZ MUS 1", "EEZ MDG 1", "EEZ MDG 2", "HS MDG 1", "HS MDG 2", "HS MOZ 1", "EEZ MOZ 1")
-
-all_tracks <- extract_raster(vessel_tracks_2012, year = 2012) %>% 
-  rbind(extract_raster(vessel_tracks_2013, 2013)) %>% 
-  rbind(extract_raster(vessel_tracks_2014, 2014)) %>% 
-  rbind(extract_raster(vessel_tracks_2015, 2015)) %>% 
-  rbind(extract_raster(vessel_tracks_2016, 2016)) %>% 
-  rbind(extract_raster(vessel_tracks_2017, 2017)) %>% 
+# Combine the rasterized dataframe with the regions to match them
+yearly_effort_raster <- yearly_effort_raster %>% 
   left_join(regions_raster_df, by = c("x", "y")) %>%
-  group_by(year) %>% 
+  group_by(year, treated) %>% 
   mutate(max_hours = max(hours, na.rm = T)) %>% 
   ungroup() %>% 
-  mutate(hours_norm = hours / max_hours,
-         treated = "Treated") %>% 
-  filter(!id %in% c("HS PNG 1", "EEZ PNG 1", "HS MHL 1", "HS FSM 1", "HS NRU 1", "HS PNG 2", "HS SLB 1", "HS TUV 1")) %>%
-  drop_na() %>%
-  mutate(year_c = as.factor(year))
-  
+  mutate(hours_norm = hours / max_hours)
 
-model <- lm(hours~year_c*id + x + y, data = all_tracks)
+saveRDS(yearly_effort_raster, file = here::here("data", "rasterized_effort_by_region.rds"))
 
-summary(model)
 
-all_tracks %>% 
-  ggplot() +
-  geom_raster(aes(x = x, y = y, fill = hours_norm)) +
-  # geom_sf(data = eez, fill = "transparent", color = "black") +
-  # geom_sf(data = mpas_WCPO, fill = "transparent", color = "red") +
-  scale_fill_viridis_c(trans = "log10") +
-  facet_grid(year~., switch = "y") +
-  ggtheme_map() +
-  coord_equal() +
-  theme(legend.position = "bottom")
 
-all_tracks %>% 
-  mutate(predicted = predict(model),
-         residual = hours - predicted) %>% 
-  ggplot()
-  geom_raster(aes(x = x, y = y, fill = hours)) +
-  # geom_sf(data = eez, fill = "transparent", color = "black") +
-  # geom_sf(data = mpas_WCPO, fill = "transparent", color = "red") +
-  scale_fill_viridis_c(trans = "log10") +
-  facet_grid(year~., switch = "y") +
-  ggtheme_map() +
-  theme(legend.position = "bottom")
-  
-  # Sacar rasters de control
-  # Actualizar datos de redistribution raster
-  # Grafica de cambio por año por pais tipo termplot
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 
 
