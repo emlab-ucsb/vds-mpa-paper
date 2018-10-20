@@ -452,18 +452,21 @@ map_df(models,
 
 <!-- ## Effort displacement and redistribution -->
 
-Recall that to evaluate the redistribution of fishing effort we only track fishing vessels that belong to the treated group. In this case, we calculate the proportion of fishing effort allocated every month to each spatially explicit region outlined by EEZs and the high seas. For purse seiners, these represent 9 main EEZs, PIPA, the high seas, and a group of other EEZs. Figure \ref{fig:redist_trend_ps} shows the monthly relative fishing hours that each region received by all `r pipa_vessels` treated vessels. The top-left panel shows the change in fishing effort inside PIPA, including the preemptive fishing and immediate reduction previously reported \citep{mcdermott_2018}.
+Recall that to evaluate the redistribution of fishing effort we only track fishing vessels that belong to the treated group. Figure \ref{fig:fishing_raster} provides a spatial representation of these changes. Note that 2013 effort distribution is roughly similar across vessels. Then in 2014 there is a sharp increase in fishing hours by treated vessels inside PIPA (blue paradox). In 2015 treated vessels then allocate more effort to the easternmost Kiribati EEZ (see Figure \label{fig:PNA_map}) and the high seas. In 2016 spatial distribution of fishing effort is again similar across groups. It is evident that the increase in relative fishing effort is greater for for regions closer to PIPA, and.
 
-The change in the relative allocation of fishing effort by purse seiners increases in eight of the 12 regions after PIPA implementation (Table \ref{tab:disp_mod}). The largest increase is observed for the I-Kiribati EEZ, with an average increase of 0.11 (*p < 0.001*). In other words, the redistribution of treated vessels caused a 10\% increase in the *relative* allocation of fishing effort within I-Kiribati waters. The only decrease is observed for Papua New Guinea, but the coefficient is not significant. Figure \ref{fig:map_change_ps} provides a spatial representation of these changes. It is evident that the increase in relative fishing effort is greater for for regions closer to PIPA.
+Four our empirical identification we calculated the proportion of fishing effort allocated every month to each spatially explicit regions defined in section \ref{methods}. For purse seiners, these represent 9 main EEZs, PIPA, the high seas, and a group of other EEZs. Figure \ref{fig:redist_trend_ps} shows the monthly relative fishing hours that each region received by all `r pipa_vessels` treated vessels. The top-left panel shows the change in fishing effort inside PIPA, including the preemptive fishing and immediate reduction previously reported \citep{mcdermott_2018}. The change in the relative allocation of fishing effort by purse seiners increases in eight of the 12 regions after PIPA implementation (Table \ref{tab:disp_mod}, fig:map_change_ps). The largest increase is observed for the I-Kiribati EEZ, with an average increase of 0.11 (*p < 0.001*). In other words, the redistribution of treated vessels caused a 10\% increase in the *relative* allocation of fishing effort within I-Kiribati waters. The only decrease is observed for Papua New Guinea, but the coefficient is not significant.
 
-```{r, fig.width = 6, fig.height = 9}
+
+```{r, fig.width = 7.5, fig.height = 9, fig.cap = "\\label{fig:fishing_raster}Yearly spatial distribution of fishing effort by treated and control vessels. Colors have been adjusted relative to the maximum observed by group and year. "}
 mpas_WCPO <- mpas %>% 
   filter(wdpaid %in% c(309888, 400011))
 
 fishing_raster <- readRDS(here::here("data", "fishing_raster_BACI.rds"))
 
-ggplot() +
-  geom_raster(data = fishing_raster, mapping = aes(x = lon, y = lat, fill = hours_norm)) +
+fishing_raster %>% 
+  filter(between(year, 2013, 2016)) %>% 
+  ggplot() +
+  geom_raster(mapping = aes(x = lon, y = lat, fill = hours_norm)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas_WCPO, fill = "transparent", color = "red") +
   # geom_sf(data = small_coast, color = "black") +
@@ -491,7 +494,6 @@ displacement_data %>%
 
 
 ```{r, fig.cap = "\\label{fig:map_change_ps}Spatial representation of the mean change in the monthly allocation of fishing effort for purse seiners."}
-
 HS_disp_poly <- matrix(c(200, 10, 210, 10 ,210 ,20 ,200 ,20 ,200, 10),
                   ncol=2,
                   byrow=TRUE) %>%
@@ -555,7 +557,7 @@ commarobust::commarobust_tidy(disp_mod_ps1) %>%
   filter(b+c+d > 0) %>% 
   select(term, h_prop) %>% 
   knitr::kable(booktabs = T,
-               caption = "Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1, p < 0.001)") %>% 
+               caption = "\\label{tab:disp_mod}Change in the relative allocation of purse seining fishing hours by region (R2 = 0.36, F(47, 69000) = 961.1, p < 0.001)") %>% 
   kableExtra::kable_styling(latex_options = "HOLD_position")
 
 ```
@@ -753,6 +755,21 @@ termplot(models_exp2_did_ym)
 termplot(models_exp3_did_ym)
 ```
 
+### Fishing raster
+
+```{r, fig.width = 7, fig.height = 10.5, fig.cap = "\\label{fig:fishing_raster_full}"}
+ggplot() +
+  geom_raster(data = fishing_raster, mapping = aes(x = lon, y = lat, fill = hours_norm)) +
+  geom_sf(data = eez, fill = "transparent", color = "black") +
+  geom_sf(data = mpas_WCPO, fill = "transparent", color = "red") +
+  geom_sf(data = small_coast, color = "black") +
+  # scale_fill_gradientn(colours = colorRamps::matlab.like2(50), trans = "log10") +
+  scale_fill_viridis_c(trans = "log10") +
+  facet_grid(year~treated, switch = "y") +
+  # coord_equal() +
+  ggtheme_map() +
+  theme(legend.position = "bottom")
+```
 
 
 
