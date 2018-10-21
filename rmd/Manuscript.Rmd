@@ -251,7 +251,7 @@ effort_by_vessel %>%
 
 The first analysis focuses on identifying the response of fishing vessels to PIPA closure. A spatial closure might cause fishers to modify their behavior as they adapt to a new state of the world. Some may have to travel further distances to find new fishing grounds, which would lead them to fish harder to compensate for the associated extra fuel costs. If fishers had developed experience for fishing in particular sites, being excluded might impose a learning cost on them, as they identify new fishing grounds. This would result in increased search times. However, if the area of influence of a vessel is significantly larger than that of the spatial closure, they might already know other places and times where to fish. Our variables of interests intend to capture these possible reactions.
 
-We use daily fishing hours, daily proportion of fishing vs. non-fishing hours, and daily distance traveled (km). We compare our variable of interest before and after the implementation of PIPA using a Difference-in-Differences approach, where we track the variable of interest for vessels described in the previous section. Our specification is the following:
+We use daily fishing hours, daily proportion of fishing vs. non-fishing hours, daily distance traveled (km), distance from shore (km) and distance from port(km)\footnote{Results are presented for fishing hours, bur preliminary results for distance form shore and distance from port are shown in Tables \ref{tab:dist_shore} and \ref{tab:dist_port}}. We compare our variable of interest before and after the implementation of PIPA using a Difference-in-Differences approach, where we track the variable of interest for vessels described in the previous section. Our specification is the following:
 
 $$
 y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \theta_t + \epsilon_{i,t}
@@ -626,7 +626,8 @@ Our work suggests that the implementation of LSMPAs has little impact on purse s
 
 - Distance traveled
 - Non-fishing hours at sea
-- Monthly crowdnes??
+- Monthly crowdnes (same approach as now, but monthly instead of yearly)
+- Number of vessels per cell as another measure of crowdness (this is a more real one)
 - Repeat raster exercise for Revillagigedo and other recently implemented LSMPAs. It would be great to have a pannel figure of 3 or 4 other LSMPAs that show wher effort was and where it went to generalize our results.
 - John talked about this being relevant to Palau (their upcoming LSMPA). We might want to talk about where the vessels that are there would go.
 
@@ -723,49 +724,6 @@ stargazer::stargazer(models,
 
 \clearpage
 
-## Other model specifications for purse seiners
-
-We include a second degree polynomial for years as:
-
-$$
-y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \omega Y_t + \Omega Y_t^2 + \epsilon_{i,t}
-$$
-
-
-```{r}
-model_data <- readRDS(file = here::here("data", "effort_by_vessel.rds")) %>%
-  filter(year < 2018,
-         baci_strict,
-         gear == "purse_seines") %>% 
-  mutate(post = post * 1,
-         treated = treated * 1,
-         mmsi_c = as.factor(mmsi))
-
-m1 <- lm(hours ~ post*treated, data = model_data)
-m2 <- lm(hours ~ post*treated + month_c, data = model_data)
-m3 <- lm(hours ~ post*treated + month_c + year_c, data = model_data)
-m4 <- lm(hours ~ post*treated + month_c + year_c + flag, data = model_data)
-```
-
-```{r, results = "asis"}
-models <- list(m1, m2, m3, m4)
-
-stargazer::stargazer(models,
-                     se = commarobust::makerobustseslist(models),
-                     t.auto = T,
-                     p.auto = T,
-                     type = "latex",
-                     omit = c("flag", "year", "month"),
-                     add.lines = list(c("Month FE", "No", "Yes", "Yes", "Yes"),
-                                      c("Year FE", "No", "No", "Yes", "Yes"),
-                                      c("Flag FE", "No", "No", "No", "Yes")),
-                     omit.stat = c("adj.rsq", "f", "ser"),
-                     header = F,
-                     title = "\\label{tab:purse}Fishing hours from GFW for purse_seiners. Asterisks indicate significance levels. Numbers in parentheses represent heteroskedastic-robust standard errors.")
-```
-
-\clearpage
-
 ### Quarterly DID interactions
 
 ```{r, fig.cap = "\\label{fig:q1}Interaction of quarters and treatment. Control group is all vessels."}
@@ -804,9 +762,57 @@ termplot(models_exp2_did_ym)
 termplot(models_exp3_did_ym)
 ```
 
+## Other measures of change in behavior
+
+Global Fishing Watch data includes two variables of interest that are readily available: distance from shore and distance from port. We use these as variables of interest and perform the following regression:
+
+$$
+y = \beta_1Year + \beta_2Treated + \beta_3Year \ Treated + \epsilon
+$$
+
+Where $y$ is our variable of interest, $Year$ represent year dummies, with 2012 as the reference level, and $Treated$ indicates wether a vessel belongs to the treated or control group.
+
+\clearpage
+
+### Distance from shore
+
+```{r}
+vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
+  filter(year < 2018,
+         fishing,
+         gear == "purse_seines") %>% 
+  mutate(year_c = as.factor(year))
+
+```
+
+```{r, results = "asis"}
+lm(distance_from_shore ~ year_c * treated, data = vessel_tracks) %>% 
+  stargazer::stargazer(se = commarobust::makerobustseslist(.),
+                       pauto = T,
+                       tauto = T, title = "\\label{tab:dist_shore}Regression results for distance from shore. Numbers in parentheses are heteroskedastic-robust standard errors.",
+                       intercept.bottom = F,
+                       type = "latex",
+                       header = F)
+```
+
+\clearpage
+
+### Distance from ports
+
+```{r, results = "asis"}
+lm(distance_from_port ~ year_c * treated, data = vessel_tracks) %>% 
+  stargazer::stargazer(se = commarobust::makerobustseslist(.),
+                       pauto = T,
+                       tauto = T, title = "\\label{tab:dist_port}Regression results for distance from shore",
+                       intercept.bottom = F,
+                       type = "latex",
+                       header = F)
+```
+
+
 ## Effort redistribution
 
-## Rasterized regions
+### Rasterized regions
 
 ```{r, fig.cap = "\\label{fig:raster_rgn}Rasterized regions. Each color (number) indicates a distinct region."}
 raster::raster(here::here("data", "spatial", "regions_raster.tif")) %>% 
