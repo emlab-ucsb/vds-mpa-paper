@@ -4,10 +4,11 @@ library(sf)
 library(tidyverse)
 source(here::here("scripts", "st_rotate.R"))
 
+# Define functions to rasterize and then conver to data.frames
 rasterize_df <- function(x, r, fun = "sum"){
   x2 <- x %>%
     select(lon, lat, hours) %>% 
-    mutate(lon = ifelse(lon < 0, lon + 180, lon - 180) + 180) %>% 
+    mutate(lon = ifelse(lon < 0, lon + 180, lon - 180) + 180) %>% # I want to shift points sot hat the Pacific is centered
     as.matrix()
   
   rasterize(x = x2[,1:2],
@@ -25,12 +26,15 @@ extract_raster <- function(r, year, month = NULL){
     return()
 }
 
+# EEZs that have few points and are therefore excluded from the analyses and counted as HS
 eezs_exclude <- c("HS MUS 1", "EEZ MUS 1", "EEZ MDG 1", "EEZ MDG 2", "HS MDG 1", "HS MDG 2", "HS MOZ 1", "EEZ MOZ 1")
 
+# Read my regions shapefile
 regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
                    layer = "regions") %>% 
   filter(!id %in% eezs_exclude)
 
+# Rasterize regions shapefile
 regions_raster <- regions %>%
   mutate(unique = group_indices(., id)) %>%
   fasterize(sf = .,
@@ -38,14 +42,21 @@ regions_raster <- regions %>%
             field = "unique",
             background = 0)
 
+# Export rater to include in Appendix
+writeRaster(x = regions_raster, file = here::here("data",
+                                                  "spatial",
+                                                  "regions_raster.tif"))
+# Add a HS term and convert into a data.frame used later
 regions_with_HS <- regions %>%
   mutate(unique = group_indices(., id)) %>% 
   st_set_geometry(NULL) %>% 
   rbind(data.frame(id = "HS HS 1", source = "HS", PNA = 0, country = "HS", unique = 0))
 
+# This data.frame has columns for region ids and the corresponding raster values (HS is 0)
 regions_raster_df <- as.data.frame(regions_raster, xy = T) %>% 
   left_join(regions_with_HS, by = c("layer" = "unique"))
 
+# Read in the entire vessel tracks
 monthly_vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
   filter(gear == "purse_seines",
          year < 2018,
