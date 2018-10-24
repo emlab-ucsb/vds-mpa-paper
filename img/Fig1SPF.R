@@ -99,11 +99,12 @@ p1 <- ggplot() +
                   nudge_x = 5,
                   nudge_y = 5) +
   ggtheme_map() +
-  geom_sf(data = boxes, fill = "transparent", aes(linetype = Fleet), size = 1) +
+  geom_sf(data = boxes, fill = "transparent", aes(linetype = Fleet), size = 0.5, color = "black") +
   scale_fill_manual(values = c("lightyellow", "steelblue", "steelblue1")) +
   scale_color_manual(values = c("red", "purple")) +
+  scale_linetype_manual(values = c("solid", "dashed", "dotted")) +
   theme(panel.background = element_rect(fill = "#E3E3E3"),
-        panel.border = element_blank(),
+        panel.border = element_rect(fill = NA, colour = "black"),
         legend.background = element_blank(),
         legend.justification = c(0, 0.05),
         legend.position = c(0.55, 0),
