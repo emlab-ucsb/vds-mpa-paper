@@ -9,4 +9,3 @@ EEZ_MEOW.*
 *.log
 .httr-oauth
 /raw_data/
-data/spatial/EEZ_subset/
