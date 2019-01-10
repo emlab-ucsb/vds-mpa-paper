@@ -4,7 +4,7 @@ subtitle: "Updated on `r Sys.Date()`"
 author: |
   Juan Carlos Villaseñor-Derbez^1^
   John Lynham^2^
-abstract: "Large-scale Marine Protected Areas (LSMPAs) have seen a significant increase over the last years. Fishing effort is effectively eliminated within these protected areas upon implementation. The benefits of reducing effort have been largely studied, but little empirical works evaluate what happens to the effort after an MPA is created. The economic and ecological implications of displacing fishing effort are not yet fully understood. We use identification of fishing activity via Automatic Identification Systems (AIS) and causal inference techniques to provide the first analyses of behavioral changes and spatial redistribution of tuna purse seiners due to the implementation of a Large Scale Marine Protected Area in the Pacific Ocean. Our work provides three main findings: 1) aggregate fishing effort remains relatively unaffected; 2) Vessels that fished inside the protected area redistribute to adjacent waters; and 3) We observe a crowding effect for the first years after implementation. Our results not only provide an impact evaluation of the effect of LSMPAs on fishing activity, but provide insights into vessel redistribution dynamics, which may have ecological and economic implications. As countries continue to implement LSMPAs as a way to reach the stated 10% target of ocean protection, managers should consider how fishing effort will change in space and through time to ensure that fishing effort is not just displaced elsewhere, leading to overfishing in adjacent waters. While LSMPAs can provide a wide range of benefits, their implementation must be accompained with traditional fisheries management to maximize their effectiveness."
+abstract: "The number of Large-scale Marine Protected Areas (LSMPAs) has significantly increased over the last years. Fishing effort is effectively eliminated within these protected areas upon implementation. The benefits of reducing fishing mortality within the bounded regions have been largely studied, but little empirical work has evaluated what happens to the effort after an MPA is created. The economic and ecological implications of displacing fishing effort as well as the differential responses under different institutional settings are not yet fully understood. We use identification of fishing activity via Automatic Identification Systems (AIS) and causal inference techniques to provide the first analyses of behavioral changes and spatial redistribution of tuna purse seiners due to the implementation of Large Scale Marine Protected Areas that operate under different institutional settings. Our work provides three main findings: 1) aggregate fishing effort remains relatively unaffected when effort is not caped; 2) Vessels that fished inside the protected area before its implementation redistribute to adjacent waters, but responses are idiosyncratic; and 3) We observe a crowding effect outside the LSMPA over the first years after implementation. Our results not only provide an impact evaluation of the effect of LSMPAs on fishing activity but provide insights into vessel redistribution dynamics. As countries continue to implement LSMPAs as a way to reach the stated 10% target of ocean protection, managers should consider how existing institutions interact with the creation of an MPA. While LSMPAs can provide a wide range of benefits, their implementation must be accompanied with traditional fisheries management to maximize their effectiveness."
 date: "
 ^1^Bren School of Environmental Science and Management, University of California Santa Barbara, Santa Barbara, CA\\newline
 ^2^Department of Economics, University of Hawaii at Manoa, Honolulu, HI"
@@ -499,7 +499,7 @@ fishing_raster %>%
   theme(legend.position = "bottom")
 ```
 
-```{r, fig.cap = "\\label{fig:redist_trend}Monthly relative allocation of fishing effort by PIPA-fishing vessels before and after PIPA by region. Colors indicate the pre-post period. Solid line across points shows local mean with a region-specific loess smoother. Vertical dashed lines indicates dates when satellites were added, solid line indicates PIPA closurePIPA closure. Note that inflection points of the loess smoother are not affected by the addition of satellites.", eval = T, fig.height = 5, fig.widht = 6}
+```{r, fig.cap = "\\label{fig:redist_trend}Monthly relative allocation of fishing effort by PIPA-fishing vessels before and after PIPA by region. Colors indicate the pre-post period. Solid line across points shows local mean with a region-specific loess smoother. Vertical dashed lines indicates dates when satellites were added, solid line indicates PIPA closurePIPA closure. Note that inflection points of the loess smoother are not affected by the addition of satellites.", eval = T, fig.height = 5, fig.width = 6}
 terms_order <- c("PIPA PIPA 1", "EEZ KIR 1", "EEZ KIR 2", "EEZ KIR 3", "HS KIR 1", "HS KIR 2", "HS KIR 3", "HS HS 1")
 
 redistribution_model_data %>% 
@@ -538,6 +538,34 @@ commarobust::commarobust_tidy(model) %>%
   scale_color_brewer(palette = "Set1")
 ```
 
+```{r, eval = F}
+# Map with color of each shapefile representing the change for 2015
+change_2015_by_region <- commarobust::commarobust_tidy(model) %>%
+  filter(str_detect(term, ":")) %>%
+  mutate(year = as.numeric(str_extract(term, "[:digit:]+")),
+         term = str_extract(term, pattern = "[:alpha:]+ [:alpha:]+ [:digit:]"),
+         p = ifelse(p < 0.05, "p < 0.05", "p > 0.05"),
+         term = str_replace(term, "id", ""),
+         term = fct_relevel(term, terms_order)) %>% 
+  filter(year == 2015) %>%
+  rename(id = term)
+
+eezs_exclude <- c("HS MUS 1", "EEZ MUS 1", "EEZ MDG 1", "EEZ MDG 2", "HS MDG 1", "HS MDG 2", "HS MOZ 1", "EEZ MOZ 1", "EEZ PNG 1", "EEZ PNG 2", "HS PNG 1", "HS PNG 2")
+
+regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
+                   layer = "regions") %>% 
+  filter(!id %in% eezs_exclude) %>%
+  left_join(change_2015_by_region, by = "id")
+
+ggplot() +
+  geom_sf(data = regions, aes(fill = est)) +
+  scale_fill_gradientn(colours = colorRamps::matlab.like(20)) +
+  ggtheme_plot() +
+  guides(fill = guide_colorbar(title = bquote(Delta)))
+
+```
+
+
 ```{r}
 commarobust::commarobust_tidy(model) %>%
   filter(str_detect(term, ":")) %>%
@@ -560,25 +588,34 @@ commarobust::commarobust_tidy(model) %>%
 ```
 
 ```{r, fig.cap = "\\label{fig:sp_corr}Number of cells that had treated and control vessels (A) and spatial correlation in the presence-absence of treated and control vessels per cell (B)."}
-files <- list.files(path = here::here("data", "spatial", "yearly_rasterized_effort_by_region"))
-rs <- stack(here::here("data", "spatial", "yearly_rasterized_effort_by_region", files))
+files <- list.files(path = here::here("data", "spatial", "monthly_rasterized_effort_by_region"))
+rs <- stack(here::here("data", "spatial", "monthly_rasterized_effort_by_region", files))
 
 corr <- raster::as.data.frame(rs, xy = T) %>%
   gather(group, hours, -c(x, y)) %>%
-  mutate(year = as.numeric(str_extract(group, "[:digit:]+")),
-         group = str_replace_all(group, "_[:digit:]+", ""),
-         hours = ifelse(hours > 0, 1, 0)) %>%
+  mutate(
+    year = as.numeric(
+      str_extract(group, "[:digit:]+")
+    ),
+    month = as.numeric(
+      str_replace_all(
+        str_extract(group, "\\.[:digit:]+\\."),
+        "\\.", "")
+    ),
+    group = str_extract(group, "[:alpha:]+"),
+    hours = ifelse(hours > 0, 1, 0)) %>%
   spread(group, hours, fill = 0) %>% 
   mutate(both = (Control > 0 & Treated > 0) * 1,
-         post = year > 2014)
+         post = year > 2014,
+         date = lubridate::date(paste(year, month, 01, sep = "-")))
 
 n_both <- corr %>%
   filter(both > 0) %>% 
-  group_by(year, post) %>% 
+  group_by(year, month, date, post) %>% 
   summarize(n = sum(both)) %>% 
   ungroup() %>% 
-  ggplot(aes(x = year, y = n)) +
-  geom_line() +
+  ggplot(aes(x = date, y = n)) +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2), color = "black", size = 1) +
   geom_point(aes(color = post), size = 4) +
   scale_color_brewer(palette = "Set1") +
   ggtheme_plot() +
@@ -586,14 +623,15 @@ n_both <- corr %>%
 
 corr_both <- corr %>%
   drop_na() %>%
-  group_by(year, post) %>%
+  group_by(year, month, date, post) %>%
   summarize(cor = cor(Control, Treated)) %>% 
-  ggplot(aes(x = year, y = cor)) +
-  geom_line() +
+  ggplot(aes(x = date, y = cor)) +
+  geom_vline(xintercept = lubridate::date("2015-01-01"), linetype = "dashed", color = "black", size = 1) +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2), color = "black", size = 1) +
   geom_point(aes(color = post), size = 4) +
   scale_color_brewer(palette = "Set1") +
   ggtheme_plot() +
-  theme(legend.position = c(0.2, 0.8))
+  theme(legend.position = c(0.1, 0.9))
 
 cowplot::plot_grid(n_both, corr_both, ncol = 2, labels = "AUTO")
 ```
@@ -841,5 +879,43 @@ ggplot() +
   ggtheme_map()
 ```
 
+### Yearly rowding
 
-\clearpage
+```{r, fig.cap = "\\label{fig:sp_corry}Number of cells that had treated and control vessels (A) and spatial correlation in the presence-absence of treated and control vessels per cell (B)."}
+files <- list.files(path = here::here("data", "spatial", "yearly_rasterized_effort_by_region"))
+rs <- stack(here::here("data", "spatial", "yearly_rasterized_effort_by_region", files))
+corr <- raster::as.data.frame(rs, xy = T) %>%
+  gather(group, hours, -c(x, y)) %>%
+  mutate(year = as.numeric(str_extract(group, "[:digit:]+")),
+         group = str_replace_all(group, "_[:digit:]+", ""),
+         hours = ifelse(hours > 0, 1, 0)) %>%
+  spread(group, hours, fill = 0) %>% 
+  mutate(both = (Control > 0 & Treated > 0) * 1,
+         post = year > 2014)
+
+n_both <- corr %>%
+  filter(both > 0) %>% 
+  group_by(year, post) %>% 
+  summarize(n = sum(both)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = year, y = n)) +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2), color = "black", size = 1) +
+  geom_point(aes(color = post), size = 4) +
+  scale_color_brewer(palette = "Set1") +
+  ggtheme_plot() +
+  theme(legend.position = "none")
+
+corr_both <- corr %>%
+  drop_na() %>%
+  group_by(year, post) %>%
+  summarize(cor = cor(Control, Treated)) %>% 
+  ggplot(aes(x = year, y = cor)) +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2), color = "black", size = 1) +
+  geom_point(aes(color = post), size = 4) +
+  scale_color_brewer(palette = "Set1") +
+  ggtheme_plot() +
+  theme(legend.position = c(0.2, 0.9))
+
+cowplot::plot_grid(n_both, corr_both, ncol = 2, labels = "AUTO")
+```
+
