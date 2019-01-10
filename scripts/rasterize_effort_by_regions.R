@@ -25,6 +25,9 @@ extract_raster <- function(r, year, treated){
     return()
 }
 
+# EEZs that have few points and are therefore excluded from the analyses and counted as HS
+eezs_exclude <- c("HS MUS 1", "EEZ MUS 1", "EEZ MDG 1", "EEZ MDG 2", "HS MDG 1", "HS MDG 2", "HS MOZ 1", "EEZ MOZ 1")
+
 regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
                    layer = "regions") %>% 
   filter(!id %in% eezs_exclude)
@@ -57,10 +60,10 @@ groups <- c("Treated", "Control")
 
 # iniialize empty df
 yearly_effort_raster <- data.frame(x = NULL,
-                                    y = NULL,
-                                    hours = NULL,
-                                    year = NULL,
-                                    treated = NULL)
+                                   y = NULL,
+                                   hours = NULL,
+                                   year = NULL,
+                                   treated = NULL)
 
 for(j in groups){
   for(i in years){
