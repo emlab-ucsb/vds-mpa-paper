@@ -11,7 +11,6 @@ output:
   beamer_presentation: 
     citation_package: biblatex
     slide_level: 2
-    theme: Berkeley
 bibliography: references.bib
 biblio-style: authoryear
 header-includes:
