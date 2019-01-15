@@ -1,7 +1,8 @@
-/* Last run on 25/09/2018 */
+/* Last run on 14/01/2018 */
 
 SELECT
   A.mmsi AS mmsi,
+  A.year,
   A.timestamp AS timestamp,
   A.lon AS lon,
   A.lat AS lat,
@@ -13,11 +14,12 @@ SELECT
   A.seg_id AS seg_id,
   B.treated AS treated,
   B.gear AS gear,
-  B.glaf AS flag
+  B.flag AS flag
 FROM (
   SELECT
     mmsi,
     timestamp,
+    EXTRACT(year FROM timestamp) as year,
     lon,
     lat,
     hours,
@@ -42,4 +44,4 @@ FROM (
 JOIN
   `ucsb-gfw.mpa_displacement.vessel_groups` B
 ON
-  A.mmsi = B.mmsi
+  A.mmsi = B.mmsi AND A.year = B.year

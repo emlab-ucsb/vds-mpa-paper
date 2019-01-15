@@ -2,6 +2,7 @@
 
 # SELECT
 # A.mmsi AS mmsi,
+# A.year,
 # A.timestamp AS timestamp,
 # A.lon AS lon,
 # A.lat AS lat,
@@ -18,6 +19,7 @@
 #   SELECT
 #   mmsi,
 #   timestamp,
+#   EXTRACT(year FROM timestamp) as year,
 #   lon,
 #   lat,
 #   hours,
@@ -42,7 +44,7 @@
 # JOIN
 # `ucsb-gfw.mpa_displacement.vessel_groups` B
 # ON
-# A.mmsi = B.mmsi
+# A.mmsi = B.mmsi AND A.year = B.year
 # This litle scripts just downloads it.
 
 library(dplyr)
