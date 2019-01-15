@@ -4,11 +4,11 @@ library(sf)
 library(tidyverse)
 source(here::here("scripts", "st_rotate.R"))
 
-# Define functions to rasterize and then conver to data.frames
+# Define functions to rasterize and then convert to data.frames
 rasterize_df <- function(x, r, fun = "sum"){
   x2 <- x %>%
     select(lon, lat, hours) %>% 
-    mutate(lon = ifelse(lon < 0, lon + 180, lon - 180) + 180) %>% # I want to shift points sot hat the Pacific is centered
+    mutate(lon = ifelse(lon < 0, lon + 180, lon - 180) + 180) %>% # I want to shift points so that the Pacific is centered
     as.matrix()
   
   rasterize(x = x2[,1:2],
@@ -18,11 +18,12 @@ rasterize_df <- function(x, r, fun = "sum"){
     return()
 }
 
-extract_raster <- function(r, year, month = NULL){
+extract_raster <- function(r, year, month = NULL, treated){
   as.data.frame(r, xy = T) %>%
     rename(hours = layer) %>% 
     mutate(year = year,
-           month = month) %>% 
+           month = month,
+           treated = treated) %>% 
     return()
 }
 
@@ -42,10 +43,13 @@ regions_raster <- regions %>%
             field = "unique",
             background = 0)
 
-# Export rater to include in Appendix
-writeRaster(x = regions_raster, file = here::here("data",
-                                                  "spatial",
-                                                  "regions_raster.tif"))
+# Export raster to include in Appendix
+writeRaster(x = regions_raster,
+            file = here::here("data",
+                              "spatial",
+                              "regions_raster.tif"),
+            overwrite=TRUE)
+
 # Add a HS term and convert into a data.frame used later
 regions_with_HS <- regions %>%
   mutate(unique = group_indices(., id)) %>% 
@@ -60,43 +64,49 @@ regions_raster_df <- as.data.frame(regions_raster, xy = T) %>%
 monthly_vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
   filter(gear == "purse_seines",
          year < 2018,
-         fishing,
-         treated) %>% 
+         fishing) %>% 
   drop_na(hours, fishing) %>% 
-  mutate(date = lubridate::date(paste(year, month, 1, sep = "/")))
+  mutate(date = lubridate::date(paste(year, month, 1, sep = "/")),
+         treated = ifelse(treated, "Treated", "Control"))
 
 # Vector of dates to iterate over
 dates <- sort(unique(monthly_vessel_tracks$date))
+# Vector of groups to iterate over
+groups <- c("Treated", "Control")
 
 # iniialize empty df
 monthly_effort_raster <- data.frame(x = NULL,
                                     y = NULL,
+                                    treated = NULL,
                                     hours = NULL,
                                     year = NULL,
                                     month = NULL)
-
-for(i in 1:length(dates)){
-  # Rasterize the points for month i
-  raster_i <- monthly_vessel_tracks %>% 
-    filter(date == dates[i]) %>% 
-    rasterize_df(r = regions_raster)
-  
-  # Export raster in case this thing breaks
-  writeRaster(x = raster_i,
-              filename = here::here("data",
-                                    "spatial",
-                                    "monthly_rasterized_effort_by_region",
-                                    paste0(dates[i], ".tif")),
-              overwrite = TRUE)
-  
-  # Convert raster into data.frame
-  raster_i_df <- raster_i %>% 
-    extract_raster(year = lubridate::year(dates[i]),
-                   month = lubridate::month(dates[i])) %>% 
-    drop_na(hours)
-  
-  # Allow data.frame to grow so that it has 72 months times nrow times ncol in the raster
-  monthly_effort_raster <- rbind(monthly_effort_raster, raster_i_df)
+for(j in groups){
+  for(i in 1:length(dates)){
+    # Rasterize the points for month i
+    raster_j_i <- monthly_vessel_tracks %>% 
+      filter(date == dates[i],
+             treated == j) %>% 
+      rasterize_df(r = regions_raster)
+    
+    # Export raster in case this thing breaks
+    writeRaster(x = raster_j_i,
+                filename = here::here("data",
+                                      "spatial",
+                                      "monthly_rasterized_effort_by_region",
+                                      paste0(j, "_", dates[i], ".tif")),
+                overwrite = TRUE)
+    
+    # Convert raster into data.frame
+    raster_j_i_df <- raster_j_i %>% 
+      extract_raster(year = lubridate::year(dates[i]),
+                     month = lubridate::month(dates[i]),
+                     treated = j) %>% 
+      drop_na(hours)
+    
+    # Allow data.frame to grow so that it has 72 months times nrow times ncol in the raster
+    monthly_effort_raster <- rbind(monthly_effort_raster, raster_j_i_df)
+  }
 }
 
 # Combine the rasterized dataframe with the regions to match them
