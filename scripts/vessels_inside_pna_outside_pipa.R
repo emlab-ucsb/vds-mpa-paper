@@ -68,17 +68,17 @@ pna_mmsis <- gfw_data %>%
   mutate(year = SUBSTRING(date, 1, 4),
          month = SUBSTRING(date, 6, 2)) %>%
   dplyr::select(-date) %>% 
-  mutate_all(as.numeric) %>% 
+  mutate_all(as.numeric) %>% # Convert data to numeric, because sparklyr gives characters
   mutate(lon_bin = lon_bin / 10,
-         lat_bin = lat_bin / 10) %>% 
+         lat_bin = lat_bin / 10) %>% # Convert to decimal degree (see GFW documentation)
   filter(!between(lon_bin, -130, 120),
-         between(lat_bin, -7, 0),
-         !mmsi %in% mmsis) %>% 
-  collect() %>% 
-  st_as_sf(coords = c(2, 1), crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
-  st_intersection(eez_pna) %>% 
-  st_set_geometry(value = NULL) %$%
-  unique(mmsi)
+         between(lat_bin, -7, 0), # Crop down to a smaller area to speed up
+         !mmsi %in% mmsis) %>% # Remove vessels that were in PIPA (see scripts/vessels_inside_pipa.R)
+  collect() %>% # Collect the results into memory
+  st_as_sf(coords = c(2, 1), crs = "+proj=longlat +datum=WGS84 +no_defs") %>% # Convert to spatial object
+  st_intersection(eez_pna) %>% # <----------------  This key line keeps the points within PNA
+  st_set_geometry(value = NULL) %$% # Get rid of the geometry column
+  unique(mmsi) #Get the unique list of mmsis
 
 # Now get full tracks
 tracks <- gfw_data %>% 
