@@ -69,11 +69,11 @@ gfw_data %>%
   mutate(year = SUBSTRING(date, 1, 4),
          month = SUBSTRING(date, 6, 2)) %>%
   dplyr::select(-date) %>% 
-  mutate_all(as.numeric) %>% 
+  mutate_all(as.numeric) %>% # Convert data to numeric, because sparklyr gives characters
   mutate(lon_bin = lon_bin / 10,
-         lat_bin = lat_bin / 10) %>% 
-  filter(between(lon_bin, -176, -169),
-         between(lat_bin, -7, 0)) %>% 
+         lat_bin = lat_bin / 10) %>% # Convert to decimal degree (see GFW documentation)
+  filter(!between(lon_bin, -130, 120),
+         between(lat_bin, -7, 0)) %>% # Crop down to a smaller area to speed up
   collect() %>% 
   st_as_sf(coords = c(2, 1), crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
   st_intersection(pipa) %>% # <----------------  This key line keeps the points within PIPA
