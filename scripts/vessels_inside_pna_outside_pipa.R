@@ -95,7 +95,7 @@ tracks <- gfw_data %>%
          post = year >= 2015,
          date = lubridate::date(paste(year, month, "01", sep = "/")))
 
-write.csv(x = tracks, file = here::here("data", "pna_vessels_outside_pipa.csv"), row.names = F)
+write.csv(x = tracks, file = here::here("data", "vessels_inside_pna_outside_pipa.csv"), row.names = F)
 
 ## Close connection
 spark_disconnect_all()
