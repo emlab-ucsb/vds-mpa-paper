@@ -82,6 +82,12 @@
    |__small_data
 ```
 
+# Data gatehring /creation
+
+## Identify the vessels we need to work with
+
+Using data from [Kroodsma et al. 2018](https://globalfishingwatch.org/datasets-and-code/fishing-effort/) and the shapefile for the Phoenix Island Protected Area ([PIPA](https://www.protectedplanet.net/phoenix-islands-protected-area-protected-area))
+
 --------- 
 
 <a href="https://orcid.org/0000-0003-1245-589X" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon">orcid.org/0000-0003-1245-589X</a>
