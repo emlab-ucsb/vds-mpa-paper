@@ -76,7 +76,7 @@ gfw_data %>%
          between(lat_bin, -7, 0)) %>% 
   collect() %>% 
   st_as_sf(coords = c(2, 1), crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
-  st_intersection(pipa) %>% 
+  st_intersection(pipa) %>% # <----------------  This key line keeps the points within PIPA
   st_set_geometry(value = NULL) %>% 
   group_by(mmsi, year, month) %>%
   summarize(total_fishing_hours = sum(fishing_hours, na.rm = T),
