@@ -1,5 +1,23 @@
 # Displacement of fishing effort by Large Scale Marine Protected Areas
 
+## Data gatehring /creation
+
+### Spatial cropped shapefiles
+
+We have two large shapefiles, one for Marine Protected Areas from the [WDPA](https://www.protectedplanet.net/) and another one for EEZ from [MEOW](http://marineregions.org/). These data were manually downloaded from their sites in March and Sept 2018, respetively. I then used the following scripts to read them in, process them, and export them to the `data` folder:
+
+- [`get_pna_eezs.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/get_pna_eezs.R) Subsets the EEZ shapefile (not on GitHub because of size) and keeps only PNA countries.
+- [`get_pipa_shapefile.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/get_pipa_shapefile.R) Subsets the WDPA dataset (not on HitHub due to size) and exports only a shapefile for the Phoenix Islands Protected Area ([PIPA](https://www.protectedplanet.net/phoenix-islands-protected-area-protected-area))
+- [`scripts/create_regions.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/create_regions.R): Subsets the EEZ shapefile (not on GitHub because of size) to get a subset with all EEZs where vessels fished, PIPA, as well as the High seas buffer.
+
+### Identify the vessels we need to work with
+
+Using data from [Kroodsma et al. 2018](https://globalfishingwatch.org/datasets-and-code/fishing-effort/) and the shapefile for the PIPA we can identify which vessels ever fished inside PIPA. Using the same GFW data along with the [EEZ](http://marineregions.org/eezmapper.php) for PNA countries (and adyacent ones) we can identify which ones vished in the region. These data are all under the `data` folder. These are the scripts involved:
+
+- [`vessels_inside_pipa.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessels_inside_pipa.R) identifies the mmsi numbers for vessels inside PIPA. It exports [a csv](https://github.com/jcvdav/MPA_displacement/blob/master/data/vessels_inside_pipa.csv) with `mmsi`, `year`, `month`, `total_fishing_hours` and `n_points`.
+- [`vessels_inside_pna_oustide_pipa.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessels_inside_pna_outside_pipa.R) identifies the mmsi numbers for vessels inside PNA but outside PIPA. It exports [a csv](https://github.com/jcvdav/MPA_displacement/blob/master/data/vessels_inside_pna_outside_pipa.csv) with `mmsi`, `year`, `month`, `total_fishing_hours` and `n_points`.
+
+Using the mmsis identified, I now query GFW data from BigQuery to get the mos updated data, as well as vessel info.
 
 ## Repository structure 
 
@@ -81,12 +99,6 @@
    |__references.bib
    |__small_data
 ```
-
-# Data gatehring /creation
-
-## Identify the vessels we need to work with
-
-Using data from [Kroodsma et al. 2018](https://globalfishingwatch.org/datasets-and-code/fishing-effort/) and the shapefile for the Phoenix Island Protected Area ([PIPA](https://www.protectedplanet.net/phoenix-islands-protected-area-protected-area))
 
 --------- 
 
