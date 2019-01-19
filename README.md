@@ -7,17 +7,24 @@
 We have two large shapefiles, one for Marine Protected Areas from the [WDPA](https://www.protectedplanet.net/) and another one for EEZ from [MEOW](http://marineregions.org/). These data were manually downloaded from their sites in March and Sept 2018, respetively. I then used the following scripts to read them in, process them, and export them to the `data` folder:
 
 - [`get_pna_eezs.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/get_pna_eezs.R) Subsets the EEZ shapefile (not on GitHub because of size) and keeps only PNA countries.
-- [`get_pipa_shapefile.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/get_pipa_shapefile.R) Subsets the WDPA dataset (not on HitHub due to size) and exports only a shapefile for the Phoenix Islands Protected Area ([PIPA](https://www.protectedplanet.net/phoenix-islands-protected-area-protected-area))
+- [`scripts/get_pipa_shapefile.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/get_pipa_shapefile.R) Subsets the WDPA dataset (not on HitHub due to size) and exports only a shapefile for the Phoenix Islands Protected Area ([PIPA](https://www.protectedplanet.net/phoenix-islands-protected-area-protected-area))
 - [`scripts/create_regions.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/create_regions.R): Subsets the EEZ shapefile (not on GitHub because of size) to get a subset with all EEZs where vessels fished, PIPA, as well as the High seas buffer.
 
 ### Identify the vessels we need to work with
 
 Using data from [Kroodsma et al. 2018](https://globalfishingwatch.org/datasets-and-code/fishing-effort/) and the shapefile for the PIPA we can identify which vessels ever fished inside PIPA. Using the same GFW data along with the [EEZ](http://marineregions.org/eezmapper.php) for PNA countries (and adyacent ones) we can identify which ones vished in the region. These data are all under the `data` folder. These are the scripts involved:
 
-- [`vessels_inside_pipa.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessels_inside_pipa.R) identifies the mmsi numbers for vessels inside PIPA. It exports [a csv](https://github.com/jcvdav/MPA_displacement/blob/master/data/vessels_inside_pipa.csv) with `mmsi`, `year`, `month`, `total_fishing_hours` and `n_points`.
-- [`vessels_inside_pna_oustide_pipa.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessels_inside_pna_outside_pipa.R) identifies the mmsi numbers for vessels inside PNA but outside PIPA. It exports [a csv](https://github.com/jcvdav/MPA_displacement/blob/master/data/vessels_inside_pna_outside_pipa.csv) with `mmsi`, `year`, `month`, `total_fishing_hours` and `n_points`.
+- [`scripts/vessels_inside_pipa.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessels_inside_pipa.R) identifies the mmsi numbers for vessels inside PIPA. It exports [a csv](https://github.com/jcvdav/MPA_displacement/blob/master/data/vessels_inside_pipa.csv) with `mmsi`, `year`, `month`, `total_fishing_hours` and `n_points`.
+- [`scripts/vessels_inside_pna_oustide_pipa.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessels_inside_pna_outside_pipa.R) identifies the mmsi numbers for vessels inside PNA but outside PIPA. It exports [a csv](https://github.com/jcvdav/MPA_displacement/blob/master/data/vessels_inside_pna_outside_pipa.csv) with `mmsi`, `year`, `month`, `total_fishing_hours` and `n_points`.
 
-Using the mmsis identified, I now query GFW data from BigQuery to get the mos updated data, as well as vessel info.
+Using the mmsis identified, I now query [Global Fishing Watch](www.globalfishingwatch.com/map) data from [Google BigQuery](https://bigquery.cloud.google.com) to get the mos updated data, as well as vessel info. There are two `SQL` scripts that do this:
+
+- [`scripts/vessel_info_mmsi_inside_pipa.sql`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessel_info_mmsi_inside_pipa.sql): Gets vessel info (`mmsi`, `year`, `inferred_label`, `label_score`, `inferred_label_allyears`, `iso3`)
+- [`script/svessel_info_mmsi_inside_pna.sql`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessel_info_mmsi_inside_pna.sql): Gets vessel info (`mmsi`, `year`, `inferred_label`, `label_score`, `inferred_label_allyears`, `iso3`)
+
+I then stack (`UNION`) these two tables into one, using `[scripts/vessel_info_pna_and_pipa.sql`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessel_info_pna_and_pipa.sql). This produces a table with the same name.
+
+Once we have identified which vessels we need, as well as their characteristics, we can get their full tracks to have all their time at sea, travel time, travel distances as well as fishing time and locations. At the same time, we join them to the `vessel_info_pna_and_pipa` table. The query, found at [`scripts/vessel_tracks.sql`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessel_tracks.sql) gets the full tracks for all vessels that are in both groups, with some filtering (*.i.e.* GFW's [good segments]())
 
 ## Repository structure 
 
