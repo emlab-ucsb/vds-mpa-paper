@@ -1,9 +1,11 @@
-/* Last run on 14/01/2018 */
+/* Last run on 18/01/2018 */
 
 SELECT
-  A.mmsi AS mmsi,
-  A.year,
+  A.year AS year,
+  A.month AS month,
+  A.day AS day,
   A.timestamp AS timestamp,
+  A.mmsi AS mmsi,
   A.lon AS lon,
   A.lat AS lat,
   A.hours AS hours,
@@ -13,13 +15,16 @@ SELECT
   A.distance_from_shore AS distance_from_shore,
   A.seg_id AS seg_id,
   B.treated AS treated,
-  B.gear AS gear,
-  B.flag AS flag
+  B.inferred_label AS inferred_label,
+  B.label_score AS label_score,
+  B.iso3 AS flag
 FROM (
   SELECT
-    mmsi,
+    EXTRACT(year FROM timestamp) AS year,
+    EXTRACT(month FROM timestamp) AS month,
+    EXTRACT(day FROM timestamp) AS day,
     timestamp,
-    EXTRACT(year FROM timestamp) as year,
+    mmsi,
     lon,
     lat,
     hours,
@@ -35,13 +40,22 @@ FROM (
     SELECT
       mmsi
     FROM
-      `ucsb-gfw.mpa_displacement.vessel_groups`)
+      `ucsb-gfw.mpa_displacement.vessel_info_pna_and_pipa`)
     AND seg_id IN (
     SELECT
       seg_id
     FROM
       `world-fishing-827.gfw_research.good_segments`)) A
 JOIN
-  `ucsb-gfw.mpa_displacement.vessel_groups` B
+  (SELECT
+      year,
+      mmsi,
+      treated,
+      inferred_label, 
+      label_score,
+      iso3
+  FROM
+    `ucsb-gfw.mpa_displacement.vessel_info_pna_and_pipa`) B
 ON
-  A.mmsi = B.mmsi AND A.year = B.year
+  A.mmsi = B.mmsi
+  AND A.year = B.year
