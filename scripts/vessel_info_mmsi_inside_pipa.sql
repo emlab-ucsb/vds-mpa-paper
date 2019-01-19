@@ -1,13 +1,11 @@
-/* Last run on September 13, 2018 */
+  /* Last run on January 19, 2019 */
 SELECT
   mmsi,
   year,
-  inferred_label,
-  label_score,
-  inferred_label_allyears,
-  iso3
+  best_label,
+  best_flag AS iso3
 FROM
-  [world-fishing-827:gfw_research.vessel_info]
+  `world-fishing-827.gfw_research.vessel_info_20181002`
 WHERE
   mmsi IN (36764000,
     224523000,
