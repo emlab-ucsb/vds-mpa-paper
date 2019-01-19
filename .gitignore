@@ -8,4 +8,5 @@ logs/
 EEZ_MEOW.*
 *.log
 .httr-oauth
-/raw_data/
+raw_data/*
+vessel_tracks_baci.rds
