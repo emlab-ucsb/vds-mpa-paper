@@ -1,11 +1,17 @@
+/* Last run January 19, 2019 */
+
 SELECT
   mmsi,
   year,
-  inferred_label,
-  label_score,
-  inferred_label_allyears,
+  best_label,
   iso3,
-  IF(mmsi IN (SELECT mmsi FROM `ucsb-gfw.mpa_displacement.vessel_info_mmsi_inside_pipa`), TRUE, FALSE) AS treated
+  IF(mmsi IN (
+    SELECT
+      mmsi
+    FROM
+      `ucsb-gfw.mpa_displacement.vessel_info_mmsi_inside_pipa`),
+    TRUE,
+    FALSE) AS treated
 FROM (
   SELECT
     *
