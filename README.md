@@ -54,9 +54,31 @@ Once we have identified which vessels we need, as well as their characteristics,
 
 The last step is to download the data. Since the table is too big to directly export from Google BigQuery, I wrote a short R script ([`scripts/vessel_tracks_download.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessel_tracks_download.R)) that connects to GBQ and downloads the data. The script also creates a new variables, gets rid of the few duplicated rows (about 0.07% of Fishing hours)
 
-### Vessel-level data
+### Panel data
 
-For some of our analyses, we need to have a dataset where we have vessel-level information. In this case, we want to have the 
+#### Vessel-level data
+
+For some of our analyses, we need to have a dataset where we have vessel-level information. Many times this information will be at the vessel-day level, some others at the vessel-month. These are essentially the panel data that we use to test for behavioral changes. The variables that we are interested in are:
+
+- daily fishing hours
+- daily non-fishing hours
+- daily proportion fishing hours vs. non fishing hours
+- daily distance traveled
+- daily mean distance from shore (min and max)
+- daily mean distance from port (min and max)
+- daily mean distance from port fishing only (min and max)
+- monthly proportion fishing hours in Kiribati EEZ
+- monthly proportion of fishing hours inside PNA EEZs
+
+The script [`scripts/vessel_tracks_panel.R`](https://github.com/jcvdav/MPA_displacement/blob/master/scripts/vessel_tracks_panel.R) creates 7 panels that contain the data above. The data are exported into the [`data/panels/`](https://github.com/jcvdav/MPA_displacement/tree/master/data/panels) folder.
+
+#### EEZ / region-level data
+
+The previous panels asked the following type of question: *For a given vessel, what proportion of their fishing hours happened in month X and EEZ / spatial region Y?* Instead, here our units are the spatial regions (for example KIR EEZ), and we see how fishing within
+them changes through time, without making distinctions on the vessel that fishes in those waters. The idea is to see if the MPA implementation leads to losses in fishing in Kiribati or other PNA countries. Here use use the monthly proportion fishing hours in Kiribati EEZ and the monthly proportion of total fishing hours in VDS. This is done for ALL vessels, not just the treated ones.
+
+### Spatial redistribution
+
 
 ## TO DO
 
