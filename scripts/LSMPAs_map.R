@@ -4,6 +4,8 @@
 
 ##############################################################
 # This script creates a map of all large-scale MPAs until now.
+##############################################################
+
 
 # Load packages
 library(startR)
