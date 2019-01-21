@@ -1,9 +1,21 @@
-library(dplyr)
+###################
+#   get_LSMPAs    #
+###################
 
-sf::read_sf(here::here("raw_data", "spatial", "WDPA_Mar2018"),
-            layer = "WDPA_Mar2018_marine-shapefile-polygons",
+###############################################
+# This script reads in the WDPA and keeps only
+# MPAs larger than 250000 in marine area.
+##############################################
+
+# Load magrittr to have the pipe
+library(magrittr)
+
+# Load the database
+sf::read_sf(here::here("raw_data", "spatial", "WDPA_Jan2019"),
+            layer = "WDPA_Jan2019_marine-shapefile-polygons",
             quiet = T,
             stringsAsFactors = F) %>% 
-  janitor::clean_names() %>% 
-  dplyr::filter(gis_m_area > 250000) %>% 
-  sf::st_write(dsn = here::here("data", "spatial", "LSMPAs", "LSMPAs.shp"))
+  dplyr::filter(GIS_M_AREA > 250000) %>% #Keep large MPAs
+  sf::st_write(dsn = here::here("data", "spatial", "LSMPAs", "LSMPAs.shp")) #Save to file
+
+# END OF SCRIPT
