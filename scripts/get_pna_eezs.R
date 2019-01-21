@@ -7,5 +7,5 @@ library(sf)
 library(tidyverse)
 
 read_sf(dsn = here::here("raw_data", "spatial", "EEZ"), layer = "eez_v10") %>% 
-  filter(ISO_Ter1 %in% c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV")) %>% 
+  filter(ISO_Ter1 %in% c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV", "TKL")) %>% 
   st_write(dsn = here::here("data", "spatial", "PNA_EEZ", "PNA_EEZ.shp"))
