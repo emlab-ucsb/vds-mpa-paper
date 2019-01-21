@@ -157,6 +157,7 @@ daily_distance_by_vessel_panel <- vessel_tracks_baci %>%
            experiment3) %>%
   nest() %>%
   mutate(dist = purrr::map_dbl(data, dist_fxn)) %>% 
+  select(-data)
   arrange(date, mmsi)
   
 # Save data
