@@ -17,6 +17,11 @@
 library(tidyverse)
 library(magrittr)
 
+# Set a large memory size for when this code runs on Windows
+if(unname(Sys.info()[1] == "Windows")){
+  memory.limit(size = 8e6)
+}
+
 # Read the tracks
 vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds"))
 
@@ -24,7 +29,7 @@ vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds"))
 # of each gear, the group to which they belong, and the period when they operated.
 # This information will then be used to identify propper treatment / control groups
 vessel_tracks_subset <- vessel_tracks %>%
-  filter(gear %in% c("purse_seines", "dritfting_longlines"))
+  filter(gear %in% c("tuna_purse_seines", "drifting_longlines"))
 
 # Identify vessels suitable for BACI
 # I want to make sure my control does not include vessels that appear after 2015
@@ -75,16 +80,14 @@ mmsi_baci_relaxed <- c(tb, ca[ca %in% cb])
 # These are the experiment# variables, which include
 # other options for plausible counterfactuals:
 # - experiment1 uses only PNA-owned vessels
-# - experiment1.1 is all countries that participate in the VDS (own permits) which are PNA + TKL
-# - experiment2 uses Taiwanese vessels as controls
-# - experiment3 uses Chinese vessels as controls
+# - experiment2 is all VDS-owned vessels
+# - experiment3 excludes Chinese vessels from the control
 vessel_tracks_baci <- vessel_tracks_subset %>%
   mutate(flag = ifelse(flag == "" | is.na(flag), "OTH", flag),
          baci_strict = mmsi %in% mmsi_baci_strict,
          baci_relaxed = mmsi %in% mmsi_baci_relaxed,
          experiment1 = treated | PNA,
-         experiment1.1 = treated | VDS,
-         experiment2 = treated | (!treated & flag == "TWN"),
+         experiment2 = treated | VDS,
          experiment3 = treated | (!treated & !flag == "CHN"))
 
 # Save data
