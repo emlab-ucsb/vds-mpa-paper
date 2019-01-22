@@ -186,8 +186,8 @@ Management \citep{maxwell_2015}.\footnote{See \citet{singleton_2014}, who provid
 
 \begin{figure}
 \centering
-\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-2-1.pdf}
-\caption{\label{fig:unnamed-chunk-2}\label{fig:LSMPAs_map}Large Scale Marine
+\includegraphics{img/LSMPAs_map.pdf}
+\caption{\label{fig:LSMPAs_map}Large Scale Marine
 Protected Areas. The map shows all areas larger than 250,000
 Km\textsuperscript{2}. Areas in dark blue meet at least one of these
 conditions: reported no take area is greater than 0, are categorized as
@@ -281,8 +281,8 @@ these island nations \citep{havice_2010}.
 
 \begin{figure}
 \centering
-\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-3-1.pdf}
-\caption{\label{fig:unnamed-chunk-3}\label{fig:PNA_map}Map of the Exclusive
+\includegraphics{img/PNA_map.pdf}
+\caption{\label{fig:PNA_map}Map of the Exclusive
 Economic Zones (EEZs) of the region of interest. Countries that belong
 to the PNA are shown in blue, while empty polygons indicates all others.
 A red line indicates the Kiribati EEZ, and a solid red polygon
@@ -337,8 +337,8 @@ the data and methods used to answer these questions.
 
 This section is divided into two main parts. First, we provide a general
 description of AIS data and the process of identification of
-vessel-level fishing events performed by Global Fishing Watch.\footnote{Global
-	Fishing Watch: \url{globalfishingwatch.org}} Alongside, we describe
+vessel-level fishing events performed by Global Fishing Watch.\footnote{Global Fishing Watch: \url{globalfishingwatch.org}}
+Alongside, we describe
 the subset of data used in our analysis. We also point
 out possible shortcomings in the data, or factors that must be
 considered in the analysis. We then move on to explain our
@@ -401,7 +401,7 @@ observations with about 22\% of these observations identified as fishing events 
 For each vessel, we calculate total daily fishing hours and build a daily panel
 with 37,800 observations. Table \ref{tab:baci_n_s} shows the number
 of vessels following a Before-After-Control-Impact (BACI) design, as well as the fishing hours, before
-and after PIPA. Fig. \ref{fig:all_vessels} shows that mean fishing hours
+and after PIPA. Fig. \ref{fig:all_panels} shows that mean fishing hours
 for purse seiners have an abrupt increase, just before January 1st,
 2015. This trend is observed for both treated and control groups. Across
 all measures, the treatment and control vessels follow similar patterns,
@@ -413,19 +413,7 @@ Are the 61 purse seiners that used to fish within PIPA affected by the closure? 
 What are they doing differently and where are they going that they didn't go to before?
 The following section describes our empirical identification strategy.
 
-\begin{table}[H]
-
-\caption{\label{tab:unnamed-chunk-6}\label{tab:baci_n_s}Number of fishing vessels and mean daily fishing hours by group before and after PIPA implementation.}
-\centering
-\begin{tabular}[t]{lcccc}
-\toprule
-Group & n & Before & After & Change (A / B)\\
-\midrule
-Control & 26 & 11.74 & 20.13 & 1.71\\
-Treatment & 61 & 10.67 & 18.36 & 1.72\\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{tab/baci_n_s}
 
 \subsection{Analyses}\label{analyses}
 
@@ -513,8 +501,6 @@ were performed in R version 3.5.1 \citep{rcore_2018}. Raw data and code
 used in this work are available on
 \href{https://github.com/jcvdav/MPA_displacement}{github}.
 
-\clearpage
-
 \section{Results}\label{results}
 
 Regression coefficients for our DiD analysis are shown in Table
@@ -530,7 +516,7 @@ even after accounting for the introduction of new satellites (Table
 \emph{post} coefficient estimate is consistent across different
 model specifications and across controls, and
 effectively represents the patterns observed in Figure
-\ref{fig:all_vessels}.
+\ref{fig:all_panels}.
 
 The \(\beta_3\) coefficient indicating our treatment effect suggests
 that, relative to the control, treated vessels fish less: to the order
@@ -595,60 +581,23 @@ in 2015 as vessels from PIPA are excluded, but then starts to decline. [QUESTION
 
 \begin{figure}
 \centering
-\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-10-1.pdf}
-\caption{\label{fig:unnamed-chunk-10}\label{fig:all_vessels}Daily fishing
-hours for all vessels in our main treatment-control groups. Solid
-straight lines show a linear trend by period (pre-post) and treatment.
-The other red and blue lines show monthly avarages. Vertical dashed
-lines indicate dates when satellites were added, solid line indicates
-PIPA closure.}
+\includegraphics{img/all_panels.pdf}
+\caption{\label{fig:all_panels}Time seri showing mean monthly values es for our 10 variables of interest:
+A) Fishing hours, B)Non-fishing hours at-sea,
+C) Proportion of fishing hours to total hours at-sea,
+D) Distance traveled, E) Mean distance from port,
+F) Mean distance from shore,
+G) Mean distance from port for fishing events,
+H) Mean distance from shore for fishing events,
+I) Proportion of hours spent in Kiribati waters,
+J) Proportion of fishing hours spent in PNA waters.}
 \end{figure}
 
 \clearpage
 \begin{landscape}
 
 
-\begin{table}[!htbp] \centering 
-  \caption{\label{tab:did}Difference-in-differences estimates for 3 different controls and 3 different specifications. The first three columns use our primary control group. Columns 4 - 6 use only PNA vessels as controls, and columns 7 - 9 exclude Chinese vessels. Columns 10 and 11 use Japanese vessels in the Pacific as controls, and hence don't include flag FEs. Numbers in parentheses are heteroskedasticity-robust standard errors.} 
-  \label{} 
-\footnotesize 
-\begin{tabular}{@{\extracolsep{1pt}}lccccccccccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{11}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-12} 
-\\[-1.8ex] & \multicolumn{11}{c}{hours} \\ 
-\\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9) & (10) & (11)\\ 
-\hline \\[-1.8ex] 
- Constant & 6.345$^{***}$ & 7.863$^{***}$ & 10.322$^{***}$ & 7.124$^{***}$ & 9.007$^{***}$ & 9.933$^{***}$ & 6.057$^{***}$ & 7.584$^{***}$ & 10.194$^{***}$ & 22.625$^{***}$ & 24.731$^{***}$ \\ 
-  & (0.186) & (0.274) & (0.404) & (0.265) & (0.341) & (0.620) & (0.193) & (0.279) & (0.538) & (0.629) & (0.683) \\ 
-  & & & & & & & & & & & \\ 
- post & $-$0.052 & 1.134$^{***}$ & 1.115$^{***}$ & $-$1.199$^{***}$ & $-$0.279 & 0.124 & $-$0.284 & 1.013$^{***}$ & 1.166$^{***}$ & 2.330$^{***}$ & 3.991$^{***}$ \\ 
-  & (0.303) & (0.304) & (0.339) & (0.435) & (0.429) & (0.436) & (0.318) & (0.318) & (0.357) & (0.890) & (0.877) \\ 
-  & & & & & & & & & & & \\ 
- treated & $-$1.142$^{***}$ & $-$0.839$^{***}$ & 0.010 & $-$1.977$^{***}$ & $-$1.675$^{***}$ & 0.626 & $-$0.877$^{***}$ & $-$0.536$^{**}$ & 0.150 & $-$18.190$^{***}$ & $-$18.257$^{***}$ \\ 
-  & (0.214) & (0.209) & (0.281) & (0.284) & (0.274) & (0.416) & (0.221) & (0.215) & (0.297) & (0.673) & (0.661) \\ 
-  & & & & & & & & & & & \\ 
- sate2 & 12.579$^{***}$ & 11.589$^{***}$ & 11.340$^{***}$ & 12.709$^{***}$ & 11.850$^{***}$ & 11.749$^{***}$ & 12.631$^{***}$ & 11.599$^{***}$ & 11.349$^{***}$ & 14.346$^{***}$ & 12.967$^{***}$ \\ 
-  & (0.197) & (0.199) & (0.232) & (0.212) & (0.213) & (0.246) & (0.199) & (0.201) & (0.235) & (0.303) & (0.309) \\ 
-  & & & & & & & & & & & \\ 
- sate3 & 14.675$^{***}$ & 13.587$^{***}$ & 13.328$^{***}$ & 14.799$^{***}$ & 13.894$^{***}$ & 13.795$^{***}$ & 14.958$^{***}$ & 13.804$^{***}$ & 13.566$^{***}$ & 15.187$^{***}$ & 13.719$^{***}$ \\ 
-  & (0.260) & (0.262) & (0.307) & (0.286) & (0.287) & (0.329) & (0.264) & (0.266) & (0.315) & (0.402) & (0.410) \\ 
-  & & & & & & & & & & & \\ 
- post:treated & $-$0.515$^{*}$ & $-$0.833$^{***}$ & $-$0.934$^{***}$ & 0.562 & 0.373 & $-$0.176 & $-$0.439 & $-$0.814$^{***}$ & $-$1.084$^{***}$ & $-$3.209$^{***}$ & $-$3.715$^{***}$ \\ 
-  & (0.281) & (0.276) & (0.310) & (0.413) & (0.402) & (0.407) & (0.293) & (0.287) & (0.326) & (0.811) & (0.799) \\ 
-  & & & & & & & & & & & \\ 
-\hline \\[-1.8ex] 
-Control & All & All & All & PNA & PNA & PNA & -CHN & -CHN & -CHN & JPN & JPN \\ 
-Month FE & No & Yes & Yes & No & Yes & Yes & No & Yes & Yes & No & Yes \\ 
-Flag FE & No & No & Yes & No & No & Yes & No & No & Yes & No & No \\ 
-Observations & 37,840 & 37,840 & 30,359 & 30,583 & 30,583 & 25,034 & 36,415 & 36,415 & 28,934 & 34,047 & 34,047 \\ 
-R$^{2}$ & 0.171 & 0.200 & 0.208 & 0.178 & 0.208 & 0.215 & 0.173 & 0.203 & 0.211 & 0.260 & 0.280 \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{11}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{table} 
+\input{tab/main_DID}
 
 \end{landscape}
 \clearpage
@@ -952,7 +901,7 @@ the pre and post periods.}
 \begin{figure}
 	\centering
 	\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-7-1.pdf}
-	\caption{\label{fig:unnamed-chunk-7}\label{fig:all_vessels}Fishing hours and
+	\caption{\label{fig:unnamed-chunk-7}\label{fig:all_panels}Fishing hours and
 		number of vessels by month for all vessels. Vertical dashed lines
 		indicates dates when satellites were added, solid line indicates PIPA
 		closurePIPA closure.}
