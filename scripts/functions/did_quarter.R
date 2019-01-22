@@ -9,8 +9,8 @@ did_quarter <- function(data, filter_oth = F){
   flag_data <- data %>% 
     filter(flag_fe)
   
-  m1 <- lm(hours ~ quarter_c*treated + sate, data = data)
-  m2 <- lm(hours ~ quarter_c*treated + sate + flag, data = flag_data)
+  m1 <- lm(log_var ~ quarter_c*treated, data = data)
+  m2 <- lm(log_var ~ quarter_c*treated + flag, data = flag_data)
   
   return(list(m1, m2))
 }
