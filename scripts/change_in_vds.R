@@ -8,8 +8,7 @@ library(tidyverse)
 # Load tracks. We want to keep only the tracks of information
 # o
 # 
-# THIS IS WRONG< SHOULD BE USING VESSEL_TRACKS_BACI
-tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
+tracks <- readRDS(file = here::here("raw_data", "vessel_tracks_baci.rds")) %>% 
   filter(VDS,
          gear == "purse_seines")
   
