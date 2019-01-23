@@ -1,37 +1,58 @@
+###################################
+#   rasterize_effort_by_regions   #
+###################################
+
+
+######################################################################
+# This script takes the shapefile of EEZs and rasterizes it to a 1 deg
+# raster. I then create a yearly raster for each group of vessels, 
+# which I export as tiff.
+######################################################################
+
+
+#### SETUP ######################################################################
+
+# Load packages
 library(raster)
 library(fasterize)
 library(sf)
 library(tidyverse)
-source(here::here("scripts", "st_rotate.R"))
 
+# Create some functions that I only use here
+
+# This one converts a data.frame into a raster
 rasterize_df <- function(x, r, fun = "sum"){
+  
+  # First I "rotate" to center the image to the Pacific
   x2 <- x %>%
     select(lon, lat, hours) %>% 
     mutate(lon = ifelse(lon < 0, lon + 180, lon - 180) + 180) %>% 
     as.matrix()
   
+  # I know rasterize the data
   rasterize(x = x2[,1:2],
             y = r,
             field = x2[,3],
-            fun = fun) %>% 
-    return()
+            fun = fun)
 }
 
+# This function extracts the raster and converts it into a data.frame
+# I need it because I want to convert it to DF and add some metadata 
+# about the raster, like year and group to which vessels belong
 extract_raster <- function(r, year, treated){
   as.data.frame(r, xy = T) %>%
     rename(hours = layer) %>% 
     mutate(year = year,
-           treated = treated) %>% 
-    return()
+           treated = treated)
 }
 
-# EEZs that have few points and are therefore excluded from the analyses and counted as HS
-eezs_exclude <- c("HS MUS 1", "EEZ MUS 1", "EEZ MDG 1", "EEZ MDG 2", "HS MDG 1", "HS MDG 2", "HS MOZ 1", "EEZ MOZ 1")
+#### REGIONS RASTER ######################################################################
 
+# Load the regions shapefile
 regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
-                   layer = "regions") %>% 
-  filter(!id %in% eezs_exclude)
+                   layer = "regions")
 
+# Rasterize regions
 regions_raster <- regions %>%
   mutate(unique = group_indices(., id)) %>%
   fasterize(sf = .,
@@ -39,16 +60,21 @@ regions_raster <- regions %>%
             field = "unique",
             background = 0)
 
+# Add the High seas manually
 regions_with_HS <- regions %>%
   mutate(unique = group_indices(., id)) %>% 
   st_set_geometry(NULL) %>% 
-  rbind(data.frame(id = "HS", source = "HS", PNA = 0, country = "HS", unique = 0))
+  rbind(data.frame(id = "HS",
+                   source = "HS",
+                   PNA = 0,
+                   country = "HS",
+                   unique = 0))
 
 regions_raster_df <- as.data.frame(regions_raster, xy = T) %>% 
   left_join(regions_with_HS, by = c("layer" = "unique"))
 
-vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
-  filter(gear == "purse_seines",
+vessel_tracks <- readRDS(file = here::here("data", "vessel_tracks_baci.rds")) %>% 
+  filter(gear == "tuna_purse_seines",
          year < 2018,
          fishing) %>% 
   mutate(treated = ifelse(treated, "Treated", "Control"))
@@ -65,8 +91,16 @@ yearly_effort_raster <- data.frame(x = NULL,
                                    year = NULL,
                                    treated = NULL)
 
+
+
+#### CREATE GROUP - YEARLY LEVEL RASTERS OF EFFORT ###################################
+
+# ITERATE ACROSS GROUPS
 for(j in groups){
+  
+  # ITERATE ACROSS YEARS
   for(i in years){
+    
     # Rasterize the points for month i
     raster_j_i <- vessel_tracks %>% 
       filter(year == i,
