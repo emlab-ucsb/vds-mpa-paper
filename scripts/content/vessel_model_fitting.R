@@ -8,6 +8,7 @@
 ###################################################
 
 # Load packages
+library(magrittr)
 library(tidyverse)
 
 # Custom functions
@@ -59,7 +60,7 @@ prop_fishing_by_vessel <- readRDS(file = here::here("data",
                                               "daily_prop_fishing_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2018,
          gear == "tuna_purse_seines") %>% 
-  model_data_prep()
+  model_data_prep(prop_fishing)
 
 #Fit themdoels
 prop_fish_did <- did(prop_fishing_by_vessel)
@@ -198,7 +199,7 @@ models <- list(
   prop_kir_did,
   prop_vds_did
 ) %>% 
-  purrr::map(extract2, 1)
+  purrr::map(extract2, 3)
 
 stargazer::stargazer(models,
                      se = commarobust::makerobustseslist(models),
@@ -218,10 +219,72 @@ stargazer::stargazer(models,
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
                      # float.env = "sidewaystable",
-                     title = "\\label{tab:did}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port, 6) Daily mean distance from shore, 7) Daily mean distance from port for fishing events, 8) Daily mean distance from shore for fishing events, 9) Monthly proportion of hours spent in Kiribati waters, 10) Monthly proportion of fishing hours spent in PNA waters. Numbers in parentheses are heteroskedastic-robust standard errors.",
+                     title = "\\label{tab:main_DID}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port, 6) Daily mean distance from shore, 7) Daily mean distance from port for fishing events, 8) Daily mean distance from shore for fishing events, 9) Monthly proportion of hours spent in Kiribati waters, 10) Monthly proportion of fishing hours spent in PNA waters. Numbers in parentheses are heteroskedastic-robust standard errors.",
                      out = here::here("docs", "tab", "main_DID.tex"))
 
+######## ALTERNATIVE SPECIFICATIONS PLOT ###################################################
 
+models_extra <- c(
+  fish_did,
+  nonfish_did,
+  prop_fish_did,
+  dist_did,
+  dist_port_did,
+  dist_shore_did,
+  dist_port_fishing_did,
+  dist_port_fishing_did,
+  prop_kir_did,
+  prop_vds_did
+)
+
+# Extract all parameters, calculate robust SE, and plot
+plot <- map_df(models_extra,
+       commarobust::commarobust_tidy, .id = "model") %>%
+  filter(term == "post:treated") %>%
+  mutate(model = as.numeric(model),
+         variable = case_when(model < 4 ~ "fishing hours",
+                             model > 3 & model < 7 ~ "non-fishing hours",
+                             model > 6 & model < 10 ~ "proportion fishing",
+                             model > 9 & model < 13 ~ "distance traveled",
+                             model > 12 & model < 16 ~ "distance from port",
+                             model > 15 & model < 19 ~ "distance from shore",
+                             model > 18 & model < 22 ~ "distance from port fishing",
+                             model > 21 & model < 25 ~ "distance from shore fishing",
+                             model > 24 & model < 28 ~ "proportion fishing in KIR",
+                             T ~ "proportion fishing in VDS"),
+         variable = fct_relevel(variable,
+                                "fishing hours",
+                                "non-fishing hours",
+                                "proportion fishing",
+                                "distance traveled",
+                                "distance from port",
+                                "distance from shore",
+                                "distance from port fishing",
+                                "distance from shore fishing",
+                                "proportion fishing in KIR"),
+         spec = case_when(model %in% seq(1, 30, by = 3) ~ "No FE",
+                          model %in% seq(2, 30, by = 3) ~ "Month FE",
+                          T ~ "Month + Flag FE"),
+         spec = fct_relevel(spec, "No FE", "Month FE")) %>% 
+  ggplot(aes(x = spec, y = est)) +
+  geom_errorbar(aes(ymin = est - se, ymax = est + se),
+                size = 1,
+                width = 0,
+                color = "black") +
+  geom_point(aes(color = spec), size = 3, alpha = 0.7) +
+  facet_wrap(~variable, scales = "free_y", ncol = 2) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  scale_color_brewer(palette = "Set1") +
+  cowplot::theme_cowplot() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        text = element_text(size = 10),
+        axis.text = element_text(size = 10)) +
+  labs(x = "Model Specification", y = "Estimate") +
+  ggExtra::rotateTextX()
+
+# Export figure
+ggsave(plot, filename = here::here("docs", "img", "other_specifications.pdf"), width = 6.1, height = 8)
 
 
 
