@@ -57,14 +57,15 @@ corr_both <- corr %>%
   drop_na() %>%
   group_by(year, month, date, post) %>%
   summarize(cor = cor(Control, Treated)) %>% 
-  ungroup(dif = lubridate::interval(lubridate::date("2015-01-01"), date)%/% months(1))
+  ungroup() %>% 
+  mutate(dif = lubridate::interval(lubridate::date("2015-01-01"), date)%/% months(1))
 
 
 
 #### FIT THE MODELS ######################################################################
 
-n_model <- lm(n ~ dif + I(dif^2) + I(dif^3), data = n_both)
-corr_model <- lm(n ~ dif + I(dif^2) + I(dif^3), data = n_both)
+n_model <- lm(n ~ dif + I(dif^2) + I(dif^3) + I(dif^4), data = n_both)
+corr_model <- lm(cor ~ dif + I(dif^2) + I(dif^3) + I(dif^4), data = corr_both)
 
 
 models <- list(n_model, corr_model)
@@ -98,7 +99,7 @@ stargazer::stargazer(models,
 n_both_plot <- ggplot(data = n_both, aes(x = date, y = n)) +
   geom_vline(xintercept = lubridate::date("2015-01-01"), linetype = "dashed", color = "black", size = 1) +
   geom_point(aes(color = post), size = 4) +
-  geom_smooth(method = "lm", formula = y ~ x + I(x^2) + I(x^3), color = "black", se = F) +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2) + I(x^3) + I(x^4), color = "black", se = F) +
   scale_color_brewer(palette = "Set1") +
   cowplot::theme_cowplot() +
   theme(legend.position = "none",
@@ -110,7 +111,7 @@ n_both_plot <- ggplot(data = n_both, aes(x = date, y = n)) +
 corr_both_plot <- ggplot(data = corr_both, aes(x = date, y = cor)) +
   geom_vline(xintercept = lubridate::date("2015-01-01"), linetype = "dashed", color = "black", size = 1) +
   geom_point(aes(color = post), size = 4) +
-  geom_smooth(method = "lm", formula = y ~ x + I(x^2) + I(x^3), color = "black", se = F) +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2) + I(x^3) + I(x^4), color = "black", se = F) +
   scale_color_brewer(palette = "Set1") +
   cowplot::theme_cowplot() +
   theme(legend.position = c(0.1, 0.9),
