@@ -145,7 +145,7 @@ dist_port_fishing_didq <- did_quarter(distance_port_fishing)
 dist_port_fishing_didym <- did_yearmonth(distance_port_fishing)
 
 # Distance from shore
-dist_port_fishing_did <- did(distance_shore_fishing)
+dist_shore_fishing_did <- did(distance_shore_fishing)
 dist_shore_fishing_didq <- did_quarter(distance_shore_fishing)
 dist_shore_fishing_didym <- did_yearmonth(distance_shore_fishing)
 

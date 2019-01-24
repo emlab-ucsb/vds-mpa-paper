@@ -20,7 +20,8 @@ source(here::here("scripts", "my_kable.R"))
 
 effort_by_vessel <- readRDS(file = here::here("data", "panels", "daily_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2018,
-         gear == "tuna_purse_seines")
+         gear == "tuna_purse_seines",
+         fishing)
 
 hours <- effort_by_vessel %>%
   group_by(treated, post, date, mmsi) %>% 

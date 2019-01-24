@@ -34,17 +34,6 @@ kir_fishing <- tracks %>%
   mutate(prop_hours = kir_hours / total_hours) %>% 
   arrange(year, mmsi)
 
-kir_n <- tracks %>% 
-  filter(eez_iso3 == "KIR") %>% 
-  group_by(year, treated) %>% 
-  summarize(n = n_distinct(mmsi)) %>% 
-  ungroup() %>% 
-  spread(treated, n) %>% 
-  magrittr::set_colnames(c("year", "control", "treated")) %>% 
-  mutate(label = paste("C = ", control, "; T = ", treated),
-         hours = 1.1,
-         year = year + 0.8)
-
 #### THE PLOT ########################################################################
 
 hist_kir_fishing <- ggplot() +
@@ -55,8 +44,7 @@ hist_kir_fishing <- ggplot() +
         axis.text = element_text(size = 8),
         legend.position = "none")+
   guides(fill = guide_legend(title = "Year")) +
-  labs(x = "Fishing hours", y = "Year") +
-  geom_text(data = kir_n, aes(x = hours, y = year, label = label)) +
+  labs(x = "Proportion of fishing hours in KIR", y = "Year") +
 scale_x_continuous(labels = scales::percent_format(accuracy = 1))
 
 ggsave(hist_kir_fishing, filename = here::here("docs", "img", "hist_kir_fishing.pdf"), width = 6, height = 3.5)
