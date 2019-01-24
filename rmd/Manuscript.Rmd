@@ -247,8 +247,6 @@ effort_by_vessel %>%
 
 ## Analyses
 
-<!-- antes de 06/01/14 habian 3 sats, despues 6 hasta 12/31/15, luego 10 hasta 2017 y ahora hay muchos jaja -->
-
 The first analysis focuses on identifying the response of fishing vessels to PIPA closure. A spatial closure might cause fishers to modify their behavior as they adapt to a new state of the world. Some may have to travel further distances to find new fishing grounds, which would lead them to fish harder to compensate for the associated extra fuel costs. If fishers had developed experience for fishing in particular sites, being excluded might impose a learning cost on them, as they identify new fishing grounds. This would result in increased search times. However, if the area of influence of a vessel is significantly larger than that of the spatial closure, they might already know other places and times where to fish. Our variables of interests intend to capture these possible reactions.
 
 We use daily fishing hours, daily proportion of fishing vs. non-fishing hours, daily distance traveled (km), distance from shore (km) and distance from port(km)\footnote{Results are presented for fishing hours, bur preliminary results for distance form shore and distance from port are shown in Tables \ref{tab:dist_shore} and \ref{tab:dist_port}}. We compare our variable of interest before and after the implementation of PIPA using a Difference-in-Differences approach, where we track the variable of interest for vessels described in the previous section. Our specification is the following:
@@ -546,7 +544,7 @@ change_2015_by_region <- commarobust::commarobust_tidy(model) %>%
          term = str_extract(term, pattern = "[:alpha:]+ [:alpha:]+ [:digit:]"),
          p = ifelse(p < 0.05, "p < 0.05", "p > 0.05"),
          term = str_replace(term, "id", ""),
-         term = fct_relevel(term, terms_order)) %>% 
+         term = fct_relevel(term, terms_order2)) %>% 
   filter(year == 2015) %>%
   rename(id = term)
 
@@ -554,13 +552,13 @@ eezs_exclude <- c("HS MUS 1", "EEZ MUS 1", "EEZ MDG 1", "EEZ MDG 2", "HS MDG 1",
 
 regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
                    layer = "regions") %>% 
-  filter(!id %in% eezs_exclude) %>%
+  # filter(!id %in% eezs_exclude) %>%
   left_join(change_2015_by_region, by = "id")
 
 ggplot() +
   geom_sf(data = regions, aes(fill = est)) +
   scale_fill_gradientn(colours = colorRamps::matlab.like(20)) +
-  ggtheme_plot() +
+  # ggtheme_plot() +
   guides(fill = guide_colorbar(title = bquote(Delta)))
 
 ```

@@ -1,84 +1,35 @@
-\documentclass[11pt,english]{article}
-\usepackage{lmodern}
-\usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-\fi
-\usepackage[margin=1in]{geometry}
-\usepackage{hyperref}
-\hypersetup{unicode=true,
-            pdftitle={Displacement of fishing effort by Large Scale Marine Protected Areas},
-            pdfborder={0 0 0},
-            breaklinks=true}
-\urlstyle{same}  % don't use monospace font for urls
-\usepackage{natbib}
-\bibliographystyle{chicago}
-\usepackage{longtable,booktabs}
-\usepackage{graphicx,grffile}
-\makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{5}
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
+\documentclass[9pttwoside,lineno]{pnas-new}
+% Use the lineno option to display guide line numbers if required.
+
+\templatetype{pnasresearcharticle} % Choose template 
+% {pnasresearcharticle} = Template for a two-column research article
+% {pnasmathematics} %= Template for a one-column mathematics article
+% {pnasinvited} %= Template for a PNAS invited submission
 
 \title{Large Scale Marine Protected Areas}
 
-\author{
-  Juan CarlosVillase\~{n}or-Derbez\footnote{Bren School of Environmental Science \& Management, University of California at Santa Barbara, Santa Barbara, CA} \\
-  \texttt{juancarlos@ucsb.edu}
-  \and
- John Lynham\footnote{Department of Economics, University of Hawaii at Manoa, Honolulu, HI}\\
-  \texttt{lynham@hawaii.edu }
-}
+% Use letters for affiliations, numbers to show equal authorship (if applicable) and to indicate the corresponding author
+\author[a,1]{Juan CarlosVillase\~{n}or-Derbez}
+\author[b,1]{John Lynham} 
 
-\date{Updated on: \today}
+\affil[a]{Bren School of Environmental Science \& Management, University of California at Santa Barbara, Santa Barbara, CA}
+\affil[b]{Department of Economics, University of Hawaii at Manoa, Honolulu, HI}
 
-\usepackage{float}
-\floatplacement{figure}{H}
-\usepackage{lineno}
-\linenumbers
-\usepackage[bottom]{footmisc}
-\usepackage{pdflscape}
-\newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+% Please give the surname of the lead author for the running footer
+\leadauthor{Villase\~{n}or-Derbez} 
 
-% John's additional packages below
+% Please add here a significance statement to explain the relevance of your work
+\significancestatement{Authors must submit a 120-word maximum statement about the significance of their research paper written at a level understandable to an undergraduate educated scientist outside their field of speciality. The primary goal of the Significance Statement is to explain the relevance of the work in broad context to a broad readership. The Significance Statement appears in the paper itself and is required for all research papers.}
 
-\usepackage{graphicx}
-\graphicspath{{figures/}} %Setting the graphicspath
+% Please include corresponding author, author contribution and author declaration information
+\authorcontributions{All authors contributed equally to this work}
+\authordeclaration{The authors declare that they have no conflicts of interest}
+\equalauthors{\textsuperscript{1}J.C.V.D. and J.L. contributed equally to this work.}
+\correspondingauthor{\textsuperscript{1}To whom correspondence should be addressed. E-mail: juancarlos\@ucsb.edu}
 
-\begin{document}
-\maketitle
+% Keywords are not mandatory, but authors are strongly encouraged to provide them. If provided, please include two to five keywords, separated by the pipe symbol, e.g:
+\keywords{Marine Protected Areas $|$ Fisheries $|$ Purse Seining $|$ Marine Conservation} 
+
 \begin{abstract}
 Large-scale Marine Protected Areas (LSMPAs) have seen a significant
 increase over the last years. Fishing effort is effectively eliminated
@@ -113,23 +64,33 @@ group of vessels. Thus, for vessels that have chosen to continue to operate foll
 Our results suggest that PIPA has displaced some vessels to the high seas just outside the EEZ of Kiribati. This might imply a drop in demand for Kiribati fishing rights and a decline in revenue. We also uncover evidence that there is more congestion immediately following the closure, but this is declining over time.
 \end{abstract}
 
-\clearpage
+\dates{This manuscript was compiled on \today}
+\doi{\url{www.pnas.org/cgi/doi/10.1073/pnas.XXXXXXXXXX}}
+
+\usepackage{pdflscape}
+\newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{firststyle}
+\ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 Next steps: I think we need to make the buffers around the EEZs 5 degrees instead of 1 degree (redistribution of effort section)
 Might change the specification of the redistribution regression
 
 
 \section{Introduction}\label{introduction}
-
-
-
-Marine Protected Areas (MPAs) are intended to safeguard parts of the
+\dropcap{M}arine Protected Areas (MPAs) are intended to safeguard parts of the
 ocean from fishing and other extractive activities. Current
 international goals aim to protect 10\% of the ocean environment by
 2020. In an effort to meet this target, there has been a rapid
 increase recently in MPA coverage \citep{wood_2008,sala_2018}, largely driven by
-a small number of Large Scale Marine Protected Areas (LSMPAs).\footnote{See, for example, \citet{game_2009},  \citet{singleton_2014},\citet{boonzaier_2016}, \citet{mccauley_2016}, and \citet{alger_2017}.}
-). Today, a small number of LSMPAs make up at least 80\%
+a small number of Large Scale Marine Protected Areas (LSMPAs)\footnote{See, for example, \citep{game_2009,singleton_2014,boonzaier_2016,mccauley_2016,alger_2017}.}.
+Today, a small number of LSMPAs make up at least 80\%
 of the managed areas in the ocean \citep{toonen_2013}.
 
 Given the relatively recent establishment of most LSMPAs, very little is
@@ -233,7 +194,7 @@ fishing effort farther away from ports, resulting in higher
 \emph{perceived} costs, and increases in catch per unit effort.
 \citet{cabral_2017} analyze the redistribution of fishing and
 non-fishing vessels following the implementation of a network of MPAs in
-California, and find that commercial dive boats (??????) follow a
+California, and find that dive boats follow a
 fishing-the-line pattern, while some fishing boats follow an ideal free
 distribution. More recently \citet{elahi_2018} used satellite tracking
 data to show that a temporal spatial closure caused trawlers to maintain
@@ -426,9 +387,12 @@ We compare these outcomes before and after the implementation
 of PIPA using a Difference-in-Differences approach. Our main
 specification is the following:
 
-\[
-y_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \theta_t + \epsilon_{i,t},
-\]
+\begin{figure*}[h]
+\begin{align*}
+log(y)_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \theta_t + \epsilon_{i,t}
+\label{eqn:did}
+\end{align*}
+\end{figure*}
 
 where \(y_{i,t}\) is the outcome of interest for vessel \(i\) on day \(t\). A dummy variable \(Post_t\) takes the value of 0 for all
 dates prior to PIPA implementation and a value of 1 for all dates
@@ -466,9 +430,9 @@ from EEZs into the high seas, but we are interested in knowing
 using a 1 degree buffer of the high seas around each of the EEZ regions.
 The rest of the high seas are merged into a single spatial unit. For
 example, if we were to do this only for Kiribati, we would have 8
-spatial units: PIPA, three EEZ units, three 1-degree buffers of high seas
-around each EEZ, and the rest of the high seas. Whenever the buffer units
-overlap, we randomly clip one on to the other (QUESTION FOR JC: WHAT DOES THIS MEAN?).
+spatial units: PIPA, three EEZ units, three 1-degree\footnote{Currently running the 5-degree version too} buffers of high seas
+around each EEZ, and the rest of the high seas. We clipped any overlapping
+high seas buffers to avoid duplication.
 
 We then take these spatial polygons and rasterize them to a 1-degree grid
 (see Figure \ref{fig:raster_rgn} in the Appendix), which we then use to rasterize points
@@ -484,16 +448,43 @@ We use this measure to evaluate the change in effort allocation by
 regressing it on the interaction between a year dummy and a dummy for
 regions:
 
-\[
+\begin{figure*}[h]
+\begin{align*}
 y_{i,t} = \alpha + \beta_1Year_t + \beta_{2,i}Region_i + \beta_{3,i}Year_t \times Region_i+ \epsilon_{i,t}
-\]
+\end{align*}
+\end{figure*}
 
-Our variable of interest, \(y_{i,t}\) represents the proportion of
-fishing hours that region \(i\) receives at time \(t\). Years are
-modeled as factors (\(Year_t\)), using 2012 as the reference level.
-\(Region\) is a dummy variable for regions defined above. Our parameter (QUESTION FOR JC: VECTOR?)
-of interest is \(\beta_{3,i}\), which captures the yearly by-country
+
+Our variable of interest, $y_{i,t}$ represents the proportion of
+fishing hours that region $i$ receives at time $t$. Years are
+modeled as factors ($Year_t$), using 2012 as the reference level.
+\(Region\) is a dummy variable for regions defined above. Our vector of parameters of
+of interest is $\beta_{3,i}$, which captures the yearly by-country
 change in proportional allocation of fishing effort relative to 2012.
+
+Finally, we inspect the crowding effects that may arise due to the reduction
+in total fishing area. We use the rasterized fishing effort and calculate two
+potential indices of crowding. For the first one, we count the number of cells
+that had fishing activity from both groups over a given month. For the second one,
+we calculate the correlation of presence/absence of fishing for both groups
+over one month. If the implementation of the reserve induces a crowding effect,
+we would expect to observe bo clear trend before the implementation of the reserve.
+The implementation would be followed by an increase in these measures, which, 
+if vessels avoid crowding, should then come back down. We therefore expect to
+have three inflection points: 1) when there is an initial increase due to MPA
+implementation, 2) When the crowding has reached its maximum and then decreases,
+and 3) when the decrease in the measure levels off, pressumably to pre-MPA levels.
+For this reason, we fit a 4th degree polynomial to our monthly indices. We do so by
+centering our time series of crowding indices on the day of implementation. Our
+explanatory variable is then the number of months before or after the implementation.
+For example, since PIPA was implemented in January 1st of 2015, December of 2014 
+has a value of -1, whicle Feb of 2015 would receive a value of 1.
+
+\begin{figure*}[h]
+\begin{align*}
+y_t = \alpha + \beta_1 month_t + \beta_2 month_t^2 + \beta_3 month_t^3 + \beta_4 month_t ^4 + \epsilon_t
+\end{align*}
+\end{figure*}
 
 All regression coefficients were estimated via ordinary least squares,
 and heteroskedasticity-robust standard errors were calculated. All analyses
@@ -569,15 +560,12 @@ other areas.
 
 We use the rasterized effort to evaluate if the PIPA closure increased
 crowding outside the LSMPA. We count the number of raster cells that
-had both treated and control vessels each year (Fig.
+had both treated and control vessels each month (Fig.
 \ref{fig:sp_corr}A). The pattern observed here could just be an artifact
 of satellite detections increasing though time. Therefore we also
 calculate a spatial correlation of presence/absence and observe similar
-patterns (Fig. \ref{fig:sp_corr}B). While this is at the year level and
-cannot assure that vessels were in effect at the same time in the same
-place, it provides a of what we would expect to
-find if our claims of displacement are true. Spatial overlap increases
-in 2015 as vessels from PIPA are excluded, but then starts to decline. [QUESTIONS FOR JC: Is this significant? Can we do a daily measure? What about mean or shortest distance between vessels. Treated/Control/Combined]
+patterns (Fig. \ref{fig:sp_corr}B). Spatial overlap increases
+in 2015 as vessels from PIPA are excluded, but then starts to decline.
 
 \begin{figure}
 \centering
@@ -659,16 +647,39 @@ presence-absence of treated and control vessels per cell (B).}
 
 \input{tab/sp_corr}
 
+\begin{figure}
+\centering
+\includegraphics{img/VDS_year.pdf}
+\caption{\label{fig:VDS_year}Vessel-days for all PNA countries (including Tokelau).}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{img/VDS_country_year.pdf}
+\caption{\label{fig:VDS_country_year}Vessel-days for all PNA countries (including Tokelau) by country.
+The top panel shows vessel days in absolute numbers, while the bottom panel shows the proportion
+of each year. The left and right columns show fishing and non-fishing hours.
+[JOHN: I prefer the absolute hours one, but what do you prefer?]}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{img/hist_kir_fishing.pdf}
+\caption{\label{fig:hist_kir_fishing}Ridgeplot for the density of the \% of total fishing hours that take place
+within Kiribati EEZ waters by year for treated vessels where the unit of observation is an individual vessel
+}
+\end{figure}
+
+
 \clearpage
 
 \section{Palau National Marine Sanctuary}\label{PNMS}
 
-%\begin{figure}[h]
-%	\caption{Map of the Four Protected Areas}
-%	\label{fig:maps}
-%	\includegraphics[width=0.8\textwidth]{Color_V1.png}
-%	Notes: ... .
-%\end{figure}
+\begin{figure}[h]
+	\includegraphics[width=0.8\textwidth]{img/Color_V1.png}
+	\caption{Map of the Four Protected Areas}
+	\label{fig:maps}
+\end{figure}
 
 On October 28, 2015 the President of Palau, H.E. Tommy E. Remengesau Jr., signed into law the Palau National Marine Sanctuary Act. Starting in December 2020, this will close 193,000 square miles to commercial fishing activities, creating the 14th largest protected area in the world. 
 
@@ -737,16 +748,14 @@ Local NGOs have sponsored short trainings on small-scale canning and proper tech
 
 We will use aggregated GFW data at the 1km * 1km level to estimate what \% of fishing effort under the PNA is currently taking place in the proposed sanctuary? This will estimate the impact on foreign-flagged fleets that used to fish in Palau waters. We are currently in possession of this data. In terms of the impact on PNA payments, it is our understanding that the allocation will not be reduced (in the near future) but perhaps the price received per VDS will be lower. But we do not have good information on prices paid for VDS. We also don’t yet have good data on local fishers in Palau that are likely to be positively impacted since they will be allowed to fish in the sanctuary. 
 
-\section{Conclusion}\label{conclude}
-
 \begin{figure}[h]
+	\includegraphics[width=0.75\textwidth]{img/Fishing_effort_Palau_relative_PNA}
 	\caption{Fishing Effort in Palau Relative to the Total PNA Area}
-%	\includegraphics[width=0.75\textwidth]{Fishing_effort_Palau_relative_PNA}
 \end{figure}
 
 \begin{figure}[h]
+	\includegraphics[width=0.75\textwidth]{img/By_flag_Fishing_effort_Palau_relative_PNA}
 	\caption{Fishing Effort in Palau Relative to the Total PNA Area By Distant Water Fishing Fleet}
-%	\includegraphics[width=0.75\textwidth]{By_flag_Fishing_effort_Palau_relative_PNA}
 \end{figure}
 
 
@@ -829,30 +838,11 @@ provide a wide range of benefits, their implementation must be
 accompained with traditional fisheries management to maximize
 effectiveness.
 
-\hypertarget{further-work}{%
-\section{Further work}\label{further-work}}
+\section{Conclusion}\label{conclude}
 
-\begin{itemize}
-\tightlist
-\item
-  Distance traveled
-\item
-  Non-fishing hours at sea
-\item
-  Monthly crowdnes (same approach as now, but monthly instead of yearly)
-\item
-  Number of vessels per cell as another measure of crowdness (this is a
-  more real one)
-\item
-  Repeat raster exercise for Revillagigedo and other recently
-  implemented LSMPAs. It would be great to have a pannel figure of 3 or
-  4 other LSMPAs that show wher effort was and where it went to
-  generalize our results.
-\item
-  John talked about this being relevant to Palau (their upcoming LSMPA).
-  We might want to talk about where the vessels that are there would go.
-\end{itemize}
+\clearpage
 
+\section{References}\label{references}
 \bibliography{references}
 
 %\clearpage
