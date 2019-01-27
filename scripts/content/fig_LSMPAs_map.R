@@ -13,8 +13,8 @@ library(sf)
 library(tidyverse)
 
 # Source local functions
-source(here::here("scripts", "st_rotate.R"))
-source(here::here("scripts", "sfc_as_cols.R"))
+source(here::here("scripts", "functions", "st_rotate.R"))
+source(here::here("scripts", "functions", "sfc_as_cols.R"))
 
 
 mpas <- read_sf(dsn = here::here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>% 
@@ -54,6 +54,7 @@ plot <- ggplot() +
         legend.background = element_blank()) +
   guides(fill = guide_legend(ncol = 3))
 
+ggsave(plot, filename = here::here("docs", "img", "LSMPAs_map.png"), width = 6, height = 3.5)
 ggsave(plot, filename = here::here("docs", "img", "LSMPAs_map.pdf"), width = 6, height = 3.5)
 
 
