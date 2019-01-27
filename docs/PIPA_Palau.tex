@@ -6,7 +6,9 @@
 % {pnasmathematics} %= Template for a one-column mathematics article
 % {pnasinvited} %= Template for a PNAS invited submission
 
-\title{Large Scale Marine Protected Areas}
+\usepackage{placeins}
+
+\title{Large-Scale Marine Protected Areas in the World's Largest Tuna Fishery}
 
 % Use letters for affiliations, numbers to show equal authorship (if applicable) and to indicate the corresponding author
 \author[a,1]{Juan CarlosVillase\~{n}or-Derbez}
@@ -31,41 +33,30 @@
 \keywords{Marine Protected Areas $|$ Fisheries $|$ Purse Seining $|$ Marine Conservation} 
 
 \begin{abstract}
-Large-scale Marine Protected Areas (LSMPAs) have seen a significant
-increase over the last years. The benefits of
-reducing effort have been largely studied, but little empirical work has
-evaluated how vessels react and redistribute after an MPA is created.
-We use identification of fishing activity via
+The Parties to the Nauru Agreement (PNA) is a system for managing the world's largest skipjack tuna fishery, covering an area of ~14.6 million km\textsuperscript{2} in the Pacific Ocean. Countries within the PNA have recently started to prohibit fishing within large parts of the PNA area. It is still unclear what the effects of these prohibitions have been and what effects are likely to occur in the future. We use identification of fishing activity via
 Automatic Identification Systems (AIS) and causal inference techniques
 to provide the first analysis of behavioral changes and spatial
 redistribution of tuna purse seiners due to the implementation of a
-Large Scale Marine Protected Area in the Pacific Ocean. Our work
+Large-Scale Marine Protected Area (LSMPA) in the Pacific Ocean. Our work
 provides three main findings: 1) aggregate fishing effort remains
 relatively unaffected; 2) vessels that fished inside the protected area
-redistribute to adjacent waters; and 3) we observe a crowding effect for
-the first months after implementation. Our results not only provide an
+redistribute to adjacent waters (including the high seas); and 3) we observe a crowding effect for
+the first months after implementation. This suggests that rights to fish in PNA waters might now be less valuable. Our results not only provide an
 impact evaluation of the effect of LSMPAs on fishing activity, but
 provide insights into vessel redistribution dynamics, which may have
 ecological and economic implications for marine conservation and fisheries
 management. As countries continue to implement LSMPAs as a way to
-reach the stated 10\% target of ocean protection, managers should
+reach ocean protection targets, managers should
 consider how fishing effort will change in space and through time to
 ensure that fishing effort is not just displaced elsewhere, leading to
-overfishing in adjacent waters. While LSMPAs can provide a wide
-range of benefits, their implementation must be accompained with
-traditional fisheries management to maximize their effectiveness.
-
-
-We do not observe an increase in daily fishing hours for vessels that used to fish within PIPA, compared to a control
-group of vessels. Thus, for vessels that have chosen to continue to operate following the closure, we do not observe evidence that they are being forced to exert more effort as a result of the closure. Unfortunately, without detailed data on vessel catch, we cannot conclude whether vessels are better or worse off financially following the closure.
-
-Our results suggest that PIPA has displaced some vessels to the high seas just outside the EEZ of Kiribati. This might imply a drop in demand for Kiribati fishing rights and a decline in revenue. We also uncover evidence that there is more congestion immediately following the closure, but this is declining over time.
+overfishing in adjacent waters. We do not observe an increase in daily fishing hours for vessels that used to fish within the LSMPA, compared to a control
+group of vessels. Thus, for vessels that have chosen to continue to operate following the closure, we do not observe evidence that they are being forced to exert more effort as a result of the closure. Unfortunately, without detailed data on vessel catch, we cannot conclude whether vessels are better or worse off financially following the closure. We use our results to inform predictions of the impacts of a proposed LSMPA in Palau (a PNA member). Our estimates of the potential losses range from \$2.5 to \$11 million annually. This wide range hinges on what Palau's future PNA allocation will be and the extent to which US aid will continue through non-fishing channels. 
 \end{abstract}
 
 \dates{This manuscript was compiled on \today}
 \doi{\url{www.pnas.org/cgi/doi/10.1073/pnas.XXXXXXXXXX}}
 
-\usepackage{lscape}
+\usepackage{pdflscape}
 \begin{document}
 
 \maketitle
@@ -75,10 +66,10 @@ Our results suggest that PIPA has displaced some vessels to the high seas just o
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-Next steps: I think we need to make the buffers around the EEZs 5 degrees instead of 1 degree (redistribution of effort section)
-Might change the specification of the redistribution regression
-
-(QUESTION FOR JC: WHEN IS THIS (selling of rVDS rights)? And wasn't the closure expected?). 
+%Next steps: I think we need to make the buffers around the EEZs 5 degrees instead of 1 degree (redistribution of effort section)
+%Might change the specification of the redistribution regression
+%
+%(QUESTION FOR JC: WHEN IS THIS (selling of rVDS rights)? And wasn't the closure expected?). 
 
 
 \section{Introduction}\label{introduction}
@@ -88,7 +79,7 @@ ocean from fishing and other extractive activities. Current
 international goals aim to protect 10\% of the ocean environment by
 2020. In an effort to meet this target, there has been a rapid
 increase recently in MPA coverage \citep{wood_2008,sala_2018}, largely driven by
-a small number of Large Scale Marine Protected Areas (LSMPAs)\footnote{See, for example, \citep{game_2009,singleton_2014,boonzaier_2016,mccauley_2016,alger_2017}.}.
+a small number of Large-Scale Marine Protected Areas (LSMPAs).\footnote{See, for example, \citep{game_2009,singleton_2014,boonzaier_2016,mccauley_2016,alger_2017}.}
 Today, a small number of LSMPAs make up at least 80\%
 of the managed areas in the ocean \citep{toonen_2013}.
 
@@ -103,10 +94,10 @@ about the ways in which fishers will reallocate fishing effort after an
 area closure, which often determine whether or not MPAs produce negative or positive impacts on fisheries. The existing empirical literature focuses on small MPAs and has been criticized for confounding correlation with causation \citep{ferraro2018causal}.
 
 Recent advances in satellite tracking technologies and near real-time
-identification of fishing activity provide us with an opportunity to ask, how do fishers respond to the implementation of an LSMPA? Does effort increase or decrease and where does it go? We use identification of fishing activity via Automatic
+identification of fishing activity provide us with an opportunity to ask: how do fishers respond to the implementation of an LSMPA? Does effort increase or decrease and where does it go? We use identification of fishing activity via Automatic
 Identification Systems (AIS) and causal inference techniques to describe
 the behavioral changes and spatial redistribution of the industrial tuna
-purse seine fleet due to the implementation of the Phoenix Islands Protected Area. We use the same data to hypothesize what might be the impacts of the proposed Palau National Marine Sanctuary.
+purse seine fleet due to the implementation of the Phoenix Islands Protected Area. We use the same data to hypothesize what might be the impacts of the proposed Palau National Marine Sanctuary. These are two of the largest protected areas on the planet and both are within the Parties to the Nauru Agreement (PNA) region, which is a group of (originally eight and now) nine Pacific Islands countries that collectively manage their valuable tuna stocks.
 
 Our work is novel in the sense that it provides empirical evidence of
 the effect of Large Scale Marine Protected Areas on fishing behavior and
@@ -125,26 +116,26 @@ results.
 
 \section{Background}\label{background}
 
-\subsection{Large Scale Marine Protected Areas}\label{lsmpas}
+\subsection{Large-Scale Marine Protected Areas}\label{lsmpas}
 
 The cutoff at which an MPA is considered to be a LSMPA ranges from areas
 larger than 30,000 km\textsuperscript{2} as defined by
-\citet{desanto_2013} or areas larger than 250,000 km\textsuperscript{2},
-as defined by \citep{toonen_2013}. Figure \ref{fig:LSMPAs_map} shows
+\cite{desanto_2013} or areas larger than 250,000 km\textsuperscript{2},
+as defined by \cite{toonen_2013}. Figure \ref{fig:LSMPAs_map} shows
 LSMPAs that meet the latter condition, and are also fully no-take. LSMPAs are often
 implemented in the pelagic environment, where the dominant human
-activity is industrial fishing \citep{gray_2017,kroodsma_2018}. The
+activity is industrial fishing \cite{gray_2017,kroodsma_2018}. The
 early literature on LSMPAs focused on the inherent challenges and
-difficulties that come with a pelagic environment. \citet{kaplan_2010}
+difficulties that come with a pelagic environment. \cite{kaplan_2010}
 claimed that very large MPAs would result in excessive opportunity costs
-and that these would be difficult to enforce. \citet{game_2009}
+and that these would be difficult to enforce. \cite{game_2009}
 suggested that most of the challenges could be overcome with the
 incorporation of technology, in what then became known as Dynamic Ocean
-Management \citep{maxwell_2015}.\footnote{See \citet{singleton_2014}, who provide an objective discussion of the pros and cons of LSMPAs.} 
+Management \citep{maxwell_2015}.\footnote{See \cite{singleton_2014}, who provide an objective discussion of the pros and cons of LSMPAs.} 
 
 \begin{figure}
 \centering
-\includegraphics{img/LSMPAs_map.pdf}
+\includegraphics{img/LSMPAs_map.png}
 \caption{\label{fig:LSMPAs_map}Large Scale Marine
 Protected Areas. The map shows all areas larger than 250,000
 Km\textsuperscript{2}. Areas in dark blue meet at least one of these
@@ -152,22 +143,22 @@ conditions: reported no take area is greater than 0, are categorized as
 IUCN Ia or Ib, their designated English name is `Protected Area'.}
 \end{figure}
 
-LSMPAs were erroneously assumed to have little social implications due
-to their remoteness. However, there have been calls to incorporate the
-human dimensions into LSMPAs management and evaluation
+LSMPAs were initially assumed to have little social implications due
+to their general remoteness. However, there have been calls to incorporate the
+human dimensions into LSMPA management and evaluation
 \citep{agardy_2011,gray_2017}. Most research incorporating these
 dimensions has focused on governance and enforcement of LSMPAs
-(\emph{i.e.} \citet{alger_2017,christie_2017}), but they are yet to be
+\cite{alger_2017,christie_2017}, but they are yet to be
 the focus of economic analyses \citep{gray_2017}. Overall, there has
 been little empirical work regarding LSMPAs. Recent technological
 advances in vessel-detection systems allows for the discovery and
 advancement of many important facets of LSMPAs. For example,
-\citet{mcdermott_2018} show that the anticipation of a LSMPA can lead to
+\cite{mcdermott_2018} show that the anticipation of a LSMPA can lead to
 preemptive overfishing, which can erode or delay the expected benefits
-of the intervention. \citet{white_2017} combine shark tags and
+of the intervention. \cite{white_2017} combine shark tags and
 vessel-tracking data to demonstrate that the fairly large Palmyra Atoll
 National Wildlife Refuge (54,000 Km\textsuperscript{2}) protects two
-thirds of the tagged grey reef sharks by effectively excluding fishing
+thirds of tagged gray reef sharks by effectively excluding fishing
 effort. More recently, \citep{bradley_2018} use similar data to
 highlight cases of potential illegal shark fishing \emph{inside} a 2
 million km\textsuperscript{2} shark sanctuary. To date, no studies have
@@ -181,30 +172,29 @@ region disappears, to spatially explicit models that reallocate fishing
 effort based on habitat characteristics, presence of other vessels, and
 expected returns \citep{smith_2003,hilborn_2006}. However, these focus
 on the long term optimal equilibrium, and redistribution of fishing
-effort may not always be optimal, especially over the first few years
+effort may not always be optimally distributed, especially over the first few years
 \citep{stevenson_2013}.
 
 The empirical research that has been done in smaller sized MPAs
 suggests that resource users may show idiosyncratic responses. For
-example, \citet{stevenson_2013} show that a network of MPAs displaced
+example, \cite{stevenson_2013} show that a network of MPAs displaced
 fishing effort farther away from ports, resulting in higher
 \emph{perceived} costs, and increases in catch per unit effort.
-\citet{cabral_2017} analyze the redistribution of fishing and
+\cite{cabral_2017} analyze the redistribution of fishing and
 non-fishing vessels following the implementation of a network of MPAs in
 California, and find that dive boats follow a
 fishing-the-line pattern, while some fishing boats follow an ideal free
-distribution. More recently \citet{elahi_2018} used satellite tracking
+distribution. More recently \cite{elahi_2018} used satellite tracking
 data to show that a temporal spatial closure caused trawlers to maintain
 effort but apply it more intensively elsewhere, particularly along the
 borders and closer to shore. The way in which fishers react to a spatial
 closure can have major implications for its outcome
 \citep{smith_2003,hilborn_2006}, highlighting the need to understand how
 fishers react to the implementation of LSMPAs, how fishing effort
-changes, and how it is spatially redistributed. All these closures took
-place within Exclusive Economic Zones, where other regulations exist.
+changes, and how it is spatially redistributed. All these studies evaluate relatively small closures within Exclusive Economic Zones, where other regulations exist.
 This may not always be the case for LSMPAs, where often the entire EEZ
 is converted into a LSMPA, leaving fishers with the option of moving to
-the high seas or other countries' EEZs.
+the high seas or other countries' EEZs, with potentially very different fishing regulations.
 
 \hypertarget{nauru-agreement-and-the-phoenix-island-protected-area}{%
 \subsection{Nauru agreement and the Phoenix Islands Protected
@@ -213,33 +203,33 @@ Area}\label{nauru-agreement-and-the-phoenix-island-protected-area}}
 The Nauru Agreement was established in 1982 by a select group of Pacific
 island nations to manage their important tuna resources more effectively. Parties to the Nauru Agreement (PNA) Members
 include the Federated States of Micronesia, Kiribati, the Marshall Islands,
-Nauru, Palau, Papua New Guinea, the Solomon Islands, and Tuvalu. The Nauru
-Agreement regulated access of foreign vessels (\emph{i.e.} those from
-non-PNA countries). Holding \textasciitilde{}80\% of the historical
-purse seining grounds within their Exclusive Economic Zones, PNA
-countries gained greater bargaining power when providing fishing access to foreign
-fleets \citep{havice_2010}.
+Nauru, Palau, Papua New Guinea, the Solomon Islands, and Tuvalu. Tokelau joined in PNA group in 2012 and started selling access rights in 2013. The Nauru
+Agreement regulates access of foreign vessels (\emph{i.e.} those from
+non-PNA countries). Holding \textasciitilde{}80\% of historical
+skipjack tuna purse seine grounds within their Exclusive Economic Zones, PNA
+countries have achieved greater bargaining power when providing fishing access to foreign
+fleets \cite{havice_2010}.
 
 The cooperation that emerged under the Nauru Agreement allowed for subsequent
 agreements that strengthened fisheries management, like the Palau
 Agreement, which limited the number of purse seiners at 205 vessels from
-1995-2007\footnote{See \citet{havice_2010} for a detailed description of
-  the Nauru, Palau, and Federal States of Micronesia agreements.}. However, the most notable regulation is
-their approach to manage fishing effort: a Vessel Day Scheme (VDS)
+1995-2007.\footnote{See \cite{havice_2010} for a detailed description of
+	the Nauru, Palau, and Federal States of Micronesia agreements.} However, the most notable regulation is
+the approach to manage fishing effort: a Vessel Day Scheme (VDS)
 implemented in 2007 \citep{havice_2013}. This effectively modified how
-fishing effort was managed, from number of vessels under the Palau
-Agreement to fishing hours. The VDS works as follows: Each year,
-scientific advisers recommend a total number of fishing vessel-days per
-year. Hours are allocated to each PNA country based on catch history,
-and they then use or sell fishing rights to other non-PNA countries
-\citep{aqorau_2018}. While the effectiveness of this scheme has been
-debated in terms of meeting their fishery management and conservation
+fishing effort was managed, from total number of vessels (under the Palau
+Agreement) to total fishing hours. 
+Under the purse seine VDS, a total number of annual vessel days for the entire fishery is agreed upon by the PNA parties. Each party’s allowable effort (PAE) is then calculated based on historic effort and biomass within each party’s EEZ. Sixty percent of the PAE is calculated based on EEZ effort over the last seven years and 40\% of the PAE is calculated based on the 10-year average of each country’s share of estimated skipjack and yellowfin biomass within its EEZ.\footnote{This is explained in more detail in Article 12.5 of the 2012 Amendment to the Palau Agreement and in \cite{Hagrannsoknir2014}}. A minimum benchmark fee is set for purse seine vessel days which each party can transfer (i.e., sell to another PNA member) or sell to the highest bidder (i.e., sell to a fishing company). Vessel days can be transferred to fish in any PNA party’s EEZ, without penalty to the transferred parties' allocations \cite{PNA2016}.\footnote{The process of transferring days between parties is described in Article 7 of the Management Scheme \cite{PNA2016}.} The mean value of a vessel day has steadily increased since 2007 \citep{havice_2013}. 
+Although detailed records on sales or transfers of vessel days are not publicly available \citep{havice_2013,yeeting2018stabilising}, a minimum benchmark fee of \$8,000/day was set from 2015 \citep{PNA2014a}.
+
+\cite{yeeting2018stabilising} summarize the PNA implementing arrangements as follows: “foreign vessels [are required] to be registered and licensed, report catches, maintain log books, allow observers on board and maintain transparency over their fishing activities.” Further, vessels registered with the Vessel Day Scheme are required to have Automatic Location Communicators (ALC) or Mobile Transceiver Units (MTU) that transmit their locations at least once per hour while they are within the VDS Management Area \citep{PNA2016}. Every entire day that a vessel is within the VDS Management Area is counted as a vessel day used, unless the vessel reports a “no fishing day” (e.g., travel, maintenance, etc.) and periods of less than 24 hours are counted as partial days \citep{PNA2016}.  As described in the Palau Arrangement, fishing days by vessels shorter than 50m (longer than 80m) count as 0.5 (1.5) vessel days. Countries are responsible for ensuring registered vessels comply with the implementing arrangements and that they stay within their PAE. Parties that exceed their PAE should reportedly be penalized by reductions to the following year’s PAE \citep{PNA2016}. There are some criticisms of the PNA PS VDS claiming that there is a lack of monitoring, compliance, and transparency that could hinder the future success of the program \citep{Arnason2014,yeeting2018stabilising}. While the effectiveness of this scheme has been
+debated in terms of meeting fishery management and conservation
 objectives, the licensing significantly contributes to the economy of
 these island nations \citep{havice_2010}.
 
 \begin{figure}
 \centering
-\includegraphics{img/PNA_map.pdf}
+\includegraphics{img/PNA_map.png}
 \caption{\label{fig:PNA_map}Map of the Exclusive
 Economic Zones (EEZs) of the region of interest. Countries that belong
 to the PNA are shown in blue, while empty polygons indicates all others.
@@ -254,9 +244,9 @@ From these, the first two are amongst the top-10 species represented in
 global fisheries production statistics, with 2016 catches increasing
 relative to the 2005-2014 average \citep{fao_2018}. This region of the
 Pacific has historically accounted for a large portion of tuna catches
-\citep{aqorau_1997}. Today, the PNA controls close to 50\% of the global
-skipjack tuna production \citep{pna_website_2018}. A large portion of
-these catches derive from purse seine vessels licensed under the VDS.
+\cite{aqorau_1997}. Today, the PNA controls close to 50\% of global
+skipjack tuna production \cite{pna_website_2018} and the combined area of all EEZs involved is 14.6 million km\textsuperscript{2}, larger than the land mass of the United States of America. A large portion of global skipjack
+catch derives from purse seine vessels licensed under the VDS.
 Fishing vessels from Australia, New Zealand, China, France, Korea,
 Japan, the Philippines, Taiwan, and the United States participate in the
 purse-seining VDS.
@@ -268,7 +258,7 @@ established in 2008 with only 4\% of the area declared as no-take. On
 January 1\textsuperscript{st}, 2015, the no-take area within PIPA was
 expanded to a total area of 397,447 km\textsuperscript{2}, roughly 1.5
 times the size of Ecuador. Figure \ref{fig:PNA_map} shows a map of the
-PNA countries and the Phoenix Islands Protected Area.
+PNA countries (excluding Palau) and the Phoenix Islands Protected Area.
 
 The closure of such a large area in one of the most important fishing
 regions in the world provides a unique opportunity to evaluate the
@@ -666,8 +656,7 @@ presence-absence of treated and control vessels per cell (B).}
 	\includegraphics{img/VDS_country_year.pdf}
 	\caption{\label{fig:VDS_country_year}Vessel-days for all PNA countries (including Tokelau) by country.
 The top panel shows vessel days in absolute numbers, while the bottom panel shows the proportion
-of each year. The left and right columns show fishing and non-fishing hours.
-[JOHN: I prefer the absolute hours one, but what do you prefer?]}
+of each year. The left and right columns show fishing and non-fishing hours.}
 \end{figure}
 
 \begin{figure}
@@ -683,90 +672,59 @@ of each year. The left and right columns show fishing and non-fishing hours.
 
 \section{Palau National Marine Sanctuary}\label{PNMS}
 
-\begin{figure}[h]
-	\includegraphics[width=0.8\textwidth]{img/Color_V1.png}
-	\caption{Map of the Four Protected Areas}
-	\label{fig:maps}
-\end{figure}
+%\begin{figure}[h]
+%	\includegraphics[width=0.8\textwidth]{img/Color_V1.png}
+%	\caption{Map of the Four Protected Areas}
+%	\label{fig:maps}
+%\end{figure}
 
-On October 28, 2015 the President of Palau, H.E. Tommy E. Remengesau Jr., signed into law the Palau National Marine Sanctuary Act. Starting in December 2020, this will close 193,000 square miles to commercial fishing activities, creating the 14th largest protected area in the world. 
+On October 28, 2015, the President of Palau, H.E. Tommy E. Remengesau Jr., signed into law the Palau National Marine Sanctuary (PNMS) Act. Starting in December 2020, this Act will close 500,000 km\textsuperscript{2} to commercial fishing activities, creating the 14th largest protected area in the world. The sanctuary will fully protect about 80 percent of the nation’s EEZ. The remaining 20\% of Palau’s EEZ (close to the most heavily populated islands: Koror and Babeldaob) will become a Domestic Fishing Zone in which traditional and domestic fishing activities will be allowed to provide fish solely for the domestic market (\emph{i.e.} exports of pelagic fish will be prohibited). Alongside these protections, the Palau National Marine Sanctuary (PNMS) Act will support a domestic pelagic fishery. In this section, we use our preceding analysis on the ex-post impacts of PIPA to attempt to make some \emph{ex ante} predictions about the potential impacts of PNMS. We start by giving some background on the fishing that is currently taking place inside the future PNMS. 
 
 \subsection{Background on Commercial Fishing in Palau}\label{Palau_back}
 
-Foreign tuna fishing in Palau’s EEZ began before WWI. Pole and line was the initial gear used to target skipjack tuna by the Japanese. Foreign fishing activities stopped during WWII and started again in the 1960s when the Japanese returned and the locally based Van Camp Seafood Company carried out fishing with boats crewed by Okinawans. The Japanese also began purse seine fishing in the 1960s and 1970s and limited longline fishing for yellowfin tuna during the same time. During the 1980s, longline fishing began to set their lines deeper, shifting their targets to bigeye tuna. During the 1980s Korean and Taiwanese vessels also began longline fishing in Palauan waters for export to Japan \citep{chapman2000development}. There are currently three transshipment companies operating in Palau.
+Foreign tuna fishing in Palau’s EEZ began before WWI. Pole and line was the initial gear used to target skipjack tuna by Japanese vessels. Foreign fishing activities stopped during WWII and started again in the 1960s when Japanese fishers returned and the locally based Van Camp Seafood Company carried out fishing with boats crewed by Okinawans. The Japanese also began purse seine fishing in the 1960s and 1970s and limited longline fishing for yellowfin tuna developed during the same time. During the 1980s, longline fishers began to set their lines deeper, shifting their targets to bigeye tuna. During the 1980s, Korean and Taiwanese vessels also began longline fishing in Palauan waters for export to Japan \citep{chapman2000development}. There are currently three transshipment companies operating in Palau.
 
-\subsubsection{Purse seine fishing}
+Purse seine vessels target schools of skipjack tuna that are then canned. Compared to other EEZs in the Pacific, especially the PNA EEZs, Palau’s EEZ is not known to be a preferred fishing ground for purse seining (Sisior, pers. comm.). This can be seen in Figure \ref{fig:VDS_country_year}. Currently all purse seine boats fishing in Palau’s EEZ are Japanese and they do not land their catch in Palau (Table \ref{tab:palau_purse}). 
 
-Purse seine vessels target schools of skipjack tuna that are used for canning. Compared to other EEZs in the Pacific, Palau’s EEZ is not known to be preferred for purse seining (Sisior, pers. comm.). Currently all purse seine boats fishing in Palau’s EEZ are Japanese and do not land their catches in Palau Table \ref{tab:palau_purse}. 
+\input{palau_purse}
 
-%\input{palau_purse}
+All longline vessels fishing in Palau’s EEZ are foreign owned (Table \ref{tab:palau_long}). Japanese longline vessels do not land their catch in Palau. Locally-based, foreign-owned longline boats are mostly Taiwanese vessels that are contracted by one of the two main fishing companies (Palau International Traders Incorporated (PITI) and Kuniyoshi Fishing Company (KFC)). Ninety-five percent of the catch from PITI and KFC contracted boats is exported to Japan upon landing in Koror (the largest town in and former capital of Palau). Most of the discards are either sold or donated in Palau. A very small portion of the discards is frozen and transported to Taiwan when vessels return to their home ports.
 
-\subsubsection{Longline fishing}
-
-All longline vessels fishing in Palau’s EEZ are foreign owned (Table 2). Japanese longline vessels do not land their catches in Palau. Locally based, foreign owned longline boats are mostly Taiwanese vessels that are contracted by one of the two main fishing companies (Palau International Traders Incorporated (PITI), Kuniyoshi Fishing Company (KFC)) (Table 2). Ninety-five percent of the catch from PITI and KFC contracted boats is exported to Japan, upon landing in Koror. Most of the discards, or portion of the catch that is of too low quality to export, is either sold or donated in Palau. A very small portion of the discards is frozen and transported to Taiwan when the vessels return to their home ports.
-
-%\input{palau_long}
+\input{palau_long}
 
 
-\subsubsection{Access fees}
+\subsubsection{Access fees and taxes}
 
-An agreement between Palau and four Japanese fishing associations\footnote{This is a single agreement between Palau and four associations—1)Federation of Japan Tuna Fisheries Cooperative Associations, 2) National Offshore Tuna Fisheries Association of Japan, 3) Japan Far Seas Purse Seine Fishing Association, 4) Federation of North Pacific District Purse Seine Fisheries Cooperative Association of Japan (Performance Audit Report on Managing Sustainable Fisheries (Tuna) 2013).} covers three methods of fishing (longline, purse seine, pole and line) and has allowed Japan to have up to 290 vessels in Palau waters with no limits on catch. Japan pays 4-5\% of catch returns, but there was no way to validate their catch \citep{Tewid2013}. Between 2010 and 2014, Japan has paid Palau between \$196,100- \$867,120 annually in access fees \citep{Gillett2016}. Currently, these access fees have been replaced by the vessel day schemes (described in section 3).
-
-\subsubsection{Uniform Longline Agreement for locally based vessels (ULA)}
+An agreement between Palau and four Japanese fishing associations\footnote{This is a single agreement between Palau and four associations—1)Federation of Japan Tuna Fisheries Cooperative Associations, 2) National Offshore Tuna Fisheries Association of Japan, 3) Japan Far Seas Purse Seine Fishing Association, 4) Federation of North Pacific District Purse Seine Fisheries Cooperative Association of Japan (Performance Audit Report on Managing Sustainable Fisheries (Tuna) 2013).} covered three methods of fishing (longline, purse seine, and pole and line) and allowed Japan to have up to 290 vessels in Palau waters with no limits on catch. Japan paid 4-5\% of catch returns for this access, but there was no way to validate their catch \citep{Tewid2013}. Between 2010 and 2014, Japan paid Palau between \$196,100- \$867,120 annually in access fees \citep{Gillett2016}. Currently, these access fees have been replaced by the PNA vessel day scheme (described earlier).
  
-Agreements between the Republic of Palau and foreign owned, local based companies (PITI and KFC) \citep{Tewid2013}. Vessels under these agreements are internationally owned, locally based vessels that have payed for annual licenses per vessel based on the size of the vessel. These are the vessels in Table \ref{tab:palau_long} (excluding the Japanese vessels). So, for example, 38 vessels in 2016. Between 2010 and 2014, total licensing fee revenue was between \$219,000-\$284,600 per year \citep{Gillett2016}. Currently, these access fees have been replaced by the vessel day scheme (described in section 3).
+There used to be a number of agreements between the Republic of Palau and foreign owned, local based companies, in particular PITI and KFC, to allow longline fishing \cite{Tewid2013}. Vessels under these agreements were internationally-owned, locally-based vessels that paid for annual licenses based on the size of each vessel. These are the vessels shown in Table \ref{tab:palau_long} (excluding the Japanese vessels). So, for example, there were 38 vessels as part of these agreements in 2016. Between 2010 and 2014, licensing fee revenue from these agreements was between \$219,000-\$284,600 per year \citep{Gillett2016}. These access fees have also been replaced by a new longline-specific version of the VDS (described in more detail below).
 
+There are two multilateral treaties that grant preferential access to Palau waters to US and Federated States of Micronesia (FSM) flagged purse seine boats: the US Multilateral Tuna Treaty and the Federated States of Micronesia Arrangement.  The US Treaty was renegotiated in 2016 with stipulations on minimum vessel day fees. Very little purse seine fishing is conducted by FSM and US vessels in Palau’s EEZ, but Palau still receives a portion of these treaty funds. These agreements have been described by some commentators as foreign aid, with little connection to underlying fish stocks \cite{Gillett2016}. 
 
-\subsubsection{US Multilateral Tuna Treaty and Federated States of Micronesia Arrangement}
-
-These two multilateral treaties grant preferential access to the US and FSM flagged purse seine boats, respectively.  The US Treaty was renegotiated in 2016 with stipulations on minimum vessel day fees (more in section 3). Very little purse seine fishing is conducted by FSM and US vessels in Palau’s EEZ, but Palau still receives a portion of these treaty funds. Some Pacific Island countries treat this money as foreign aid, not for fishing access \citep{Gillett2016}. 
-
-\subsubsection{Other sources of revenue from pelagic fisheries}
-
-The export tax for all commercial tuna and billfish, either fresh or frozen is \$0.35/kg. Average revenues from export taxes was approximately \$500,000 annually from 2011-2014 \citep{Gillett2016}. Otherwise there is little additional revenue from pelagic fisheries, especially considering that very few jobs are created by the fishery. Between 80-90 people are employed by offshore fisheries, of these only ~20\% are Palauans and average wages are ~50\% average wages in the country \citep{Gillett2016}.
+The export tax for all commercial tuna and billfish, either fresh or frozen, is \$0.35/kg. Average annual revenue from export taxes was around \$500,000 from 2011-2014 \citep{Gillett2016}. 
+Other than the access fees and tax revenue, Palau receives little additional economic benefits from pelagic fisheries, especially considering that very few jobs are created by the fishery. Between 80 to 90 people are employed by offshore fisheries, and of these only around 20\% are Palauans, earning wages that are only 50\% of average wages in Palau \cite{Gillett2016}.
 
 \subsubsection{Parties to the Nauru Agreement and the Vessel Day Scheme}
 
-The Parties to the Nauru Agreement (PNA) is an agreement between Federated States of Micronesia, Kiribati, Marshall Islands, Nauru, Palau, Papua New Guinea, Solomon Islands and Tuvalu to manage the largest tuna fishery in the world. The Purse Seine Vessel Day Scheme (PS VDS), established in 2006 with the Palau Agreement, is the current method used by the PNA to manage effort in the fishery. Although not a PNA member, Tokelau joined the PS VDS in 2014, with 1,000 transferrable days \citep{PNA2014}.
+In the case of Palau, the VDS is run by the Bureau of Marine Resources, within the Ministry of Natural Resources, Environment and Tourism.
+Palau’s current purse seine VDS allotment is reportedly around 700 vessel days annually (Sisior, pers. comm., \cite{Pojas2018}), although historically this number has been lower (average of 580 days between 2008-2011 \citep{Tewid2013}). Palau sells most of its vessel days to the US for \$12,500 per day (as negotiated in the US treaty), regardless of whether US vessels actually fish in Palau’s EEZ. The remainder of Palau’s purse seine vessel days are sold for between \$9-10,000 each. When vessel days are purchased to transfer to another EEZ, Palau charges a transfer fee (approximately \$500), for administration costs and future opportunity costs (since vessel day allotments are based partly on historical effort within the EEZ). Though records are confidential, it has been publicly reported that one PNA member party that Palau has transferred vessel days to is Papua New Guinea \citep{Tewid2013} and in 2018, vessel days were sold to a fishing company in the Philippines for the first time \citep{Pojas2018}. In 2018, Palau brought in approximately \$9 million USD in VDS revenue (Sisior pers. comm.). 
 
-In the PS VDS, a total number of annual vessel days for the entire fishery is agreed upon by the parties. Each party’s allowable effort (PAE) is then calculated based on historic effort and biomass within each party’s EEZ. Sixty percent of the PAE is calculated based on the party’s effort over the last seven years and 40\% of the PAE is calculated based on the 10 year average of the party’s share of estimated skipjack and yellowfin biomass within its EEZ (as explained in Article 12.5 of the 2012 Amendment to the Palau Agreement and in Hagrannsoknir sf 2014). 
-A minimum benchmark fee is set for purse seine vessel days (PS VD) which each party can transfer (i.e., sell to another PNA member) or sell to the highest bidder (i.e., sell to fishing company). Vessel days can be transferred to fish in any PNA party’s EEZ, without penalty to the transferred parties VD allocation \citep{PNA2016}. The process of transferring days between parties is described in Article 7 of the Management Scheme \citep{PNA2016}. The mean value of a vessel day has steadily increased since 2007 \citep{havice_2013}. A minimum benchmark fee of \$8,000/day was set from 2015 \citep{PNA2014a}. Detailed records on sales or transfers of vessel days are not publicly available \citep{havice_2013,yeeting2018stabilising}. 
-\cite{yeeting2018stabilising} summarize the PNA ‘implementing arrangements’ as follows: “foreign vessels [are required] to be registered and licensed, report catches, maintain log books, allow observers on board and maintain transparency over their fishing activities.” Further, vessels registered with the Vessel Day Scheme are required to have Automatic Location Communicators (ALC) or Mobile Transceiver Units (MTU) that transmit their locations at least once per hour while they are within the VDS Management Area \citep{PNA2016}. Every entire day that a vessel is within the VDS Management Area is counted as a vessel day used, unless the vessel reports a “no fishing day” (e.g., travel, maintenance, etc.) and periods of less than 24 hours are counted as partial days \citep{PNA2016}.  As described in the Palau Arrangement \citep{PNA2016}, fishing days by vessels shorter than 50m or longer than 80m count as 0.5 and 1.5 vessel days, respectively. Parties are responsible for ensuring registered vessels comply with the implementing arrangements and that they stay within the PAE. Parties that exceed their PAE should reportedly be penalized by reductions to the following year’s PAE \citep{PNA2016}. However, there are criticisms of the PNA PS VDS claiming that there is a lack of monitoring, compliance, and transparency that could hinder the future success of the SP VDS \citep{Arnason2014,yeeting2018stabilising}. In the case of Palau, the VDS is run by the Bureau of Marine Resources, within the Ministry of Natural Resources, Environment and Tourism.
-Palau’s currently PS VD allotment is reportedly ~700 vessel days annually (Sisior, pers. comm., \cite{Pojas2018}), though historically, this number has been lower (average of 580 days between 2008-2011 \citep{Tewid2013}. Palau sells most of its vessel days to the US for \$12,500 each (as negotiated in the US treaty), regardless of whether US vessels actually fish in Palau’s EEZ. The remainder of Palau’s PS vessel days are sold for between \$9-10,000 each. When vessel days are purchased to transfer to another EEZ, Palau charges a transfer fee (approximately \$500), for administration costs and future opportunity costs (since vessel day allotments are based partly on historical effort within the EEZ). Though records are confidential, it has been publicly reported that one PNA member party that Palau has transferred PS VD to is Papua New Guinea \citep{Tewid2013} and this year, PS VD have been sold to a fishing company in the Philippines for the first time \citep{Pojas2018}. This year, Palau has brought in approximately \$9 million USD in PS VDS revenue (Sisior pers. comm.). 
-
-The longline VDS (LL VDS) is in its infancy and has not yet been fully implemented at the PNA-scale, although several countries are now implementing at the country-scale. Palau was the first party to implement the VDS for the longline fishery in 2017. In 2014, longline boats fishing in Palau’s EEZ fished 10,500 days (Sisior, pers. comm.). Since 2016, the number of allowed longline VDs has been a fraction of the 2014 days, reducing each year as stipulated in the PNMS Act. Palau sells its LL VD for \$150-\$250 (Sisior pers. comm.). Because the LL VDS is still new and has yet to be fully implemented by all parties, LL VD are not currently transferable between PNA member EEZs. 
+The longline VDS (LL VDS) is in its infancy and has not yet been fully implemented at the PNA-scale, although several countries are now implementing it at the country-scale. Palau was the first party to implement the VDS for longline fishing in 2017. In 2014, longline boats fishing in Palau’s EEZ fished 10,500 days (Sisior, pers. comm.). Since 2016, the number of allowed longline VDs has been a fraction of the 2014 days, reducing each year as stipulated in the PNMS Act. Palau sells its LL VD for \$150-\$250 (Sisior pers. comm.). Because the LL VDS is still new and has yet to be fully implemented by all parties, LL VD are not currently transferable between PNA member EEZs. 
 
 
-\subsubsection{The Palau National Marine Sanctuary Act}
+\subsubsection{Potential Revenue Loss under the PNMS}
 
-In 2015, Palau enacted a policy to protect 500 thousand square kilometers of its ocean, representing 80\% of its exclusive economic zone (EEZ), by 2020. The policy’s goal is to preserve and manage the stocks, health, and beauty of Palau’s waters and natural resources by limiting fishing in its deep ocean waters. State waters hugging the coasts of the archipelago are not affected by the policy. Commercial fishing will still be allowed within the open 20\% that surrounds the main islands of Koror and Babeldaob, but all catch must be landed in Palau and exports of pelagic fish will be prohibited. Alongside these protections, the Palau National Marine Sanctuary (PNMS) Act will support a domestic pelagic fishery.
+To prepare for full enactment of the PNMS, the act stipulates a “winding down” period, in which baseline vessel days (i.e., the number of vessel days used in 2014) were reduced by 20\% in 2016; and an additional 10\% from baseline in each subsequent year until full enactment in 2020. This appears to be occurring for the longline VDS, but it is uncertain whether this is being followed for the purse seine VDS, because purse seine VDS can be transferred for use in other EEZs. There has been no official statement on what will happen to Palau’s VDS upon full implementation of the PNMS. However, there is a sense that Palau will be able to keep its allotment come 2020 (Hanich, pers. comm.). In the 2015 Micronesian Presidents Summit, a letter was drafted by heads of state, calling on PNA members to be supportive of Palau as they moved forward with the PNMS Act \cite{Senase2015}. Further, other PNA members have not been penalized for other protected area closures (e.g., PIPA) (Hanich, pers. comm.).
 
-\subsubsection{Future of pelagic fisheries under the PNMS}
+Table \ref{tab:revenue_loss} presents estimates of the potential revenue losses following full enactment of the PNMS under four different scenarios. In Scenario 1, Palau is able to keep its current allotment of purse seine vessel days (700) and is able to sell them for a similar price to what it is currently selling them to the US for (\$12,500/day). In Scenario 2, Palau is able to keep its current allotment of purse seine vessel days (700) to transfer to other parties at the current benchmark price (\$8,000/day). Scenario 2 is likely if Palau retains its current PAE, but the US no longer purchases days.  It should be noted that if PAE continues to be calculated based on effort and biomass, and if Palau continues to be allocated vessel days, its PAE will decrease as effort in its EEZ reaches zero. In Scenario 3 and 4, Palau loses all of its PS vessel days, at \$8,000/day and \$12,500/day, respectively. In all scenarios, all longline vessel day and export tax revenues are lost. Longline vessel day loss is calculated using an average value of \$200 for 10,500 days. Export tax loss is calculated given the average tax revenue from 2012-2014 (\$482,236  from \cite{Gillett2016}). 
 
-To prepare for full enactment of the PNMS, the act stipulates a “winding down” period, in which baseline vessel days (i.e., the number of vessel days used in 2014) were reduced by 20\% in 2016; and an additional 10\% from baseline in each subsequent year until full enactment in 2020. This appears to be occurring for the LL VDS, but it is uncertain whether this is being followed for the PS VDS, because PS VD can be transferred for use in other EEZs. There has been no official statement on what will happen to Palau’s vessel days upon full implementation of PNMS. However, there is a sense that Palau will be able to keep its allotment come 2020 (Hanich, pers. comm.). In the 2015 Micronesian Presidents Summit, a letter was drafted by heads of state, calling on PNA members to be supportive of Palau as they moved forward with the PNMS Act \citep{Senase2015}. Further, other PNA members have not been penalized for other protected area closures (e.g., Phoenix Islands Protected Area in Kiribati) (Hanich, pers. comm.).
-Table 3 estimates the potential losses of revenue under full enactment of the PNMS under four scenarios. In Scenario 1, Palau is able to keep its current allotment of purse seine vessel days (700) to transfer to other parties at the current benchmark price (\$8,000/day). Scenario 1 is likely if Palau retains its PAE, but the US no longer purchases its days (note, US is currently purchasing days at \$12,500). Scenario 2 is the same as the first scenario, except instead of being able to transfer its days at the current benchmark price, it is able to transfer its days for \$12,000 (to account for current price to US of \$12,500, which will increase in accordance with the US Treaty, and also the general increasing trend in the value of PS vessel days). It should be noted that if PAE continues to be calculated based on effort and biomass, and if Palau continues to be allocated vessel days, its PAE will decrease as effort in its EEZ reaches zero. In Scenario 3 and 4, Palau loses all of its PS vessel days, at \$8,000/day and \$12,000/day, respectively. In all scenarios, all longline vessel day and export tax revenue are lost. Longline vessel day loss is calculated using an average value of \$200 for 10,500 days. Export tax loss is calculated given the average tax revenue from 2012-2014 (\$482,236  from \cite{Gillett2016}). 
-
-%\input{revenue_loss}
+\input{revenue_loss}
 
 \subsubsection{Plans for a domestic pelagic fishery}
 
-In the recent past, a single domestic pole and line vessel supplied Palau with an estimated 100mt of catch Plans for domestic fishery \citep{Gillett2016}. The vessel ceased operations in recent years when the captain became ill and passed away, but there is talk that it is gearing up to start operations again under new leadership (Sisior, pers. comm.). Otherwise, there are no domestic vessels dedicated to full-time offshore fishing. A number of fishers occasionally troll offshore for tuna and other pelagics, but there are no official estimates of volumes (although Phil James with SPC has results that should come out soon). 
-Local NGOs have sponsored short trainings on small-scale canning and proper techniques for processing high grade tuna to encourage existing fishers to devote more time to offshore fishing. There are several possible scenarios for domestic fishery (including those featured in a feasibility report by FFA \citep{Skirtun2017}), but there has yet to be any official action towards a particular scenario. 
+In the recent past, a single domestic pole and line vessel supplied Palau with an estimated 100mt of catch \cite{Gillett2016}. The vessel ceased operations in recent years when the captain became ill and passed away, but there is talk that it is gearing up to start operations again under new leadership (Sisior, pers. comm.). Otherwise, there are no domestic vessels dedicated to full-time offshore fishing. A number of fishers occasionally troll offshore for tuna and other pelagics, but there are no official estimates of volumes. 
+Local NGOs have sponsored short trainings on small-scale canning and proper techniques for processing high grade tuna to encourage existing fishers to devote more time to offshore fishing. There are several possible scenarios for a domestic fishery (including those featured in a feasibility report by FFA \citep{Skirtun2017}), but there has yet to be any official action towards a particular scenario. 
  
-
-We will use aggregated GFW data at the 1km * 1km level to estimate what \% of fishing effort under the PNA is currently taking place in the proposed sanctuary? This will estimate the impact on foreign-flagged fleets that used to fish in Palau waters. We are currently in possession of this data. In terms of the impact on PNA payments, it is our understanding that the allocation will not be reduced (in the near future) but perhaps the price received per VDS will be lower. But we do not have good information on prices paid for VDS. We also don’t yet have good data on local fishers in Palau that are likely to be positively impacted since they will be allowed to fish in the sanctuary. 
-
-\begin{figure}[h]
-	\includegraphics[width=0.75\textwidth]{img/Fishing_effort_Palau_relative_PNA}
-	\caption{Fishing Effort in Palau Relative to the Total PNA Area}
-\end{figure}
-
-\begin{figure}[h]
-	\includegraphics[width=0.75\textwidth]{img/By_flag_Fishing_effort_Palau_relative_PNA}
-	\caption{Fishing Effort in Palau Relative to the Total PNA Area By Distant Water Fishing Fleet}
-\end{figure}
-
-
 \clearpage
 
 
@@ -795,7 +753,7 @@ show that fishing effort accumulates near the edges of spatial closures,
 yielding greater catches over time \citep{murawski_2005}. But these vessel tracks
 do not cover the pre-reserve period, making it difficult to identify the
 contribution of spatial closures to the observed spatial distribution of
-fishing vessels. Recent work by \citet{elahi_2018} identified that total
+fishing vessels. Recent work by \cite{elahi_2018} identified that total
 fishing effort in a focal region where a short-term MPA was implemented
 showed little change, likely indicating that fishers redistributed
 fishing effort to compensate for the reduction in available space. Our
@@ -854,6 +812,8 @@ effectiveness.
 \bibliography{references}
 
 \clearpage
+
+\FloatBarrier
 
 \hypertarget{appendix}{%
 \section{Appendix}\label{appendix}}
