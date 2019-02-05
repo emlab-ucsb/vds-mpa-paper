@@ -73,7 +73,7 @@ yearly_effort_raster <-readRDS(file = here::here("data", "rasterized_effort_by_r
 
 # Plot it
 plot <- yearly_effort_raster %>% 
-  filter(x > 150) %>% 
+  # filter(x > 150) %>% 
   ggplot() +
   geom_raster(mapping = aes(x = x, y = y, fill = hours_norm * 100)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
