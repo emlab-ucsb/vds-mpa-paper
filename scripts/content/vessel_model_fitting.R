@@ -195,7 +195,7 @@ models <- list(
   dist_port_did,
   dist_shore_did,
   dist_port_fishing_did,
-  dist_port_fishing_did,
+  dist_shore_fishing_did,
   prop_kir_did,
   prop_vds_did
 ) %>% 
@@ -232,7 +232,7 @@ models_extra <- c(
   dist_port_did,
   dist_shore_did,
   dist_port_fishing_did,
-  dist_port_fishing_did,
+  dist_shore_fishing_did,
   prop_kir_did,
   prop_vds_did
 )
