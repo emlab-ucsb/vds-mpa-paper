@@ -77,7 +77,7 @@ vessel_tracks <- readRDS(file = here::here("data", "vessel_tracks_baci.rds")) %>
   filter(gear == "tuna_purse_seines",
          year < 2018,
          fishing) %>% 
-  mutate(treated = ifelse(treated, "Treated", "Control"))
+  mutate(treated = ifelse(treated, "Treated", "Control"))     
 
 # Vector of dates to iterate over
 years <- 2012:2017
