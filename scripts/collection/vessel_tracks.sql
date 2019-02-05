@@ -1,5 +1,7 @@
 /* Last run on 18/01/2018 */
 
+/* Last run on 19/01/2018 */
+
 SELECT
   A.year AS year,
   A.month AS month,
@@ -11,12 +13,11 @@ SELECT
   A.hours AS hours,
   A.nnet_score AS nnet_score,
   A.eez_iso3,
-  A.distance_from_port AS distance_from_port,
-  A.distance_from_shore AS distance_from_shore,
+  A.distance_from_port_m AS distance_from_port,
+  A.distance_from_shore_m AS distance_from_shore,
   A.seg_id AS seg_id,
   B.treated AS treated,
-  B.inferred_label AS inferred_label,
-  B.label_score AS label_score,
+  B.best_label AS inferred_label,
   B.iso3 AS flag
 FROM (
   SELECT
@@ -24,21 +25,21 @@ FROM (
     EXTRACT(month FROM timestamp) AS month,
     EXTRACT(day FROM timestamp) AS day,
     timestamp,
-    mmsi,
+    ssvid AS mmsi,
     lon,
     lat,
     hours,
     nnet_score,
-    eez_iso3,
-    distance_from_port,
-    distance_from_shore,
+    regions.eez AS eez_iso3,
+    distance_from_port_m,
+    distance_from_shore_m,
     seg_id
   FROM
-    `world-fishing-827.gfw_research.nn7`
+    `world-fishing-827.gfw_research.pipe_production_b_fishing`
   WHERE
-    mmsi IN (
+    ssvid IN (
     SELECT
-      mmsi
+      CAST(mmsi as STRING) AS mmsi
     FROM
       `ucsb-gfw.mpa_displacement.vessel_info_pna_and_pipa`)
     AND seg_id IN (
@@ -49,10 +50,9 @@ FROM (
 JOIN
   (SELECT
       year,
-      mmsi,
+      CAST(mmsi AS STRING) AS mmsi,
       treated,
-      inferred_label, 
-      label_score,
+      best_label, 
       iso3
   FROM
     `ucsb-gfw.mpa_displacement.vessel_info_pna_and_pipa`) B
