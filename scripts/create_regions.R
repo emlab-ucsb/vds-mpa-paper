@@ -1,22 +1,40 @@
+########################
+#   create_regions    #
+########################
+
+################################################
+# This script creates a shapefile of "regions"
+# that I use to ideintify effort redistribution.
+# It is basically a shapefile of eez plus a buffer
+# around them.
+################################################
+
+#### SET UP ################################################
+
+# Load packages
 library(sf)
 library(tidyverse)
 
-source(here::here("scripts", "st_rotate.R"))
+# Load custom functions
+source(here::here("scripts", "functions", "st_rotate.R"))
 
-PNA_countries <- c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV")
+# Define PNA countries
+PNA_countries <- c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV", "TKL")
 
+# Read PIPA shapefile
 pipa <- read_sf(dsn = here::here("data", "spatial", "PIPA"),
                 layer = "PIPA") %>% 
   mutate(id = "PIPA 1") %>% 
   select(id) %>% 
   st_rotate() %>% 
-  st_buffer(dist =  0.01) %>% 
+  st_buffer(dist = 0.01) %>% 
   mutate(source = "PIPA",
          PNA = F)
 
-vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds")) %>% 
+# Read vessel tracks
+vessel_tracks <- readRDS(file = here::here("data", "vessel_tracks_baci.rds")) %>% 
   filter(fishing,
-         gear == "purse_seines",
+         gear == "tuna_purse_seines",
          !is.na(eez_iso3),
          year < 2018) %>% 
   group_by(eez_iso3) %>% 
@@ -43,7 +61,7 @@ eez_all <- eez %>%
   ungroup()
 
 hs_b <- eez %>%
-  st_buffer(dist = 1) %>% 
+  st_buffer(dist = 5) %>% 
   st_difference(eez_all) %>% 
   select(id) %>% 
   mutate(source = "HS",
@@ -58,7 +76,8 @@ eez_wo_pipa <- eez %>%
 
 regions <- rbind(pipa, eez_wo_pipa, hs_b) %>% 
   mutate(country = id,
-         id = paste(source, id))
+         id = paste(source, id)) %>% 
+  st_cast("POLYGON")
 
 st_write(regions, dsn = here::here("data", "spatial", "regions", "regions.shp"))
 
