@@ -52,7 +52,7 @@ fishing_hours <- effort_by_vessel %>%
 
 # Plot of nonfishing hours
 nonfishing_hours <- effort_by_vessel %>% 
-  filter(fishing) %>%
+  filter(!fishing) %>%
   varplot(hours, "hours")
 
 ## PROPORTIONFISHING HOURS ##################################################################
