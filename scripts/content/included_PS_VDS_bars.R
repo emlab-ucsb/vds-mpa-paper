@@ -1,6 +1,6 @@
-#######################
-#     change_in_vds   #
-#######################
+############################
+#   included_PS_VDS_bars   #
+############################
 
 ######################################################################
 # This script calculates the number of total hours that purse seiners
@@ -57,7 +57,7 @@ p1 <- ggplot(data = all_vds, aes(x = year, y = days, fill = fishing)) +
          axis.text = element_text(size = 8))+
    labs(x = "Year", y = "Vessel-days")
 
-ggsave(p1, filename = here::here("docs", "img", "VDS_year.pdf"), width = 6, height = 3.5)
+ggsave(p1, filename = here::here("docs", "img", "included_PS_VDS_year_bars.pdf"), width = 6, height = 3.5)
 
 # Plot for days by country
 p2 <- ggplot(country_year, aes(x = year, y = days, fill = eez_iso3)) +
@@ -88,4 +88,4 @@ p3 <- ggplot(country_year, aes(x = year, y = prop_hours, fill = eez_iso3)) +
 
 p23 <- cowplot::plot_grid(p2, p3, ncol = 1)
 
-ggsave(p23, filename = here::here("docs", "img", "VDS_country_year.pdf"), width = 7, height = 7)
+ggsave(p23, filename = here::here("docs", "img", "included_PS_VDS_country_year.pdf"), width = 7, height = 7)
