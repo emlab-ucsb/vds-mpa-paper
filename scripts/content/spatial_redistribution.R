@@ -120,8 +120,7 @@ plot2 <- commarobust::commarobust_tidy(model) %>%
   theme(strip.background = element_blank(),
         text = element_text(size = 10),
         axis.text = element_text(size = 8),
-        legend.justification = c(0, 0.3),
-              legend.position = c(0.8, 0)) +
+        legend.position = "none") +
   guides(color = guide_legend(title = "p-value")) +
   facet_wrap(~term, scales = "free_y") +
   scale_color_brewer(palette = "Set1") +
