@@ -33,7 +33,10 @@ vessel_activity <- readRDS(file = here::here("raw_data",
          inferred_label == "tuna_purse_seines",
          year < 2018) %>% 
   mutate(fishing = ifelse(is.na(fishing), F, fishing),
-         fishing = ifelse(fishing, "Fishing", "Non-fishing"))
+         fishing = ifelse(fishing, "Fishing", "Non-fishing"),
+         group = ifelse(treated, "Treatment", "Control"),
+         group = ifelse(is.na(treated), "Others", group),
+         group = fct_relevel(group, c("Treatment", "Control", "Others")))
 
 #### CREATE THE DATA ################################################
 
@@ -42,20 +45,18 @@ vessel_activity <- readRDS(file = here::here("raw_data",
 
 # Data for yearly vessel activity (fishing not fishing) for included / excluded
 vessel_activity_year_included <- vessel_activity %>% 
-  filter(!is.na(treated)) %>%
-  group_by(year, treated) %>% 
+  group_by(year, group) %>% 
   summarize(days = sum(days, na.rm = T)) %>% 
   ungroup()
 
 # Data for eez-level days for included / excluded
 vessel_activity_year_country_included <- vessel_activity %>% 
-  filter(!is.na(treated)) %>% 
-  group_by(year, eez_iso3, treated) %>% 
+  group_by(year, eez_iso3, group) %>% 
   summarize(days = sum(days, na.rm = T)) %>% 
   ungroup()
 
 # Plot for yearly PS VDS by activity by included vessels
-p1 <- ggplot(vessel_activity_year_included, aes(x = year, y = days, color = treated)) +
+p1 <- ggplot(vessel_activity_year_included, aes(x = year, y = days, color = group)) +
   geom_line() +
   scale_color_brewer(palette = "Set1") +
   cowplot::theme_cowplot() +
@@ -67,7 +68,7 @@ p1 <- ggplot(vessel_activity_year_included, aes(x = year, y = days, color = trea
 ggsave(p1, filename = here::here("docs", "img", "included_PS_VDS_year_DiD.pdf"), width = 6, height = 3.5)
 
 # Plot for yearly PS VDS by country
-p2 <- ggplot(vessel_activity_year_country_included, aes(x = year, y = days, color = treated)) + 
+p2 <- ggplot(vessel_activity_year_country_included, aes(x = year, y = days, color = group)) + 
   geom_line() +
   scale_color_brewer(palette = "Set1") +
   cowplot::theme_cowplot() +

@@ -47,7 +47,6 @@ extract_raster <- function(r, year, treated){
 }
 
 #### REGIONS RASTER ######################################################################
-
 # Load the regions shapefile
 regions <- read_sf(dsn = here::here("data", "spatial", "regions"),
                    layer = "regions")
