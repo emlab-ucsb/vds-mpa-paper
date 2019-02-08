@@ -1,6 +1,9 @@
--- This gets tracks for all Taiwanese purse seiners. Vessels that continously fished must still be identified, but I can do that in R
+  -- This gets tracks for all Taiwanese purse seiners. Vessels that continously fished must still be identified, but I can do that in R
 SELECT
   A.mmsi AS mmsi,
+  A.year,
+  A.month,
+  A.day,
   A.timestamp AS timestamp,
   A.lon AS lon,
   A.lat AS lat,
@@ -16,6 +19,15 @@ SELECT
 FROM (
   SELECT
     mmsi,
+    EXTRACT(YEAR
+    FROM
+      timestamp) AS year,
+    EXTRACT(MONTH
+    FROM
+      timestamp) AS month,
+    EXTRACT(DAY
+    FROM
+      timestamp) AS day,
     timestamp,
     lon,
     lat,
@@ -26,23 +38,36 @@ FROM (
     distance_from_shore,
     seg_id
   FROM
-    [world-fishing-827.gfw_research.nn7]
+    `world-fishing-827.gfw_research.nn7`
   WHERE
-  YEAR(timestamp) < 2018 --tracks before 2018
-  AND
-  mmsi IN (SELECT mmsi FROM [world-fishing-827.gfw_research.vessel_info] WHERE iso3 = "TWN" AND best_label = "purse_seines") --vessels that are from Taiwan and are purse seiners
-  AND
-  mmsi NOT IN(SELECT mmsi FROM [ucsb-gfw.mpa_displacement.vessel_info_mmsi_inside_pipa]) --vessels that never fished inside PIPA
-  AND
-  seg_id IN ( SELECT seg_id FROM [world-fishing-827.gfw_research.good_segments]) -- vessels that have good segments
-  ) A
+    mmsi IN (
+    SELECT
+      DISTINCT(mmsi)
+    FROM
+      `world-fishing-827.gfw_research.vessel_info_20181002`
+    WHERE
+      best_flag = "TWN"
+      AND best_label = "tuna_purse_seines") --vessels that are from Taiwan and are tuna purse seiners
+    AND mmsi NOT IN(
+    SELECT
+      mmsi
+    FROM
+      `ucsb-gfw.mpa_displacement.vessel_info_pna_and_pipa`) --vessels that never fished inside PNA before 2015
+    AND seg_id IN (
+    SELECT
+      seg_id
+    FROM
+      `world-fishing-827.gfw_research.good_segments`) -- vessels that have good segments
+    ) A
 JOIN (
   SELECT
     mmsi,
+    year,
     best_label AS gear
   FROM
-    [world-fishing-827.gfw_research.vessel_info]
+    `world-fishing-827.gfw_research.vessel_info_20181002`
   WHERE
-    iso3 = "TWN") B
+    best_flag = "TWN") B
 ON
   A.mmsi = B.mmsi
+  AND A.year = B.year
