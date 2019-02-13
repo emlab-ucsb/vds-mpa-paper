@@ -561,12 +561,9 @@ constant trend before implementation which is followed by rapid increased
 and subsequent decrease.
 
 \clearpage
-\begin{landscape}
-
 
 \input{tab/main_DID}
 
-\end{landscape}
 \clearpage
 
 \begin{figure}
@@ -809,106 +806,24 @@ Table \ref{tab:revenue_loss} presents estimates of the potential revenue losses 
 In the recent past, a single domestic pole and line vessel supplied Palau with an estimated 100mt of catch \cite{Gillett2016}. The vessel ceased operations in recent years when the captain became ill and passed away, but there is talk that it is gearing up to start operations again under new leadership (Sisior, pers. comm.). Otherwise, there are no domestic vessels dedicated to full-time offshore fishing. A number of fishers occasionally troll offshore for tuna and other pelagics, but there are no official estimates of volumes. 
 Local NGOs have sponsored short trainings on small-scale canning and proper techniques for processing high grade tuna to encourage existing fishers to devote more time to offshore fishing. There are several possible scenarios for a domestic fishery (including those featured in a feasibility report by FFA \citep{Skirtun2017}), but there has yet to be any official action towards a particular scenario. 
 
+\clearpage
 
-%
-%\hypertarget{stream-of-data-by-vessel-group-and-period}{%
-%\subsection{Stream of data by vessel, group, and
-%period}\label{stream-of-data-by-vessel-group-and-period}}
+\section{Alternative Controls}
+\subsection{Excluding all Chinese vessels}
 
-%\begin{figure}
-%\centering
-%\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-18-1.pdf}
-%\caption{\label{fig:unnamed-chunk-18}\label{fig:baci_strict}Stream of
-%fishing events by vessels through time. Each line represents a vessel,
-%with dots indicating months with fishing activity and colors indicating
-%the pre and post periods.}
-%\end{figure}
+\input{tab/DID_without_CHN.tex}
 
-%\clearpage
+\clearpage
+\subsection{Excluding all PNA vessels}
 
-%\begin{figure}
-%	\centering
-%	\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-7-1.pdf}
-%	\caption{\label{fig:unnamed-chunk-7}\label{fig:all_panels}Fishing hours and
-%		number of vessels by month for all vessels. Vertical dashed lines
-%		indicates dates when satellites were added, solid line indicates PIPA
-%		closurePIPA closure.}
-%\end{figure}
+\input{tab/DID_without_PNA.tex}
 
-%\clearpage
+\clearpage
+\subsection{Excluding all USA and TWN vessels}
 
-%\hypertarget{longliners}{%
-%\subsection{Longliners}\label{longliners}}
+\input{tab/DID_without_USA_TWN}
 
-%Longliners show a similar pattern of effort reduction. However, the
-%magnitude of the \(\beta_3\) coefficient is smaller  and not significant unless
-%including month and flag FEs for the general treatment-control groups,
-%or when excluding Chinese vessels. This, along with higher standard
-%error values suggest that longliners have a smaller and more variable
-%response to the implementation of LSMPAs.
 
-%\begin{table}[!htbp] \centering 
-%  \caption{\label{tab:long}Difference-in-differences estimates for 2 different controls and 3 different specifications. The first three columns use all data for controls. Columns 4 - 6 exclude Chinese vessels. Numbers in parentheses are heteroskedastic-robust standard errors.} 
-%  \label{} 
-%\small 
-%\begin{tabular}{@{\extracolsep{1pt}}lcccccc} 
-%\\[-1.8ex]\hline 
-%\hline \\[-1.8ex] 
-% & \multicolumn{6}{c}{\textit{Dependent variable:}} \\ 
-%\cline{2-7} 
-%\\[-1.8ex] & \multicolumn{6}{c}{hours} \\ 
-%\\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6)\\ 
-%\hline \\[-1.8ex] 
-% Constant & 39.192$^{***}$ & 38.411$^{***}$ & 36.520$^{***}$ & 39.402$^{***}$ & 38.636$^{***}$ & 34.402$^{***}$ \\ 
-%  & (0.095) & (0.132) & (0.169) & (0.102) & (0.140) & (0.236) \\ 
-%  & & & & & & \\ 
-% post & $-$1.014$^{***}$ & $-$0.189 & 0.710$^{***}$ & $-$1.400$^{***}$ & $-$0.574$^{***}$ & 0.896$^{***}$ \\ 
-%  & (0.143) & (0.145) & (0.158) & (0.163) & (0.165) & (0.186) \\ 
-%  & & & & & & \\ 
-% treated & 2.544$^{***}$ & 2.570$^{***}$ & 2.724$^{***}$ & 2.349$^{***}$ & 2.391$^{***}$ & 3.299$^{***}$ \\ 
-%  & (0.101) & (0.101) & (0.121) & (0.110) & (0.110) & (0.135) \\ 
-%  & & & & & & \\ 
-% sate2 & $-$0.495$^{***}$ & $-$1.488$^{***}$ & $-$0.898$^{***}$ & $-$0.561$^{***}$ & $-$1.497$^{***}$ & $-$1.015$^{***}$ \\ 
-%  & (0.099) & (0.105) & (0.110) & (0.104) & (0.110) & (0.114) \\ 
-%  & & & & & & \\ 
-% sate3 & $-$0.313$^{**}$ & $-$1.150$^{***}$ & 0.050 & $-$0.375$^{***}$ & $-$1.129$^{***}$ & 0.001 \\ 
-%  & (0.129) & (0.132) & (0.143) & (0.134) & (0.138) & (0.149) \\ 
-%  & & & & & & \\ 
-% post:treated & 0.098 & 0.056 & $-$1.125$^{***}$ & 0.532$^{***}$ & 0.427$^{***}$ & $-$1.280$^{***}$ \\ 
-%  & (0.134) & (0.134) & (0.148) & (0.149) & (0.149) & (0.171) \\ 
-%  & & & & & & \\ 
-%\hline \\[-1.8ex] 
-%Control & All & All & All & -CHN & -CHN & -CHN \\ 
-%Month FE & No & Yes & Yes & No & Yes & Yes \\ 
-%Flag FE & No & No & Yes & No & No & Yes \\ 
-%Observations & 227,873 & 227,873 & 217,467 & 209,135 & 209,135 & 198,729 \\ 
-%R$^{2}$ & 0.010 & 0.016 & 0.022 & 0.010 & 0.016 & 0.023 \\ 
-%\hline 
-%\hline \\[-1.8ex] 
-%\textit{Note:}  & \multicolumn{6}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-%\end{tabular} 
-%\end{table}
-%
-%\clearpage
-%
-%\hypertarget{quarterly-did-interactions}{%
-%\subsubsection{Quarterly DID
-%interactions}\label{quarterly-did-interactions}}
-%
-%\begin{figure}
-%\centering
-%\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-20-1.pdf}
-%\caption{\label{fig:unnamed-chunk-20}\label{fig:q1}Interaction of quarters
-%and treatment. Control group is all vessels.}
-%\end{figure}
-%
-%\begin{figure}
-%\centering
-%\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-21-1.pdf}
-%\caption{\label{fig:unnamed-chunk-21}\label{fig:q2}Interaction of quarters
-%and treatment. Control group is vessels from PNA.}
-%\end{figure}
-%
 %\begin{figure}
 %\centering
 %\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-22-1.pdf}
