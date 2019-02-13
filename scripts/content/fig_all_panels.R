@@ -16,7 +16,6 @@ library(cowplot)
 library(tidyverse)
 
 # Varplot
-
 varplot <- function(data, var, y_lab){
   var <- enquo(var)
   
