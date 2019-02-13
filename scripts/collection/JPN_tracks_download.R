@@ -14,50 +14,45 @@ DBI::dbListTables(BQc)
 vessel_tracks <- dplyr::tbl(BQc, "JPN_tracks") %>% 
   collect()
 
-vessel_tracks %<>% 
-  mutate(year = lubridate::year(timestamp),
-         month = lubridate::month(timestamp),
-         date = lubridate::date(timestamp),
-         post = year >= 2015,
-         fishing = nnet_score >= 0.5) %>% 
-  select(year,
-         month,
-         date,
-         timestamp,
-         mmsi,
-         gear,
-         lon,
-         lat,
-         hours,
-         fishing,
-         treated,
-         post,
-         nnet_score,
-         eez_iso3,
-         distance_from_port,
-         distance_from_shore)
-
-before <- vessel_tracks %>% 
-  filter(date < lubridate::date("2014/09/01")) %$%
-  unique(mmsi)
-
-after <- vessel_tracks %>% 
-  filter(post) %$%
-  mmsi %>%
-  unique()
+# Modify the data
+vessel_tracks %<>%
+  distinct() %>%
+  mutate(
+    date = lubridate::date(timestamp),
+    post = year >= 2015,
+    nnet_score = ifelse(is.na(nnet_score), 0, nnet_score), # If there are NAs in nnet_score, convert to 0 (no fishing)
+    fishing = nnet_score >= 0.5, # Values of nnet_score > 0.5 imply fishing
+    month_c = as.character(month),
+    year_c = as.character(year),
+    year_month = lubridate::date(paste(year, month, 1, sep = "/")),
+    quarter = lubridate::quarter(
+      date,
+      with_year = T)) %>%
+  select(
+    year,
+    month,
+    day,
+    date,
+    timestamp,
+    post,
+    treated,
+    mmsi,
+    gear,
+    flag,
+    lon,
+    lat,
+    hours,
+    fishing,
+    nnet_score,
+    eez_iso3,
+    distance_from_port,
+    distance_from_shore,
+    seg_id,
+    month_c,
+    year_c,
+    year_month,
+    quarter
+  )
 
 saveRDS(vessel_tracks, file = here::here("raw_data", "JPN_tracks.rds"))
-
-effort_by_vessel <- vessel_tracks %>% 
-  filter(fishing) %>% 
-  group_by(post, treated, year, month, date, gear, mmsi) %>% 
-  summarize(hours = sum(hours, na.rm = T)) %>% 
-  ungroup() %>% 
-  mutate(month_c = as.character(month),
-         year_c = as.character(year),
-         year_month = lubridate::date(paste(year, month, 1, sep = "/")),
-         quarter = lubridate::quarter(date, with_year = T),
-         PNA = FALSE)
-
-saveRDS(effort_by_vessel, file = here::here("raw_data", "JPN_effort_by_vessel.rds"))
 
