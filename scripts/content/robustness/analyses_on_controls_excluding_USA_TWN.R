@@ -208,6 +208,7 @@ models <- list(
 ) %>% 
   purrr::map(extract2, 3)
 
+
 stargazer::stargazer(models,
                      se = commarobust::makerobustseslist(models),
                      t.auto = T,
@@ -226,8 +227,8 @@ stargazer::stargazer(models,
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
                      # float.env = "sidewaystable",
-                     title = "\\label{tab:DID_without_USA_TWN}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port, 6) Daily mean distance from shore, 7) Daily mean distance from port for fishing events, 8) Daily mean distance from shore for fishing events, 9) Monthly proportion of hours spent in Kiribati waters, 10) Monthly proportion of fishing hours spent in PNA waters. Numbers in parentheses are heteroskedastic-robust standard errors.",
-                     out = here::here("docs", "tab", "DID_without_USA_TWN.tex"),
+                     title = "\\label{tab:main_DID}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port, 6) Daily mean distance from shore, 7) Daily mean distance from port for fishing events, 8) Daily mean distance from shore for fishing events, 9) Monthly hours spent in Kiribati waters, 10) Monthly fishing hours spent in PNA waters. Numbers in parentheses are heteroskedastic-robust standard errors.",
+                     out = here::here("docs", "tab", "main_DID.tex"),
                      table.placement = "H")
 
 ######## ALTERNATIVE SPECIFICATIONS PLOT ###################################################
