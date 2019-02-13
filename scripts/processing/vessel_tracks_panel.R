@@ -63,10 +63,7 @@ daily_hours_by_vessel_panel <- vessel_tracks_baci %>%
            treated,
            post,
            month_c,
-           year_c,
-           experiment1,
-           experiment2,
-           experiment3) %>%
+           year_c) %>%
   summarize(hours = sum(hours, na.rm = T)) %>%
   ungroup() %>% 
   arrange(date, mmsi)
@@ -97,10 +94,7 @@ daily_prop_fishing_hours_by_vessel_panel <- daily_hours_by_vessel_panel %>%
            treated,
            post,
            month_c,
-           year_c,
-           experiment1,
-           experiment2,
-           experiment3) %>%
+           year_c) %>%
   mutate(total_hours = sum(hours, na.rm = T)) %>% 
   ungroup() %>% 
   filter(fishing) %>% 
@@ -151,13 +145,10 @@ daily_distance_by_vessel_panel <- vessel_tracks_baci %>%
            treated,
            post,
            month_c,
-           year_c,
-           experiment1,
-           experiment2,
-           experiment3) %>%
+           year_c) %>%
   nest() %>%
   mutate(dist = purrr::map_dbl(data, dist_fxn)) %>% 
-  select(-data)
+  select(-data) %>% 
   arrange(date, mmsi)
   
 # Save data
@@ -191,10 +182,7 @@ distance_from_port_shore_by_vessel_panel <- vessel_tracks_baci %>%
            treated,
            post,
            month_c,
-           year_c,
-           experiment1,
-           experiment2,
-           experiment3) %>% 
+           year_c) %>% 
   summarize(min_dist_port = min(distance_from_port, na.rm = T),
             max_dist_port = max(distance_from_port, na.rm = T),
             mean_dist_port = mean(distance_from_port, na.rm = T),
@@ -233,10 +221,7 @@ distance_from_port_shore_fishing_by_vessel_panel <- vessel_tracks_baci %>%
            treated,
            post,
            month_c,
-           year_c,
-           experiment1,
-           experiment2,
-           experiment3) %>% 
+           year_c) %>% 
   summarize(min_dist_port = min(distance_from_port, na.rm = T),
             max_dist_port = max(distance_from_port, na.rm = T),
             mean_dist_port = mean(distance_from_port, na.rm = T),
