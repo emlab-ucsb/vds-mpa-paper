@@ -65,7 +65,11 @@ p1 <- ggplot(vessel_activity_year_included, aes(x = year, y = days, color = grou
   labs(x = "Year", y = "Vessel-days")
 
 #Save plot
-ggsave(p1, filename = here::here("docs", "img", "included_PS_VDS_year_DiD.pdf"), width = 6, height = 3.5)
+ggsave(p1,
+       filename = here::here("docs", "img", "included_PS_VDS_year_DiD.pdf"),
+       width = 6,
+       height = 3.5)
+
 
 # Plot for yearly PS VDS by country
 p2 <- ggplot(vessel_activity_year_country_included, aes(x = year, y = days, color = group)) + 
@@ -78,4 +82,7 @@ p2 <- ggplot(vessel_activity_year_country_included, aes(x = year, y = days, colo
   facet_wrap(~eez_iso3, scales = "free_y")
 
 #Save plot
-ggsave(p2, filename = here::here("docs", "img", "included_PS_VDS_cty_DiD.pdf"), width = 8, height = 5)
+ggsave(p2,
+       filename = here::here("docs", "img", "included_PS_VDS_cty_DiD.pdf"),
+       width = 8,
+       height = 5)
