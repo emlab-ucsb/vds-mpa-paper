@@ -127,8 +127,7 @@ kir_fishing <- readRDS(file = here::here("data", "panels", "KIR_fishing_hours_by
   filter(year < 2018,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/"))) %>% 
-  varplot(prop_hours, "% hours") +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1))
+  varplot(kir_hours, "hours")
 
 ###### PROPORTION OF HOURS SPENT IN VDS ###################################################
 # Load data
@@ -136,8 +135,7 @@ vds_fishing <- readRDS(file = here::here("data", "panels", "VDS_fishing_hours_by
   filter(year < 2018,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/"))) %>% 
-  varplot(prop_hours, "% hours") +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1))
+  varplot(vds_hours, "hours")
 
 # Combine into grid
 plot <- cowplot::plot_grid(
