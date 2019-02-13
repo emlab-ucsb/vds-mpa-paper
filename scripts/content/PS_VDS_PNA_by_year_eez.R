@@ -28,7 +28,9 @@ vessel_activity <- readRDS(file = here::here("raw_data",
          inferred_label == "tuna_purse_seines",
          year < 2018) %>% 
   mutate(fishing = ifelse(is.na(fishing), F, fishing),
-         fishing = ifelse(fishing, "Fishing", "Non-fishing"))
+         fishing = ifelse(fishing, "Fishing", "Non-fishing"),
+         group = ifelse(treated, "Treatment", "Control"),
+         group = ifelse(is.na(treated), "Others", group))
 
 #### CREATE THE DATA ################################################
 
@@ -37,7 +39,7 @@ vessel_activity <- readRDS(file = here::here("raw_data",
 
 # Data for yearly vessel activity (fishing not fishing)
 vessel_activity_year <- vessel_activity %>% 
-  group_by(year, fishing) %>% 
+  group_by(year, group) %>% 
   summarize(days = sum(days, na.rm = T)) %>% 
   ungroup()
 
@@ -75,14 +77,15 @@ vessel_activity_month_country <- vessel_activity %>%
 #### PLOTS ########################################################
 
 # Plot for yearly PS VDS by activity
-p1 <- ggplot(vessel_activity_year, aes(x = year, y = days, fill = fishing)) +
+p1 <- ggplot(vessel_activity_year, aes(x = year, y = days, fill = group)) +
   geom_col(color = "black") +
-  scale_fill_brewer(palette = "Set1") +
+  scale_fill_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
   cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8))+
   labs(x = "Year", y = "Vessel-days") +
-  geom_hline(yintercept = 45000, linetype = "dashed")
+  geom_hline(yintercept = 45000, linetype = "dashed") +
+  guides(fill = guide_legend(title = "Group"))
 
 # Plot for yearly PS VDS by country
 p2 <- ggplot(vessel_activity_year_country, aes(x = year, y = days, fill = eez_iso3)) + 
@@ -92,7 +95,8 @@ p2 <- ggplot(vessel_activity_year_country, aes(x = year, y = days, fill = eez_is
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8))+
   labs(x = "Year", y = "Vessel-days") +
-  geom_hline(yintercept = 45000, linetype = "dashed")
+  geom_hline(yintercept = 45000, linetype = "dashed") +
+  guides(fill = guide_legend(title = "Country"))
 
 # Combine plots
 p12 <- cowplot::plot_grid(p1, p2, labels = "AUTO", ncol = 1)
