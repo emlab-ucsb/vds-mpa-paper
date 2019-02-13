@@ -159,7 +159,7 @@ kir_fishing <- readRDS(file = here::here("data", "panels", "KIR_fishing_hours_by
   filter(year < 2018,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "-"))) %>% 
-  model_data_prep(prop_hours)
+  model_data_prep(kir_hours)
 
 
 # Fit the models
@@ -176,7 +176,7 @@ vds_fishing <- readRDS(file = here::here("data", "panels", "VDS_fishing_hours_by
   filter(year < 2018,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "-"))) %>% 
-  model_data_prep(prop_hours)
+  model_data_prep(vds_hours)
 
 
 # Fit the models
