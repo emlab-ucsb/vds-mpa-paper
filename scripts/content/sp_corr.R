@@ -22,7 +22,7 @@ library(tidyverse)
 ## Load data
 
 # Find files
-files <- list.files(path = here::here("data", "spatial", "monthly_rasterized_effort_by_region"))
+files <- list.files(path = here::here("data", "spatial", "monthly_rasterized_effort_by_region"), pattern = "*.tif")
 
 # Stack files
 rs <- stack(here::here("data", "spatial", "monthly_rasterized_effort_by_region", files))
@@ -97,10 +97,17 @@ stargazer::stargazer(models,
 
 # Plot for number of cells with vessels from BOTH groups
 n_both_plot <- ggplot(data = n_both, aes(x = date, y = n)) +
-  geom_vline(xintercept = lubridate::date("2015-01-01"), linetype = "dashed", color = "black", size = 1) +
-  geom_point(aes(color = post), size = 4) +
-  geom_smooth(method = "lm", formula = y ~ x + I(x^2) + I(x^3) + I(x^4), color = "black", se = F) +
-  scale_color_brewer(palette = "Set1") +
+  geom_vline(xintercept = lubridate::date("2015-01-01"),
+             linetype = "dashed", color = "black", size = 1) +
+  geom_point(size = 4,
+             alpha = 0.5,
+             fill = "#377EB8",
+             color = "black",
+             shape = 21) +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x^2) + I(x^3) + I(x^4),
+              color = "black",
+              se = F) +
   cowplot::theme_cowplot() +
   theme(legend.position = "none",
         text = element_text(size = 10),
@@ -109,20 +116,31 @@ n_both_plot <- ggplot(data = n_both, aes(x = date, y = n)) +
 
 # Plot for correlations
 corr_both_plot <- ggplot(data = corr_both, aes(x = date, y = cor)) +
-  geom_vline(xintercept = lubridate::date("2015-01-01"), linetype = "dashed", color = "black", size = 1) +
-  geom_point(aes(color = post), size = 4) +
-  geom_smooth(method = "lm", formula = y ~ x + I(x^2) + I(x^3) + I(x^4), color = "black", se = F) +
-  scale_color_brewer(palette = "Set1") +
+  geom_vline(xintercept = lubridate::date("2015-01-01"),
+             linetype = "dashed",
+             color = "black",
+             size = 1) +
+  geom_point(size = 4,
+             alpha = 0.5,
+             fill = "#377EB8",
+             color = "black",
+             shape = 21) +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x^2) + I(x^3) + I(x^4),
+              color = "black",
+              se = F) +
   cowplot::theme_cowplot() +
-  theme(legend.position = c(0.1, 0.9),
+  theme(legend.position = "none",
         text = element_text(size = 10),
         axis.text = element_text(size = 8)) +
-  labs(x = "Date", y = "correlation") + 
+  labs(x = "Date", y = "Pearson's correlation") + 
   scale_y_continuous(limits = c(0, 0.75))
 
 # Export plot
-plot <- cowplot::plot_grid(n_both_plot, corr_both_plot, ncol = 2, labels = "AUTO")
+plot <- cowplot::plot_grid(n_both_plot, corr_both_plot,
+                           ncol = 1,
+                           labels = "AUTO")
 
-ggsave(plot, filename = here::here("docs", "img", "sp_corr.pdf"), height = 3, width = 6)
+ggsave(plot, filename = here::here("docs", "img", "sp_corr.pdf"), height = 5.5, width = 3.4)
 
 

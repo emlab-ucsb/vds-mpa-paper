@@ -1,4 +1,4 @@
-\documentclass[9pt,twoside,lineno]{pnas-new}
+\documentclass[9p,twocolumn,twoside,lineno]{pnas-new}
 % Use the lineno option to display guide line numbers if required.
 
 \templatetype{pnasresearcharticle} % Choose template 
@@ -114,15 +114,15 @@ suggested that most of the challenges could be overcome with the
 incorporation of technology, in what then became known as Dynamic Ocean
 Management \citep{maxwell_2015}.\footnote{See \cite{singleton_2014}, who provide an objective discussion of the pros and cons of LSMPAs.} 
 
-\begin{SCfigure*}
+\begin{figure}
 \centering
-\includegraphics{img/LSMPAs_map.png}
+\includegraphics{img/LSMPAs_map.pdf}
 \caption{\label{fig:LSMPAs_map}Large Scale Marine
 Protected Areas. The map shows all areas larger than 250,000
 Km\textsuperscript{2}. Areas in dark blue meet at least one of these
 conditions: reported no take area is greater than 0, are categorized as
 IUCN Ia or Ib, their designated English name is `Protected Area'.}
-\end{SCfigure*}
+\end{figure}
 
 LSMPAs were initially assumed to have little social implications due
 to their general remoteness. However, there have been calls to incorporate the
@@ -207,16 +207,6 @@ Although detailed records on sales or transfers of vessel days are not publicly 
 debated in terms of meeting fishery management and conservation
 objectives, the licensing significantly contributes to the economy of
 these island nations \citep{havice_2010}.
-
-\begin{SCfigure*}
-\centering
-\includegraphics{img/PNA_map.png}
-\caption{\label{fig:PNA_map}Map of the Exclusive
-Economic Zones (EEZs) of the region of interest. Countries that belong
-to the PNA are shown in blue, while empty polygons indicates all others.
-A red line indicates the Kiribati EEZ, and a solid red polygon
-delineates PIPA.}
-\end{SCfigure*}
 
 The main tuna species caught in the region are skipjack
 (\emph{Katsuwonus pelamis}), yellowfin (\emph{Thunnus albacares}),
@@ -564,53 +554,8 @@ and subsequent decrease.
 
 \input{tab/main_DID}
 
-\clearpage
-
-\begin{figure}
-\centering
-\includegraphics{img/other_specifications.pdf}
-\caption{\label{fig:other_specifications}Alternative difference-in-differences estimates
-for our variables of interest using different model specifications. Table \ref{tab:main_DID}
-reports estimates for models with month and flag fixed effects (\emph{i.e.} green dots).}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{img/fishing_raster.png}
-\caption{\label{fig:fishing_raster}Yearly
-spatial distribution of fishing effort by treated and control vessels.
-Color corresponds to \% of total fishing effort in each panel.
-Red polygons show LSMPAs in the region.}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{img/redist_trend.pdf}
-\caption{\label{fig:redist_trend}Monthly
-relative allocation of fishing effort by PIPA-fishing vessels before and
-after PIPA by region. Colors indicate the pre- and post- periods. Solid line
-across points shows local mean with a region-specific loess smoother.
-Vertical dashed lines indicates dates when satellites were added, solid vertical
-line indicates PIPA closure. Note that inflection points of
-the loess smoother are not affected by the addition of satellites.}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{img/mean_change.pdf}
-\caption{\label{fig:mean_change}Coefficient
-estimates for the redistribution regression. Each panel shows the
-region-specific coefficients, with 95\% condifence intervals
-as error bars. The horizontal dashed line represents 0 change
-relative to the 2012 region-specific levels.}
-\end{figure}
-
-\clearpage
-\begin{landscape}
-
 \input{tab/mean_change}
 
-\end{landscape}
 \clearpage
 
 \begin{figure}
@@ -626,7 +571,7 @@ presence-absence of treated and control vessels per cell (B).}
 \begin{figure}
 \centering
 	\includegraphics{img/all_PS_VDS_cty_year.pdf}
-	\caption{\label{fig:VDS_country_year}A)Observed vessel-days for all VDS countries by fishing and non-fishing days. B) Observed vessel-days for all VDS countries by country.}
+	\caption{\label{fig:VDS_country_year}A)Observed vessel-days for all countries by treated, control, and excluded vessels. B) Observed vessel-days for all vessels by country.}
 \end{figure}
 
 \begin{figure}
@@ -637,14 +582,8 @@ presence-absence of treated and control vessels per cell (B).}
 
 \begin{figure}
 \centering
-	\includegraphics{img/PS_VDS_KIR_by_year.pdf}
-	\caption{\label{fig:PS_VDS_KIR_by_year}Vessel days spent inside Kiribati waters by group of vessels.}
-\end{figure}
-
-\begin{figure}
-\centering
-	\includegraphics{img/hist_kir_fishing.pdf}
-	\caption{\label{fig:hist_kir_fishing}Ridgeplot for the density of the \% of total fishing hours that take place within Kiribati EEZ waters by year for treated vessels where the unit of observation is an individual vessel.}
+	\includegraphics{img/financial_indicators.pdf}
+	\caption{\label{fig:financial_indicators}Financial indicators for PNA countries. A) Revenue from fishing licenses fees, B) Catches in each countrie's EEZ, and C) Value of those catches. Vertical dashed line denotes implementation of PIPA.}
 \end{figure}
 
 
@@ -750,6 +689,66 @@ effectiveness.
 
 \setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
 
+\begin{figure}
+\centering
+\includegraphics{img/PNA_map.png}
+\caption{\label{fig:PNA_map}Map of the Exclusive
+Economic Zones (EEZs) of the region of interest. Countries that belong
+to the PNA are shown in blue, while empty polygons indicates all others.
+A red line indicates the Kiribati EEZ, and a solid red polygon
+delineates PIPA.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{img/other_specifications.pdf}
+\caption{\label{fig:other_specifications}Alternative difference-in-differences estimates
+for our variables of interest using different model specifications. Table \ref{tab:main_DID}
+reports estimates for models with month and flag fixed effects (\emph{i.e.} green dots).}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{img/fishing_raster.png}
+\caption{\label{fig:fishing_raster}Yearly
+spatial distribution of fishing effort by treated and control vessels.
+Color corresponds to \% of total fishing effort in each panel.
+Red polygons show LSMPAs in the region.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{img/redist_trend.pdf}
+\caption{\label{fig:redist_trend}Monthly
+relative allocation of fishing effort by PIPA-fishing vessels before and
+after PIPA by region. Colors indicate the pre- and post- periods. Solid line
+across points shows local mean with a region-specific loess smoother.
+Vertical dashed lines indicates dates when satellites were added, solid vertical
+line indicates PIPA closure. Note that inflection points of
+the loess smoother are not affected by the addition of satellites.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{img/mean_change.pdf}
+\caption{\label{fig:mean_change}Coefficient
+estimates for the redistribution regression. Each panel shows the
+region-specific coefficients, with 95\% condifence intervals
+as error bars. The horizontal dashed line represents 0 change
+relative to the 2012 region-specific levels.}
+\end{figure}
+
+\begin{figure}
+\centering
+	\includegraphics{img/PS_VDS_KIR_by_year.pdf}
+	\caption{\label{fig:PS_VDS_KIR_by_year}Vessel days spent inside Kiribati waters by group of vessels.}
+\end{figure}
+
+\begin{figure}
+\centering
+	\includegraphics{img/hist_kir_fishing.pdf}
+	\caption{\label{fig:hist_kir_fishing}Ridgeplot for the density of the \% of total fishing hours that take place within Kiribati EEZ waters by year for treated vessels where the unit of observation is an individual vessel.}
+\end{figure}
 
 \section{Palau National Marine Sanctuary}\label{PNMS}
 

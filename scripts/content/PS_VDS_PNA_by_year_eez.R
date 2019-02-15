@@ -30,7 +30,8 @@ vessel_activity <- readRDS(file = here::here("raw_data",
   mutate(fishing = ifelse(is.na(fishing), F, fishing),
          fishing = ifelse(fishing, "Fishing", "Non-fishing"),
          group = ifelse(treated, "Treatment", "Control"),
-         group = ifelse(is.na(treated), "Others", group))
+         group = ifelse(is.na(treated), "Others", group),
+         eez_iso3 = fct_relevel(eez_iso3, "KIR"))
 
 #### CREATE THE DATA ################################################
 
@@ -77,32 +78,37 @@ vessel_activity_month_country <- vessel_activity %>%
 #### PLOTS ########################################################
 
 # Plot for yearly PS VDS by activity
-p1 <- ggplot(vessel_activity_year, aes(x = year, y = days, fill = group)) +
+p1 <- ggplot(vessel_activity_year, aes(x = year, y = days / 1000, fill = group)) +
   geom_col(color = "black") +
   scale_fill_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
+  geom_hline(yintercept = 45, linetype = "dashed") +
   cowplot::theme_cowplot() +
+  guides(fill = guide_legend(title = "Group")) +
   theme(text = element_text(size = 10),
-        axis.text = element_text(size = 8))+
-  labs(x = "Year", y = "Vessel-days") +
-  geom_hline(yintercept = 45000, linetype = "dashed") +
-  guides(fill = guide_legend(title = "Group"))
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 8))+
+  labs(x = "Year", y = "Vessel-days (Ths)")
 
 # Plot for yearly PS VDS by country
-p2 <- ggplot(vessel_activity_year_country, aes(x = year, y = days, fill = eez_iso3)) + 
+p2 <- ggplot(vessel_activity_year_country, aes(x = year, y = days/1000, fill = eez_iso3)) + 
   geom_col(color = "black") +
   scale_fill_brewer(palette = "Set1") +
+  geom_hline(yintercept = 45, linetype = "dashed") +
   cowplot::theme_cowplot() +
+  guides(fill = guide_legend(title = "Group")) +
   theme(text = element_text(size = 10),
-        axis.text = element_text(size = 8))+
-  labs(x = "Year", y = "Vessel-days") +
-  geom_hline(yintercept = 45000, linetype = "dashed") +
-  guides(fill = guide_legend(title = "Country"))
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 8))+
+  labs(x = "Year", y = "Vessel-days (Ths)")
 
 # Combine plots
 p12 <- cowplot::plot_grid(p1, p2, labels = "AUTO", ncol = 1)
 
 #Save plot
-ggsave(p12, filename = here::here("docs", "img", "all_PS_VDS_cty_year.pdf"), width = 6, height = 7)
+ggsave(p12,
+       filename = here::here("docs", "img", "all_PS_VDS_cty_year.pdf"),
+       width = 3.4,
+       height = 4.2)
 
 # Plot for yearly PS VDS by activity by included vessels
 p1.1 <- ggplot(vessel_activity_year_included, aes(x = year, y = days, fill = fishing)) +
@@ -128,7 +134,9 @@ p2.1 <- ggplot(vessel_activity_year_country_included, aes(x = year, y = days, fi
 p12.1 <- cowplot::plot_grid(p1.1, p2.1, labels = "AUTO", ncol = 1)
 
 #Save plot
-ggsave(p12.1, filename = here::here("docs", "img", "included_PS_VDS_cty_year.pdf"), width = 6, height = 7)
+ggsave(p12.1, filename = here::here("docs", "img", "included_PS_VDS_cty_year.pdf"),
+       width = 6,
+       height = 7)
 
 ##### MONTHLY PLOTS ##############################################
 

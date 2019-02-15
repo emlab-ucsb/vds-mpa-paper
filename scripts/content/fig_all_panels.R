@@ -47,7 +47,7 @@ fishing_hours <- effort_by_vessel %>%
   filter(fishing) %>%
   varplot(hours, "hours") +
   theme(legend.justification = c(0, 1),
-        legend.position = c(0, 1.2))
+        legend.position = c(0, 1.1))
 
 # Plot of nonfishing hours
 nonfishing_hours <- effort_by_vessel %>% 
@@ -155,7 +155,9 @@ plot <- cowplot::plot_grid(
 )
 
 # Export figure
-ggsave(plot, filename = here::here("docs", "img", "all_panels.pdf"), width = 6, height = 8)
+ggsave(plot, filename = here::here("docs", "img", "all_panels.pdf"),
+       width = 7,
+       height = 9.3)
 
 
 

@@ -35,8 +35,7 @@ vessel_activity <- readRDS(file = here::here("raw_data",
   mutate(fishing = ifelse(is.na(fishing), F, fishing),
          fishing = ifelse(fishing, "Fishing", "Non-fishing"),
          group = ifelse(treated, "Treatment", "Control"),
-         group = ifelse(is.na(treated), "Others", group),
-         group = fct_relevel(group, c("Treatment", "Control", "Others")))
+         group = ifelse(is.na(treated), "Others", group))
 
 #### CREATE THE DATA ################################################
 
@@ -56,19 +55,24 @@ vessel_activity_year_country_included <- vessel_activity %>%
   ungroup()
 
 # Plot for yearly PS VDS by activity by included vessels
-p1 <- ggplot(vessel_activity_year_included, aes(x = year, y = days, color = group)) +
+p1 <- ggplot(vessel_activity_year_included, aes(x = year, y = days/1000, color = group)) +
   geom_line() +
-  scale_color_brewer(palette = "Set1") +
+  scale_color_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
   cowplot::theme_cowplot() +
+  guides(color = guide_legend(title = "Group")) +
   theme(text = element_text(size = 10),
-        axis.text = element_text(size = 8))+
-  labs(x = "Year", y = "Vessel-days")
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 8),
+        legend.justification = c(1, 0),
+        legend.position = c(1, -0.05))+
+  labs(x = "Year", y = "Vessel-days (Ths)") +
+  geom_vline(xintercept = 2015, linetype = "dashed")
 
 #Save plot
 ggsave(p1,
        filename = here::here("docs", "img", "included_PS_VDS_year_DiD.pdf"),
-       width = 6,
-       height = 3.5)
+       width = 3.4,
+       height = 2.2)
 
 
 # Plot for yearly PS VDS by country

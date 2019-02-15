@@ -29,7 +29,8 @@ mpas <- read_sf(dsn = here::here("data", "spatial", "LSMPAs"), layer = "LSMPAs")
          strict = ifelse(is.na(strict), "Others", strict),
          strict = ifelse(wdpaid == 309888, "PIPA", strict),
          Legend = fct_relevel(strict, c("No-Take", "PIPA", "Others"))) %>% 
-  filter(!name == "Longline")
+  filter(!name == "Longline",
+         !strict == "Others")
 
 coast <- map_data('world', wrap=c(-20,340), ylim=c(-85,75))%>%
   select(group, lat, long) %>%
@@ -43,19 +44,23 @@ coast <- map_data('world', wrap=c(-20,340), ylim=c(-85,75))%>%
   ungroup()
 
 plot <- ggplot() +
-  geom_sf(data = coast, fill = "#E3E3E3") +
-  geom_sf(data = mpas, fill = "transparent", color = "black", size = 1) +
+  geom_sf(data = coast, fill = "#E3E3E3", color = "black") +
+  geom_sf(data = mpas, fill = "transparent", color = "black") +
   geom_sf(data = mpas, aes(fill = Legend), color = "transparent") +
-  ggtheme_map() +
+  theme_nothing() +
   scale_fill_manual(values = c("steelblue", "red", "steelblue1")) +
-  theme(legend.justification = c(0.5, 1),
-        legend.position = c(0.5, 0.05),
-        legend.box = "horizontal",
-        legend.background = element_blank()) +
-  guides(fill = guide_legend(ncol = 3))
+  theme(legend.position = "none",
+        panel.grid.major = element_line(color = "transparent")) +
+  scale_x_continuous(expand=c(0,0)) +
+  scale_y_continuous(expand=c(0,0)) +
+  labs(x = NULL, y = NULL)
 
-ggsave(plot, filename = here::here("docs", "img", "LSMPAs_map.png"), width = 6, height = 3.5)
-ggsave(plot, filename = here::here("docs", "img", "LSMPAs_map.pdf"), width = 6, height = 3.5)
+ggsave(plot, filename = here::here("docs", "img", "LSMPAs_map.png"),
+       width = 3.4,
+       height = 1.7)
+ggsave(plot, filename = here::here("docs", "img", "LSMPAs_map.pdf"),
+       width = 3.4,
+       height = 1.7)
 
 
 
