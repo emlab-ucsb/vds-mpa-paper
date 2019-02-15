@@ -143,8 +143,8 @@ plot <- cowplot::plot_grid(
     nonfishing_hours,
     prop_fishing_by_vessel,
     distance_traveled,
-    distance_from_port,
-    distance_from_shore,
+    # distance_from_port,
+    # distance_from_shore,
     distance_from_port_fishing,
     distance_from_shore_fishing,
     kir_fishing,
@@ -157,7 +157,7 @@ plot <- cowplot::plot_grid(
 # Export figure
 ggsave(plot, filename = here::here("docs", "img", "all_panels.pdf"),
        width = 7,
-       height = 9.3)
+       height = 7.7)
 
 
 

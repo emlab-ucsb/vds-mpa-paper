@@ -44,7 +44,7 @@ coast <- map_data('world', wrap=c(-20,340), ylim=c(-85,75))%>%
   ungroup()
 
 plot <- ggplot() +
-  geom_sf(data = coast, fill = "#E3E3E3", color = "black") +
+  geom_sf(data = coast, fill = "#E3E3E3", color = "black", size = 0.1) +
   geom_sf(data = mpas, fill = "transparent", color = "black") +
   geom_sf(data = mpas, aes(fill = Legend), color = "transparent") +
   theme_nothing() +

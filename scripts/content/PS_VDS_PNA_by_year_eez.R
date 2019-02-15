@@ -95,7 +95,7 @@ p2 <- ggplot(vessel_activity_year_country, aes(x = year, y = days/1000, fill = e
   scale_fill_brewer(palette = "Set1") +
   geom_hline(yintercept = 45, linetype = "dashed") +
   cowplot::theme_cowplot() +
-  guides(fill = guide_legend(title = "Group")) +
+  guides(fill = guide_legend(title = "Country")) +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         legend.text = element_text(size = 8))+
@@ -103,6 +103,12 @@ p2 <- ggplot(vessel_activity_year_country, aes(x = year, y = days/1000, fill = e
 
 # Combine plots
 p12 <- cowplot::plot_grid(p1, p2, labels = "AUTO", ncol = 1)
+
+#Save plot
+ggsave(p1,
+       filename = here::here("docs", "img", "all_PS_VDS_year.pdf"),
+       width = 3.4,
+       height = 2.1)
 
 #Save plot
 ggsave(p12,

@@ -15,6 +15,7 @@
 
 #### SETUP ########################################################
 # Load packages
+library(cowplot)
 library(tidyverse)
 
 # Load data
@@ -48,6 +49,13 @@ vessel_activity_year_included <- vessel_activity %>%
   summarize(days = sum(days, na.rm = T)) %>% 
   ungroup()
 
+# Data for yearly vessel activity (fishing not fishing) for included / excluded
+vessel_activity_year_included_KIR <- vessel_activity %>% 
+  filter(eez_iso3 == "KIR") %>% 
+  group_by(year, group) %>% 
+  summarize(days = sum(days, na.rm = T)) %>% 
+  ungroup()
+
 # Data for eez-level days for included / excluded
 vessel_activity_year_country_included <- vessel_activity %>% 
   group_by(year, eez_iso3, group) %>% 
@@ -68,11 +76,26 @@ p1 <- ggplot(vessel_activity_year_included, aes(x = year, y = days/1000, color =
   labs(x = "Year", y = "Vessel-days (Ths)") +
   geom_vline(xintercept = 2015, linetype = "dashed")
 
+# Plot for yearly PS VDS by activity by included vessels
+p2 <- ggplot(vessel_activity_year_included_KIR, aes(x = year, y = days/1000, color = group)) +
+  geom_line() +
+  scale_color_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
+  cowplot::theme_cowplot() +
+  guides(color = guide_legend(title = "Group")) +
+  theme(text = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 8),
+        legend.position = "none")+
+  labs(x = "Year", y = "Vessel-days (Ths)") +
+  geom_vline(xintercept = 2015, linetype = "dashed")
+
+p12 <- plot_grid(p1, p2, ncol = 1, labels = "AUTO")
+
 #Save plot
-ggsave(p1,
+ggsave(p12,
        filename = here::here("docs", "img", "included_PS_VDS_year_DiD.pdf"),
        width = 3.4,
-       height = 2.2)
+       height = 4.4)
 
 
 # Plot for yearly PS VDS by country
