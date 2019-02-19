@@ -86,7 +86,8 @@ p1 <- ggplot(vessel_activity_year, aes(x = year, y = days / 1000, fill = group))
   guides(fill = guide_legend(title = "Group")) +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
-        legend.text = element_text(size = 8))+
+        legend.text = element_text(size = 8),
+        legend.position = "top")+
   labs(x = "Year", y = "Vessel-days (Ths)")
 
 # Plot for yearly PS VDS by country
@@ -108,13 +109,13 @@ p12 <- cowplot::plot_grid(p1, p2, labels = "AUTO", ncol = 1)
 ggsave(p1,
        filename = here::here("docs", "img", "all_PS_VDS_year.pdf"),
        width = 3.4,
-       height = 2.1)
+       height = 2.6)
 
 #Save plot
-ggsave(p12,
+ggsave(p2,
        filename = here::here("docs", "img", "all_PS_VDS_cty_year.pdf"),
        width = 3.4,
-       height = 4.2)
+       height = 2.1)
 
 # Plot for yearly PS VDS by activity by included vessels
 p1.1 <- ggplot(vessel_activity_year_included, aes(x = year, y = days, fill = fishing)) +

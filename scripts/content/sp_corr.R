@@ -112,7 +112,7 @@ n_both_plot <- ggplot(data = n_both, aes(x = date, y = n)) +
   theme(legend.position = "none",
         text = element_text(size = 10),
         axis.text = element_text(size = 8)) +
-  labs(x = "Date", y = "Number of cells")
+  labs(x = "Year", y = "Number of cells")
 
 # Plot for correlations
 corr_both_plot <- ggplot(data = corr_both, aes(x = date, y = cor)) +
@@ -133,7 +133,7 @@ corr_both_plot <- ggplot(data = corr_both, aes(x = date, y = cor)) +
   theme(legend.position = "none",
         text = element_text(size = 10),
         axis.text = element_text(size = 8)) +
-  labs(x = "Date", y = "Pearson's correlation") + 
+  labs(x = "Year", y = "Pearson's correlation") + 
   scale_y_continuous(limits = c(0, 0.75))
 
 # Export plot

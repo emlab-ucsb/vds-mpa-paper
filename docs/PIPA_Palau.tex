@@ -30,10 +30,10 @@
 \correspondingauthor{\textsuperscript{1}To whom correspondence should be addressed. E-mail: juancarlos\@ucsb.edu}
 
 % Keywords are not mandatory, but authors are strongly encouraged to provide them. If provided, please include two to five keywords, separated by the pipe symbol, e.g:
-\keywords{Marine Protected Areas $|$ Fisheries $|$ Purse Seining $|$ Marine Conservation} 
+\keywords{Marine Spatial Planning $|$ Fisheries $|$ Marine Conservation} 
 
 \begin{abstract}
-The Parties to the Nauru Agreement (PNA) is a system for managing the world’s largest skipjack tuna fishery, covering an area of 14.6 million km\textsuperscript{2} in the Pacific Ocean. In 2015, PNA member Kiribati implemented one of the world's largest conservation areas: The Phoenix Island Protected Area (397,447 km\textsuperscript{2}). It is still unclear what the effects of such a big MPA have been and what effects are likely to occur in the future. We use identification of fishing activity via Automatic Identification Systems (AIS) and causal inference techniques evaluate the behavioral changes and spatial redistribution of tuna purse seiners due to the implementation of a Large-Scale Marine Protected Area. Our work provides three main findings: 1) we observe a crowding effect for the first months after implementation, 2) aggregate fishing effort remains relatively constant; and 3) vessels that fished inside the protected area redistribute to adjacent waters, including the high seas, 4) the redistribution of vessels results in a reduction of 2500 vessel-days into Kiribati, which represents a loss of ~30 million USD. This suggests that rights to fish in PNA waters might now be less valuable. Unfortunately, without detailed data on vessel catch, we cannot conclude whether vessels are better or worse off financially following the closure. We use our results to inform predictions of the impacts of a proposed LSMPA in Palau (a PNA member) and estimate potential losses to range from \$2.5 to \$11 million annually. Our results not only provide an impact evaluation of the effect of LSMPAs on fishing activity, but provide insights into vessel redistribution dynamics, which may have large ecological and economic implications for marine conservation and fisheries management in developing countries. As countries continue to implement LSMPAs as a way to reach ocean protection targets, managers should consider how fishing effort will change in space and time to ensure that fishing effort is not just displaced elsewhere.
+The Parties to the Nauru Agreement (PNA) is a system for managing the world’s largest skipjack tuna fishery, covering an area of 14.6 million km\textsuperscript{2} in the Pacific Ocean. In 2015, PNA member Kiribati implemented one of the world's largest conservation areas: The Phoenix Island Protected Area (PIPA, 397,447 km\textsuperscript{2}). We use identification of fishing activity via Automatic Identification Systems and causal inference techniques to evaluate the behavioral changes and spatial redistribution of tuna purse seiners due to the implementation of a PIPA. Our work provides three main findings: 1) we observe a crowding effect for the first months after implementation, 2) vessels fish with similar intensity after the implementation, 3) vessels that fished inside the protected area redistribute to adjacent waters, including the high seas, and 4) the redistribution of vessels results in a reduction of ~2500 vessel-days in Kiribati, which represents a loss of ~30 million USD. We use our results to inform predictions of the impacts of a proposed LSMPA in Palau (a PNA member) and estimate potential losses to range from \$2.5 to \$11 million annually. As countries continue to implement LSMPAs as a way to reach ocean protection targets, managers should consider how fishing effort will change in space and time to ensure that fishing effort is not just displaced elsewhere.
 \end{abstract}
 
 \dates{This manuscript was compiled on \today}
@@ -53,11 +53,13 @@ The Parties to the Nauru Agreement (PNA) is a system for managing the world’s 
 
 \section{Introduction}\label{introduction}
 
-\dropcap{H}umans are increasingly utilizing the oceans. Conservation and development targets are likely to cause activities such as off-shore aquaculture, conservation, deep-sea mining and and fisheries to compete for space. As we move forward in the blue economy, we must understand the potential effects of displacing one activity over the other. For example, global international goals aim to protect 10\% of the ocean environment by 2020. In an effort to meet this target, there has been a rapid increase in MPA coverage \citep{wood_2008,sala_2018}, largely driven by a small number of Large-Scale Marine Protected Areas (LSMPAs), some of which ocurr in the world's largest fishing grounds for tuna. While today a small number of LSMPAs make up at least 80\% of the managed areas in the ocean \citep{toonen_2013}, very little is known about their human dimensions and implication for fisheries \citep{gray_2017}. One issue of particular importance is that of the displacement or redistribution of fishing effort, which may influence the outcomes of a spatial closure \citep{smith_2003}.
+\dropcap{H}umans are increasingly utilizing the oceans. Multiple ocean uses such as off-shore aquaculture, conservation, energy harvesting, deep-sea mining, and fisheries are likely to compete for space. As we move forward with blue growth, we must understand the potential effects of activities displacing each other and etablish causal links between past management interventions and their outcomes \citep{burgess_2018}.
 
-One of the most notable Large-Scale Marine Protected Areas recently implemented is the Phoenix Island Protected Area (PIPA) in Kiribati. The area implemented in January 1st of 2015 has an extension of 397,447 km\textsuperscript{2} and represents was implemented within an area that produces 50\% of the World's tuna. Tuna purse seine fisheries in the region are collectively managed under a Vessel-day scheme (VDS) by nine countries commonly refered to as the Parties to the Nauru Agreement (PNA). Members include the Federated States of Micronesia, Kiribati, the Marshall Islands, Nauru, Palau, Papua New Guinea, the Solomon Islands, and Tuvalu. Tokelau joined the PNA group in 2012 and started selling access rights in 2013. The Nauru Agreement regulates access of foreign vessels (\emph{i.e.} those from non-PNA countries). Holding 80\% (14.6 million km\textsuperscript{2}) of historical skipjack tuna purse seine grounds within their Exclusive Economic Zones (EEZ), PNA countries have achieved greater bargaining power when providing fishing access to foreign fleets \cite{havice_2010}. The revenue from access fees represents up to 50\% of government revenue from some of this countries.
+Global international goals aim to protect 10\% of the ocean environment by 2020. In an effort to meet this target, there has been a rapid increase in MPA coverage \citep{wood_2008,sala_2018}, largely driven by a small number of Large-Scale Marine Protected Areas (LSMPAs), some of which ocurr in the world's largest fishing grounds for tuna. While today a small number of LSMPAs make up at least 80\% of the managed areas in the ocean \citep{toonen_2013}, very little is known about their human dimensions and implication for fisheries \citep{gray_2017}. One issue of particular importance is that of the displacement or redistribution of fishing effort, which may influence the outcomes of a spatial closure \citep{smith_2003}.
 
-LSMPAs were initially assumed to have little social implications due to their general remoteness. However, there have been calls to incorporate the human dimensions into LSMPA management and evaluation \citep{agardy_2011,gray_2017}. Most research incorporating these dimensions has focused on governance and enforcement of LSMPAs \cite{alger_2017,christie_2017}, but they are yet to be the focus of economic analyses \citep{gray_2017}. For example, the anticipation of PIPA lead to preemptive overfishing, which will likely erod or delay the expected benefits of the intervention \cite{mcdermott_2018}. However, a reduction in fishing area without proper adjustments to the total vessel-days permited every year is likely to increase fishing intensity in the remaining open waters. While no studies have assessed the immplications of PIPA, other PNA members have pledged the implementation of LSMPAs by 2020.
+LSMPAs were initially assumed to have little social implications due to their general remoteness. However, there have been calls to incorporate the human dimensions into LSMPA management and evaluation \citep{agardy_2011,gray_2017}. Most research incorporating these dimensions has focused on governance and enforcement of LSMPAs \cite{alger_2017,christie_2017}, but they are yet to be the focus of economic analyses \citep{gray_2017}. For example, the anticipation of LSMPAs may lead to preemptive overfishing, which will likely erodes or delay the expected benefits of an intervention \cite{mcdermott_2018}. 
+
+One of the most notable Large-Scale Marine Protected Areas recently implemented is the Phoenix Island Protected Area (PIPA) in Kiribati. The area implemented in January 1st of 2015 has an extension of 397,447 km\textsuperscript{2} and represents was implemented within an area that produces 50\% of the World's tuna. Tuna purse seine fisheries in the region are collectively managed under a Vessel-day scheme (VDS) by nine countries commonly refered to as the Parties to the Nauru Agreement (PNA). Members include the Federated States of Micronesia, Kiribati, the Marshall Islands, Nauru, Palau, Papua New Guinea, the Solomon Islands, and Tuvalu. Tokelau joined the PNA group in 2012 and started selling access rights in 2013. The Nauru Agreement regulates access of foreign vessels (\emph{i.e.} those from non-PNA countries). Holding 80\% (14.6 million km\textsuperscript{2}) of historical skipjack tuna purse seine grounds within their Exclusive Economic Zones (EEZ), PNA countries have achieved greater bargaining power when providing fishing access to foreign fleets \cite{havice_2010}. The revenue from access fees represents up to 50\% of government revenue from some of this countries. While no studies have assessed the immplications of PIPA, other PNA members have pledged the implementation of LSMPAs by 2020.
 
 Here we evaluate the behavioral responses and spatial redistribution of the industrial tuna purse seine fleet resulting from the implementation of the Phoenix Islands Protected Area, and quantify its economic ramifications and impacts to Kiribati. We use the same data to hypothesize what might be the impacts of the proposed Palau National Marine Sanctuary. These are two of the largest protected areas on the planet and both are controled by PNA countries, where the largest tuna fisheries ocurr.
 
@@ -75,13 +77,11 @@ We use identification of fishing activity via Automatic Identification Systems (
 
 We first inspect the crowding effects that may arise due to the net reduction in fishing area. We produced rasters of monthly fishing effort for our treatment and control groups, and calculated two indices of spatial overlap: 1) the number of cells that had fishing activity from treated and control vessels for each month and 2) the correlation of presence/absence of fishing events between both groups over one month. We find that the two fleets significantly interact more with each other after the implementation of PIPA (Table \ref{tab:sp_corr} Fig. \ref{fig:sp_corr}). The number of vessels with presence from both fleets and spatial correlations increase by a factor of four and three, respectively. This increase in crowding is likely to increase the encounter rates within vessels, and reduce the efficienvy of fishing opperations, resulting in a nusicance to vessels. This would cause vessels to leave curent fishing grounds, which might explain the pattern we observe of an increase and subsequent decrease back to pre-implementation levels.
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \includegraphics{img/sp_corr.pdf}
 \caption{\label{fig:sp_corr}Number of cells that had treated and control vessels (A) and spatial correlation in the presence-absence of treated and control vessels per cell (B). The solid lines represent the 4\textsuperscript{th} degree polynomial fit reported in \ref{tab:sp_corr}}
 \end{figure}
-
-\input{tab/sp_corr}
 
 \subsection{Behavioral changes}
 
@@ -93,25 +93,25 @@ We find no evidence of treated vessels fishing for mor hours after PIPA implemen
 
 \subsection{Economic impacts}
 
-The crowding effect combined with the reduction of hours spent in Kiribati and PNA waters overall suggests that treated vessels have redistributed elsewhere, meaning that they no longer buy access fees from PNA countries. To quantify the potential impacts of this leakage, we estimate the total annual vessel-days received by all PNA countries (Fig. \ref{fig:all_PS_VDS_year}). In this case we look at all 313 vessels, but continue to group them as treated and control vessels, as well as other vessels that we do not observe continuously or came into the fishery after the implementation of PIPA. We term this last group as ``others''. We find that the treated vessels spent 3,600 less days in PNA waters when comparing 2016 and 2017, while control and other vessels increased their PNA fishing by 411 and 1687 for the same period, respectively (Figs. \ref{fig:all_PS_VDS_year}A and \ref{fig:included_PS_VDS_year_DiD}). Furthermore, in 2017 treated vessels exhibit the lowest allocation of hours to PNA waters at just 10,026 vessel-days. This is lower than pre-implementation levels of 2012 - 2013 (mean $\pm$ sd of 12,552.46 $\pm$ 1396.46; we exclude 2014 due to the blue paradox effect \cite{mcdermott_2018}). The 3,600 vessel-day reduction by treated between 2016 and 2017 vessels corresponds to \$43.2 million USD at an average vessel-day price of \$12,000 USD. The 2,526 vessel-day reduction would then represent forgone profits in the order of 30.3 million USD. %We need to come up with an identification strategy for this, I believe. I simple DID doesn't work, because the post-trend would assume that there is no upper bound to effort (current DiD estimate of these data suggest a 8,700 vessel-days reduction; or 7,400 vessel-days if we account for the blue paradox with some fixed effects).
+The crowding effect combined with the reduction of hours spent in Kiribati and PNA waters overall suggests that treated vessels have redistributed elsewhere, meaning that they no longer buy access fees from PNA countries. To quantify the potential impacts of this leakage, we estimate the total annual vessel-days received by all PNA countries (Fig. \ref{fig:all_PS_VDS_year}). In this case we look at all 313 vessels, but continue to group them as treated and control vessels, as well as other vessels that we do not observe continuously or came into the fishery after the implementation of PIPA. We term this last group as ``others''. We find that the treated vessels spent 2,310 less days in PNA waters when comparing 2015 and 2016, while control and other vessels increased their activities in PNA waters by 5,489 and 4,447 days for the same period, respectively (Figs. \ref{fig:all_PS_VDS_year}A and \ref{fig:included_PS_VDS_year_DiD}). The 2,310 vessel-day reduction by treated vessels between 2015 and 2017 corresponds to \$27.7 million USD at an average price of \$12,000 USD per vessel-day. Looking at the total anual vessel-days allocated by all vessels to all countries, we see that the largest reductions ocurr for Kiribati, while Papua New Guinea exhibits a proportional increase (Fig. \ref{fig:all_PS_VDS_cty_year}). Furthermore, in 2017 treated vessels exhibit the lowest vessel-day allcoation to PNA waters at just 10,026 vessel-days. This is 2,526 vessel-days lower (~\$30.3 million USD) than pre-implementation levels of 2012 - 2013 (mean $\pm$ sd of 12,552.46 $\pm$ 1,396.46; we exclude 2014 due to the blue paradox effect \cite{mcdermott_2018}). % Do you think we need to come up with an identification strategy for this?. A simple DID doesn't work, because the post-trend would assume that there is no upper bound to effort (current DiD estimate of these data suggests a 8,700 vessel-days reduction; or 7,400 vessel-days if we account for the blue paradox with some fixed effects).
 
-Looking at the total anual vessel-days allocated by all vessels to all countries, we see that the largest reductions ocurr for Kiribati, while Papua New Guinea exhibits a proportional increase (Fig. \ref{fig:all_PS_VDS_year}B). 
-
-From the government side, we combine annual license revenue and EEZ-specific catch statistics compiled from the Pacific Islands Forum Fisheries Agency (FFA\footnote{https://www.ffa.int/node/2050}).
-
-\begin{figure}
-\centering
-	\includegraphics{img/all_PS_VDS_year.pdf}
-	\caption{\label{fig:all_PS_VDS_year}A)Observed vessel-days for all countries by treated, control, and excluded vessels.}
-\end{figure}
-
-\begin{figure}
+\begin{figure}[ht]
 \centering
 	\includegraphics{img/included_PS_VDS_year_DiD.pdf}
 	\caption{\label{fig:included_PS_VDS_year_DiD}Vessel days spent inside A) PNA waters and B) Kiribati waters by group of vessels.}
 \end{figure}
 
-\subsection{Potential Revenue Loss Palau}
+We compliment our analysis of change in vessel-days by looking at country-level data. Specifically, we use data compiled by the Pacific Islands Forum Fisheries Agency (FFA\footnote{https://www.ffa.int/node/2050}) where annual revenues from license fees are reported for each country (2008 - 2016; Fig. \ref{fig:revenues}). We find that by 2016, Kiribati's revenue decreased from \$148.8 million USD in 2015 to \$118.3 million USD in 2016, representing a change in 30.5 million USD. We use a local polynomial regression fit to obtain a trend line for the total (\emph{i.e.} summing across countries) revenues between 2008 and 2015, and extrapolate the trend to obtain an expected value for 2016. Our model suggests that revenue should be in the order of \$463.5 million USD, but we observe only \$423.5 million, suggesting that potential losses to the entire PNA are in the order of \$40 million USD.
+
+Catches for each country's EEZ for the 1997 - 2016 period were also obtained from the FFA (Fig. \ref{fig:catches}). Catches in Kiribati waters decreased from 24,051 to 12,894 tonnes between 2015 and 2016 (46.3\% decrease). Similar decreases were observed for The Federal States of Micronesia (60.9\%), Papua New Guinea (43.4\%) and the Solomon Islands (58.5\%). In contrast, Tokelau (due south of Kiribati) showed a 22.3\% increase in catches over the same period.
+
+\begin{figure}[ht]
+\centering
+	\includegraphics{img/revenues.pdf}
+	\caption{\label{fig:revenues}Financial indicators for PNA countries. A) Revenue from fishing licenses fees, B) Total annual revenues for all 9 PNA countries with dashed line showing the local polynomial regression fit to the 2008 - 2015 data and the red dot representing the prediction from this regression. Vertical dashed line in both plots denotes implementation of PIPA.}
+\end{figure}
+
+\subsection{Potential Revenue Loss for Palau}
 
 On October 28, 2015, the President of Palau, H.E. Tommy E. Remengesau Jr., signed into law the Palau National Marine Sanctuary (PNMS) Act. Starting in December 2020, this Act will close 500,000 km\textsuperscript{2} to commercial fishing activities, creating the 14th largest protected area in the world. The sanctuary will fully protect about 80 percent of the nation’s EEZ. To prepare for full enactment of the PNMS, the act stipulates a “winding down” period, in which baseline vessel days (i.e., the number of vessel days used in 2014) were reduced by 20\% in 2016; and an additional 10\% from baseline in each subsequent year until full enactment in 2020. This appears to be occurring for the longline VDS, but it is uncertain whether this is being followed for the purse seine VDS, because purse seine VDS can be transferred for use in other EEZs. There has been no official statement on what will happen to Palau’s VDS upon full implementation of the PNMS. However, there is a sense that Palau will be able to keep its allotment come 2020 (Hanich, pers. comm.). In the 2015 Micronesian Presidents Summit, a letter was drafted by heads of state, calling on PNA members to be supportive of Palau as they moved forward with the PNMS Act \cite{Senase2015}. Further, other PNA members have not been penalized for other protected area closures (e.g., PIPA) (Hanich, pers. comm.).
 
@@ -119,73 +119,205 @@ Table \ref{tab:revenue_loss} presents estimates of the potential revenue losses 
 
 \input{revenue_loss}
 
-\begin{figure}
-\centering
-	\includegraphics{img/financial_indicators.pdf}
-	\caption{\label{fig:financial_indicators}Financial indicators for PNA countries. A) Revenue from fishing licenses fees, B) Catches in each countrie's EEZ. Vertical dashed line denotes implementation of PIPA.}
-\end{figure}
+\section{Discussion}
+
+Our findings provide insights into the effect that LSMPAs can have on vessel behavior and the redistribution of fishing effort. These results show that the implementation of PIPA had little effect on the total fishing effort exerted by purse seiners. However, regions adjacent to PIPA show an increase in the relative amount of fishing effort, suggesting that effort is simply displaced to nearby areas. This does not imply that there is more fishing effort exerted by treated vessels, but rather that each region receives a greater portion of the post-PIPA fishing effort of these same vessels, which is lower than pre-PIPA levels. Additionally, we show that post-PIPA there is a concentration of effort leading to crowding. In this section, we discuss the implications of vessel-level reductions in fishing effort and the increase in relative allocation of the remaining effort through space. We also provide plausible explanations as to why purse seiners seem to be more reactive to the spatial closure. 
+
+Previous studies on protected areas around Pacific islands suggest that vessels move to distant places, which might be translated as increased costs \citep{stevenson_2013}. Others have used similar satellite-tracking systems to show that fishing effort accumulates near the edges of spatial closures, yielding greater catches over time \citep{murawski_2005}. But these vessel tracks do not cover the pre-reserve period, making it difficult to identify the contribution of spatial closures to the observed spatial distribution of fishing vessels. Recent work by \cite{elahi_2018} identified that total fishing effort in a focal region where a short-term MPA was implemented showed little change, likely indicating that fishers redistributed fishing effort to compensate for the reduction in available space. Our data, which is assembled in a similar way, allows us to make similar inferences about the unobserved change in aggregate fishing effort and its spatial redistribution.
+
+The role of the institutions at play is evident. Vessels that fished inside PIPA before the implementation were likely fishing in Kiribati waters under a VDS license. Upon implementation, some vessels redistribute to other areas of the Kiribati EEZ and the adjacent high seas for the year immediately after the closure. As stated before, it is reasonable for a vessel holding a license to fish in Kiribati waters to simply reallocate their effort to other parts of that EEZ. However, the shift to the high seas may not follow the same logic. Instead, it is possible that vessels that redistribute to the high seas were operating in Kiribati illegally, and decide to reallocate in the high seas to continue fishing without a license. Or they are now not willing to pay Kiribati to fish in the remaining open areas.
+
+A major shortcoming of our analysis is that we do not observe catches or revenues, which ultimately are the factors that guide the decision making process of profit-maximizing agents. Therefore, it is difficult to know whether the small change in fishing hours represents a positive or negative impact. An additional factor that we are yet to test is the change in non-fishing hours spent at sea. It is plausible that fishing hours remain constant, but vessels have to increase search time. Upon being relocated, fishers may not identify the best fishing grounds as easily as before, and therefore invest a greater proportion of their time searching for their catch. Further analysis of temporal trends in non-fishing hours, as well as distance traveled should provide us with insights as to why fishers reduced fishing hours. However, the widespread footprint of the treated fleet may suggest that they are well acquainted with the region (see Figure \ref{fig:fishing_raster}), and it's unlikely that they would need to invest much time to identify new fishing grounds.
+
+Our work suggests that the implementation of LSMPAs has little impact on total fishing effort. We also show that fishing effort is redistributed to areas close by, and that this leads to a potentially negative crowding effect. A growing body of literature suggests that closing the high seas to all fishing could increase fishery yields and profitability of fisheries, with negligible costs to food security \citep{white_2014,sumaila_2015,sala_2018a,schiller_2018}. Such management interventions should consider how fishing effort will change in space and through time, and the ecological implications of this redistribution to ensure that fishing effort is not just displaced elsewhere, leading to overfishing in adjacent waters. While LSMPAs can provide a wide range of benefits, their implementation must be accompained with traditional fisheries management to maximize effectiveness.
+
+\section{Conclusions}
+
+\section{References}
+
+\bibliography{references}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%		 					 %%%%%%%%%%%%%
+%%%%%%%%%%%%%		 BEGIN APPENDIX		 %%%%%%%%%%%%%
+%%%%%%%%%%%%%		 					 %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage
-\begin{figure}
-\centering
-\includegraphics{img/all_panels.pdf}
-\caption{\label{fig:all_panels}Time series showing monthly averages for eight variables of interest: A) Fishing hours, B) Non-fishing hours at-sea, C) Proportion of fishing hours to total hours at-sea, D) Distance traveled, E) Mean distance from port for fishing evetns, F) Mean distance from shore for fishing events, I) Monthly hours spent in Kiribati waters, J) Proportion of fishing hours spent in PNA waters.}
-\end{figure}
+
+\onecolumn
+
+\FloatBarrier
+
+\section{Appendix}\label{appendix}
+
+\newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+
+\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
+
+\section{Supplementary tables and figures}
+
+\clearpage
+
+\input{tab/sp_corr}
+
 \clearpage
 
 \input{tab/main_DID}
 
 \clearpage
 
+\begin{figure}
+\centering
+\includegraphics{img/PNA_map.png}
+\caption{\label{fig:PNA_map}Map of the Exclusive Economic Zones (EEZs) of the region of interest. Countries that belong to the PNA are shown in blue, while empty polygons indicates all others. A red line indicates the Kiribati EEZ, and a solid red polygon delineates PIPA.}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+\centering
+\includegraphics{img/all_panels.pdf}
+\caption{\label{fig:all_panels}Time series showing monthly averages for eight variables of interest: A) Fishing hours, B) Non-fishing hours at-sea, C) Proportion of fishing hours to total hours at-sea, D) Distance traveled, E) Mean distance from port for fishing evetns, F) Mean distance from shore for fishing events, I) Monthly hours spent in Kiribati waters, J) Proportion of fishing hours spent in PNA waters.}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+\centering
+	\includegraphics{img/all_PS_VDS_year.pdf}
+	\caption{\label{fig:all_PS_VDS_year}Observed vessel-days for all countries by treated, control, and excluded vessels.}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+\centering
+	\includegraphics{img/all_PS_VDS_cty_year.pdf}
+	\caption{\label{fig:all_PS_VDS_cty_year}Observed vessel days by country and year}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+\centering
+	\includegraphics{img/hist_kir_fishing.pdf}
+	\caption{\label{fig:hist_kir_fishing}Ridgeplot for the density of the \% of total fishing hours that take place within Kiribati EEZ waters by year for treated vessels where the unit of observation is an individual vessel.}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+\centering
+	\includegraphics{img/catches.pdf}
+	\caption{\label{fig:catches}Financial indicators for PNA countries. A) Annual catches by EEZ and, B) Annual value of catches by EEZ. Vertical dashed line in both plots denotes implementation of PIPA.}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+\centering
+\includegraphics{img/other_specifications.pdf}
+\caption{\label{fig:other_specifications}Alternative difference-in-differences estimates
+for our variables of interest using different model specifications. Table \ref{tab:main_DID}
+reports estimates for models with month and flag fixed effects (\emph{i.e.} green dots).}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+\centering
+\includegraphics{img/fishing_raster.png}
+\caption{\label{fig:fishing_raster}Yearly spatial distribution of fishing effort by treated and control vessels. Color corresponds to \% of total fishing effort in each panel. Red polygons show LSMPAs in the region.}
+\end{figure}
+
+\clearpage
+
+\section{Palau National Marine Sanctuary}\label{PNMS}
+
+\begin{figure}
+	\includegraphics[width=0.8\textwidth]{img/Color_V1.png}
+	\caption{Map of the Four Protected Areas}
+	\label{fig:maps}
+\end{figure}
+
+\clearpage
+
+\section{Alternative Controls}
+\subsection{Excluding all Chinese vessels}
+
+\input{tab/DID_without_CHN.tex}
+
+\clearpage
+\subsection{Excluding all PNA vessels}
+
+\input{tab/DID_without_PNA.tex}
+
+\clearpage
+
+\subsection{Excluding all USA and TWN vessels}
+
+\input{tab/DID_without_USA_TWN}
+
+\clearpage
+
+\section{Additional methods}
+
+This section is divided into two main parts. First, we provide a general description of AIS data and the process of identification of vessel-level fishing events performed by Global Fishing Watch.\footnote{Global Fishing Watch: \url{globalfishingwatch.org}} Alongside, we describe the subset of data used in our analysis. We also point out possible shortcomings in the data, or factors that must be considered in the analysis. We then move on to explain our empirical strategy for the identification of behavioral changes and the redistribution of fishing effort.
+
+\subsection{Data}
+
+Automatic Identification Systems (AIS) are on-board devices that provide at-sea safety and prevent ship collisions by broadcasting vessel position, course, and activity to surrounding vessels. These broadcast messages can be received by satellites and land-based antennas. GFW then uses machine learning algorithms (convolutional neural networks) on the broadcast messages to infer what type of fishing is taking place and where it is taking place, thus allowing the estimation of near real-time fishing events globally \citep{kroodsma_2018}.
+
+The amount of data gathered by GFW is dependent on the number of antennas and satellites that can receive signals. The total satellite count increased from 3 to 6 on June 1\textsuperscript{st} 2014 , and then from 6 to 10 on January 1\textsuperscript{st} 2016. This causes an increase in the number of \emph{received} AIS messages (\emph{i.e.} points), and therefore an apparent increase in the number of vessels. The addition of new satellites affects all vessels in the same way. 
+
+% All numbers in the following paragraph need to be updated
+Our analysis focuses on tune purse seine vessels, the most important fishery for PNA countries. We identify a total of 186 purse seiners that fished in PNA waters at least once before 2015. Vessels that entered the fishery after 2015 were not exposed to the policy intervention in the pre-treatment period and are therefore excluded from our analyses, leaving us with 125 vessels. We identify 90 vessels that have fished inside PIPA at least once since 2012; 72 did so before the announcement of the closure (\emph{i.e.} 09/01/2014 \emph{sensu} \citep{mcdermott_2018}). From these, we only observe before and after data for 64 tuna purse seiners.
+On the other hand, 45 vessels never fished inside PIPA during the 2012 - 2015 period, but we only observe befor and after data for 28 of these.
+
+Therefore, our treatment group contains all purse seiners (n = 64) that fished within PIPA at least once before the announcement, and that continued to fish elsewhere after the January 2015 implementation. Vessels in the control group meet the following two conditions: i) never fished within PIPA waters from 2012-2015, and ii) vessels have fished in surrounding areas (\emph{i.e.} PNA-countries' EEZ) before and after PIPA closure (n = 28). Together, these vessels represent more than 20 million georeferenced positions for which we know activity (fishing or not fishing).
+
+We include three additional control groups as a robustness check. The first group contains only vessels that belong to PNA countries (n = 7). The second group excludes all Chinese vessels (n = 12). Our third control is made up of Japanese purse seiners that fish in the Pacific but have never fished inside PIPA (n = 27). Our main definition of treatment and control groups leaves us with 64 treated and 28 control vessels, which have just over 22 million observations with about 22\% of these observations identified as fishing events by the neural network classification.
+
+\clearpage
+
+\input{tab/baci_n_s}
+
+\clearpage
+
+\subsection{Analyses}
+
+\subsubsection{crowding effect}
+
+If the implementation of the reserve induces a crowding effect, we would expect to observe no trend before the implementation of the reserve. The implementation would lead to an increase in these measures, which,  if vessels avoid crowding, should then come back down. We therefore expect to have three inflection points: 1) in the transition between no trend and initial crowding due to MPA implementation, 2) When the crowding has reached its maximum and starts to decrease, and 3) when the decrease levels off, pressumably to pre-MPA levels. For this reason, we fit a 4th degree polynomial to our monthly indices. We do so by centering our time series of crowding indices on the day of implementation. Our explanatory variable is therefore the number of months before or after the implementation. For example, since PIPA was implemented in January 1st of 2015, December of 2014 has a value of -1, and Feb of 2015 would receive a value of 1.
+
+\begin{figure*}[h]
+\begin{align*}
+y_t = \alpha + \beta_1 month_t + \beta_2 month_t^2 + \beta_3 month_t^3 + \beta_4 month_t ^4 + \epsilon_t
+\end{align*}
+\end{figure*}
+
+\subsubsection{Behavioral changes}
+
+We then focus on identifying the response of vessels to the PIPA closure. We use daily fishing and non-fishing hours, daily proportion of fishing vs. non-fishing hours, daily distance traveled (km), distance from shore (km) and distance from home port(km) for fishing and non-fishing events, and proportion of total fishing hours allocated to Kiribati waters and PNA waters as our main outcomes of interest. We compare these outcomes before and after the implementation of PIPA using a Difference-in-Differences approach. Our main specification is the following:
+
+\begin{figure*}[h]
+\begin{align*}
+log(y)_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \epsilon_{i,t}
+\label{eqn:did}
+\end{align*}
+\end{figure*}
+
+Where $log(y_{i,t})$ is the log-transformed outcome of interest for vessel $i$ on day $t$. A dummy variable $Post_t$ takes the value of 0 for all dates prior to PIPA implementation and a value of 1 for all dates following PIPA implementation. $Treat_i$ is a dummy variable indicating whether a vessel belongs to the treatment ($Treat_i = 1$) or control ($Treat_i = 0$) group. $\alpha$ is the standard intercept term, $beta_1$ captures the temporal trend, $beta_2$ captures the initial difference between treated and control groups, and $beta_3$ is our parameter of interest: the Difference-in-Differences estimate capturing the treatment effect. Finally, $phi_t$ and $\gamma_i$ represent month and flag dummies that account for seasonality or country-level management interventions. We test for other more complex specifications that interact a quarterly dummy or year-month dummies with the treatment group and find qualitatively the same results\footnote{I actually need more time to run these, but I don't think they'll change}.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We discretize spatial units by creating a polygon for PIPA and distinct spatial units for each geographically separate EEZ of each country. Some vessels might shift from EEZs into the high seas, but we are interested in knowing \emph{where} in the high seas, so we incorporate additional regions by using a 5-degree buffer of the high seas. The rest of the high seas are merged into a single spatial unit. For example, if we were to do this only for Kiribati, we would have 8 spatial units: PIPA, three EEZ units, three 1-degree buffers of high seas  around each of the EEZ regions. around each EEZ, and the rest of the high seas. We clipped any overlapping high seas buffers to avoid duplication.
 
+All regression coefficients were estimated via ordinary least squares, and heteroskedasticity-robust standard errors were calculated. All analyses were performed in R version 3.5.1 \citep{rcore_2018}. Raw data and code used in this work are available on \href{https://github.com/jcvdav/MPA_displacement}{github}.
 
-If the implementation of the reserve induces a crowding effect, we would expect to observe no trend before the implementation of the reserve.
-The implementation would lead to an increase in these measures, which, 
-if vessels avoid crowding, should then come back down. We therefore expect to
-have three inflection points: 1) in the transition between no trend and initial crowding due to MPA
-implementation, 2) When the crowding has reached its maximum and starts to decrease,
-and 3) when the decrease levels off, pressumably to pre-MPA levels.
-For this reason, we fit a 4th degree polynomial to our monthly indices. We do so by
-centering our time series of crowding indices on the day of implementation. Our
-explanatory variable is therefore the number of months before or after the implementation.
-For example, since PIPA was implemented in January 1st of 2015, December of 2014 
-has a value of -1, and Feb of 2015 would receive a value of 1.
+\clearpage
 
-The pattern observed here could just be an artifact
-of satellite detections increasing though time. Therefore we also
-calculate a spatial correlation of presence/absence and observe similar
-patterns (Fig. \ref{fig:sp_corr}B). Spatial overlap increases
-in 2015 as vessels from PIPA are excluded, but then starts to decline.
-Our 4th degree polynomial shows the expected patterh of a relative
-constant trend before implementation which is followed by rapid increased
-and subsequent decrease.
-
-Recent advances in satellite tracking technologies and near real-time
-identification of fishing activity provide us with an opportunity to ask: how do fishers respond to the implementation of an LSMPA? Does effort increase or decrease and where does it go? We use identification of fishing activity via Automatic Identification Systems (AIS) and causal inference techniques to describe
-the behavioral changes and spatial redistribution of the industrial tuna
-purse seine fleet due to the implementation of the Phoenix Islands Protected Area. We use the same data to hypothesize what might be the impacts of the proposed Palau National Marine Sanctuary. These are two of the largest protected areas on the planet and both are within the Parties to the Nauru Agreement (PNA) region, which is a group of (originally eight and now) nine Pacific Islands countries that collectively manage their valuable tuna stocks.
-
-Our work is novel in the sense that it provides empirical evidence of
-the effect of Large Scale Marine Protected Areas on fishing behavior and
-distribution and can help guide future interventions. Understanding how
-effort is displaced from LSMPAs might provide insights into how distant water fishing fleets would react to a high seas closure.
-
-The existing empirical literature focuses on small MPAs and has been criticized for confounding correlation with causation \citep{ferraro2018causal}.
-
-The paper is organized as follows: Section \ref{background} provides more
-information on Large Scale Marine Protected Areas and some background on
-empirical studies of effort redistribution. An overview of the Nauru
-Agreement and associated countries, a description of the fleet that
-operates in the region, and a brief history of PIPA and PNMS is also included.
-Section \ref{methods} describes our data and identification strategy.
-Section \ref{results} presents our results, and Section \ref{discussion}
-discusses our
-results.
-
-\section{Background}\label{background}
+\section{Old Text}
 
 \subsection{Large-Scale Marine Protected Areas}\label{lsmpas}
 
@@ -236,7 +368,6 @@ is converted into a LSMPA, leaving fishers with the option of moving to
 the high seas or other countries' EEZs, with potentially very different fishing regulations.
 
 \subsection{Nauru agreement and the Phoenix Islands Protected Area}
-\label{nauru-agreement-and-the-phoenix-island-protected-area}
 
 The cooperation that emerged under the Nauru Agreement allowed for subsequent
 agreements that strengthened fisheries management, like the Palau
@@ -298,439 +429,13 @@ larger than that of the spatial closure, they might already know other
 places to fish. In the next sections we describe
 the data and methods used to answer these questions.
 
-\clearpage
+\subsection{Palau}
 
-\section{Methods}\label{methods}
-
-This section is divided into two main parts. First, we provide a general
-description of AIS data and the process of identification of
-vessel-level fishing events performed by Global Fishing Watch.\footnote{Global Fishing Watch: \url{globalfishingwatch.org}}
-Alongside, we describe
-the subset of data used in our analysis. We also point
-out possible shortcomings in the data, or factors that must be
-considered in the analysis. We then move on to explain our
-empirical strategy for the identification of behavioral changes and
-the redistribution of fishing effort.
-
-\subsection{Data}\label{data}
-
-Automatic Identification Systems (AIS) are on-board devices that provide
-at-sea safety and prevent ship collisions by broadcasting vessel
-position, course, and activity to surrounding vessels. These broadcast
-messages can be received by satellites and land-based antennas. GFW then uses 
-machine learning techniques (convolutional neural networks) on the broadcast messages
-to infer what type of fishing is taking place and where it is taking place, thus
-allowing the estimation of near real-time fishing events globally \citep{kroodsma_2018}.
-
-The amount of data gathered by GFW is dependent on the number of antennas and
-satellites that can receive signals. The total satellite count increased from 3 to 6 on 
-June 1\textsuperscript{st}
-2014 , and then from 6 to 10 on January
-1\textsuperscript{st} 2016. This causes an increase in the number of
-\emph{received} AIS messages (\emph{i.e.} points), and therefore an
-apparent increase in the number of vessels.
-The addition of new satellites affects all vessels in the same way. 
-
-Our analysis focuses on tune purse seine vessels, the most important fishery
-for PNA
-countries.\footnote{We perform some of the same analyses for longliners and include them in the Appendix}
-We identify a total of 186 purse seiners that fished in PNA waters at
-least once before 2015. Vessels that entered the fishery after 2015 were not
-exposed to the policy intervention in the pre-treatment period and are
-therefore excluded from our analyses, leaving us with 125 vessels.
-We identify 90 vessels that have fished inside PIPA
-at least once since 2012; 72 did so before the announcement
-of the closure (\emph{i.e.} 09/01/2014 \emph{sensu} \citep{mcdermott_2018}).
-From these, we only observe before and after data for 64 tuna purse seiners.
-On the other hand, 45 vessels never fished inside PIPA during the 2012 - 2015 period, 
-but we only observe befora and after data for 28 of these.
-
-Therefore, our treatment group contains all purse seiners (n = 64) that
-fished within PIPA at least once before the announcement, and that
-continued to fish elsewhere after the January 2015 implementation.
-Vessels in the control group meet the following two conditions: i)
-never fished within PIPA waters from 2012-2015, and ii) vessels have fished in
-surrounding areas (\emph{i.e.} PNA-countries' EEZ) before and after PIPA
-closure (n = 28). Together, these vessels represent more than 20 million georeferenced positions
-for which we know activity (fishing or not fishing).
-
-We include three additional control groups as a
-robustness check. The first group contains only vessels that belong to PNA countries (n
-= 7). The second group excludes all Chinese vessels (n = 12). Our third control
-is made up of Japanese purse seiners that fish in the Pacific but have
-never fished inside PIPA (n = 27). Our main definition of treatment and control
-groups leaves us with 64 treated and 28 control vessels, which have just over 22 million
-observations with about 22\% of these observations identified as fishing events by the neural network classification.
-
-
-
-\input{tab/baci_n_s}
-
-\clearpage
-
-\subsection{Analyses}\label{analyses}
-
-Our first analysis focuses on identifying the response of 
-vessels to the PIPA closure. We use daily fishing and non-fishing hours,
-daily proportion of fishing vs. non-fishing hours, daily distance traveled (km), 
-distance from shore (km) and distance from home port(km) for fishing and non-fishing events,
-and proportion of total fishing hours allocated to Kiribati waters and PNA waters
-as our main outcomes of interest.
-We compare these outcomes before and after the implementation
-of PIPA using a Difference-in-Differences approach. Our main
-specification is the following:
-
-\begin{figure*}[h]
-\begin{align*}
-log(y)_{i,t} = \alpha + \beta_1 Post_t + \beta_2 Treat_i + \beta_3 Post_t \times Treat_i + \phi_t + \gamma_i + \epsilon_{i,t}
-\label{eqn:did}
-\end{align*}
-\end{figure*}
-
-where $log(y_{i,t})$ is the log-transformed outcome of interest for vessel $i$ on day $t$.
-A dummy variable $Post_t$ takes the value of 0 for all
-dates prior to PIPA implementation and a value of 1 for all dates
-following PIPA implementation. $Treat_i$ is a dummy
-variable indicating whether a vessel belongs to the treatment ($Treat_i = 1$) or control
-($Treat_i = 0$) group. $\alpha$ is
-the standard intercept term, $beta_1$ captures the temporal trend,
-$beta_2$ captures the initial difference between treated and control groups,
-and $beta_3$ is our parameter of interest: the Difference-in-Differences estimate capturing
-the treatment effect. Finally, $phi_t$ and $\gamma_i$ represent
-month and flag dummies that account for seasonality or
-country-level management interventions. We test for other more complex specifications
-that interact a quarterly dummy or year-month dummies with the treatment group
-and find qualitatively the same results\footnote{I actually need more time to run these, but I don't think they'll change}.
-
-Our second part of the analysis focuses on the redistribution of fishing
-effort, where institutions may play an important role. As stated
-before, LSMPAs often span the entirety of an EEZ. In the case of purse
-seining in the PNA, vessels purchase access to the fishery at the
-beginning of the season. If a vessel decides to fish within the PNA,
-they've already made the decision to pay for access, expecting higher
-returns from fishing there than in the high seas. In the particular case
-of PIPA, one would expect that a vessel previously holding a permit to fish in
-Kiribati waters would 
-most likely continue to purchase access to PNA waters (either in Kiribati's
-remaining open areas or a nearby EEZ). Alternatively, if a vessel fishes illegally
-in Kiribati waters before the implementation, one would expect them to
-reallocate to other regions with equal or less enforcement. In this
-case, they might then choose to move to other Kiribati waters, waters
-of countries that have similar enforcement levels, or to the high seas.
-
-We discretize spatial units by creating a polygon for
-PIPA and distinct
-spatial units for each geographically separate EEZ of each country. Some vessels might shift
-from EEZs into the high seas, but we are interested in knowing
-\emph{where} in the high seas, so we incorporate additional regions by
-using a 1-degree buffer of the high seas\footnote{Currently running the 5-degree version too}
-The rest of the high seas are merged into a single spatial unit. For
-example, if we were to do this only for Kiribati, we would have 8
-spatial units: PIPA, three EEZ units, three 1-degree buffers of high seas  around each of the EEZ regions.
-around each EEZ, and the rest of the high seas. We clipped any overlapping
-high seas buffers to avoid duplication.
-
-We then take these spatial polygons and rasterize them to a 1-degree grid
-(see Figure \ref{fig:raster_rgn} in the Appendix), which we then use to rasterize points
-of fishing activity. For each cell, we calculate the total monthly
-fishing hours by treated and control vessels (Fig. \ref{fig:fishing_raster}).
-Since we are interested in the redistribution
-of fishing effort, we use this gridded data to calculate the proportion
-of fishing hours that each region receives each month relative to the
-total fishing hours observed across all regions and all cells in that
-month.
-
-We use this measure to evaluate the change in effort allocation by
-regressing it on the interaction between a year dummy and a dummy for
-regions:
-
-\begin{figure*}[h]
-\begin{align*}
-y_{i,t} = \alpha + \beta_1Year_t + \beta_{2,i}Region_i + \beta_{3,i}Year_t \times Region_i+ \epsilon_{i,t}
-\end{align*}
-\end{figure*}
-
-
-Our variable of interest, $y_{i,t}$ represents the proportion of
-fishing hours that region $i$ receives at time $t$. Years are
-modeled as factors ($Year_t$), using 2012 as the reference level.
-$Region$ is a dummy variable for regions defined above. Our vector of parameters of
-of interest is $\beta_{3,i}$, which captures the yearly by-country
-change in proportional allocation of fishing effort relative to 2012.
-
-Finally, we inspect the crowding effects that may arise due to the net reduction
-in fishing area. We use the rasterized fishing effort and calculate two
-potential indices of crowding. For the first one, we count the number of cells
-that had fishing activity from treated and control vessels over a given month. For the second one,
-we calculate the correlation of presence/absence of fishing events between both groups
-over one month. If the implementation of the reserve induces a crowding effect,
-we would expect to observe no trend before the implementation of the reserve.
-The implementation would lead to an increase in these measures, which, 
-if vessels avoid crowding, should then come back down. We therefore expect to
-have three inflection points: 1) in the transition between no trend and initial crowding due to MPA
-implementation, 2) When the crowding has reached its maximum and starts to decrease,
-and 3) when the decrease levels off, pressumably to pre-MPA levels.
-For this reason, we fit a 4th degree polynomial to our monthly indices. We do so by
-centering our time series of crowding indices on the day of implementation. Our
-explanatory variable is therefore the number of months before or after the implementation.
-For example, since PIPA was implemented in January 1st of 2015, December of 2014 
-has a value of -1, and Feb of 2015 would receive a value of 1.
-
-\begin{figure*}[h]
-\begin{align*}
-y_t = \alpha + \beta_1 month_t + \beta_2 month_t^2 + \beta_3 month_t^3 + \beta_4 month_t ^4 + \epsilon_t
-\end{align*}
-\end{figure*}
-
-All regression coefficients were estimated via ordinary least squares,
-and heteroskedasticity-robust standard errors were calculated. All analyses
-were performed in R version 3.5.1 \citep{rcore_2018}. Raw data and code
-used in this work are available on
-\href{https://github.com/jcvdav/MPA_displacement}{github}.
-
-\section{Results2}
-
-Regression coefficients for our DiD analysis are shown in Table
-\ref{tab:main_DID}. Our DiD analysis shows that PIPA closure
-had no effect on the number of fishing hours, but that it caused
-non-fishing at-sea hours to increase by 1\%, This coefficient is
-only marginally significant. The proportion of
-fishing to non-fishing hours shows a positive change, but it is not
-significant. However, treated vessels travel on average 19\% less
-than control vessels, and opperate closer to shore and port.
-Furthermore, PIPA implementation caused fishing events of treated
-vessel to occur 23\% and 4\% closer to port and to shore, respectively.
-Other specificationf that exclude fixed effects produce similar estimates (Fig. \ref{fig:other_specifications})
-Since vessels don't seem to be fishing a lot less, an obvious question arises: where are they
-fishing now?
-
-
-Figure \ref{fig:fishing_raster} provides a spatial representation of
-these changes. Note that the 2013 effort distribution is roughly similar
-across vessels. Then, in 2014, there is a sharp increase in fishing hours
-by treated vessels inside PIPA. In 2015, treated vessels
-then allocate more effort to the easternmost Kiribati EEZ and the high seas.
-In 2016, the spatial distribution of
-fishing effort is again similar across groups. It is evident that the
-increase in relative fishing effort is greater for regions closer to
-PIPA. 
-
-Along a similar line, Figure \ref{fig:redist_trend} shows a detailed
-temporal evolution of the relative allocation of fishing
-effort.  It shows the change in fishing effort inside PIPA, including the
-preemptive fishing and immediate reduction previously reported
-\citep{mcdermott_2018}. Recall that to evaluate the redistribution of fishing effort
-we only track fishing vessels that belong to the treated group.
-Kiribati waters show an increase in fishing effort for 2015;
-the same pattern is observed for their respective High Seas buffers,
-and the general High Seas. This suggests fishing effort inside PIPA has moved to the
-high seas around Kiribati instead of paying to fish within alternative Kiribati EEZ waters.
-
-We then move on to our regression results, presented as a figure showing
-the year-region interaction coefficient estimates for each region as a
-stream of changes through time (Fig. \ref{fig:mean_change} and Table
-\ref{tab:mean_change}). As noted before, the marginal change in the
-relative allocation of fishing effort relative to 2012 increases in 2014
-for PIPA, followed by an abrupt reduction in 2015 and afterwards. This 
-reduction confirms that effort within PIPA has been virtually eliminated.
-Most coefficients are not statistically significant, but
-follow the same trends previously discussed, with a tendency for regions
-closer to PIPA to show an increase in the relative allocation of fishing
-effort in the post-implementation period. The largest increase is
-observed for the Kiribati EEZ 2 (Kiribati's easternmost EEZ), where the
-redistribution of treated vessels caused a 10\% increase in the \emph{relative} allocation of
-fishing effort within Kiribati waters. The high seas around Kiribati's EEZ exhibit
-similar increases the year of implementation or the year after. Overall, the high seas
-receive an incresse in the order of 5\% for 2015.This displacement is likely
-causing a crowding effect after PIPA-fishing vessels redistribute to
-other areas.
-
-We use the rasterized effort to evaluate if the PIPA closure increased
-crowding outside the LSMPA. We count the number of raster cells that
-had both treated and control vessels each month (Fig.
-\ref{fig:sp_corr}A). 
-
-\clearpage
-
-
-\input{tab/mean_change}
-
-\clearpage
-
-\clearpage
-
-\section{Discussion}\label{discussion}
-
-Our findings provide insights into the effect that LSMPAs
-can have on vessel behavior and the redistribution of fishing effort.
-These results show that the implementation of PIPA had
-little effect on the total fishing effort exerted by purse seiners. However, regions
-adjacent to PIPA show an increase in the relative amount of fishing
-effort, suggesting that effort is simply displaced to nearby areas.
-This does not imply that there is more fishing effort exerted by treated
-vessels, but rather that each region receives a greater portion of the
-post-PIPA fishing effort of these same vessels, which is lower than
-pre-PIPA levels. Additionally, we show that post-PIPA there is a
-concentration of effort leading to crowding. In this section, we discuss
-the implications of vessel-level reductions in fishing effort and the
-increase in relative allocation of the remaining effort through space.
-We also provide plausible explanations as to why purse seiners seem to
-be more reactive to the spatial closure.
-
-Previous studies on protected areas around Pacific islands suggest that vessels move to
-distant places, which might be translated as increased costs
-\citep{stevenson_2013}. Others have used similar satellite-tracking systems to
-show that fishing effort accumulates near the edges of spatial closures,
-yielding greater catches over time \citep{murawski_2005}. But these vessel tracks
-do not cover the pre-reserve period, making it difficult to identify the
-contribution of spatial closures to the observed spatial distribution of
-fishing vessels. Recent work by \cite{elahi_2018} identified that total
-fishing effort in a focal region where a short-term MPA was implemented
-showed little change, likely indicating that fishers redistributed
-fishing effort to compensate for the reduction in available space. Our
-data, which is assembled in a similar way, allows us to make similar
-inferences about the unobserved change in aggregate fishing effort and
-its spatial redistribution.
-
-The role of the institutions at play is evident. Vessels that fished
-inside PIPA before the implementation were likely fishing in
-Kiribati waters under a VDS license. Upon implementation,
-some vessels redistribute to other areas of the Kiribati EEZ and the adjacent
-high seas for the year immediately after the closure. As stated before,
-it is reasonable for a vessel holding a license to fish in Kiribati
-waters to simply reallocate their effort to other parts of that EEZ.
-However, the shift to the high seas may not follow the same logic.
-Instead, it is possible that vessels that redistribute to the high seas
-were operating in Kiribati illegally, and decide to reallocate in the
-high seas to continue fishing without a license. Or they are now not willing to pay Kiribati to fish in the remaining open areas.
-
-A major shortcoming of our analysis is that we do not observe catches or
-revenues, which ultimately are the factors that guide the decision
-making process of profit-maximizing agents. Therefore, it is difficult
-to know whether the small change in fishing hours represents a positive or
-negative impact. An additional factor that we are yet to test is the
-change in non-fishing hours spent at sea. It is plausible that fishing
-hours remain constant, but vessels have to increase search time. Upon
-being relocated, fishers may not identify the best fishing grounds as
-easily as before, and therefore invest a greater proportion of their
-time searching for their catch. Further analysis of temporal trends in
-non-fishing hours, as well as distance traveled should provide us with
-insights as to why fishers reduced fishing hours. However, the
-widespread footprint of the treated fleet may suggest that they are well
-acquainted with the region (see Figure \ref{fig:fishing_raster}), and it's
-unlikely that they would need to invest much time to identify new fishing grounds.
-
-Our work suggests that the implementation of LSMPAs has little impact on
-total fishing effort. We also show that fishing effort is
-redistributed to areas close by, and that this leads to a potentially
-negative crowding effect. A growing body of literature suggests that
-closing the high seas to all fishing could increase fishery yields and
-profitability of fisheries, with negligible costs to food security
-\citep{white_2014,sumaila_2015,sala_2018a,schiller_2018}. Such
-management interventions should consider how fishing effort will change
-in space and through time, and the ecological implications of this
-redistribution to ensure that fishing effort is not just displaced
-elsewhere, leading to overfishing in adjacent waters. While LSMPAs can
-provide a wide range of benefits, their implementation must be
-accompained with traditional fisheries management to maximize
-effectiveness.
-
-\section{Conclusion}\label{conclude}
-
-\clearpage
-
-\section{References}\label{references}
-
-\bibliography{references}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%		 					 %%%%%%%%%%%%%
-%%%%%%%%%%%%%		 BEGIN APPENDIX		 %%%%%%%%%%%%%
-%%%%%%%%%%%%%		 					 %%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\clearpage
-
-\FloatBarrier
-
-\section{Appendix}\label{appendix}
-
-\newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
-
-\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
-
-\begin{figure}
-\centering
-\includegraphics{img/PNA_map.png}
-\caption{\label{fig:PNA_map}Map of the Exclusive
-Economic Zones (EEZs) of the region of interest. Countries that belong
-to the PNA are shown in blue, while empty polygons indicates all others.
-A red line indicates the Kiribati EEZ, and a solid red polygon
-delineates PIPA.}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{img/other_specifications.pdf}
-\caption{\label{fig:other_specifications}Alternative difference-in-differences estimates
-for our variables of interest using different model specifications. Table \ref{tab:main_DID}
-reports estimates for models with month and flag fixed effects (\emph{i.e.} green dots).}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{img/fishing_raster.png}
-\caption{\label{fig:fishing_raster}Yearly
-spatial distribution of fishing effort by treated and control vessels.
-Color corresponds to \% of total fishing effort in each panel.
-Red polygons show LSMPAs in the region.}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{img/redist_trend.pdf}
-\caption{\label{fig:redist_trend}Monthly
-relative allocation of fishing effort by PIPA-fishing vessels before and
-after PIPA by region. Colors indicate the pre- and post- periods. Solid line
-across points shows local mean with a region-specific loess smoother.
-Vertical dashed lines indicates dates when satellites were added, solid vertical
-line indicates PIPA closure. Note that inflection points of
-the loess smoother are not affected by the addition of satellites.}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{img/mean_change.pdf}
-\caption{\label{fig:mean_change}Coefficient
-estimates for the redistribution regression. Each panel shows the
-region-specific coefficients, with 95\% condifence intervals
-as error bars. The horizontal dashed line represents 0 change
-relative to the 2012 region-specific levels.}
-\end{figure}
-
-\begin{figure}
-\centering
-	\includegraphics{img/PS_VDS_KIR_by_year.pdf}
-	\caption{\label{fig:PS_VDS_KIR_by_year}Vessel days spent inside Kiribati waters by group of vessels.}
-\end{figure}
-
-\begin{figure}
-\centering
-	\includegraphics{img/hist_kir_fishing.pdf}
-	\caption{\label{fig:hist_kir_fishing}Ridgeplot for the density of the \% of total fishing hours that take place within Kiribati EEZ waters by year for treated vessels where the unit of observation is an individual vessel.}
-\end{figure}
-
-\section{Palau National Marine Sanctuary}\label{PNMS}
-
-\begin{figure}[h]
-	\includegraphics[width=0.8\textwidth]{img/Color_V1.png}
-	\caption{Map of the Four Protected Areas}
-	\label{fig:maps}
-\end{figure}
+\subsubsection{Palau National Monument}
 
 On October 28, 2015, the President of Palau, H.E. Tommy E. Remengesau Jr., signed into law the Palau National Marine Sanctuary (PNMS) Act. Starting in December 2020, this Act will close 500,000 km\textsuperscript{2} to commercial fishing activities, creating the 14th largest protected area in the world. The sanctuary will fully protect about 80 percent of the nation’s EEZ. The remaining 20\% of Palau’s EEZ (close to the most heavily populated islands: Koror and Babeldaob) will become a Domestic Fishing Zone in which traditional and domestic fishing activities will be allowed to provide fish solely for the domestic market (\emph{i.e.} exports of pelagic fish will be prohibited). Alongside these protections, the Palau National Marine Sanctuary (PNMS) Act will support a domestic pelagic fishery. In this section, we use our preceding analysis on the ex-post impacts of PIPA to attempt to make some \emph{ex ante} predictions about the potential impacts of PNMS. We start by giving some background on the fishing that is currently taking place inside the future PNMS. 
 
-\subsection{Background on Commercial Fishing in Palau}\label{Palau_back}
+\subsubsection{Background on Commercial Fishing in Palau}
 
 Foreign tuna fishing in Palau’s EEZ began before WWI. Pole and line was the initial gear used to target skipjack tuna by Japanese vessels. Foreign fishing activities stopped during WWII and started again in the 1960s when Japanese fishers returned and the locally based Van Camp Seafood Company carried out fishing with boats crewed by Okinawans. The Japanese also began purse seine fishing in the 1960s and 1970s and limited longline fishing for yellowfin tuna developed during the same time. During the 1980s, longline fishers began to set their lines deeper, shifting their targets to bigeye tuna. During the 1980s, Korean and Taiwanese vessels also began longline fishing in Palauan waters for export to Japan \citep{chapman2000development}. There are currently three transshipment companies operating in Palau.
 
@@ -756,8 +461,7 @@ Other than the access fees and tax revenue, Palau receives little additional eco
 
 \subsubsection{Parties to the Nauru Agreement and the Vessel Day Scheme}
 
-In the case of Palau, the VDS is run by the Bureau of Marine Resources, within the Ministry of Natural Resources, Environment and Tourism.
-Palau’s current purse seine VDS allotment is reportedly around 700 vessel days annually (Sisior, pers. comm., \cite{Pojas2018}), although historically this number has been lower (average of 580 days between 2008-2011 \citep{Tewid2013}). Palau sells most of its vessel days to the US for \$12,500 per day (as negotiated in the US treaty), regardless of whether US vessels actually fish in Palau’s EEZ. The remainder of Palau’s purse seine vessel days are sold for between \$9-10,000 each. When vessel days are purchased to transfer to another EEZ, Palau charges a transfer fee (approximately \$500), for administration costs and future opportunity costs (since vessel day allotments are based partly on historical effort within the EEZ). Though records are confidential, it has been publicly reported that one PNA member party that Palau has transferred vessel days to is Papua New Guinea \citep{Tewid2013} and in 2018, vessel days were sold to a fishing company in the Philippines for the first time \citep{Pojas2018}. In 2018, Palau brought in approximately \$9 million USD in VDS revenue (Sisior pers. comm.). 
+In the case of Palau, the VDS is run by the Bureau of Marine Resources, within the Ministry of Natural Resources, Environment and Tourism. Palau’s current purse seine VDS allotment is reportedly around 700 vessel days annually (Sisior, pers. comm., \cite{Pojas2018}), although historically this number has been lower (average of 580 days between 2008-2011 \citep{Tewid2013}). Palau sells most of its vessel days to the US for \$12,500 per day (as negotiated in the US treaty), regardless of whether US vessels actually fish in Palau’s EEZ. The remainder of Palau’s purse seine vessel days are sold for between \$9-10,000 each. When vessel days are purchased to transfer to another EEZ, Palau charges a transfer fee (approximately \$500), for administration costs and future opportunity costs (since vessel day allotments are based partly on historical effort within the EEZ). Though records are confidential, it has been publicly reported that one PNA member party that Palau has transferred vessel days to is Papua New Guinea \citep{Tewid2013} and in 2018, vessel days were sold to a fishing company in the Philippines for the first time \citep{Pojas2018}. In 2018, Palau brought in approximately \$9 million USD in VDS revenue (Sisior pers. comm.). 
 
 The longline VDS (LL VDS) is in its infancy and has not yet been fully implemented at the PNA-scale, although several countries are now implementing it at the country-scale. Palau was the first party to implement the VDS for longline fishing in 2017. In 2014, longline boats fishing in Palau’s EEZ fished 10,500 days (Sisior, pers. comm.). Since 2016, the number of allowed longline VDs has been a fraction of the 2014 days, reducing each year as stipulated in the PNMS Act. Palau sells its LL VD for \$150-\$250 (Sisior pers. comm.). Because the LL VDS is still new and has yet to be fully implemented by all parties, LL VD are not currently transferable between PNA member EEZs. 
 
@@ -766,235 +470,6 @@ The longline VDS (LL VDS) is in its infancy and has not yet been fully implement
 In the recent past, a single domestic pole and line vessel supplied Palau with an estimated 100mt of catch \cite{Gillett2016}. The vessel ceased operations in recent years when the captain became ill and passed away, but there is talk that it is gearing up to start operations again under new leadership (Sisior, pers. comm.). Otherwise, there are no domestic vessels dedicated to full-time offshore fishing. A number of fishers occasionally troll offshore for tuna and other pelagics, but there are no official estimates of volumes. 
 Local NGOs have sponsored short trainings on small-scale canning and proper techniques for processing high grade tuna to encourage existing fishers to devote more time to offshore fishing. There are several possible scenarios for a domestic fishery (including those featured in a feasibility report by FFA \citep{Skirtun2017}), but there has yet to be any official action towards a particular scenario. 
 
-\clearpage
-
-\section{Alternative Controls}
-\subsection{Excluding all Chinese vessels}
-
-\input{tab/DID_without_CHN.tex}
-
-\clearpage
-\subsection{Excluding all PNA vessels}
-
-\input{tab/DID_without_PNA.tex}
-
-\clearpage
-\subsection{Excluding all USA and TWN vessels}
-
-\input{tab/DID_without_USA_TWN}
-
-
-%\begin{figure}
-%\centering
-%\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-22-1.pdf}
-%\caption{\label{fig:unnamed-chunk-22}\label{fig:q3}Interaction of quarters
-%and treatment. Control group excludes Chinese vessels.}
-%\end{figure}
-%
-%\begin{figure}
-%\centering
-%\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-23-1.pdf}
-%\caption{\label{fig:unnamed-chunk-23}\label{fig:q4}Interaction of quarters
-%and treatment. Control group is japanese vessels.}
-%\end{figure}
-%
-%\hypertarget{year-month-did-interactions}{%
-%\subsubsection{Year-month DID
-%interactions}\label{year-month-did-interactions}}
-%
-%\begin{figure}
-%\centering
-%\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-24-1.pdf}
-%\caption{\label{fig:unnamed-chunk-24}\label{fig:ym1}Interaction of
-%year-month and treatment. Control group is all vessels.}
-%\end{figure}
-%
-%\begin{figure}
-%\centering
-%\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-25-1.pdf}
-%\caption{\label{fig:unnamed-chunk-25}\label{fig:ym2}Interaction of
-%year-month and treatment. Control group is vessels from PNA.}
-%\end{figure}
-%
-%\begin{figure}
-%\centering
-%\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-26-1.pdf}
-%\caption{\label{fig:unnamed-chunk-26}\label{fig:ym3}Interaction of
-%year-month and treatment. Control group excludes Chinese vessels.}
-%\end{figure}
-%
-%\begin{figure}
-%\centering
-%\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-27-1.pdf}
-%\caption{\label{fig:unnamed-chunk-27}\label{fig:ym4}Interaction of
-%year-month and treatment. Control group is japanese vessels.}
-%\end{figure}
-%
-%\hypertarget{other-measures-of-change-in-behavior}{%
-%\subsection{Other measures of change in
-%behavior}\label{other-measures-of-change-in-behavior}}
-%
-%Global Fishing Watch data includes two variables of interest that are
-%readily available: distance from shore and distance from port. We use
-%these as variables of interest and perform the following regression:
-%
-%\[
-%y = \beta_1Year + \beta_2Treated + \beta_3Year \ Treated + \epsilon
-%\]
-%
-%Where \(y\) is our variable of interest, \(Year\) represent year
-%dummies, with 2012 as the reference level, and \(Treated\) indicates
-%wether a vessel belongs to the treated or control group.
-%
-%\clearpage
-%
-%\hypertarget{distance-from-shore}{%
-%\subsubsection{Distance from shore}\label{distance-from-shore}}
-%
-%\begin{table}[!htbp] \centering 
-%  \caption{\label{tab:dist_shore}Regression results for distance from shore. Numbers in parentheses are heteroskedastic-robust standard errors.} 
-%  \label{} 
-%\begin{tabular}{@{\extracolsep{5pt}}lc} 
-%\\[-1.8ex]\hline 
-%\hline \\[-1.8ex] 
-% & \multicolumn{1}{c}{\textit{Dependent variable:}} \\ 
-%\cline{2-2} 
-%\\[-1.8ex] & distance\_from\_shore \\ 
-%\hline \\[-1.8ex] 
-% Constant & 233,057.900$^{***}$ \\ 
-%  & (1,558.294) \\ 
-%  & \\ 
-% year\_c2013 & $-$818.044 \\ 
-%  & (2,623.263) \\ 
-%  & \\ 
-% year\_c2014 & 14,220.260$^{***}$ \\ 
-%  & (1,701.637) \\ 
-%  & \\ 
-% year\_c2015 & 140,980.200$^{***}$ \\ 
-%  & (1,668.140) \\ 
-%  & \\ 
-% year\_c2016 & 32,557.750$^{***}$ \\ 
-%  & (1,584.182) \\ 
-%  & \\ 
-% year\_c2017 & 168,283.100$^{***}$ \\ 
-%  & (1,653.912) \\ 
-%  & \\ 
-% treated & $-$11,371.280$^{***}$ \\ 
-%  & (1,688.879) \\ 
-%  & \\ 
-% year\_c2013:treated & 62,899.900$^{***}$ \\ 
-%  & (3,274.205) \\ 
-%  & \\ 
-% year\_c2014:treated & $-$17,499.020$^{***}$ \\ 
-%  & (1,834.090) \\ 
-%  & \\ 
-% year\_c2015:treated & $-$34,356.840$^{***}$ \\ 
-%  & (1,821.587) \\ 
-%  & \\ 
-% year\_c2016:treated & 72,512.980$^{***}$ \\ 
-%  & (1,739.976) \\ 
-%  & \\ 
-% year\_c2017:treated & $-$62,350.120$^{***}$ \\ 
-%  & (1,805.322) \\ 
-%  & \\ 
-%\hline \\[-1.8ex] 
-%Observations & 4,937,666 \\ 
-%R$^{2}$ & 0.032 \\ 
-%Adjusted R$^{2}$ & 0.032 \\ 
-%Residual Std. Error & 297,128.600 (df = 4937654) \\ 
-%F Statistic & 14,649.360$^{***}$ (df = 11; 4937654) \\ 
-%\hline 
-%\hline \\[-1.8ex] 
-%\textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-%\end{tabular} 
-%\end{table}
-%
-%\clearpage
-%
-%\hypertarget{distance-from-ports}{%
-%\subsubsection{Distance from ports}\label{distance-from-ports}}
-%
-%\begin{table}[!htbp] \centering 
-%  \caption{\label{tab:dist_port}Regression results for distance from shore} 
-%  \label{} 
-%\begin{tabular}{@{\extracolsep{5pt}}lc} 
-%\\[-1.8ex]\hline 
-%\hline \\[-1.8ex] 
-% & \multicolumn{1}{c}{\textit{Dependent variable:}} \\ 
-%\cline{2-2} 
-%\\[-1.8ex] & distance\_from\_port \\ 
-%\hline \\[-1.8ex] 
-% Constant & 362.707$^{***}$ \\ 
-%  & (1.971) \\ 
-%  & \\ 
-% year\_c2013 & 9.082$^{***}$ \\ 
-%  & (3.198) \\ 
-%  & \\ 
-% year\_c2014 & 105.414$^{***}$ \\ 
-%  & (2.148) \\ 
-%  & \\ 
-% year\_c2015 & 357.746$^{***}$ \\ 
-%  & (2.113) \\ 
-%  & \\ 
-% year\_c2016 & 112.441$^{***}$ \\ 
-%  & (2.009) \\ 
-%  & \\ 
-% year\_c2017 & 356.506$^{***}$ \\ 
-%  & (2.099) \\ 
-%  & \\ 
-% treated & 149.653$^{***}$ \\ 
-%  & (2.249) \\ 
-%  & \\ 
-% year\_c2013:treated & 26.366$^{***}$ \\ 
-%  & (4.125) \\ 
-%  & \\ 
-% year\_c2014:treated & 50.808$^{***}$ \\ 
-%  & (2.453) \\ 
-%  & \\ 
-% year\_c2015:treated & $-$151.268$^{***}$ \\ 
-%  & (2.422) \\ 
-%  & \\ 
-% year\_c2016:treated & $-$49.445$^{***}$ \\ 
-%  & (2.311) \\ 
-%  & \\ 
-% year\_c2017:treated & $-$252.334$^{***}$ \\ 
-%  & (2.390) \\ 
-%  & \\ 
-%\hline \\[-1.8ex] 
-%Observations & 4,937,666 \\ 
-%R$^{2}$ & 0.047 \\ 
-%Adjusted R$^{2}$ & 0.047 \\ 
-%Residual Std. Error & 391.757 (df = 4937654) \\ 
-%F Statistic & 22,351.480$^{***}$ (df = 11; 4937654) \\ 
-%\hline 
-%\hline \\[-1.8ex] 
-%\textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-%\end{tabular} 
-%\end{table}
-%
-\hypertarget{effort-redistribution}{%
-\subsection{Effort redistribution}\label{effort-redistribution}}
-
-\hypertarget{rasterized-regions}{%
-\subsubsection{Rasterized regions}\label{rasterized-regions}}
-
-\begin{figure}
-\centering
-\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-31-1.pdf}
-\caption{\label{fig:raster_rgn}Rasterized regions. Each color (number) indicates a distinct region.}
-\end{figure}
-%
-%\hypertarget{fishing-raster}{%
-%\subsubsection{Fishing raster}\label{fishing-raster}}
-%
-%\begin{figure}
-%\centering
-%\includegraphics{Manuscript_files/figure-latex/unnamed-chunk-32-1.pdf}
-%\caption{\label{fig:unnamed-chunk-32}\label{fig:fishing_raster_full}Yearly
-%rasters of fishing hours for each group.}
-%\end{figure}
-%
-%\clearpage
 
 
 \end{document}
