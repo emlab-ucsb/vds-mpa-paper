@@ -37,7 +37,10 @@ p1 <- financial_data %>%
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         strip.background = element_blank(),
-        legend.position = "none")
+        legend.justification = c(0, 1),
+        legend.position = c(0, 1.1)) +
+  guides(fill = guide_legend(ncol = 2,
+                             title = "Country"))
 
 ## Annual revenues total PNA
 annual_revenues <- drop_na(financial_data) %>%
@@ -51,7 +54,7 @@ loess_revenue <- annual_revenues %>%
 
 p2 <- annual_revenues %>% 
   mutate(prediction = predict(loess_revenue, .),
-         predicted_point = ifelse(year == 2016, prediction, NA)) %>% 
+         predicted_point = ifelse(year %in% c(2016), prediction, NA)) %>% 
   ggplot(aes(x = year)) +
   geom_point(aes(y = revenue),
              shape = 21,
@@ -89,7 +92,6 @@ p2 <- ggplot(data = financial_data,
   geom_point(shape = 21,
              color = "black",
              size = 2) +
-  # facet_wrap(~country, scales = "free_y") +
   geom_vline(xintercept = 2015,
              linetype = "dashed") +
   theme_cowplot() +
@@ -99,7 +101,6 @@ p2 <- ggplot(data = financial_data,
        y = "Catches in EEZ\n(Thousand Tonnes)") +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
-        strip.background = element_blank(),
         legend.justification = c(0, 1),
         legend.position = c(0, 1.15)) +
   guides(fill = guide_legend(title = "Country", ncol = 2))
@@ -111,7 +112,6 @@ p3 <- ggplot(data = financial_data,
   geom_point(shape = 21,
              color = "black",
              size = 2) +
-  # facet_wrap(~country, scales = "free_y") +
   geom_vline(xintercept = 2015,
              linetype = "dashed") +
   theme_cowplot() +

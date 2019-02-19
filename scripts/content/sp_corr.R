@@ -89,7 +89,7 @@ stargazer::stargazer(models,
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
                      # float.env = "sidewaystable",
-                     title = "\\label{tab:main_DID}Coefficient estimates for a third-polinomial fit to the measures of crowding. The first column shows coefficients for the number of cells with treated and control vessels during the same month. The second column shows coefficients for the spatial correlation for presence / absence of treated and control vessels. The explanatory variable is the number of months before implementation of PIPA. Numbers in parentheses are heteroskedastic-robust standard errors.",
+                     title = "\\label{tab:sp_corr}Coefficient estimates for a third-polinomial fit to the measures of crowding. The first column shows coefficients for the number of cells with treated and control vessels during the same month. The second column shows coefficients for the spatial correlation for presence / absence of treated and control vessels. The explanatory variable is the number of months before implementation of PIPA. Numbers in parentheses are heteroskedastic-robust standard errors.",
                      out = here::here("docs", "tab", "sp_corr.tex"))
 
 
