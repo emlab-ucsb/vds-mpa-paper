@@ -65,7 +65,7 @@ writeRaster(x = regions_raster,
             file = here::here("data",
                               "spatial",
                               "regions_raster.tif"),
-            overwrite=TRUE)
+            overwrite = TRUE)
 
 # Add a HS term and convert into a data.frame used later
 regions_with_HS <- regions %>%
@@ -83,9 +83,9 @@ regions_raster_df <- as.data.frame(regions_raster, xy = T) %>%
   left_join(regions_with_HS, by = c("layer" = "unique"))
 
 # Read in the entire vessel tracks
-monthly_vessel_tracks <- readRDS(file = here::here("data", "vessel_tracks_baci.rds")) %>% 
+monthly_vessel_tracks <- readRDS(file = here::here("data",
+                                                   "vessel_tracks_2012_2018_baci.rds")) %>% 
   filter(gear == "tuna_purse_seines",
-         year < 2018,
          fishing) %>% 
   drop_na(hours, fishing) %>% 
   mutate(date = lubridate::date(paste(year, month, 1, sep = "-")),
@@ -128,6 +128,7 @@ for(j in groups){
     
     # Allow data.frame to grow so that it has 72 months times nrow times ncol in the raster
     monthly_effort_raster <- rbind(monthly_effort_raster, raster_j_i_df)
+    print(paste("Progress report:", i, "of", length(dates), "in", j, "fleet"))
   }
 }
 
@@ -145,7 +146,8 @@ monthly_effort_raster <- monthly_effort_raster %>%
          month_c = as.factor(month),
          quarter = as.factor(lubridate::quarter(date, with_year = T)))
 
-saveRDS(monthly_effort_raster, file = here::here("data", "monthly_rasterized_effort_by_region.rds"))
+saveRDS(monthly_effort_raster,
+        file = here::here("data", "monthly_rasterized_effort_by_region.rds"))
 
 
 

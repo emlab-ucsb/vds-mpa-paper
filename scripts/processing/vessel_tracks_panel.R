@@ -43,7 +43,8 @@ if(unname(Sys.info()[1] == "Windows")){
 }
 
 # Load the data
-vessel_tracks_baci <- readRDS(file = here::here("data", "vessel_tracks_baci.rds")) %>% 
+vessel_tracks_baci <- readRDS(file = here::here("data",
+                                                "vessel_tracks_baci.rds")) %>% 
   filter(baci_strict)
 
 ######################## BEGIN PANEL 1 ##########

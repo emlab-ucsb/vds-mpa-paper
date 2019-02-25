@@ -12,7 +12,7 @@
 # control vessels per cell (B).
 ################################################################
 
-#### SET UP ######################################################################################
+#### SET UP ######################################################
 
 # Load packages
 library(raster)
@@ -22,13 +22,16 @@ library(tidyverse)
 ## Load data
 
 # Find files
-files <- list.files(path = here::here("data", "spatial", "monthly_rasterized_effort_by_region"), pattern = "*.tif")
+files <- list.files(path = here::here("data",
+                                      "spatial",
+                                      "monthly_rasterized_effort_by_region"),
+                    pattern = "*.tif")
 
 # Stack files
 rs <- stack(here::here("data", "spatial", "monthly_rasterized_effort_by_region", files))
 
 
-##### CALCULATIONS #########################################################################
+##### CALCULATIONS ######################################################
 
 # Put into a data.frame
 corr <- raster::as.data.frame(rs, xy = T) %>%
@@ -62,7 +65,7 @@ corr_both <- corr %>%
 
 
 
-#### FIT THE MODELS ######################################################################
+#### FIT THE MODELS ######################################################
 
 n_model <- lm(n ~ dif + I(dif^2) + I(dif^3) + I(dif^4), data = n_both)
 corr_model <- lm(cor ~ dif + I(dif^2) + I(dif^3) + I(dif^4), data = corr_both)
@@ -93,7 +96,7 @@ stargazer::stargazer(models,
                      out = here::here("docs", "tab", "sp_corr.tex"))
 
 
-#### PLOT THEM ##########################################################################
+#### PLOT THEM #########################################################
 
 # Plot for number of cells with vessels from BOTH groups
 n_both_plot <- ggplot(data = n_both, aes(x = date, y = n)) +
@@ -141,6 +144,9 @@ plot <- cowplot::plot_grid(n_both_plot, corr_both_plot,
                            ncol = 1,
                            labels = "AUTO")
 
-ggsave(plot, filename = here::here("docs", "img", "sp_corr.pdf"), height = 5.5, width = 3.4)
+ggsave(plot,
+       filename = here::here("docs", "img", "sp_corr.pdf"),
+       height = 5.5,
+       width = 3.4)
 
 

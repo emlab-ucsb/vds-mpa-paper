@@ -17,7 +17,7 @@ library(tidyverse)
 source(here::here("scripts", "functions", "st_rotate.R"))
 
 # List of countries
-countries <- c("PIPA", "KIR", "HS", "ASM", "COK", "FSM", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV", "UMI", "FJI", "NIU", "TON", "WSM", "WLF", "VUT", "NCL")
+countries <- c("PIPA", "KIR", "HS", "ASM", "COK", "FSM", "MHL", "NRU", "PNG", "SLB", "TKL", "TUV", "UMI", "FJI", "NIU", "TON", "WSM", "WLF", "VUT", "NCL", "PLW")
 
 # List of PNA countries
 PNA_countries <- c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV")
