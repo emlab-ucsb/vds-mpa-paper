@@ -1,6 +1,6 @@
-###########################
-#   vessel_tracks_panels   #
-###########################
+#############################
+#   vessel_tracks_panels    #
+#############################
 
 ##################################################################################
 # This script takes the vessel_tracks_baci dataset which has already been cleaned
@@ -44,7 +44,7 @@ if(unname(Sys.info()[1] == "Windows")){
 
 # Load the data
 vessel_tracks_baci <- readRDS(file = here::here("data",
-                                                "vessel_tracks_baci.rds")) %>% 
+                                                "vessel_tracks_2012_2018_baci.rds")) %>%
   filter(baci_strict)
 
 ######################## BEGIN PANEL 1 ##########
