@@ -104,7 +104,7 @@ p2 <- ggplot(data = financial_data,
         legend.justification = c(0, 1),
         legend.position = c(0, 1.15)) +
   guides(fill = guide_legend(title = "Country", ncol = 2))
-
+gi
 # Plot for value
 p3 <- ggplot(data = financial_data,
              mapping = aes(x = year, y = value, fill = country)) +
