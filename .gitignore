@@ -15,3 +15,5 @@ desktop.ini
 reports/FFA Tuna Development Indicators Brochure.pdf reports/SC14-GN-WP-01 Overview of WCPFC Fisheries Rev 1.pdf reports/SPC Policy Brief 19 Fish Aggregating Devices.pdf reports/SPC Policy Brief 31 Sustainable National FAD Programmes.pdf reports/desktop.ini
 /reports
 *.Rprofile
+data/vessel_tracks_2012_2013_baci.rds
+data/vessel_tracks_2012_2018_baci.rds
