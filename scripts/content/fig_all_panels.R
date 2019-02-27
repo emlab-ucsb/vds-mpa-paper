@@ -37,7 +37,7 @@ varplot <- function(data, var, y_lab){
 ## FISHING HOURS ##################################################################
 # Load data
 effort_by_vessel <- readRDS(file = here::here("data", "panels", "daily_hours_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/")),
          treated = ifelse(treated, "Treated", "Control"))
@@ -58,7 +58,7 @@ nonfishing_hours <- effort_by_vessel %>%
 # Load data
 prop_fishing_by_vessel <-
   readRDS(file = here::here("data", "panels", "daily_prop_fishing_hours_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/")),
          treated = ifelse(treated, "Treated", "Control")) %>%
@@ -70,9 +70,9 @@ prop_fishing_by_vessel <-
 distance_traveled <- readRDS(file = here::here("data",
                                                 "panels",
                                                 "daily_distance_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines",
-         !mmsi %in% c(345050700,412328731,416238800, 512000089)) %>% 
+         !mmsi %in% c(416242900, 440575000, 367463000)) %>% #Need to figure out why these three vessels are outliers. I think it's because they jump between 0 and 360
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/")),
          treated = ifelse(treated, "Treated", "Control")) %>%
   varplot(dist, "dist (km)")
@@ -83,7 +83,7 @@ distance_traveled <- readRDS(file = here::here("data",
 distance_port_shore <- readRDS(file = here::here("data",
                                                  "panels",
                                                  "distance_from_port_shore_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "-")),
          treated = ifelse(treated, "Treated", "Control"))
@@ -94,7 +94,7 @@ distance_from_port <- distance_port_shore %>%
 
 # Distance from shore
 distance_from_shore <- distance_port_shore %>%
-  mutate(mean_dist_shore = mean_dist_shore / 1000) %>%  # Just converting to Km
+  mutate(mean_dist_shore = mean_dist_shore) %>%  # Just converting to Km
   varplot(mean_dist_shore, "dist (km)")
 
 
@@ -106,7 +106,7 @@ distance_from_shore <- distance_port_shore %>%
 distance_port_shore_fishing <- readRDS(file = here::here("data",
                                                  "panels",
                                                  "distance_from_port_shore_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "-")),
          treated = ifelse(treated, "Treated", "Control"))
@@ -123,7 +123,7 @@ distance_from_shore_fishing <- distance_port_shore_fishing %>%
 ###### PROPORTION OF HOURS SPENT IN KIR ###################################################
 # Load data
 kir_fishing <- readRDS(file = here::here("data", "panels", "KIR_fishing_hours_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/"))) %>% 
   varplot(kir_hours, "hours")
@@ -131,7 +131,7 @@ kir_fishing <- readRDS(file = here::here("data", "panels", "KIR_fishing_hours_by
 ###### PROPORTION OF HOURS SPENT IN VDS ###################################################
 # Load data
 vds_fishing <- readRDS(file = here::here("data", "panels", "VDS_fishing_hours_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/"))) %>% 
   varplot(vds_hours, "hours")
