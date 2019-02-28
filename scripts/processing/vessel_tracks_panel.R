@@ -26,10 +26,13 @@
 # - daily mean distance from port and shore fishing only (min and max)
 # 
 # PANEL 6:
-# - monthly proportion fishing hours in Kiribati EEZ
+# - monthly fishing hours in Kiribati EEZ
 # 
 # PANEL 7:
-# - monthly proportion of fishing hours inside PNA EEZs
+# - monthly fishing hours inside PNA EEZs
+# 
+# PANEL 8:
+# - monthly fishing hours in HS
 ##################################################################################
 
 
@@ -44,8 +47,7 @@ if(unname(Sys.info()[1] == "Windows")){
 }
 
 # Load the data
-vessel_tracks_baci <- readRDS(file = here("data",
-                                                "vessel_tracks_2012_2018_baci.rds")) %>%
+vessel_tracks_baci <- readRDS(file = here("data","vessel_tracks_2012_2018_baci.rds")) %>%
   filter(baci_strict)
 
 ######################## BEGIN PANEL 1 ##########
@@ -330,6 +332,40 @@ saveRDS(VDS_fishing_hours_by_vessel_panel,
 
 # Remove last dataset from memory
 rm(VDS_fishing_hours_by_vessel_panel)
+
+
+
+
+
+
+######################## BEGIN PANEL 8 ##########
+# MONTHLY HOURS FISHING IN HS
+
+HS_fishing_hours_by_vessel_panel <- vessel_tracks_baci %>%
+  filter(fishing,
+         is.na(eez_iso3)) %>% #Keep only Hihg seas fishing
+  group_by(year,
+           quarter,
+           month,
+           year_month,
+           gear,
+           flag,
+           mmsi,
+           treated,
+           post,
+           month_c,
+           year_c) %>%
+  summarize(hs_hours = sum(hours, na.rm = T)) %>%
+  ungroup() %>% 
+  arrange(year, month, mmsi)
+
+# Save the data
+saveRDS(HS_fishing_hours_by_vessel_panel,
+        file = here("data", "panels", "HS_fishing_hours_by_vessel_panel.rds"))
+
+# Remove last dataset from memory
+rm(HS_fishing_hours_by_vessel_panel)
+
 
 
 

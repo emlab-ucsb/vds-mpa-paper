@@ -185,6 +185,24 @@ prop_vds_did <- did(vds_fishing)
 prop_vds_didq <- did_quarter(vds_fishing)
 prop_vds_didym <- did_yearmonth(vds_fishing)
 
+
+
+
+
+##### FISHING IN HS ########################################################
+# Load the data
+hs_fishing <- readRDS(file = here("data", "panels", "HS_fishing_hours_by_vessel_panel.rds")) %>% 
+  filter(year < 2019,
+         gear == "tuna_purse_seines") %>% 
+  mutate(date = lubridate::date(paste(year, month, 15, sep = "-"))) %>% 
+  model_data_prep(hs_hours)
+
+
+# Fit the models
+hs_did <- did(hs_fishing)
+hs_didq <- did_quarter(hs_fishing)
+hs_didym <- did_yearmonth(hs_fishing)
+
 ######### EXPORT THE MODELS #############################################################
 
 # Extract the largest specification of each basid did and send to stargazer
@@ -198,8 +216,8 @@ models <- list(
   dist_port_fishing_did,
   dist_shore_fishing_did,
   prop_kir_did,
-  prop_vds_did
-) %>% 
+  prop_vds_did,
+  hs_did) %>% 
   purrr::map(extract2, 3)
 
 stargazer::stargazer(models,
@@ -207,7 +225,10 @@ stargazer::stargazer(models,
                      t.auto = T,
                      p.auto = T,
                      intercept.bottom = F,
-                     covariate.labels = c("Constant", "Post", "Treated", "Post $\\times$ Treated"),
+                     covariate.labels = c("Constant",
+                                          "Post",
+                                          "Treated",
+                                          "Post $\\times$ Treated"),
                      dep.var.caption = "",
                      dep.var.labels.include = F,
                      column.sep.width = "1pt",
@@ -215,12 +236,12 @@ stargazer::stargazer(models,
                      type = "latex",
                      omit = c("flag", "month"),
                      add.lines = list(
-                       c("Month FE", rep("Yes", 8)),
-                       c("Flag FE", rep("Yes", 8))),
+                       c("Month FE", rep("Yes", 9)),
+                       c("Flag FE", rep("Yes", 9))),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
                      # float.env = "sidewaystable",
-                     title = "\\label{tab:main_DID}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port for fishing events, 6) Daily mean distance from shore for fishing events, 7) Monthly fishing hours spent in Kiribati waters, 8) Monthly fishing hours spent in PNA waters. Numbers in parentheses are heteroskedastic-robust standard errors.",
+                     title = "\\label{tab:main_DID}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port for fishing events, 6) Daily mean distance from shore for fishing events, 7) Monthly fishing hours spent in Kiribati waters, 8) Monthly fishing hours spent in PNA waters, and 9) Monthly fishing hours in the high seas. Numbers in parentheses are heteroskedastic-robust standard errors.",
                      out = here("docs", "tab", "main_DID.tex"))
 
 ######## ALTERNATIVE SPECIFICATIONS PLOT ###################################################
@@ -235,8 +256,8 @@ models_extra <- c(
   dist_port_fishing_did,
   dist_shore_fishing_did,
   prop_kir_did,
-  prop_vds_did
-)
+  prop_vds_did,
+  hs_did)
 
 # Extract all parameters, calculate robust SE, and plot
 plot <- map_df(models_extra,

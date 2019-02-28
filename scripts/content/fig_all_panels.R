@@ -12,6 +12,7 @@
 
 
 #Load packages
+library(here)
 library(cowplot)
 library(tidyverse)
 
@@ -36,7 +37,7 @@ varplot <- function(data, var, y_lab){
 
 ## FISHING HOURS ##################################################################
 # Load data
-effort_by_vessel <- readRDS(file = here::here("data", "panels", "daily_hours_by_vessel_panel.rds")) %>% 
+effort_by_vessel <- readRDS(file = here("data", "panels", "daily_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/")),
@@ -57,7 +58,7 @@ nonfishing_hours <- effort_by_vessel %>%
 ## PROPORTIONFISHING HOURS ##################################################################
 # Load data
 prop_fishing_by_vessel <-
-  readRDS(file = here::here("data", "panels", "daily_prop_fishing_hours_by_vessel_panel.rds")) %>% 
+  readRDS(file = here("data", "panels", "daily_prop_fishing_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/")),
@@ -67,7 +68,7 @@ prop_fishing_by_vessel <-
 
 ## DISTANCE TRAVELED ##################################################################
 #Load data
-distance_traveled <- readRDS(file = here::here("data",
+distance_traveled <- readRDS(file = here("data",
                                                 "panels",
                                                 "daily_distance_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
@@ -80,7 +81,7 @@ distance_traveled <- readRDS(file = here::here("data",
 
 ## DISTANCE FROM PORT AND SHORE ##################################################################
 # Load data
-distance_port_shore <- readRDS(file = here::here("data",
+distance_port_shore <- readRDS(file = here("data",
                                                  "panels",
                                                  "distance_from_port_shore_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
@@ -103,7 +104,7 @@ distance_from_shore <- distance_port_shore %>%
 ## DISTANCE FROM PORT AND SHORE FISHING ONLY ######################################################
 
 # Load data
-distance_port_shore_fishing <- readRDS(file = here::here("data",
+distance_port_shore_fishing <- readRDS(file = here("data",
                                                  "panels",
                                                  "distance_from_port_shore_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
@@ -113,7 +114,7 @@ distance_port_shore_fishing <- readRDS(file = here::here("data",
 
 # Distance from port
 distance_from_port_fishing <- distance_port_shore_fishing %>%
-  mutate(mean_dist_port = mean_dist_port / 100) %>%  # Just converting to Km
+  mutate(mean_dist_port = mean_dist_port / 1000) %>%  # Just converting to Km
   varplot(mean_dist_port, "dist (km)")
 
 # Distance from shore
@@ -123,7 +124,7 @@ distance_from_shore_fishing <- distance_port_shore_fishing %>%
 
 ###### PROPORTION OF HOURS SPENT IN KIR ###################################################
 # Load data
-kir_fishing <- readRDS(file = here::here("data", "panels", "KIR_fishing_hours_by_vessel_panel.rds")) %>% 
+kir_fishing <- readRDS(file = here("data", "panels", "KIR_fishing_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/"))) %>% 
@@ -131,11 +132,19 @@ kir_fishing <- readRDS(file = here::here("data", "panels", "KIR_fishing_hours_by
 
 ###### PROPORTION OF HOURS SPENT IN VDS ###################################################
 # Load data
-vds_fishing <- readRDS(file = here::here("data", "panels", "VDS_fishing_hours_by_vessel_panel.rds")) %>% 
+vds_fishing <- readRDS(file = here("data", "panels", "VDS_fishing_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/"))) %>% 
   varplot(vds_hours, "hours")
+
+###### HOURS SPENT IN HS ###################################################
+# Load data
+hs_fishing <- readRDS(file = here("data", "panels", "HS_fishing_hours_by_vessel_panel.rds")) %>% 
+  filter(year < 2019,
+         gear == "tuna_purse_seines") %>% 
+  mutate(date = lubridate::date(paste(year, month, 15, sep = "/"))) %>% 
+  varplot(hs_hours, "hours")
 
 # Combine into grid
 plot <- cowplot::plot_grid(
@@ -144,21 +153,21 @@ plot <- cowplot::plot_grid(
     nonfishing_hours,
     prop_fishing_by_vessel,
     distance_traveled,
-    # distance_from_port,
-    # distance_from_shore,
     distance_from_port_fishing,
     distance_from_shore_fishing,
     kir_fishing,
-    vds_fishing),
+    vds_fishing,
+    hs_fishing),
   labels = "AUTO",
   ncol = 2,
   label_size = 10
 )
 
 # Export figure
-ggsave(plot, filename = here::here("docs", "img", "all_panels.pdf"),
-       width = 7,
-       height = 7.7)
+ggsave(plot = plot,
+       filename = here("docs", "img", "all_panels.pdf"),
+       width = 6.5,
+       height = 8.7)
 
 
 

@@ -15,6 +15,8 @@
 #### SET UP ######################################################
 
 # Load packages
+library(lubridate)
+library(here)
 library(raster)
 library(tidyverse)
 
@@ -22,13 +24,13 @@ library(tidyverse)
 ## Load data
 
 # Find files
-files <- list.files(path = here::here("data",
-                                      "spatial",
-                                      "monthly_rasterized_effort_by_region"),
+files <- list.files(path = here("data",
+                                "spatial",
+                                "monthly_rasterized_effort_by_region"),
                     pattern = "*.tif")
 
 # Stack files
-rs <- stack(here::here("data", "spatial", "monthly_rasterized_effort_by_region", files))
+rs <- stack(here("data", "spatial", "monthly_rasterized_effort_by_region", files))
 
 
 ##### CALCULATIONS ######################################################
@@ -44,31 +46,33 @@ corr <- raster::as.data.frame(rs, xy = T) %>%
   spread(group, hours, fill = 0) %>% 
   mutate(both = (Control > 0 & Treated > 0) * 1,
          post = year > 2014,
-         date = lubridate::date(paste(year, month, 01, sep = "-")))
+         date = date(paste(year, month, 01, sep = "-")),
+         sate1 = (date > date("2014-06-01")) * 1,
+         sate2 = (date > date("2015-12-31")) * 1)
 
 # Calculate number of cells with both vessels
 n_both <- corr %>%
   filter(both > 0) %>% 
-  group_by(year, month, date, post) %>% 
+  group_by(year, month, date, post, sate1, sate2) %>% 
   summarize(n = sum(both)) %>% 
   ungroup() %>% 
-  mutate(dif = lubridate::interval(lubridate::date("2015-01-01"), date)%/% months(1))
+  mutate(dif = interval(date("2015-01-01"), date)%/% months(1))
 
 
 # Calculate spatial correlation
 corr_both <- corr %>%
   drop_na() %>%
-  group_by(year, month, date, post) %>%
+  group_by(year, month, date, post, sate1, sate2) %>%
   summarize(cor = cor(Control, Treated)) %>% 
   ungroup() %>% 
-  mutate(dif = lubridate::interval(lubridate::date("2015-01-01"), date)%/% months(1))
+  mutate(dif = interval(date("2015-01-01"), date)%/% months(1))
 
 
 
 #### FIT THE MODELS ######################################################
 
-n_model <- lm(n ~ dif + I(dif^2) + I(dif^3) + I(dif^4), data = n_both)
-corr_model <- lm(cor ~ dif + I(dif^2) + I(dif^3) + I(dif^4), data = corr_both)
+n_model <- lm(n ~ dif + I(dif^2) + I(dif^3) + I(dif^4) + sate1 + sate2, data = n_both)
+corr_model <- lm(cor ~ dif + I(dif^2) + I(dif^3) + I(dif^4) + sate1 + sate2, data = corr_both)
 
 
 models <- list(n_model, corr_model)
@@ -93,24 +97,23 @@ stargazer::stargazer(models,
                      header = F,
                      # float.env = "sidewaystable",
                      title = "\\label{tab:sp_corr}Coefficient estimates for a third-polinomial fit to the measures of crowding. The first column shows coefficients for the number of cells with treated and control vessels during the same month. The second column shows coefficients for the spatial correlation for presence / absence of treated and control vessels. The explanatory variable is the number of months before implementation of PIPA. Numbers in parentheses are heteroskedastic-robust standard errors.",
-                     out = here::here("docs", "tab", "sp_corr.tex"))
+                     out = here("docs", "tab", "sp_corr.tex"))
 
 
 #### PLOT THEM #########################################################
 
 # Plot for number of cells with vessels from BOTH groups
-n_both_plot <- ggplot(data = n_both, aes(x = date, y = n)) +
-  geom_vline(xintercept = lubridate::date("2015-01-01"),
+n_both_plot <- n_both %>% 
+  mutate(predicted = predict(n_model)) %>% 
+  ggplot(aes(x = date, y = n)) +
+  geom_vline(xintercept = date("2015-01-01"),
              linetype = "dashed", color = "black", size = 1) +
   geom_point(size = 4,
              alpha = 0.5,
              fill = "#377EB8",
              color = "black",
              shape = 21) +
-  geom_smooth(method = "lm",
-              formula = y ~ x + I(x^2) + I(x^3) + I(x^4),
-              color = "black",
-              se = F) +
+  geom_line(aes(y = predicted)) +
   cowplot::theme_cowplot() +
   theme(legend.position = "none",
         text = element_text(size = 10),
@@ -118,8 +121,10 @@ n_both_plot <- ggplot(data = n_both, aes(x = date, y = n)) +
   labs(x = "Year", y = "Number of cells")
 
 # Plot for correlations
-corr_both_plot <- ggplot(data = corr_both, aes(x = date, y = cor)) +
-  geom_vline(xintercept = lubridate::date("2015-01-01"),
+corr_both_plot <- corr_both %>% 
+  mutate(predicted = predict(corr_model)) %>% 
+  ggplot(aes(x = date, y = cor)) +
+  geom_vline(xintercept = date("2015-01-01"),
              linetype = "dashed",
              color = "black",
              size = 1) +
@@ -128,10 +133,7 @@ corr_both_plot <- ggplot(data = corr_both, aes(x = date, y = cor)) +
              fill = "#377EB8",
              color = "black",
              shape = 21) +
-  geom_smooth(method = "lm",
-              formula = y ~ x + I(x^2) + I(x^3) + I(x^4),
-              color = "black",
-              se = F) +
+  geom_line(aes(y = predicted)) +
   cowplot::theme_cowplot() +
   theme(legend.position = "none",
         text = element_text(size = 10),
@@ -145,7 +147,7 @@ plot <- cowplot::plot_grid(n_both_plot, corr_both_plot,
                            labels = "AUTO")
 
 ggsave(plot,
-       filename = here::here("docs", "img", "sp_corr.pdf"),
+       filename = here("docs", "img", "sp_corr.pdf"),
        height = 5.5,
        width = 3.4)
 

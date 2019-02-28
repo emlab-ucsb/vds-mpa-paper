@@ -1,12 +1,11 @@
-###############################
-#   PS_VDS_PNA_by_year_eez    #
-###############################
+#################################
+#   figs_all_PS_VDS_2012_2018   #
+#################################
 
 
-##########################################################################
-# This script calculates the number of total hours that ALL purse seiners
-# spent in PNA waters (PNA includes TKL).
-##########################################################################
+###########################################################
+# This script generates all the figures of VDS through time
+###########################################################
 
 #### SETUP ########################################################
 # Load packages
@@ -28,7 +27,7 @@ PNA_countries <- c(PNA_without_KIR, "KIR")
 
 
 # Load data
-vessel_activity <- readRDS(file = here::here("raw_data",
+vessel_activity <- readRDS(file = here("raw_data",
                                              "activity_by_vessel_year_eez.rds")) %>% 
   filter(best_vessel_class == "tuna_purse_seines") %>% 
   mutate(treated = ifelse(treated, "Treated", "Control"),
@@ -62,7 +61,7 @@ all_PS_VDS_year_plot <- ggplot(data = all_PS_VDS_year_data,
 
 #Save plot
 ggsave(all_PS_VDS_year_plot,
-       filename = here::here("docs", "img", "all_PS_VDS_year.pdf"),
+       filename = here("docs", "img", "all_PS_VDS_year.pdf"),
        width = 3.4,
        height = 2.6)
 
@@ -108,9 +107,29 @@ p12 <- plot_grid(all_PS_VDS_year_plot2,
 
 #Save plot
 ggsave(p12,
-       filename = here::here("docs", "img", "included_PS_VDS_year_DiD.pdf"),
+       filename = here("docs", "img", "included_PS_VDS_year_DiD.pdf"),
        width = 3.4,
        height = 4.4)
+
+# Bars for total VDS in KIR
+all_PS_VDS_KIR_year_plot <- 
+  ggplot(data = all_PS_VDS_year_KIR_data,
+       mapping = aes(x = year, y = days, fill = group)) +
+  geom_col(color = "black") +
+  scale_fill_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
+  cowplot::theme_cowplot() +
+  guides(fill = guide_legend(title = "Group")) +
+  theme(text = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 8),
+        legend.position = "top")+
+  labs(x = "Year", y = "Vessel-days (1,000)")
+
+#Save plot
+ggsave(all_PS_VDS_KIR_year_plot,
+       filename = here("docs", "img", "all_PS_VDS_KIR_year.pdf"),
+       width = 3.4,
+       height = 2.6)
 
 # annual PS VDS by country
 
@@ -134,7 +153,7 @@ all_PS_VDS_cty_year_plot <-
   labs(x = "Year", y = "Vessel-days (1,000)")
 
 ggsave(all_PS_VDS_cty_year_plot,
-       filename = here::here("docs", "img", "all_PS_VDS_cty_year.pdf"),
+       filename = here("docs", "img", "all_PS_VDS_cty_year.pdf"),
        width = 6,
        height = 4)
 
@@ -209,6 +228,25 @@ p3 <- ggplot(data = vessel_activity_year_loc,
 
 ggsave(plot = p3,
        file = here("docs", "img", "yearly_total_fishing_by_region.pdf"),
+       width = 6,
+       height = 4)
+
+p4 <- vessel_prop_activity_year_loc %>% 
+  filter(location == "KIR",
+         group == "Treated") %>% 
+  ggplot(mapping = aes(x = proportion,
+                       y = as.character(year),
+                       fill = as.character(year))) +
+  geom_density_ridges(alpha = 0.5) +
+  scale_fill_brewer(palette = "Set1") +
+  cowplot::theme_cowplot() +
+  theme(text = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.position = "none") +
+  labs(x = "Vessel-level proportion of fishing days in KIR", y = "Year")
+
+ggsave(plot = p4,
+       file = here("docs", "img", "hist_KIR_fishing.pdf"),
        width = 6,
        height = 4)
 

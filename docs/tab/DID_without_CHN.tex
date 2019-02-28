@@ -1,6 +1,6 @@
 
 \begin{table}[!htbp] \centering 
-  \caption{\label{tab:main_DID}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port for fishing events, 6) Daily mean distance from shore for fishing events, 7) Monthly fishing hours spent in Kiribati waters, 8) Monthly fishing hours spent in PNA waters. Numbers in parentheses are heteroskedastic-robust standard errors.} 
+  \caption{\label{tab:DID_without_CHN}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port for fishing events, 6) Daily mean distance from shore for fishing events, 7) Monthly fishing hours spent in Kiribati waters, 8) Monthly fishing hours spent in PNA waters. Numbers in parentheses are heteroskedastic-robust standard errors.} 
   \label{} 
 \footnotesize 
 \begin{tabular}{@{\extracolsep{1pt}}lcccccccc} 
@@ -8,23 +8,23 @@
 \hline \\[-1.8ex] 
 \\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8)\\ 
 \hline \\[-1.8ex] 
- Constant & 2.449$^{***}$ & 3.325$^{***}$ & 0.314$^{***}$ & 6.177$^{***}$ & 13.800$^{***}$ & 13.159$^{***}$ & 3.979$^{***}$ & 4.644$^{***}$ \\ 
-  & (0.061) & (0.031) & (0.014) & (0.042) & (0.047) & (0.065) & (0.392) & (0.343) \\ 
+ Constant & 0.060$^{***}$ & 3.864$^{***}$ & $-$0.003 & 6.149$^{***}$ & 13.775$^{***}$ & 13.146$^{***}$ & 3.896$^{***}$ & 4.484$^{***}$ \\ 
+  & (0.019) & (0.008) & (0.003) & (0.043) & (0.044) & (0.058) & (0.341) & (0.303) \\ 
   & & & & & & & & \\ 
- Post & 0.336$^{***}$ & $-$0.353$^{***}$ & 0.083$^{***}$ & 0.105$^{***}$ & 0.398$^{***}$ & 0.352$^{***}$ & 1.151$^{***}$ & 1.240$^{***}$ \\ 
-  & (0.024) & (0.015) & (0.006) & (0.020) & (0.016) & (0.016) & (0.157) & (0.125) \\ 
+ Post & 0.817$^{***}$ & $-$0.258$^{***}$ & 0.136$^{***}$ & 0.125$^{***}$ & 0.365$^{***}$ & 0.344$^{***}$ & 1.056$^{***}$ & 1.205$^{***}$ \\ 
+  & (0.018) & (0.009) & (0.003) & (0.019) & (0.015) & (0.016) & (0.154) & (0.120) \\ 
   & & & & & & & & \\ 
- Treated & $-$0.085$^{***}$ & 0.060$^{***}$ & $-$0.028$^{***}$ & 0.259$^{***}$ & 0.259$^{***}$ & 0.163$^{***}$ & 0.435$^{***}$ & 0.082 \\ 
-  & (0.027) & (0.014) & (0.007) & (0.020) & (0.018) & (0.018) & (0.163) & (0.133) \\ 
+ Treated & 0.108$^{***}$ & 0.009 & 0.012$^{***}$ & 0.294$^{***}$ & 0.268$^{***}$ & 0.157$^{***}$ & 0.489$^{***}$ & 0.148 \\ 
+  & (0.013) & (0.007) & (0.002) & (0.020) & (0.017) & (0.017) & (0.162) & (0.132) \\ 
   & & & & & & & & \\ 
- Post $\times$ Treated & 0.036 & $-$0.052$^{***}$ & 0.019$^{***}$ & $-$0.296$^{***}$ & $-$0.342$^{***}$ & $-$0.199$^{***}$ & $-$0.481$^{***}$ & $-$0.335$^{**}$ \\ 
-  & (0.028) & (0.017) & (0.007) & (0.024) & (0.020) & (0.019) & (0.179) & (0.142) \\ 
+ Post $\times$ Treated & $-$0.212$^{***}$ & 0.039$^{***}$ & $-$0.031$^{***}$ & $-$0.318$^{***}$ & $-$0.335$^{***}$ & $-$0.203$^{***}$ & $-$0.547$^{***}$ & $-$0.409$^{***}$ \\ 
+  & (0.021) & (0.010) & (0.004) & (0.023) & (0.019) & (0.018) & (0.174) & (0.137) \\ 
   & & & & & & & & \\ 
 \hline \\[-1.8ex] 
 Month FE & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\ 
 Flag FE & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\ 
-Observations & 25,004 & 51,724 & 25,004 & 52,767 & 25,004 & 25,004 & 1,399 & 2,010 \\ 
-R$^{2}$ & 0.066 & 0.092 & 0.067 & 0.011 & 0.073 & 0.095 & 0.141 & 0.230 \\ 
+Observations & 75,327 & 75,327 & 75,326 & 58,129 & 28,449 & 28,449 & 1,570 & 2,279 \\ 
+R$^{2}$ & 0.102 & 0.073 & 0.108 & 0.011 & 0.063 & 0.089 & 0.114 & 0.207 \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{8}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 

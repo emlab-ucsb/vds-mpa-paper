@@ -34,7 +34,7 @@ PNA <- c("FSM",
 effort_by_vessel <- readRDS(file = here::here("data",
                                               "panels",
                                               "daily_hours_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines",
          !flag %in% PNA)
 
@@ -70,7 +70,7 @@ nonfish_didym <- did_yearmonth(nonfishing_hours)
 prop_fishing_by_vessel <- readRDS(file = here::here("data",
                                                     "panels",
                                                     "daily_prop_fishing_hours_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines",
          !flag %in% PNA) %>% 
   model_data_prep(prop_fishing)
@@ -88,7 +88,7 @@ prop_fish_didym <- did_yearmonth(prop_fishing_by_vessel)
 distance_traveled <- readRDS(file = here::here("data",
                                                "panels",
                                                "daily_distance_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines",
          !mmsi %in% c(345050700,412328731,416238800, 512000089),
          !flag %in% PNA) %>% 
@@ -108,7 +108,7 @@ dist_didym <- did_yearmonth(distance_traveled)
 distance_port_shore <- readRDS(file = here::here("data",
                                                  "panels",
                                                  "distance_from_port_shore_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines",
          !flag %in% PNA)
 
@@ -141,7 +141,7 @@ dist_shore_didym <- did_yearmonth(distance_shore)
 distance_port_shore_fishing <- readRDS(file = here::here("data",
                                                          "panels",
                                                          "distance_from_port_shore_fishing_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines",
          !flag %in% PNA)
 
@@ -172,7 +172,7 @@ dist_shore_fishing_didym <- did_yearmonth(distance_shore_fishing)
 ##### PROPORTION FISHING IN KIR ########################################################
 # Load the data
 kir_fishing <- readRDS(file = here::here("data", "panels", "KIR_fishing_hours_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines",
          !flag %in% PNA) %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "-"))) %>% 
@@ -190,7 +190,7 @@ prop_kir_didym <- did_yearmonth(kir_fishing)
 ##### PROPORTION FISHING IN VDS ########################################################
 # Load the data
 vds_fishing <- readRDS(file = here::here("data", "panels", "VDS_fishing_hours_by_vessel_panel.rds")) %>% 
-  filter(year < 2018,
+  filter(year < 2019,
          gear == "tuna_purse_seines",
          !flag %in% PNA) %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "-"))) %>% 
@@ -237,7 +237,7 @@ stargazer::stargazer(models,
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
                      # float.env = "sidewaystable",
-                     title = "\\label{tab:main_DID}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port for fishing events, 6) Daily mean distance from shore for fishing events, 7) Monthly fishing hours spent in Kiribati waters, 8) Monthly fishing hours spent in PNA waters. Numbers in parentheses are heteroskedastic-robust standard errors.",
+                     title = "\\label{tab:DID_without_PNA}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port for fishing events, 6) Daily mean distance from shore for fishing events, 7) Monthly fishing hours spent in Kiribati waters, 8) Monthly fishing hours spent in PNA waters. Numbers in parentheses are heteroskedastic-robust standard errors.",
                      out = here::here("docs", "tab", "DID_without_PNA.tex"))
 
 ######## ALTERNATIVE SPECIFICATIONS PLOT ###################################################

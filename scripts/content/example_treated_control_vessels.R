@@ -39,4 +39,5 @@ vessel_tracks %>%
   geom_sf(data = pipa, fill = "transparent", color = "red", size = 1) +
   cowplot::theme_cowplot() +
   scale_color_brewer(palette = "Set1") +
-  guides(color = guide_legend(title = "Group"))
+  guides(color = guide_legend(title = "Group")) +
+  theme(text = element_text(size = 12))

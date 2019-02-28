@@ -102,7 +102,7 @@ p2 <- ggplot(data = financial_data,
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         legend.justification = c(0, 1),
-        legend.position = c(0, 1.15)) +
+        legend.position = c(0, 1.1)) +
   guides(fill = guide_legend(title = "Country", ncol = 2))
 gi
 # Plot for value
