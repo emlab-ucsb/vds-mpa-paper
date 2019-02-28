@@ -113,6 +113,7 @@ distance_port_shore_fishing <- readRDS(file = here::here("data",
 
 # Distance from port
 distance_from_port_fishing <- distance_port_shore_fishing %>%
+  mutate(mean_dist_port = mean_dist_port / 100) %>%  # Just converting to Km
   varplot(mean_dist_port, "dist (km)")
 
 # Distance from shore

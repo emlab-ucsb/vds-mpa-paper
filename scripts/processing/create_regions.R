@@ -12,17 +12,18 @@
 #### SET UP ################################################
 
 # Load packages
+library(here)
 library(sf)
 library(tidyverse)
 
 # Load custom functions
-source(here::here("scripts", "functions", "st_rotate.R"))
+source(here("scripts", "functions", "st_rotate.R"))
 
 # Define PNA countries
 PNA_countries <- c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV", "TKL")
 
 # Read PIPA shapefile
-pipa <- read_sf(dsn = here::here("data", "spatial", "PIPA"),
+pipa <- read_sf(dsn = here("data", "spatial", "PIPA"),
                 layer = "PIPA") %>% 
   mutate(id = "PIPA 1") %>% 
   select(id) %>% 
@@ -32,18 +33,18 @@ pipa <- read_sf(dsn = here::here("data", "spatial", "PIPA"),
          PNA = F)
 
 # Read vessel tracks
-vessel_tracks <- readRDS(file = here::here("data", "vessel_tracks_baci.rds")) %>% 
+vessel_tracks <- readRDS(file = here("data", "vessel_tracks_2012_2018_baci.rds")) %>% 
   filter(fishing,
          gear == "tuna_purse_seines",
          !is.na(eez_iso3),
-         year < 2018) %>% 
+         year < 2019) %>% 
   group_by(eez_iso3) %>% 
   summarize(h = sum(hours)) %>% 
   arrange(desc(h)) %>% 
   mutate(prop = cumsum(h / sum(h))) %>%
   filter(prop <= 0.99)
 
-eez <- read_sf(dsn = here::here("raw_data", "spatial", "EEZ"), layer = "eez_v10") %>% 
+eez <- read_sf(dsn = here("raw_data", "spatial", "EEZ"), layer = "eez_v10") %>% 
   filter(ISO_Ter1 %in% c(unique(vessel_tracks$eez_iso3), "FJI")) %>% 
   st_rotate() %>% 
   select(ISO_Ter1) %>%
@@ -79,7 +80,8 @@ regions <- rbind(pipa, eez_wo_pipa, hs_b) %>%
          id = paste(source, id)) %>% 
   st_cast("POLYGON")
 
-st_write(regions, dsn = here::here("data", "spatial", "regions", "regions.shp"))
+st_write(regions,
+         dsn = here("data", "spatial", "regions", "regions.shp"))
 
 
 

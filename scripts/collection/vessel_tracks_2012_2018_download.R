@@ -60,8 +60,6 @@ vessel_tracks <- vessel_tracks %>%
   mutate(
     date = lubridate::date(timestamp),
     post = year >= 2015,
-    # nnet_score = ifelse(is.na(nnet_score), 0, nnet_score), # If there are NAs in nnet_score, convert to 0 (no fishing)
-    # fishing = nnet_score >= 0.5, # Values of nnet_score > 0.5 imply fishing
     month_c = as.character(month),
     year_c = as.character(year),
     year_month = lubridate::date(paste(year, month, 1, sep = "/")),

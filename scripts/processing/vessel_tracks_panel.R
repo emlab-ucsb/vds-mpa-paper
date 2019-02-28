@@ -34,6 +34,7 @@
 
 
 # Load packages
+library(here)
 library(magrittr)
 library(tidyverse)
 
@@ -43,7 +44,7 @@ if(unname(Sys.info()[1] == "Windows")){
 }
 
 # Load the data
-vessel_tracks_baci <- readRDS(file = here::here("data",
+vessel_tracks_baci <- readRDS(file = here("data",
                                                 "vessel_tracks_2012_2018_baci.rds")) %>%
   filter(baci_strict)
 
@@ -67,11 +68,26 @@ daily_hours_by_vessel_panel <- vessel_tracks_baci %>%
            year_c) %>%
   summarize(hours = sum(hours, na.rm = T)) %>%
   ungroup() %>% 
-  arrange(date, mmsi)
+  arrange(date, mmsi) %>% 
+  spread(fishing, hours, fill = 0) %>% 
+  gather(fishing, hours, -c("year",
+                            "quarter",
+                            "month",
+                            "year_month",
+                            "day",
+                            "date",
+                            "gear",
+                            "flag",
+                            "mmsi",
+                            "treated",
+                            "post",
+                            "month_c",
+                            "year_c")) %>% 
+  mutate(fishing = fishing == "TRUE")
 
 # Save data
 saveRDS(daily_hours_by_vessel_panel,
-        file = here::here("data", "panels", "daily_hours_by_vessel_panel.rds"))
+        file = here("data", "panels", "daily_hours_by_vessel_panel.rds"))
 
 
 
@@ -102,7 +118,7 @@ daily_prop_fishing_hours_by_vessel_panel <- daily_hours_by_vessel_panel %>%
   mutate(prop_fishing = hours / total_hours)
 
 saveRDS(daily_prop_fishing_hours_by_vessel_panel,
-        file = here::here("data", "panels", "daily_prop_fishing_hours_by_vessel_panel.rds"))
+        file = here("data", "panels", "daily_prop_fishing_hours_by_vessel_panel.rds"))
 
 # Remove last dataset from memory
 rm(daily_hours_by_vessel_panel)
@@ -154,7 +170,7 @@ daily_distance_by_vessel_panel <- vessel_tracks_baci %>%
   
 # Save data
 saveRDS(daily_distance_by_vessel_panel,
-        file = here::here("data", "panels", "daily_distance_by_vessel_panel.rds"))
+        file = here("data", "panels", "daily_distance_by_vessel_panel.rds"))
 
 # Remove last dataset from memory
 rm(daily_distance_by_vessel_panel)
@@ -194,7 +210,7 @@ distance_from_port_shore_by_vessel_panel <- vessel_tracks_baci %>%
   arrange(date, mmsi)
 
 saveRDS(distance_from_port_shore_by_vessel_panel,
-        file = here::here("data", "panels", "distance_from_port_shore_by_vessel_panel.rds"))
+        file = here("data", "panels", "distance_from_port_shore_by_vessel_panel.rds"))
 
 # Remove last dataset from memory
 rm(distance_from_port_shore_by_vessel_panel)
@@ -234,7 +250,7 @@ distance_from_port_shore_fishing_by_vessel_panel <- vessel_tracks_baci %>%
 
 # Save the data
 saveRDS(distance_from_port_shore_fishing_by_vessel_panel,
-        file = here::here("data", "panels", "distance_from_port_shore_fishing_by_vessel_panel.rds"))
+        file = here("data", "panels", "distance_from_port_shore_fishing_by_vessel_panel.rds"))
 
 # Remove last dataset from memory
 rm(distance_from_port_shore_fishing_by_vessel_panel)
@@ -268,7 +284,7 @@ KIR_fishing_hours_by_vessel_panel <- vessel_tracks_baci %>%
 
 # Save the data
 saveRDS(KIR_fishing_hours_by_vessel_panel,
-        file = here::here("data", "panels", "KIR_fishing_hours_by_vessel_panel.rds"))
+        file = here("data", "panels", "KIR_fishing_hours_by_vessel_panel.rds"))
 
 # Remove last dataset from memory
 rm(KIR_fishing_hours_by_vessel_panel)
@@ -310,7 +326,7 @@ VDS_fishing_hours_by_vessel_panel <- vessel_tracks_baci %>%
 
 # Save the data
 saveRDS(VDS_fishing_hours_by_vessel_panel,
-        file = here::here("data", "panels", "VDS_fishing_hours_by_vessel_panel.rds"))
+        file = here("data", "panels", "VDS_fishing_hours_by_vessel_panel.rds"))
 
 # Remove last dataset from memory
 rm(VDS_fishing_hours_by_vessel_panel)

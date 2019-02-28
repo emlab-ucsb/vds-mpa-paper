@@ -11,16 +11,17 @@
 
 #### SET UP ############################################################
 # Load packages
+library(here)
 library(tidyverse)
 
 # Monthly  for analyses
-raster_month_region <- readRDS(file = here::here("data", "monthly_rasterized_effort_by_region.rds")) %>% 
+raster_month_region <- readRDS(file = here("data", "monthly_rasterized_effort_by_region.rds")) %>% 
   filter(treated == "Treated")
 
 
 redistribution_model_data <-
   expand.grid(id = unique(raster_month_region$id),
-              year = 2012:2017,
+              year = 2012:2018,
               month = 1:12) %>% 
   arrange(id, year, month) %>%
   as.tibble() %>%
@@ -62,7 +63,8 @@ terms_order <- c("PIPA-PIPA",
 plot <- redistribution_model_data %>% 
   mutate(id = str_remove(id, "\\s[:digit:]"),
          id = str_replace(id, "\\s" ,"-"),
-         id = fct_relevel(id, terms_order)) %>%
+         id = fct_relevel(id, terms_order),
+         id_group = ) %>%
   ggplot(aes(x = date, y = h_prop)) +
   geom_point(aes(color = post)) +
   scale_color_brewer(palette = "Set1") +
@@ -75,9 +77,12 @@ plot <- redistribution_model_data %>%
         text = element_text(size = 10),
         axis.text = element_text(size = 8)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-  labs(x = "Date", y = "Percent of total hours on that date")
+  labs(x = "Date", y = "Percent of total hours per month")
 
-ggsave(plot, filename = here::here("docs", "img", "redist_trend.pdf"), height = 4, width = 7)
+ggsave(plot = plot,
+       filename = here("docs", "img", "redist_trend.pdf"),
+       height = 4,
+       width = 7)
 
 
 
@@ -127,7 +132,9 @@ plot2 <- commarobust::commarobust_tidy(model) %>%
   labs(x = "Date", y = "Coefficient Estimate") +
   scale_x_continuous(breaks = c(2013, 2015, 2017))
 
-ggsave(plot2, filename = here::here("docs", "img", "mean_change.pdf"), height = 3.5, width = 6)
+ggsave(plot = plot2,
+       filename = here("docs", "img", "mean_change.pdf"),
+       height = 3.5, width = 6)
 
 
 ######## TABLE ##########################################################################

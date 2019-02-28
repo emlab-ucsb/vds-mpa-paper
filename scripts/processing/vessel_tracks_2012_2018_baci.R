@@ -16,6 +16,7 @@
 ##################################################################################
 
 # Load packages
+library(here) 
 library(tidyverse)
 library(magrittr)
 
@@ -25,13 +26,8 @@ if(unname(Sys.info()[1] == "Windows")){
 }
 
 # Read the tracks
-vessel_tracks <- readRDS(file = here::here("raw_data", "vessel_tracks.rds"))
-
-# Get a subset of purse seiners and longliners so that I can have a list of mmsis
-# of each gear, the group to which they belong, and the period when they operated.
-# This information will then be used to identify propper treatment / control groups
-vessel_tracks_subset <- vessel_tracks %>%
-  filter(gear %in% c("tuna_purse_seines", "drifting_longlines"))
+vessel_tracks <- readRDS(file = here("raw_data", "vessel_tracks.rds")) %>% 
+  mutate(fishing = ifelse(is.na(fishing), FALSE, fishing)) # Values of nnet_score are NULL imply fishing)
 
 # Identify vessels suitable for BACI
 # I want to make sure my control does not include vessels that appear after 2015
@@ -40,25 +36,25 @@ vessel_tracks_subset <- vessel_tracks %>%
 # by McDermott et al 2018 PNAS
 
 # This gets "treated" vessels before
-tb <- vessel_tracks_subset %>% 
+tb <- vessel_tracks %>% 
   filter(fishing, treated, !post, date < lubridate::date("2014/09/01")) %$%
   mmsi %>%
   unique()
 
 # This gets "treated" vessels after
-ta <- vessel_tracks_subset %>% 
+ta <- vessel_tracks %>% 
   filter(fishing, treated, post) %$%
   mmsi %>%
   unique()
 
 # This gets "control" vessels after
-cb <- vessel_tracks_subset %>% 
+cb <- vessel_tracks %>% 
   filter(fishing, !treated, !post, date < lubridate::date("2014/09/01")) %$%
   mmsi %>%
   unique()
 
 # This gets "control" vessels after
-ca <- vessel_tracks_subset %>% 
+ca <- vessel_tracks %>% 
   filter(fishing, !treated, post) %$%
   mmsi %>%
   unique()
@@ -84,12 +80,12 @@ mmsi_baci_relaxed <- c(tb, ca[ca %in% cb])
 # - experiment1 uses only PNA-owned vessels
 # - experiment2 is all VDS-owned vessels
 # - experiment3 excludes Chinese vessels from the control
-vessel_tracks_baci <- vessel_tracks_subset %>%
+vessel_tracks_baci <- vessel_tracks %>%
   mutate(flag = ifelse(flag == "" | is.na(flag), "OTH", flag),
          baci_strict = mmsi %in% mmsi_baci_strict,
          baci_relaxed = mmsi %in% mmsi_baci_relaxed)
 
 # Save data
 saveRDS(vessel_tracks_baci,
-        file = here::here("data", "vessel_tracks_2012_2018_baci.rds"))
+        file = here("data", "vessel_tracks_2012_2018_baci.rds"))
 
