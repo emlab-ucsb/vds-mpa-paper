@@ -152,6 +152,7 @@ dist_fxn <- function(data){
 
 # Group at the date-mmsi level
 daily_distance_by_vessel_panel <- vessel_tracks_baci %>%
+  filter(mmsi %in% c(416242900, 440575000, 367463000)) %>% 
   group_by(year,
            quarter,
            month,

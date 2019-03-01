@@ -73,7 +73,7 @@ distance_traveled <- readRDS(file = here("data",
                                                 "daily_distance_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines",
-         !mmsi %in% c(416242900, 440575000, 367463000)) %>% #Need to figure out why these three vessels are outliers. I think it's because they jump between 0 and 360
+         dist < quantile(dist, probs = 0.95)) %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/")),
          treated = ifelse(treated, "Treated", "Control")) %>%
   varplot(dist, "dist (km)")

@@ -78,7 +78,7 @@ distance_traveled <- readRDS(file = here("data",
                                                "daily_distance_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines",
-         !mmsi %in% c(416242900, 440575000, 367463000)) %>%  #Need to figure out this vessels here and in the fig_all_panels script
+         dist < quantile(dist, probs = 0.99)) %>%  #Need to figure out this vessels here and in the fig_all_panels script
   model_data_prep(dist)
 
 # Fit the models

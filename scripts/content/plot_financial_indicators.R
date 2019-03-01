@@ -38,11 +38,90 @@ p1 <- financial_data %>%
         axis.text = element_text(size = 8),
         strip.background = element_blank(),
         legend.justification = c(0, 1),
-        legend.position = c(0, 1.1)) +
+        legend.position = c(0, 1.05)) +
   guides(fill = guide_legend(ncol = 2,
                              title = "Country"))
 
-## Annual revenues total PNA
+# inferred vs reported
+# Load data
+# Set up a vector of PNA countries
+PNA_countries <- c("FSM",
+                   "MHL",
+                   "NRU",
+                   "PLW",
+                   "PNG",
+                   "SLB",
+                   "TUV",
+                   "TKL",
+                   "KIR")
+
+#annual vds prices come from the FFA brochure
+vds_price_per_year <- data.frame(
+  year = c(2012,
+           2013,
+           2014,
+           2015,
+           2016,
+           2017,
+           2018),
+  price = c(5000,
+            5000,
+            6000,
+            8000,
+            9000,
+            12500,
+            12500)
+)
+
+
+# Load vessel activity data
+vessel_activity <- readRDS(file = here("raw_data",
+                                       "activity_by_vessel_year_eez.rds")) %>% 
+  filter(best_vessel_class == "tuna_purse_seines",
+         eez_iso3 %in% PNA_countries) %>% 
+  mutate(days = hours / 24) %>% 
+  group_by(year, eez_iso3) %>% 
+  summarize(days = sum(days)) %>% 
+  left_join(vds_price_per_year, by = "year") %>% 
+  mutate(inferred_revenue = price * days / 1e6) %>% 
+  left_join(financial_data, by = c("year", "eez_iso3" = "country")) %>% 
+  drop_na(inferred_revenue) %>% 
+  rename(country = eez_iso3) %>% 
+  mutate(country = fct_relevel(country, "KIR"))
+
+revenue_FFS_GFW <-
+  ggplot(vessel_activity, aes(x = inferred_revenue, y = revenue)) +
+  geom_point(aes(fill = country),
+             shape = 21,
+             size = 3,
+             alpha = 0.7) +
+  geom_smooth(method = "lm",
+              linetype = "dashed",
+              color = "black",
+              se = F) +
+  geom_abline(intercept = 0, slope = 1) +
+  scale_fill_brewer(palette = "Set1") +
+  theme_cowplot()  +
+  theme(text = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.position = "none") +
+  guides(fill = guide_legend(title = "Country", ncol = 1)) +
+  labs(x = "Inferred revenue\n(million USD)",
+       y = "Reported revenue\n(million USD)")
+
+# Put together
+p <- plot_grid(p1,
+               revenue_FFS_GFW,
+               ncol = 1,
+               labels = "AUTO")
+
+# Save plot
+ggsave(p,
+       filename = here("docs", "img", "revenues.pdf"),
+       width = 3.4,
+       height = 5.2)
+
+# Annual revenues total PNA
 annual_revenues <- drop_na(financial_data) %>%
   group_by(year) %>%
   summarize(revenue = sum(revenue, na.rm = T)) %>%
@@ -77,13 +156,11 @@ p2 <- annual_revenues %>%
         axis.text = element_text(size = 8),
         strip.background = element_blank())
 
-# Put together
-p <- plot_grid(p1, p2, ncol = 1, labels = "AUTO")
 
-# Save plot
-ggsave(p, filename = here::here("docs", "img", "revenues.pdf"),
-       width = 3.4,
-       height = 5.2)
+ggsave(plot = p2,
+       filename = here("docs", "img", "total_PNA_revenues.pdf"),
+       width = 6,
+       height = 4)
 
 # Plot for catches
 p2 <- ggplot(data = financial_data,
@@ -104,7 +181,7 @@ p2 <- ggplot(data = financial_data,
         legend.justification = c(0, 1),
         legend.position = c(0, 1.1)) +
   guides(fill = guide_legend(title = "Country", ncol = 2))
-gi
+
 # Plot for value
 p3 <- ggplot(data = financial_data,
              mapping = aes(x = year, y = value, fill = country)) +
@@ -128,7 +205,7 @@ p3 <- ggplot(data = financial_data,
 p <- plot_grid(p2, p3, ncol = 1, labels = "AUTO")
 
 # Save plot
-ggsave(p, filename = here::here("docs", "img", "catches.pdf"),
+ggsave(p, filename = here("docs", "img", "catches.pdf"),
        width = 3.4,
        height = 5.2)
 
