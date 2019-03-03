@@ -21,9 +21,7 @@ source(here("scripts", "functions", "termplot.R"))
 
 #### FISHING AND NON FISHING HOURS ################################################################
 # Load my data
-effort_by_vessel <- readRDS(file = here("data",
-                                              "panels",
-                                              "daily_hours_by_vessel_panel.rds")) %>% 
+effort_by_vessel <- readRDS(file = here("data", "panels", "daily_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines")
 

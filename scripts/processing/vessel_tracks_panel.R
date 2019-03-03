@@ -39,6 +39,7 @@
 # Load packages
 library(here)
 library(magrittr)
+library(purrr)
 library(tidyverse)
 
 # Set a large memory size for when this code runs on Windows
@@ -150,9 +151,9 @@ dist_fxn <- function(data){
     sum(dist, na.rm = T) #Sum across all distances
 }
 
+
 # Group at the date-mmsi level
 daily_distance_by_vessel_panel <- vessel_tracks_baci %>%
-  filter(mmsi %in% c(416242900, 440575000, 367463000)) %>% 
   group_by(year,
            quarter,
            month,
@@ -165,9 +166,10 @@ daily_distance_by_vessel_panel <- vessel_tracks_baci %>%
            treated,
            post,
            month_c,
-           year_c) %>%
+           year_c,
+           seg_id) %>%
   nest() %>%
-  mutate(dist = purrr::map_dbl(data, dist_fxn)) %>% 
+  mutate(dist = map_dbl(data, dist_fxn)) %>% 
   select(-data) %>% 
   arrange(date, mmsi)
   
