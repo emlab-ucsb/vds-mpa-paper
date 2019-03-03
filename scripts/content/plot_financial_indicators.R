@@ -85,11 +85,11 @@ vessel_activity <- readRDS(file = here("raw_data",
   left_join(vds_price_per_year, by = "year") %>% 
   mutate(inferred_revenue = price * days / 1e6) %>% 
   left_join(financial_data, by = c("year", "eez_iso3" = "country")) %>% 
-  drop_na(inferred_revenue) %>% 
+  drop_na(inferred_revenue, revenue) %>% 
   rename(country = eez_iso3) %>% 
   mutate(country = fct_relevel(country, "KIR"))
 
-revenue_FFS_GFW <-
+revenue_FFA_GFW <-
   ggplot(vessel_activity, aes(x = inferred_revenue, y = revenue)) +
   geom_point(aes(fill = country),
              shape = 21,
@@ -103,15 +103,19 @@ revenue_FFS_GFW <-
   scale_fill_brewer(palette = "Set1") +
   theme_cowplot()  +
   theme(text = element_text(size = 10),
-        axis.text = element_text(size = 8),
-        legend.position = "none") +
+        axis.text = element_text(size = 8)) +
   guides(fill = guide_legend(title = "Country", ncol = 1)) +
   labs(x = "Inferred revenue\n(million USD)",
        y = "Reported revenue\n(million USD)")
 
+log_revenue_FFA_GFW <- revenue_FFA_GFW +
+  scale_x_continuous(trans = "log10", limits = c(0.09, 200)) +
+  scale_y_continuous(trans = "log10", limits = c(0.09, 200)) +
+  theme(legend.position = "none")
+
 # Put together
 p <- plot_grid(p1,
-               revenue_FFS_GFW,
+               log_revenue_FFA_GFW,
                ncol = 1,
                labels = "AUTO")
 
@@ -120,6 +124,11 @@ ggsave(p,
        filename = here("docs", "img", "revenues.pdf"),
        width = 3.4,
        height = 5.2)
+
+ggsave(revenue_FFA_GFW,
+       filename = here("docs", "img", "revenue_FFA_GFW_linear.pdf"),
+       width = 4,
+       height = 3.4)
 
 # Annual revenues total PNA
 annual_revenues <- drop_na(financial_data) %>%
