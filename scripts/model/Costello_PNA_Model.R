@@ -50,7 +50,7 @@ Grow <- function(e) {
 Sim1 = function(R, theta) {
   Xvec <- Xstart * fvec
   Evec <- Efforts
-  tol <- 100
+  tol <- 10
   diff <- 2 * tol
   
   while (diff > tol) {
@@ -82,17 +82,20 @@ Sim1 = function(R, theta) {
                    Harvest = H_ss_vec,
                    Vessel_Days = E_ss_vec,
                    Stock = sum(X_ss_vec),
+                   Stock_i = X_ss_vec,
                    VDSprice = VDSprice_ss_vec,
                    VDSrevenue = VDSrevenue_ss_vec,
                    VDSrevenue_all = sum(VDSrevenue_ss_vec),
                    VDSrevenue_notKIR = sum(VDSrevenue_ss_vec[2:9]))
+  
   return(DF)
 }
 
+Rvec <- seq(0, 1, 0.05)
+thetavec <- seq(0.05, 1, 0.1)
+
 DF_results <- Sim1(R = 0, theta = 0)
 
-Rvec <- seq(0, 1, 0.1)
-thetavec <- seq(0, 1, 0.1)
 
 for (i in 1:length(Rvec)) {
   R <- Rvec[i]
@@ -100,62 +103,59 @@ for (i in 1:length(Rvec)) {
     theta <- thetavec[j]
     DFtmp <- Sim1(R = R, theta = theta)
     DF_results <- bind_rows(DF_results, DFtmp)
-    print(i)
-    print(j)
+    # print(i)
+    # print(j)
   }
 }
 
 DF_results <- DF_results %>% 
-  mutate_at(vars(VDSrevenue, VDSrevenue_all, VDSrevenue_notKIR), function(x){x/1e6})
+  mutate_at(vars(VDSrevenue, VDSrevenue_all, VDSrevenue_notKIR), function(x){x/1e6}) # convert all revenues to millions
 
 # Revenue in Kiribati
 DF_1 = DF_results %>%
-  filter(Country == "KIR")
+  filter(Country == "KIR") %>% 
+  mutate(change = VDSrevenue - max(VDSrevenue),
+         change_all = VDSrevenue_notKIR - min(VDSrevenue_notKIR))
 
 Plot1 = ggplot(data = DF_1) +
-  geom_line(aes(
-    x = Reserve,
-    y = VDSrevenue,
-    group = Movement,
-    color = Movement
-  ),
-  size = 1.5) +
-  xlab("Reserve size in KIR") +
-  ylab("VDS Revenue in KIR")
+  geom_line(aes(x = Reserve,
+                y = change,
+                group = Movement,
+                color = Movement),
+            size = 1) +
+  xlab("Portion of patch as reserve (R)") +
+  ylab("Change in revenue\nin Kiribati (million USD)") +
+  scale_color_viridis_c() +
+  theme(text = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.position = "none")
 
-Plot1
+Plot3 <- ggplot(data = DF_1)+
+  geom_line(aes(x = Reserve,
+                y = change_all,
+                group = Movement,
+                color = Movement),
+            size = 1) +
+  xlab("Portion of patch as reserve (R)") +
+  ylab("Change in revenue in other\nPNA countries (million USD)") +
+  scale_color_viridis_c() +
+  theme(text = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 6),
+        legend.justification = c(0, 1),
+        legend.position = c(0, 1.1), legend.box = "horizontal") +
+  guides(color = guide_colorbar(title = quo(Movement~(theta)),
+                                ticks.colour = "black",
+                                frame.colour = "black"))
 
-# Revenue in all PNA
-DF_2 = DF_results %>%
-  filter(Country == "KIR")
-Plot2 = ggplot(data = DF_2) +
-  geom_line(aes(
-    x = Reserve,
-    y = VDSrevenue_all,
-    group = Movement,
-    color = Movement
-  ),
-  size = 1.5) +
-  xlab("Reserve size in KIR") +
-  ylab("VDS Revenue PNA Wide")
+PNA_model <- plot_grid(Plot1, Plot3, ncol = 1, labels = "AUTO")
 
-Plot2
-
-# Revenue for PNA without KIR
-DF_3 = DF_results %>%
-  filter(Country == "KIR")
-Plot3 = ggplot(data = DF_3) +
-  geom_line(aes(
-    x = Reserve,
-    y = VDSrevenue_notKIR,
-    group = Movement,
-    color = Movement
-  ),
-  size = 1.5) +
-  xlab("Reserve size in KIR") +
-  ylab("VDS Revenue Rest of PNA")
-
-Plot3
+# Save plot
+ggsave(plot = PNA_model,
+       filename = here("docs", "img", "PNA_model.pdf"),
+       width = 3.4,
+       height = 5.2)
 
 # Stock
 DF_4 = DF_results %>%
@@ -167,7 +167,7 @@ Plot4 = ggplot(data = DF_4) +
     group = Movement,
     color = Movement
   ), size = 1.5) +
-  xlab("Reserve size in KIR") +
+  xlab("Portion of patch as reserve (R)") +
   ylab("Total Stock")
 
 Plot4
@@ -183,7 +183,7 @@ Plot5 = ggplot(data = DF_5) +
     group = Movement,
     color = Movement
   ), size = 1.5) +
-  xlab("Reserve size in KIR") +
+  xlab("Portion of patch as reserve (R)") +
   ylab("Vessel Days in High seas")
 
 Plot5
@@ -201,7 +201,7 @@ Plot6 = ggplot(data = DF_6) +
     group = Movement,
     color = Movement
   ), size = 1.5) +
-  xlab("Reserve size in KIR") +
+  xlab("Portion of patch as reserve (R)") +
   ylab("Forgone profits")
 
 Plot6
@@ -217,7 +217,7 @@ Plot7 = ggplot(data = DF_7) +
     group = Movement,
     color = Movement
   ), size = 1.5) +
-  xlab("Reserve size in KIR") +
+  xlab("Portion of patch as reserve (R)") +
   ylab("VDS price")
 
 Plot7

@@ -1,0 +1,71 @@
+# trelliscopejs 0.1
+
+- Add auto detection of URL cogs when using cog() explicitly (0.1.18)
+- Fix issue with dplyr issue dealing with multiple factor facet columns (0.1.18)
+- Fix issue with preserving custom panel column class when sorting and filtering with dplyr (0.1.17)
+- Fix bug in auto cognostics with non-numeric/character types, fixes #63 (0.1.16)
+- Fix bug in cognostics types not carrying over correctly, fixes #66 (0.1.15)
+- Update internals to work with latest ggplot2 (0.1.12)
+- Add `plotly_cfg` argument to `facet_trelliscope()` (0.1.11)
+- Update trelliscopejs-lib to avoid double slashes in urls (0.1.10)
+- Fix issue in checking for Shiny (0.1.9)
+- Use `by_row()` from purrrlyr (0.1.8)
+- Use webshot for thumbnails and don't create thumbnails by default (0.1.8)
+- Update and add new tidyverse functions (0.1.7)
+- Update to trelliscopejs-lib 0.1.15 (polyfills for older browser support) (0.1.6)
+- Try trelliscopejs-lib with polyfills (0.1.6)
+- Add "tidyverse" helper `panels_by_row()` (0.1.6)
+- Update to trelliscopejs-lib 0.1.14 (0.1.5)
+- Fix issue with total panels not always being stored correctly (0.1.5)
+- Update to trelliscopejs-lib 0.1.12 (0.1.4)
+- Make sure correct config.json(p) is used and knitr handling is done right (0.1.4)
+- Add all dependencies to htmlwidget when `self_contained` is `TRUE` (0.1.4)
+- Add test for jsonp = FALSE (0.1.4)
+- Add tidyr to test script (0.1.4)
+- Fix facet_trelliscope docs to point to the right place (0.1.4)
+- Don't import plotly explicitly since it's optional (0.1.4)
+- Experimental initial support for ggplotly with facet_trelliscope (0.1.4)
+- Update tests (0.1.3)
+- Make `as_cognostics()` not always require key and `cond_cols` (0.1.3)
+- Fix issue where cog data is written to 'pretty' json when it shouldn't be (0.1.3)
+- Fix bug in self_contained where cogs aren't parsed correctly (0.1.3)
+- Fix issue where cog data is written to 'pretty' json when it shouldn't be
+- Fix bug in self_contained where cogs aren't parsed correctly
+- Make nested cogs preserve attributes
+- Fix progress bar issue introduced with img_panel
+- Add example for `cogs()`
+- Add img_panel function
+- Update cogs to support panelSrc and make cog_href automatic if URLs detected
+- Update trelliscopejs-lib
+- Make auto_cog ignore already-computed cognostics
+- Add auto_cog option to `trelliscope()`
+- Update vignettes
+- Update docs
+- http -> https
+- Update so docs deploy
+- Update viewer
+- Add vignettes
+- Rename things and get facet results to print in knitr
+- Add 'cogs' function
+- Only look for sorting if cond vars are not sorted
+- Update viewer
+- Make default sorting on conditional variables rather than default labels
+- Add cog_href
+- Rename to trelliscopejs
+- Remove unnecessary dependencies
+- Minor bug fixes and more test coverage
+- Add code coverage to travis
+- Update README
+- Major overhaul to reach initial 'release'
+- Add (most) htmlwidget dependencies
+- Make trelliscope an htmlwidget
+- Add ID for apps to prepare for htmlwidgets
+- Add sanitize function
+- Add all parameters to facet_trelliscope and sanitize keys
+- Sanitize trelliscope args and keys and update example
+- Add basic 'trelliscope' function and clean everything else up
+- First pass at facet_trelliscope
+- Cleaner web paths
+- Don't show dir create warnings
+- Add a progress bar to write_panels
+- Initial commit

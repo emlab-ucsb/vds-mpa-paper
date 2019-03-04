@@ -18,7 +18,7 @@ library(tidyverse)
 # I only want fishing tracks of purse seiners inside KIR before 2018
 tracks <- readRDS(file = here::here("data", "vessel_tracks_baci.rds")) %>% 
   filter(gear == "tuna_purse_seines",
-         year < 2018,
+         between(year, 2014, 2018),
          fishing) 
 
 #### THE DATA ########################################################################

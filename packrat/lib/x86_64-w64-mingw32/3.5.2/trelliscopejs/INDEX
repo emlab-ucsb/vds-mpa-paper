@@ -1,0 +1,42 @@
++.gg                    Add method for gg / facet_trelliscope
+Trelliscope-shiny       Shiny bindings for Trelliscope
+as_cognostics           Cast a data frame as a cognostics data frame
+cog                     Cast Column as a Cognostic
+cog_href                Href Cognostic
+cogs                    Cogs Wrapper Function
+facet_trelliscope       Facet Trelliscope
+img_panel               Cast a vector of URLs pointing to images as an
+                        image panel source
+img_panel_local         Cast a vector of URLs pointing to local images
+                        as an image panel source
+map2_cog                Map over multiple inputs simultaneously and
+                        return a vector of cognostics data frames
+map2_plot               Map over multiple inputs simultaneously and
+                        return a vector of plots
+map_cog                 Apply a function to each element of a vector
+                        and return a vector of cognostics data frames
+map_plot                Apply a function to each element of a vector
+                        and return a vector of plots
+mpg_labels              Labels for ggplot2 "mpg" data
+panel                   Panel Wrapper Function Wrapper function to
+                        specify a plot object for a panel for use in
+                        dplyr summarise()
+panels                  Panels Wrapper Function
+prepare_display         Set up all auxiliary files needed for a
+                        Trelliscope app
+print.facet_trelliscope
+                        Print facet trelliscope object
+set_labels              Set labels for a data frame
+sort_spec               Specify how a display should be sorted
+trelliscope             Create a Trelliscope Display
+trelliscopejs-package   trelliscopejs
+update_display_list     Update Trelliscope app display list file
+write_cognostics        Write cognostics data for a display in a
+                        Trelliscope app
+write_config            Write Trelliscope app configuration file
+write_display_obj       Write a "display object" file for a Trelliscope
+                        app
+write_panel             Write a plot object as a panel in a Trelliscope
+                        display
+write_panels            Write a list of plot objects as panels in a
+                        Trelliscope display

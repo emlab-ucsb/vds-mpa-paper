@@ -128,8 +128,8 @@ all_PS_VDS_KIR_year_plot <-
 #Save plot
 ggsave(all_PS_VDS_KIR_year_plot,
        filename = here("docs", "img", "all_PS_VDS_KIR_year.pdf"),
-       width = 3.4,
-       height = 2.6)
+       width = 6,
+       height = 4.5)
 
 # annual PS VDS by country
 

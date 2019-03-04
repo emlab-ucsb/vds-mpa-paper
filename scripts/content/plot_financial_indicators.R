@@ -83,7 +83,8 @@ vessel_activity <- readRDS(file = here("raw_data",
   group_by(year, eez_iso3) %>% 
   summarize(days = sum(days)) %>% 
   left_join(vds_price_per_year, by = "year") %>% 
-  mutate(inferred_revenue = price * days / 1e6) %>% 
+  mutate(inferred_revenue = price * days / 1e6,
+         days = days / 1000) %>% 
   left_join(financial_data, by = c("year", "eez_iso3" = "country")) %>% 
   drop_na(inferred_revenue, revenue) %>% 
   rename(country = eez_iso3) %>% 
@@ -91,27 +92,31 @@ vessel_activity <- readRDS(file = here("raw_data",
 
 revenue_FFA_GFW <-
   ggplot(vessel_activity, aes(x = inferred_revenue, y = revenue)) +
-  geom_point(aes(fill = country),
+  geom_point(aes(fill = country, size = days),
              shape = 21,
-             size = 3,
+             # size = 3,
              alpha = 0.7) +
   geom_smooth(method = "lm",
               linetype = "dashed",
               color = "black",
               se = F) +
   geom_abline(intercept = 0, slope = 1) +
-  scale_fill_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1", guide = F) +
   theme_cowplot()  +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8)) +
-  guides(fill = guide_legend(title = "Country", ncol = 1)) +
+  guides(fill = guide_legend(title = "Country", ncol = 1),
+         size = guide_legend(title = "Vessel-days (1,000)", ncol = 3)) +
   labs(x = "Inferred revenue\n(million USD)",
-       y = "Reported revenue\n(million USD)")
+       y = "Reported revenue\n(million USD)") +
+  scale_size_continuous(breaks = c(1, 5, 10))
 
 log_revenue_FFA_GFW <- revenue_FFA_GFW +
   scale_x_continuous(trans = "log10", limits = c(0.09, 200)) +
   scale_y_continuous(trans = "log10", limits = c(0.09, 200)) +
-  theme(legend.position = "none")
+  theme(legend.justification = c(1, 0),
+        legend.position = c(1, 0)) +
+  guides(fill = F)
 
 # Put together
 p <- plot_grid(p1,
@@ -127,7 +132,7 @@ ggsave(p,
 
 ggsave(revenue_FFA_GFW,
        filename = here("docs", "img", "revenue_FFA_GFW_linear.pdf"),
-       width = 4,
+       width = 4.5,
        height = 3.4)
 
 # Annual revenues total PNA
@@ -136,29 +141,15 @@ annual_revenues <- drop_na(financial_data) %>%
   summarize(revenue = sum(revenue, na.rm = T)) %>%
   ungroup()
 
-loess_revenue <- annual_revenues %>% 
-  filter(year < 2016) %>% 
-  loess(formula = revenue ~ year, data = ., surface = "direct")
-
 p2 <- annual_revenues %>% 
-  mutate(prediction = predict(loess_revenue, .),
-         predicted_point = ifelse(year %in% c(2016), prediction, NA)) %>% 
-  ggplot(aes(x = year)) +
-  geom_point(aes(y = revenue),
-             shape = 21,
+  ggplot(aes(x = year, y = revenue)) +
+  geom_point(shape = 21,
              color = "black",
              fill = "steelblue",
              size = 4,
              alpha = 0.8) + 
-  geom_line(aes(y = prediction),
-            linetype = "dashed",
+  geom_line(linetype = "dashed",
             size = 1) +
-  geom_point(aes(y = predicted_point),
-             shape = 21,
-             color = "black",
-             fill = "red",
-             size = 4,
-             alpha = 0.8) +
   labs(x = "Year",
        y = "Revenue from licenses\n(Million USD)") +
   theme(text = element_text(size = 10),
