@@ -30,8 +30,9 @@ PNA_countries <- c(PNA_without_KIR, "KIR")
 vessel_activity <- readRDS(file = here("raw_data",
                                              "activity_by_vessel_year_eez.rds")) %>% 
   filter(best_vessel_class == "tuna_purse_seines") %>% 
-  mutate(treated = ifelse(treated, "Treated", "Control"),
+  mutate(treated = ifelse(treated, "Displaced", "Non-displaced"),
          group = ifelse(is.na(treated), "Others", treated),
+         group = fct_relevel(group, "Non-displaced", "Others", "Displaced"),
          location = case_when(eez_iso3 == "KIR" ~ "KIR",
                               eez_iso3 %in% PNA_without_KIR ~ "other PNA countries",
                               eez_iso3 == "HS" ~"HS",
@@ -56,14 +57,15 @@ all_PS_VDS_year_plot <- ggplot(data = all_PS_VDS_year_data,
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         legend.text = element_text(size = 8),
-        legend.position = "top")+
+        legend.justification = c(0, 1),
+        legend.position = c(-0.01, 0.98))+
   labs(x = "Year", y = "Vessel-days (1,000)")
 
 #Save plot
 ggsave(all_PS_VDS_year_plot,
        filename = here("docs", "img", "all_PS_VDS_year.pdf"),
        width = 3.4,
-       height = 2.6)
+       height = 2.7)
 
 # Line plot
 all_PS_VDS_year_plot2 <-
@@ -122,14 +124,15 @@ all_PS_VDS_KIR_year_plot <-
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         legend.text = element_text(size = 8),
-        legend.position = "top")+
+        legend.justification = c(0, 1),
+        legend.position = c(0, 1))+
   labs(x = "Year", y = "Vessel-days (1,000)")
 
 #Save plot
 ggsave(all_PS_VDS_KIR_year_plot,
        filename = here("docs", "img", "all_PS_VDS_KIR_year.pdf"),
        width = 6,
-       height = 4.5)
+       height = 4)
 
 # annual PS VDS by country
 
@@ -233,7 +236,7 @@ ggsave(plot = p3,
 
 p4 <- vessel_prop_activity_year_loc %>% 
   filter(location == "KIR",
-         group == "Treated") %>% 
+         group == "Displaced") %>% 
   ggplot(mapping = aes(x = proportion,
                        y = as.character(year),
                        fill = as.character(year))) +
@@ -288,7 +291,13 @@ vessel_activity %>%
   spread(year, days) %>% 
   drop_na()
 
+###
 
+vessel_activity_month_country <- vessel_activity %>% 
+  group_by(year, month, eez_iso3) %>% 
+  summarize(days = sum(days, na.rm = T)) %>% 
+  ungroup() %>% 
+  mutate(date = lubridate::date(paste(year, month, 1, sep = "-")))
 
 
 

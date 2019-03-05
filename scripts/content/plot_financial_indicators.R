@@ -111,11 +111,28 @@ revenue_FFA_GFW <-
        y = "Reported revenue\n(million USD)") +
   scale_size_continuous(breaks = c(1, 5, 10))
 
-log_revenue_FFA_GFW <- revenue_FFA_GFW +
-  scale_x_continuous(trans = "log10", limits = c(0.09, 200)) +
-  scale_y_continuous(trans = "log10", limits = c(0.09, 200)) +
-  theme(legend.justification = c(1, 0),
-        legend.position = c(1, 0)) +
+log_revenue_FFA_GFW <-
+  ggplot(vessel_activity, aes(x = log10(inferred_revenue), y = log10(revenue))) +
+  geom_point(aes(fill = country, size = days),
+             shape = 21,
+             # size = 3,
+             alpha = 0.7) +
+  geom_smooth(method = "lm",
+              linetype = "dashed",
+              color = "black",
+              se = F) +
+  geom_abline(intercept = 0, slope = 1) +
+  scale_fill_brewer(palette = "Set1", guide = F) +
+  theme_cowplot()  +
+  theme(text = element_text(size = 10),
+        axis.text = element_text(size = 8),
+        legend.justification = c(0, 1),
+        legend.position = c(0, 1)) +
+  guides(fill = guide_legend(title = "Country", ncol = 1),
+         size = guide_legend(title = "Vessel-days (1,000)", ncol = 3)) +
+  labs(x = expression(atop(paste(paste("log" [10]), "(Inferred revenue)"), "(Million USD)")),
+       y = expression(atop(paste(paste("log" [10]), "(Reported revenue)"), "(Million USD)"))) +
+  scale_size_continuous(breaks = c(1, 5, 10), range = c(1, 4)) +
   guides(fill = F)
 
 # Put together
@@ -128,11 +145,11 @@ p <- plot_grid(p1,
 ggsave(p,
        filename = here("docs", "img", "revenues.pdf"),
        width = 3.4,
-       height = 5.2)
+       height = 5.25)
 
 ggsave(revenue_FFA_GFW,
        filename = here("docs", "img", "revenue_FFA_GFW_linear.pdf"),
-       width = 4.5,
+       width = 5.5,
        height = 3.4)
 
 # Annual revenues total PNA

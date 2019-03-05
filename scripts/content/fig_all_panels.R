@@ -24,14 +24,15 @@ varplot <- function(data, var, y_lab){
     # geom_jitter(shape = ".", height = 0, alpha = 0.1) +
     stat_summary(geom = "line", fun.y = mean, size = 1) +
     theme_cowplot() +
-    scale_color_brewer(palette = "Set1") +
+    scale_color_brewer(palette = "Set1", direction = -1) +
     guides(color = guide_legend(title = "Group")) +
     geom_vline(xintercept = lubridate::date("2015/01/01")) +
     geom_vline(xintercept = lubridate::date("2014/06/01"), linetype = "dashed") +
     geom_vline(xintercept = lubridate::date("2015/12/31"), linetype = "dashed") +
     theme(legend.position = "none",
           text = element_text(size = 10),
-          axis.text = element_text(size = 10)) +
+          axis.text = element_text(size = 8),
+          legend.text = element_text(size = 8)) +
     labs(x = "Date", y = y_lab)
 }
 
@@ -41,7 +42,7 @@ effort_by_vessel <- readRDS(file = here("data", "panels", "daily_hours_by_vessel
   filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/")),
-         treated = ifelse(treated, "Treated", "Control"))
+         treated = ifelse(treated, "Displaced", "Non-displaced"))
 
 # Plot of fishing hours
 fishing_hours <- effort_by_vessel %>% 
@@ -62,7 +63,7 @@ prop_fishing_by_vessel <-
   filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/")),
-         treated = ifelse(treated, "Treated", "Control")) %>%
+         treated = ifelse(treated, "Displaced", "Non-displaced")) %>%
   varplot(prop_fishing, "% hours") +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1))
 
@@ -75,7 +76,7 @@ distance_traveled <- readRDS(file = here("data",
          gear == "tuna_purse_seines",
          dist < quantile(dist, probs = 0.95)) %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "/")),
-         treated = ifelse(treated, "Treated", "Control")) %>%
+         treated = ifelse(treated, "Displaced", "Non-displaced")) %>%
   varplot(dist, "dist (km)")
 
 
@@ -87,7 +88,7 @@ distance_port_shore <- readRDS(file = here("data",
   filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "-")),
-         treated = ifelse(treated, "Treated", "Control"))
+         treated = ifelse(treated, "Displaced", "Non-displaced"))
 
 # Distance from port
 distance_from_port <- distance_port_shore %>%
@@ -110,7 +111,7 @@ distance_port_shore_fishing <- readRDS(file = here("data",
   filter(year < 2019,
          gear == "tuna_purse_seines") %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "-")),
-         treated = ifelse(treated, "Treated", "Control"))
+         treated = ifelse(treated, "Displaced", "Non-displaced"))
 
 # Distance from port
 distance_from_port_fishing <- distance_port_shore_fishing %>%
