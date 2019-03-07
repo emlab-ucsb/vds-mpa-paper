@@ -11,6 +11,6 @@ did_yearmonth <- function(data, filter_oth = F){
   
   m1 <- lm(log_var ~ year_month_c*treated, data = data)
   m2 <- lm(log_var ~ year_month_c*treated + flag, data = flag_data)
-  
+
   return(list(m1, m2))
 }
