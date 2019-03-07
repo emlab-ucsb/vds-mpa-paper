@@ -83,7 +83,8 @@ vessel_activity <- readRDS(file = here("raw_data",
   group_by(year, eez_iso3) %>% 
   summarize(days = sum(days)) %>% 
   left_join(vds_price_per_year, by = "year") %>% 
-  mutate(inferred_revenue = price * days / 1e6,
+  mutate(price = ifelse(year <= 2013 & eez_iso3 == "TKL", NA, price),
+    inferred_revenue = price * days / 1e6,
          days = days / 1000) %>% 
   left_join(financial_data, by = c("year", "eez_iso3" = "country")) %>% 
   drop_na(inferred_revenue, revenue) %>% 
