@@ -8,15 +8,16 @@
 #########################################################
 
 # Load packages
+library(here)
 library(magrittr)
 library(tidyverse)
 
 # Custom functions
-source(here::here("scripts", "functions", "model_data_prep.R"))
-source(here::here("scripts", "functions", "did.R"))
-source(here::here("scripts", "functions", "did_quarter.R"))
-source(here::here("scripts", "functions", "did_yearmonth.R"))
-source(here::here("scripts", "functions", "termplot.R"))
+source(here("scripts", "functions", "model_data_prep.R"))
+source(here("scripts", "functions", "did.R"))
+source(here("scripts", "functions", "did_quarter.R"))
+source(here("scripts", "functions", "did_yearmonth.R"))
+source(here("scripts", "functions", "termplot.R"))
 
 # List of countries I exclude
 PNA <- c("FSM",
@@ -29,9 +30,13 @@ PNA <- c("FSM",
          "TUV",
          "TKL")
 
+# Nino4 index
+nino4 <- read.csv(here("data", "all_indices.csv")) %>% 
+  select(year, month = month_n, nino4anom)
+
 #### FISHING AND NON FISHING HOURS ################################################################
 # Load my data
-effort_by_vessel <- readRDS(file = here::here("data",
+effort_by_vessel <- readRDS(file = here("data",
                                               "panels",
                                               "daily_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
@@ -42,12 +47,14 @@ effort_by_vessel <- readRDS(file = here::here("data",
 # For fishing hours
 fishing_hours <- effort_by_vessel %>% 
   filter(fishing) %>% 
-  model_data_prep()
+  model_data_prep() %>% 
+  left_join(nino4, by = c("year", "month"))
 
 # For non-fishing hours
 nonfishing_hours <- effort_by_vessel %>% 
   filter(!fishing) %>% 
-  model_data_prep()
+  model_data_prep() %>% 
+  left_join(nino4, by = c("year", "month"))
 
 
 ## Fit the models
@@ -67,13 +74,14 @@ nonfish_didym <- did_yearmonth(nonfishing_hours)
 
 #### PROPORTION FISHING HOURS ################################################################
 # Load my data
-prop_fishing_by_vessel <- readRDS(file = here::here("data",
+prop_fishing_by_vessel <- readRDS(file = here("data",
                                                     "panels",
                                                     "daily_prop_fishing_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines",
          !flag %in% PNA) %>% 
-  model_data_prep(prop_fishing)
+  model_data_prep(prop_fishing) %>% 
+  left_join(nino4, by = c("year", "month"))
 
 #Fit themdoels
 prop_fish_did <- did(prop_fishing_by_vessel)
@@ -85,14 +93,14 @@ prop_fish_didym <- did_yearmonth(prop_fishing_by_vessel)
 
 #### DISTANCE TRAVELED ################################################################
 # Read data
-distance_traveled <- readRDS(file = here::here("data",
+distance_traveled <- readRDS(file = here("data",
                                                "panels",
                                                "daily_distance_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines",
-         !mmsi %in% c(345050700,412328731,416238800, 512000089),
          !flag %in% PNA) %>% 
-  model_data_prep(dist)
+  model_data_prep(dist) %>% 
+  left_join(nino4, by = c("year", "month"))
 
 # Fit the models
 dist_did <- did(distance_traveled)
@@ -105,7 +113,7 @@ dist_didym <- did_yearmonth(distance_traveled)
 
 #### DISTANCE FROM PORT AND SHORE ############################################################
 # Read the data
-distance_port_shore <- readRDS(file = here::here("data",
+distance_port_shore <- readRDS(file = here("data",
                                                  "panels",
                                                  "distance_from_port_shore_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
@@ -115,11 +123,13 @@ distance_port_shore <- readRDS(file = here::here("data",
 # Prep data
 # Distance from port
 distance_port <- distance_port_shore %>% 
-  model_data_prep(mean_dist_port)
+  model_data_prep(mean_dist_port) %>% 
+  left_join(nino4, by = c("year", "month"))
 
 # Distance from shore
 distance_shore <- distance_port_shore %>% 
-  model_data_prep(mean_dist_shore)
+  model_data_prep(mean_dist_shore) %>% 
+  left_join(nino4, by = c("year", "month"))
 
 # Fit the models
 # Distance from port
@@ -138,7 +148,7 @@ dist_shore_didym <- did_yearmonth(distance_shore)
 
 #### DISTANCE FROM PORT AND SHORE FOR FISHING EVENTS ONLY ###########################################
 # Read the data
-distance_port_shore_fishing <- readRDS(file = here::here("data",
+distance_port_shore_fishing <- readRDS(file = here("data",
                                                          "panels",
                                                          "distance_from_port_shore_fishing_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
@@ -148,11 +158,13 @@ distance_port_shore_fishing <- readRDS(file = here::here("data",
 # Prep data
 # Distance from port
 distance_port_fishing <- distance_port_shore_fishing %>% 
-  model_data_prep(mean_dist_port)
+  model_data_prep(mean_dist_port) %>% 
+  left_join(nino4, by = c("year", "month"))
 
 # Distance from shore
 distance_shore_fishing <- distance_port_shore_fishing %>% 
-  model_data_prep(mean_dist_shore)
+  model_data_prep(mean_dist_shore) %>% 
+  left_join(nino4, by = c("year", "month"))
 
 # Fit the models
 # Distance from port
@@ -171,12 +183,13 @@ dist_shore_fishing_didym <- did_yearmonth(distance_shore_fishing)
 
 ##### PROPORTION FISHING IN KIR ########################################################
 # Load the data
-kir_fishing <- readRDS(file = here::here("data", "panels", "KIR_fishing_hours_by_vessel_panel.rds")) %>% 
+kir_fishing <- readRDS(file = here("data", "panels", "KIR_fishing_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines",
          !flag %in% PNA) %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "-"))) %>% 
-  model_data_prep(kir_hours)
+  model_data_prep(kir_hours) %>% 
+  left_join(nino4, by = c("year", "month"))
 
 
 # Fit the models
@@ -189,18 +202,37 @@ prop_kir_didym <- did_yearmonth(kir_fishing)
 
 ##### PROPORTION FISHING IN VDS ########################################################
 # Load the data
-vds_fishing <- readRDS(file = here::here("data", "panels", "VDS_fishing_hours_by_vessel_panel.rds")) %>% 
+vds_fishing <- readRDS(file = here("data", "panels", "VDS_fishing_hours_by_vessel_panel.rds")) %>% 
   filter(year < 2019,
          gear == "tuna_purse_seines",
          !flag %in% PNA) %>% 
   mutate(date = lubridate::date(paste(year, month, 15, sep = "-"))) %>% 
-  model_data_prep(vds_hours)
+  model_data_prep(vds_hours) %>% 
+  left_join(nino4, by = c("year", "month"))
 
 
 # Fit the models
 prop_vds_did <- did(vds_fishing)
 prop_vds_didq <- did_quarter(vds_fishing)
 prop_vds_didym <- did_yearmonth(vds_fishing)
+
+
+
+##### FISHING IN HS ########################################################
+# Load the data
+hs_fishing <- readRDS(file = here("data", "panels", "HS_fishing_hours_by_vessel_panel.rds")) %>% 
+  filter(year < 2019,
+         gear == "tuna_purse_seines",
+         !flag %in% PNA) %>% 
+  mutate(date = lubridate::date(paste(year, month, 15, sep = "-"))) %>% 
+  model_data_prep(hs_hours) %>% 
+  left_join(nino4, by = c("year", "month"))
+
+
+# Fit the models
+hs_did <- did(hs_fishing)
+hs_didq <- did_quarter(hs_fishing)
+hs_didym <- did_yearmonth(hs_fishing)
 
 ######### EXPORT THE MODELS #############################################################
 
@@ -215,16 +247,20 @@ models <- list(
   dist_port_fishing_did,
   dist_shore_fishing_did,
   prop_kir_did,
-  prop_vds_did
-) %>% 
-  purrr::map(extract2, 3)
+  prop_vds_did,
+  hs_did) %>% 
+  purrr::map(extract2, 4)
 
 stargazer::stargazer(models,
                      se = commarobust::makerobustseslist(models),
                      t.auto = T,
                      p.auto = T,
                      intercept.bottom = F,
-                     covariate.labels = c("Constant", "Post", "Treated", "Post $\\times$ Treated"),
+                     covariate.labels = c("Constant",
+                                          "Post",
+                                          "Displaced",
+                                          "NINO4",
+                                          "Post $\\times$ Displaced"),
                      dep.var.caption = "",
                      dep.var.labels.include = F,
                      column.sep.width = "1pt",
@@ -232,74 +268,13 @@ stargazer::stargazer(models,
                      type = "latex",
                      omit = c("flag", "month"),
                      add.lines = list(
-                       c("Month FE", rep("Yes", 8)),
-                       c("Flag FE", rep("Yes", 8))),
+                       c("Month FE", rep("Yes", 9)),
+                       c("Flag FE", rep("Yes", 9))),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
                      # float.env = "sidewaystable",
-                     title = "\\label{tab:DID_without_PNA}Difference-in-differences estimates for our 10 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port for fishing events, 6) Daily mean distance from shore for fishing events, 7) Monthly fishing hours spent in Kiribati waters, 8) Monthly fishing hours spent in PNA waters. Numbers in parentheses are heteroskedastic-robust standard errors.",
-                     out = here::here("docs", "tab", "DID_without_PNA.tex"))
-
-######## ALTERNATIVE SPECIFICATIONS PLOT ###################################################
-
-models_extra <- c(
-  fish_did,
-  nonfish_did,
-  prop_fish_did,
-  dist_did,
-  # dist_port_did,
-  # dist_shore_did,
-  dist_port_fishing_did,
-  dist_shore_fishing_did,
-  prop_kir_did,
-  prop_vds_did
-)
-
-# Extract all parameters, calculate robust SE, and plot
-plot <- map_df(models_extra,
-               commarobust::commarobust_tidy, .id = "model") %>%
-  filter(term == "post:treated") %>%
-  mutate(model = as.numeric(model),
-         variable = case_when(model < 4 ~ "fishing hours",
-                              model > 3 & model < 7 ~ "non-fishing hours",
-                              model > 6 & model < 10 ~ "proportion fishing",
-                              model > 9 & model < 13 ~ "distance traveled",
-                              model > 12 & model < 16 ~ "distance from port fishing",
-                              model > 15 & model < 19 ~ "distance from shore fishing",
-                              model > 18 & model < 22 ~ "hours fishing in KIR",
-                              T ~ "hours fishing in VDS"),
-         variable = fct_relevel(variable,
-                                "fishing hours",
-                                "non-fishing hours",
-                                "proportion fishing",
-                                "distance traveled",
-                                "distance from port fishing",
-                                "distance from shore fishing",
-                                "hours fishing in KIR"),
-         spec = case_when(model %in% seq(1, 24, by = 3) ~ "No FE",
-                          model %in% seq(2, 24, by = 3) ~ "Month FE",
-                          T ~ "Month + Flag FE"),
-         spec = fct_relevel(spec, "No FE", "Month FE")) %>% 
-  ggplot(aes(x = spec, y = est)) +
-  geom_errorbar(aes(ymin = est - se, ymax = est + se),
-                size = 1,
-                width = 0,
-                color = "black") +
-  geom_point(aes(color = spec), size = 3, alpha = 0.7) +
-  facet_wrap(~variable, scales = "free_y", ncol = 2) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
-  scale_color_brewer(palette = "Set1") +
-  cowplot::theme_cowplot() +
-  theme(legend.position = "none",
-        strip.background = element_blank(),
-        text = element_text(size = 10),
-        axis.text = element_text(size = 10)) +
-  labs(x = "Model Specification", y = "Estimate") +
-  ggExtra::rotateTextX()
-
-# Export figure
-ggsave(plot, filename = here::here("docs", "img", "other_specifications_without_PNA.pdf"), width = 6.1, height = 8)
-
+                     title = "\\label{tab:DID_without_PNA}Difference-in-differences estimates for our 9 variables of interest after removing PNA vessels: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port for fishing events, 6) Daily mean distance from shore for fishing events, 7) Monthly fishing hours spent in Kiribati waters, 8) Monthly fishing hours spent in PNA waters, and 9) Monthly fishing hours in the high seas. Numbers in parentheses are heteroskedastic-robust standard errors.",
+                     out = here("docs", "tab", "DID_without_PNA.tex"))
 
 
 
