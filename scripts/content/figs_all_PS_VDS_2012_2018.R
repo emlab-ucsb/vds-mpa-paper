@@ -184,7 +184,7 @@ p1 <- ggplot(data = vessel_prop_activity_year_loc,
        mapping = aes(x = proportion, y = as.character(year), fill = group)) +
   geom_density_ridges(alpha = 0.5) +
   facet_wrap(~location) +
-  scale_fill_brewer(palette = "Set1") +
+  scale_fill_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
   cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
@@ -196,32 +196,13 @@ ggsave(plot = p1,
        width = 6,
        height = 4)
 
-p2 <- ggplot(data = vessel_prop_activity_year_loc,
-       mapping = aes(x = year, y = proportion, color = group, fill = group)) +
-  geom_jitter(height = 0, width = 0.2, color = "black", shape = 21, alpha = 0.5) +
-  stat_summary(geom = "ribbon", fun.data = mean_se, alpha = 0.2) +
-  stat_summary(geom = "line", fun.y = mean, size = 1) +
-  scale_color_brewer(palette = "Set1") +
-  scale_fill_brewer(palette = "Set1") +
-  facet_wrap(~location, scales = "free_y") +
-  cowplot::theme_cowplot() +
-  theme(text = element_text(size = 10),
-        axis.text = element_text(size = 8),
-        strip.background = element_blank()) +
-  geom_vline(xintercept = 2014.5, linetype = "dashed") +
-  labs(x = "Year", y = "Vessel-level proportion of fishing days")
-
-ggsave(plot = p2,
-       file = here("docs", "img", "yearly_prop_fishing_by_region.pdf"),
-       width = 6,
-       height = 4)
 
 p3 <- ggplot(data = vessel_activity_year_loc,
        mapping = aes(x = year, y = days, color = group)) +
   geom_point() +
   geom_line() +
   facet_wrap(~location, scale = "free_y") +
-  scale_color_brewer(palette = "Set1") +
+  scale_color_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
   cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
@@ -236,7 +217,8 @@ ggsave(plot = p3,
 
 p4 <- vessel_prop_activity_year_loc %>% 
   filter(location == "KIR",
-         group == "Displaced") %>% 
+         group == "Displaced",
+         year > 2013) %>% 
   ggplot(mapping = aes(x = proportion,
                        y = as.character(year),
                        fill = as.character(year))) +
@@ -252,52 +234,6 @@ ggsave(plot = p4,
        file = here("docs", "img", "hist_KIR_fishing.pdf"),
        width = 6,
        height = 4)
-
-filter(vessel_activity_year_loc, location %in% c("KIR", "PNA countries")) %>% 
-  group_by(year, group) %>%
-  summarize(days = sum(days, na.rm = T)) %>% 
-  ggplot(aes(x = year, y = days, fill = group)) +
-  geom_col(color = "black") +
-  scale_fill_brewer(palette = "Set1") +
-  geom_hline(yintercept = 45000, linetype = "dashed")
-
-filter(vessel_activity_year_loc, location %in% c("KIR", "PNA countries")) %>% 
-  group_by(year, group) %>%
-  summarize(days = sum(days, na.rm = T)) %>% 
-  ggplot(aes(x = year, y = days, color = group)) +
-  geom_line(size = 1) +
-  scale_color_brewer(palette = "Set1")
-
-#### TABLES ###############
-
-
-# Table of days for "other countries" by year
-vessel_activity %>% 
-  filter(location == "Other countries") %>% 
-  group_by(year, eez_iso3) %>% 
-  summarize(days = sum(days, na.rm = T)) %>% 
-  spread(year, days, fill = 0) %>% 
-  knitr::kable()
-
-# Table of countries that ahd no fishing before PIPA
-vessel_activity %>% 
-  filter(location == "Other countries",
-         treated == "treated") %>% 
-  group_by(year, eez_iso3) %>% 
-  summarize(days = sum(days, na.rm = T)) %>% 
-  spread(year, days, fill = 0) %>% 
-  gather(year, days, -eez_iso3) %>% 
-  filter(year < 2015 & days == 0) %>% 
-  spread(year, days) %>% 
-  drop_na()
-
-###
-
-vessel_activity_month_country <- vessel_activity %>% 
-  group_by(year, month, eez_iso3) %>% 
-  summarize(days = sum(days, na.rm = T)) %>% 
-  ungroup() %>% 
-  mutate(date = lubridate::date(paste(year, month, 1, sep = "-")))
 
 
 

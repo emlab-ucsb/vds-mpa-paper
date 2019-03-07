@@ -11,12 +11,13 @@
 #### SET UP ##################################################
 
 # Load packages
+library(here)
 library(sf)
 library(tidyverse)
 
 # Source local functions
-source(here::here("scripts", "functions", "st_rotate.R"))
-source(here::here("scripts", "functions", "sfc_as_cols.R"))
+source(here("scripts", "functions", "st_rotate.R"))
+source(here("scripts", "functions", "sfc_as_cols.R"))
 
 ##### EEZs #################################################
 # Countries I want to show
@@ -41,7 +42,7 @@ countries <- c("PIPA",
                "VUT",
                "NCL")
 # Load EEZs
-eez <- read_sf(dsn = here::here("data", "spatial", "EEZ_subset"),
+eez <- read_sf(dsn = here("data", "spatial", "EEZ_subset"),
                layer = "EEZ_subset") %>% 
   filter(ISO_Ter1 %in% countries) %>% 
   mutate(KIR = ISO_Ter1 == "KIR",
@@ -51,7 +52,7 @@ eez <- read_sf(dsn = here::here("data", "spatial", "EEZ_subset"),
 
 ##### MPAS #################################################
 # Load MPA shapefiles
-mpas <- read_sf(dsn = here::here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>% 
+mpas <- read_sf(dsn = here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>% 
   janitor::clean_names() %>% 
   filter(!wdpaid %in% c(555512002, 555512001)) %>% 
   st_transform(crs = 4326) %>% 
@@ -68,7 +69,7 @@ mpas <- read_sf(dsn = here::here("data", "spatial", "LSMPAs"), layer = "LSMPAs")
 
 
 # Load raster
-yearly_effort_raster <-readRDS(file = here::here("data", "rasterized_effort_by_region.rds"))
+yearly_effort_raster <-readRDS(file = here("data", "rasterized_effort_by_region.rds"))
 
 
 # Plot it
@@ -88,5 +89,5 @@ plot <- yearly_effort_raster %>%
   theme(legend.position = "bottom") #+
   # guides(fill = guide_legend(title = "% hours"))
 
-ggsave(plot, filename = here::here("docs", "img", "fishing_raster.png"), width = 7.5, height = 9)
+ggsave(plot, filename = here("docs", "img", "fishing_raster.png"), width = 7.5, height = 9)
 
