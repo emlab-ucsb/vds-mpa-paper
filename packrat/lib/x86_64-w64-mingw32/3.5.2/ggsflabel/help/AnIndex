@@ -1,0 +1,8 @@
+ggsflabel-package	ggsflabel
+geom_sf_label	geom_sf_label
+geom_sf_label_repel	geom_sf_label
+geom_sf_text	geom_sf_label
+geom_sf_text_repel	geom_sf_label
+ggsflabel	ggsflabel
+lims_bbox	lims_bbox
+StatSfCoordinates	geom_sf_label

@@ -1,0 +1,32 @@
+Package: ggsflabel
+Type: Package
+Title: Labels for 'sf' with 'ggplot2'
+Version: 0.0.1
+Authors@R: c(
+    person("Hiroaki", "Yutani", , "yutani.ini@gmail.com", c("aut", "cre"))
+    )
+Description: Provides text and label geoms for 'ggplot2' that automatically retrieve cooridnates from 'sf' data.
+URL: https://yutannihilation.github.io/ggsflabel/
+BugReports: https://github.com/yutannihilation/ggsflabel/issues
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1.9000
+Depends: R (>= 3.1), ggplot2 (>= 3.0.0)
+Imports: sf, ggrepel, rlang
+Suggests: testthat
+RemoteType: github
+RemoteHost: api.github.com
+RemoteRepo: ggsflabel
+RemoteUsername: yutannihilation
+RemoteRef: master
+RemoteSha: a489481bec896f874c95ed6016baf38f21b79cc3
+GithubRepo: ggsflabel
+GithubUsername: yutannihilation
+GithubRef: master
+GithubSHA1: a489481bec896f874c95ed6016baf38f21b79cc3
+NeedsCompilation: no
+Packaged: 2019-03-06 02:52:09 UTC; JC
+Author: Hiroaki Yutani [aut, cre]
+Maintainer: Hiroaki Yutani <yutani.ini@gmail.com>
+Built: R 3.5.2; ; 2019-03-06 02:52:10 UTC; windows
