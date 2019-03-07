@@ -1,6 +1,6 @@
 
-\begin{table}[!htbp] \centering 
-  \caption{\label{tab:main_DID}Difference-in-differences estimates for our nine variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port for fishing events, 6) Daily mean distance from shore for fishing events, 7) Monthly fishing hours spent in Kiribati waters, 8) Monthly fishing hours spent in PNA waters, and 9) Monthly fishing hours in the high seas. Numbers in parentheses are heteroskedasticity-robust standard errors.} 
+\begin{table}[H] \centering 
+  \caption{\label{tab:main_DID}Difference-in-differences estimates for our 9 variables of interest: 1) Daily fishing hours, 2) Daily non-fishing at-sea hours, 3) Daily proportion of fishing hours to total at-sea hours, 4) Daily distance traveled, 5) Daily mean distance from port for fishing events, 6) Daily mean distance from shore for fishing events, 7) Monthly fishing hours spent in Kiribati waters, 8) Monthly fishing hours spent in PNA waters, and 9) Monthly fishing hours in the high seas. Numbers in parentheses are heteroskedastic-robust standard errors.} 
   \label{} 
 \footnotesize 
 \begin{tabular}{@{\extracolsep{1pt}}lccccccccc} 
@@ -8,23 +8,26 @@
 \hline \\[-1.8ex] 
 \\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9)\\ 
 \hline \\[-1.8ex] 
- Constant & 0.497$^{***}$ & 3.607$^{***}$ & 0.075$^{***}$ & 5.206$^{***}$ & 12.997$^{***}$ & 12.461$^{***}$ & 3.678$^{***}$ & 4.445$^{***}$ & 2.420$^{***}$ \\ 
-  & (0.022) & (0.012) & (0.004) & (0.028) & (0.021) & (0.019) & (0.192) & (0.151) & (0.421) \\ 
+ Constant & 0.495$^{***}$ & 3.607$^{***}$ & 0.075$^{***}$ & 4.440$^{***}$ & 12.998$^{***}$ & 12.462$^{***}$ & 3.709$^{***}$ & 4.456$^{***}$ & 2.429$^{***}$ \\ 
+  & (0.022) & (0.012) & (0.004) & (0.042) & (0.021) & (0.019) & (0.195) & (0.151) & (0.415) \\ 
   & & & & & & & & & \\ 
- Post & 0.839$^{***}$ & $-$0.228$^{***}$ & 0.137$^{***}$ & 0.298$^{***}$ & 0.326$^{***}$ & 0.296$^{***}$ & 1.059$^{***}$ & 1.180$^{***}$ & 0.920$^{***}$ \\ 
-  & (0.016) & (0.008) & (0.003) & (0.018) & (0.014) & (0.014) & (0.140) & (0.109) & (0.273) \\ 
+ Post & 0.846$^{***}$ & $-$0.227$^{***}$ & 0.138$^{***}$ & 0.112$^{***}$ & 0.271$^{***}$ & 0.275$^{***}$ & 0.943$^{***}$ & 1.129$^{***}$ & 0.709$^{**}$ \\ 
+  & (0.018) & (0.009) & (0.003) & (0.031) & (0.014) & (0.014) & (0.141) & (0.110) & (0.284) \\ 
   & & & & & & & & & \\ 
- Treated & 0.136$^{***}$ & 0.014$^{**}$ & 0.015$^{***}$ & 0.413$^{***}$ & 0.223$^{***}$ & 0.116$^{***}$ & 0.534$^{***}$ & 0.149 & $-$0.244 \\ 
-  & (0.013) & (0.007) & (0.002) & (0.019) & (0.016) & (0.016) & (0.148) & (0.118) & (0.236) \\ 
+ Displaced & 0.136$^{***}$ & 0.014$^{**}$ & 0.015$^{***}$ & 0.255$^{***}$ & 0.225$^{***}$ & 0.117$^{***}$ & 0.549$^{***}$ & 0.153 & $-$0.280 \\ 
+  & (0.013) & (0.007) & (0.002) & (0.029) & (0.016) & (0.016) & (0.148) & (0.118) & (0.236) \\ 
   & & & & & & & & & \\ 
- Post $\times$ Treated & $-$0.244$^{***}$ & 0.013 & $-$0.034$^{***}$ & $-$0.513$^{***}$ & $-$0.281$^{***}$ & $-$0.155$^{***}$ & $-$0.565$^{***}$ & $-$0.399$^{***}$ & 0.338 \\ 
-  & (0.019) & (0.009) & (0.003) & (0.022) & (0.017) & (0.017) & (0.161) & (0.127) & (0.288) \\ 
+ NINO4 & $-$0.014 & $-$0.001 & $-$0.001 & $-$0.411$^{***}$ & 0.167$^{***}$ & 0.064$^{***}$ & 0.357$^{***}$ & 0.137$^{**}$ & 0.484$^{***}$ \\ 
+  & (0.011) & (0.005) & (0.002) & (0.017) & (0.008) & (0.007) & (0.068) & (0.056) & (0.122) \\ 
+  & & & & & & & & & \\ 
+ Post $\times$ Displaced & $-$0.243$^{***}$ & 0.013 & $-$0.034$^{***}$ & $-$0.210$^{***}$ & $-$0.285$^{***}$ & $-$0.157$^{***}$ & $-$0.586$^{***}$ & $-$0.403$^{***}$ & 0.338 \\ 
+  & (0.019) & (0.009) & (0.003) & (0.036) & (0.017) & (0.017) & (0.161) & (0.127) & (0.285) \\ 
   & & & & & & & & & \\ 
 \hline \\[-1.8ex] 
 Month FE & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\ 
 Flag FE & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\ 
-Observations & 83,052 & 83,052 & 83,051 & 66,981 & 32,055 & 32,055 & 1,814 & 2,588 & 684 \\ 
-R$^{2}$ & 0.102 & 0.072 & 0.107 & 0.027 & 0.062 & 0.080 & 0.113 & 0.198 & 0.233 \\ 
+Observations & 83,052 & 83,052 & 83,051 & 79,669 & 32,055 & 32,055 & 1,814 & 2,588 & 684 \\ 
+R$^{2}$ & 0.102 & 0.072 & 0.107 & 0.017 & 0.075 & 0.082 & 0.126 & 0.200 & 0.252 \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{9}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 

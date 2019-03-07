@@ -1,44 +1,46 @@
 
-\begin{table}[!htbp] \centering 
-  \caption{\label{tab:sp_corr}Coefficient estimates for a third-polinomial fit to the measures of crowding. The first column shows coefficients for the number of cells with treated and control vessels during the same month. The second column shows coefficients for the spatial correlation for presence / absence of treated and control vessels. The explanatory variable is the number of months before implementation of PIPA. Numbers in parentheses are heteroskedastic-robust standard errors.} 
+\begin{table}[H] \centering 
+  \caption{\label{tab:sp_corr}Coefficient estimates for a fourth-degree polynomial fit to the measures of crowding for all PNA waters. The first five columns represent different specifications for number of cells with presence of both fleets. Columns 6 - 10 show coefficients for the spatial correlation for presence / absence of displaced and non-displaced vessels. The explanatory variable is the number of months before or after implementation of PIPA. Numbers in parentheses are heteroskedastic-robust standard errors. The last column of each group presents fits with only NINO4 anomaly index as an explanatory variable.} 
   \label{} 
 \footnotesize 
-\begin{tabular}{@{\extracolsep{1pt}}lcccccccc} 
+\begin{tabular}{@{\extracolsep{0.1pt}}lcccccccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
-\\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8)\\ 
+\\[-1.8ex] & \multicolumn{5}{c}{Number of cells} & \multicolumn{5}{c}{Pearson's correlation coefficient} \\ 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9) & (10)\\ 
 \hline \\[-1.8ex] 
- Constant & 78.040$^{***}$ & 84.639$^{***}$ & 60.962$^{***}$ & 66.725$^{***}$ & 0.412$^{***}$ & 0.417$^{***}$ & 0.370$^{***}$ & 0.377$^{***}$ \\ 
-  & (5.438) & (8.990) & (15.598) & (15.988) & (0.014) & (0.032) & (0.062) & (0.066) \\ 
-  & & & & & & & & \\ 
- M & 3.943$^{***}$ & 4.065$^{***}$ & 3.066$^{***}$ & 3.139$^{***}$ & 0.010$^{***}$ & 0.010$^{***}$ & 0.009$^{**}$ & 0.009$^{**}$ \\ 
-  & (0.302) & (0.348) & (0.966) & (1.040) & (0.001) & (0.001) & (0.003) & (0.004) \\ 
-  & & & & & & & & \\ 
- M $^2$ & $-$0.005 & $-$0.021 & 0.008 & $-$0.008 & $-$0.0001$^{***}$ & $-$0.0001 & $-$0.0001 & $-$0.0001 \\ 
-  & (0.019) & (0.026) & (0.027) & (0.030) & (0.00004) & (0.0001) & (0.0001) & (0.0001) \\ 
-  & & & & & & & & \\ 
- M $^3$ & $-$0.002$^{***}$ & $-$0.002$^{***}$ & $-$0.002$^{***}$ & $-$0.002$^{***}$ & $-$0.00001$^{***}$ & $-$0.00001$^{***}$ & $-$0.00001$^{***}$ & $-$0.00001$^{***}$ \\ 
-  & (0.0003) & (0.0003) & (0.001) & (0.001) & (0.00000) & (0.00000) & (0.00000) & (0.00000) \\ 
-  & & & & & & & & \\ 
- M $^4$ & 0.00001 & 0.00002 & 0.00000 & 0.00001 & 0.00000$^{***}$ & 0.00000$^{**}$ & 0.00000 & 0.00000 \\ 
-  & (0.00001) & (0.00002) & (0.00002) & (0.00002) & (0.00000) & (0.00000) & (0.00000) & (0.00000) \\ 
-  & & & & & & & & \\ 
- NINO4 &  & $-$8.095 &  & $-$10.395 &  & $-$0.006 &  & $-$0.014 \\ 
-  &  & (8.287) &  & (9.481) &  & (0.029) &  & (0.031) \\ 
-  & & & & & & & & \\ 
- $\sigma_1$ &  &  & 21.318 & 25.102 &  &  & 0.057 & 0.062 \\ 
-  &  &  & (19.493) & (22.486) &  &  & (0.076) & (0.080) \\ 
-  & & & & & & & & \\ 
- $\sigma_2$ &  &  & 5.299 & 3.194 &  &  & $-$0.015 & $-$0.018 \\ 
-  &  &  & (18.874) & (18.670) &  &  & (0.035) & (0.035) \\ 
-  & & & & & & & & \\ 
+ Constant & 78.04$^{***}$ & 84.64$^{***}$ & 60.96$^{***}$ & 66.73$^{***}$ & 80.62$^{***}$ & 0.41$^{***}$ & 0.42$^{***}$ & 0.37$^{***}$ & 0.38$^{***}$ & 0.38$^{***}$ \\ 
+  & (5.44) & (8.99) & (15.60) & (15.99) & (7.96) & (0.01) & (0.03) & (0.06) & (0.07) & (0.02) \\ 
+  & & & & & & & & & & \\ 
+ M & 3.94$^{***}$ & 4.07$^{***}$ & 3.07$^{***}$ & 3.14$^{***}$ &  & 0.01$^{***}$ & 0.01$^{***}$ & 0.01$^{**}$ & 0.01$^{**}$ &  \\ 
+  & (0.30) & (0.35) & (0.97) & (1.04) &  & (0.001) & (0.001) & (0.003) & (0.004) &  \\ 
+  & & & & & & & & & & \\ 
+ M $^2$ & $-$0.005 & $-$0.02 & 0.01 & $-$0.01 &  & $-$0.0001$^{***}$ & $-$0.0001 & $-$0.0001 & $-$0.0001 &  \\ 
+  & (0.02) & (0.03) & (0.03) & (0.03) &  & (0.0000) & (0.0001) & (0.0001) & (0.0001) &  \\ 
+  & & & & & & & & & & \\ 
+ M $^3$ & $-$0.002$^{***}$ & $-$0.002$^{***}$ & $-$0.002$^{***}$ & $-$0.002$^{***}$ &  & $-$0.0000$^{***}$ & $-$0.0000$^{***}$ & $-$0.0000$^{***}$ & $-$0.0000$^{***}$ &  \\ 
+  & (0.0003) & (0.0003) & (0.001) & (0.001) &  & (0.0000) & (0.0000) & (0.0000) & (0.0000) &  \\ 
+  & & & & & & & & & & \\ 
+ M $^4$ & 0.0000 & 0.0000 & 0.0000 & 0.0000 &  & 0.0000$^{***}$ & 0.0000$^{**}$ & 0.0000 & 0.0000 &  \\ 
+  & (0.0000) & (0.0000) & (0.0000) & (0.0000) &  & (0.0000) & (0.0000) & (0.0000) & (0.0000) &  \\ 
+  & & & & & & & & & & \\ 
+ NINO4 &  & $-$8.09 &  & $-$10.39 & 19.76$^{**}$ &  & $-$0.01 &  & $-$0.01 & 0.07$^{***}$ \\ 
+  &  & (8.29) &  & (9.48) & (9.41) &  & (0.03) &  & (0.03) & (0.02) \\ 
+  & & & & & & & & & & \\ 
+ $\sigma_1$ &  &  & 21.32 & 25.10 &  &  &  & 0.06 & 0.06 &  \\ 
+  &  &  & (19.49) & (22.49) &  &  &  & (0.08) & (0.08) &  \\ 
+  & & & & & & & & & & \\ 
+ $\sigma_2$ &  &  & 5.30 & 3.19 &  &  &  & $-$0.01 & $-$0.02 &  \\ 
+  &  &  & (18.87) & (18.67) &  &  &  & (0.04) & (0.03) &  \\ 
+  & & & & & & & & & & \\ 
 \hline \\[-1.8ex] 
-NINO4 & No & Yes & No & Yes & No & Yes & No & Yes \\ 
-Satellites & No & No & Yes & Yes &  &  &  &  \\ 
-Observations & 84 & 84 & 84 & 84 & 84 & 84 & 84 & 84 \\ 
-R$^{2}$ & 0.791 & 0.793 & 0.795 & 0.798 & 0.703 & 0.704 & 0.709 & 0.710 \\ 
+NINO4 & No & Yes & No & Yes & Yes & No & Yes & No & Yes & Yes \\ 
+Satellites & No & No & Yes & Yes & No &  &  &  &  &  \\ 
+AIC & 796.937 & 797.991 & 799.477 & 799.97 & 919.583 & -187.208 & -185.269 & -184.916 & -183.233 & -97.386 \\ 
+Observations & 84 & 84 & 84 & 84 & 84 & 84 & 84 & 84 & 84 & 84 \\ 
+R$^{2}$ & 0.79 & 0.79 & 0.79 & 0.80 & 0.03 & 0.70 & 0.70 & 0.71 & 0.71 & 0.07 \\ 
 \hline 
 \hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{8}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\textit{Note:}  & \multicolumn{10}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
 \end{table} 
