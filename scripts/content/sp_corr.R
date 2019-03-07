@@ -20,6 +20,9 @@ library(here)
 library(raster)
 library(tidyverse)
 
+# Custom functions
+# Extract AIC from the models
+my_aic <- function(x){round(AIC(x), 3)}
 
 ## Load data
 
@@ -78,13 +81,14 @@ corr_both <- corr %>%
 
 
 #### FIT THE MODELS ######################################################
+n_model <- lm(n ~ nino4anom, data = n_both)
 n_model1 <- lm(n ~ dif + I(dif^2) + I(dif^3) + I(dif^4), data = n_both)
 n_model2 <- lm(n ~ dif + I(dif^2) + I(dif^3) + I(dif^4) + nino4anom, data = n_both)
 n_model3 <- lm(n ~ dif + I(dif^2) + I(dif^3) + I(dif^4) + sate1 + sate2, data = n_both)
 n_model4 <- lm(n ~ dif + I(dif^2) + I(dif^3) + I(dif^4) + sate1 + sate2 + nino4anom, data = n_both)
 
 
-
+corr_model <- lm(cor ~ nino4anom, data = corr_both)
 corr_model1 <- lm(cor ~ dif + I(dif^2) + I(dif^3) + I(dif^4), data = corr_both)
 corr_model2 <- lm(cor ~ dif + I(dif^2) + I(dif^3) + I(dif^4) + nino4anom, data = corr_both)
 corr_model3 <- lm(cor ~ dif + I(dif^2) + I(dif^3) + I(dif^4) + sate1 + sate2, data = corr_both)
@@ -95,15 +99,18 @@ models <- list(n_model1,
                n_model2,
                n_model3,
                n_model4,
+               n_model,
                corr_model1,
                corr_model2,
                corr_model3,
-               corr_model4)
+               corr_model4,
+               corr_model)
 
 stargazer::stargazer(models,
                      se = commarobust::makerobustseslist(models),
                      t.auto = T,
                      p.auto = T,
+                     digits = 2,
                      intercept.bottom = F,
                      covariate.labels = c("Constant",
                                           "M",
@@ -114,17 +121,19 @@ stargazer::stargazer(models,
                                           "$\\sigma_1$",
                                           "$\\sigma_2$"),
                      dep.var.caption = "",
-                     dep.var.labels.include = F,
-                     column.sep.width = "1pt",
+                     dep.var.labels = c("Number of cells",
+                                        "Pearson's correlation coefficient"),
+                     column.sep.width = "0.1pt",
                      font.size = "footnotesize",
                      type = "latex",
                      omit = c("flag", "month"),
                      add.lines = list(
-                       c("NINO4", rep(c("No", "Yes", "No", "Yes"), 2)),
-                       c("Satellites", c("No", "No", "Yes", "Yes"))),
+                       c("NINO4", rep(c("No", "Yes", "No", "Yes", "Yes"), 2)),
+                       c("Satellites", c("No", "No", "Yes", "Yes", "No")),
+                       c("AIC", map_dbl(models, my_aic))),
                      omit.stat = c("adj.rsq", "f", "ser"),
                      header = F,
-                     title = "\\label{tab:sp_corr}Coefficient estimates for a third-polinomial fit to the measures of crowding. The first column shows coefficients for the number of cells with treated and control vessels during the same month. The second column shows coefficients for the spatial correlation for presence / absence of treated and control vessels. The explanatory variable is the number of months before implementation of PIPA. Numbers in parentheses are heteroskedastic-robust standard errors.",
+                     title = "\\label{tab:sp_corr}Coefficient estimates for a fourth-degree polynomial fit to the measures of crowding for all PNA waters. The first five columns represent different specifications for number of cells with presence of both fleets. Columns 6 - 10 show coefficients for the spatial correlation for presence / absence of displaced and non-displaced vessels. The explanatory variable is the number of months before or after implementation of PIPA. Numbers in parentheses are heteroskedastic-robust standard errors. The last column of each group presents fits with only NINO4 anomaly index as an explanatory variable.",
                      out = here("docs", "tab", "sp_corr.tex"))
 
 
