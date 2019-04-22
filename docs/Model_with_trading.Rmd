@@ -1,0 +1,66 @@
+---
+title: "trade"
+author: "Villaseñor-Derbez J.C."
+date: "22/3/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+The vessel-day price for parcels that do not implement a reserve ($j = c(2, 10)$) is given by:
+
+$$
+\pi(E_j) = pqX_j - \beta c E_j ^{\beta - 1}
+$$
+
+
+We can solve for $E_j$:
+
+$$
+\begin{split}
+\pi_j + \beta c E_j ^{\beta - 1} &= pqX_j \\
+\beta c E_j ^{\beta - 1} &= pqX_j - \pi_j \\
+E_j ^{\beta - 1} &= \frac{pqX_j - \pi_j}{\beta c } \\
+E_j &= \left(\frac{pqX_j - \pi_j}{\beta c }\right) ^ { \frac{1}{\beta - 1}}
+\end{split}
+$$
+For the parcel that implements the reserve ($i = 1$) the same equations are given by:
+
+$$
+\pi_1(E_1) = pqX_1 (\theta + (1 - \theta)(1 - R))- \beta c E_1 ^{\beta - 1}
+$$
+
+For simplicity, we can write $\Omega = (\theta + (1 - \theta)(1 - R))$, and the baove becomes
+
+
+$$
+\pi_1(E_1) = pqX_1\Omega - \beta c E_1 ^{\beta - 1}
+$$
+
+We can solve for $E_i$ as in the previous casse:
+
+$$
+\begin{split}
+\pi_1 + \beta c E_1 ^{\beta - 1} &= pqX_1\Omega \\
+\beta c E_1 ^{\beta - 1} &= pqX_1\Omega - \pi_1 \\
+E_1 ^{\beta - 1} &= \frac{pqX_1\Omega - \pi_1}{\beta c} \\
+E_1 &= \left(\frac{pqX_1\Omega - \pi_1}{\beta c }\right) ^ {\frac{1}{\beta - 1}}
+\end{split}
+$$
+
+The total vessel-days for cells that belong to PNA countries (*i.e.* i = (1, 9)) are constrained at 45,000, which we term $\bar{E}$. Therefore, total effort can be expressed as:
+
+$$
+\bar{E} = \left(\frac{pqX_1(\theta + (1 - \theta)(1 - R)) - \pi_1}{\beta c }\right) ^ {\frac{1}{\beta - 1}} + 
+\sum_{j = 2}^9\left(\frac{pqX_j - \pi_j}{\beta c }\right) ^ { \frac{1}{\beta - 1} }
+$$
+
+This parameterization shows that the cell-level effort is determined by the combination of stock size ($X_j$) and the price $\pi$. Trading between country will continue until all $\pi_i$ reach an equilibrium price of $\bar{\pi}$.
+
+
+
+
+
