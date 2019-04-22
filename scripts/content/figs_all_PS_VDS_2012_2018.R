@@ -37,7 +37,7 @@ vessel_activity <- readRDS(file = here("raw_data",
                               eez_iso3 %in% PNA_without_KIR ~ "other PNA countries",
                               eez_iso3 == "HS" ~"HS",
                               T ~ "Other countries"),
-         days = hours / 24)
+         days = hours_length / 24)
 
 # Annual vessel-days in PNA countries by group (treated, control, others)
 all_PS_VDS_year_data <- vessel_activity %>% 
@@ -237,7 +237,46 @@ ggsave(plot = p4,
 
 
 
+readRDS(file = here("raw_data",
+                    "activity_by_vessel_year_eez.rds")) %>% 
+  filter(best_vessel_class == "tuna_purse_seines") %>%
+  group_by(year, ssvid, length_factor) %>%
+  count() %>%
+  ungroup() %>% 
+  select(-n) %>%
+  group_by(year, length_factor) %>%
+  count() %>%
+  ungroup() %>% 
+  spread(length_factor, n, fill = 0) %>% 
+  knitr::kable(col.names = c("Year", "< 50 m", "50 m - 80 m", "> 80 m"),
+               format = "latex") %>% 
+  cat(file = here("docs", "tab", "vessel_sizes_by_year.tex"))
 
+readRDS(file = here("raw_data",
+                    "activity_by_vessel_year_eez.rds")) %>% 
+  filter(best_vessel_class == "tuna_purse_seines") %>%
+  mutate(treated = ifelse(treated, "Displaced", "Non-displaced"),
+         group = ifelse(is.na(treated), "Others", treated),
+         group = fct_relevel(group, "Non-displaced", "Others", "Displaced")) %>% 
+  group_by(year, group, best_length) %>%
+  count() %>%
+  ungroup() %>% 
+  ggplot(aes(x = best_length, y = as.character(year), fill = group)) +
+  geom_density_ridges(alpha = 0.5)
+
+readRDS(file = here("raw_data",
+                    "activity_by_vessel_year_eez.rds")) %>% 
+  filter(best_vessel_class == "tuna_purse_seines") %>%
+  mutate(treated = ifelse(treated, "Displaced", "Non-displaced"),
+         group = ifelse(is.na(treated), "Others", treated),
+         group = fct_relevel(group, "Non-displaced", "Others", "Displaced")) %>% 
+  group_by(ssvid, group, length_factor) %>% 
+  count() %>%
+  ungroup() %>% 
+  select(-n) %>%
+  group_by(group, length_factor) %>%
+  count() %>% 
+  spread(length_factor, n)
 
 
 

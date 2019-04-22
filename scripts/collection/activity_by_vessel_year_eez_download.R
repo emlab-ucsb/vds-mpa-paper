@@ -10,6 +10,7 @@
 
 # Load packages
 library(startR)
+library(here)
 
 # DOWNLOAD THE DATA
 # Create a tbl pointing to vessel tracks
@@ -19,4 +20,4 @@ vessel_activity <- get_table(project = "ucsb-gfw",
   
 # Save it to disk
 saveRDS(vessel_activity,
-        file = here::here("raw_data", "activity_by_vessel_year_eez.rds"))
+        file = here("raw_data", "activity_by_vessel_year_eez.rds"))
