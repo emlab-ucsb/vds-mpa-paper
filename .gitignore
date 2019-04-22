@@ -18,3 +18,4 @@ reports/FFA Tuna Development Indicators Brochure.pdf reports/SC14-GN-WP-01 Overv
 data/vessel_tracks_2012_2013_baci.rds
 data/vessel_tracks_2012_2018_baci.rds
 packrat/lib/*
+packrat/lib*/
