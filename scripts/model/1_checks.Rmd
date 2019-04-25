@@ -1,13 +1,149 @@
 ---
-title: "Untitled"
+title: "Run some checks"
 author: "Villaseñor-Derbez J.C."
-date: "22/4/2019"
+date: "Updated on `r Sys.Date()`"
 output:
-  html_document:
+  html_document: 
+    code_folding: hide
     toc: yes
-    toc_float: yes
-    code_folding: show
+    toc_depth: 4
+    toc_float:
+      collapsed: false
 ---
+
+# Model description
+
+We model the PNA as a ten-patch discrete-time meta-population system, where Patch 1 is considering a spatial closure. Patches 2-9 are the other PNA countries, and Patch 10 represents the high seas and non-PNA countries. The stock of fish in each country is relatively stationary within a single fishing season, but redistributes across all patches annually. The price of fish is $p$, and catchability is given by $q$.
+
+In the absence of a reserve, the revenue for vessels in patch $i$ is given by $pqE_iX_i$, where $E_i$ and $X_i$ are effort (vessel-days) and stock size in patch $i$ at the beginning of a period. The cost of fishing in patch $i$ is given by $cE_i^\beta$, where $\beta = 1.3$ matches commonly-used cost functions. Patch 1 considers a spatial closure by implementing a reserve as a fraction $R$ of the total patch ($R \in[0,1)$). Fish move within a patch based on $\theta$, where $\theta = 0$ implies no movement within the patch, and $\theta = 1$ implies that fish within the patch are well mixed during the fishing season. In this patch, revenues are given by $pqE_1X1(\theta + (1 - \theta)(1 - R))$. The parameterization of movement and reserve size imply that profit from fishing Patch 1 is given by:
+
+$$
+\begin{align}
+\Pi_1(E_1,X_1,R) = pqE_1X_1(\theta + (1 - \theta)(1 - R))-cE_1^\beta
+\end{align}
+$$
+
+And profits from fishing in Patch $j = \{2, 3, ..., 10\}$ are:
+
+$$
+\begin{align}
+\Pi_j(E_j,X_j) = pqE_jX_j-cE_j^\beta
+\end{align}
+$$
+
+The above equations imply that the marginal profit from the last unit of effort in a patch are given by:
+
+$$
+\begin{align}
+\pi_1(E_1) = pqX_1(\theta + (1 - \theta)(1 - R)) - \beta cE_1^{\beta-1}
+\label{eqn:marginal_profit_1}
+\\
+\pi_j(E_j) = pqX_j - \beta cE_j^{\beta-1}
+\label{eqn:marginal_profit_j}
+\end{align}
+$$
+
+In practice, the effort levels in each PNA patch are given (so $E_{1},\ E_{2},...,E_{9}$ are given) and the effort level on the high seas ($E_{10}$) is a result of open access dynamics. Therefore, we assume that effort continues to enter Patch 10 until the profit from the last unit of effort is exactly zero, indicating that $E_{10}$ is the value for which $\pi_{10}(E_{10})  = 0$. Setting Equation \ref{eqn:marginal_profit_j} equal to zero and solving for $E_j$ gives:
+
+$$
+\begin{align}
+E_{10} = \left(\frac{pqX_{10}}{\beta c}\right)^{\frac{1}{(\beta - 1)}}
+\label{eqn:effort_hs}
+\end{align}
+$$
+
+The patch-level harvest is then determined by effort and stock size:
+
+$$
+\begin{align}
+H_1 = qE_1X_1 (\theta + (1 - \theta)(1 - R))
+\label{eqn:harvest_1}
+\\
+H_j = qE_jX_j
+\label{eqn:harvest_j}
+\end{align}
+$$
+
+Therefore, escapement in patch $i$ is the difference between initial stock size and harvests given by $e_{it} = X{it} - H_{it}$ and total escapement is $e_t=\sum_{i=1}^{10}e_{it}$. The entire stock then grows according to:
+
+$$
+\begin{align}
+X_{t+1} = e_t + \frac{(\phi + 1)}{\phi}ge_t\left(1 - \left(\frac{e_t}{K}\right) ^{\phi}\right)
+\label{eqn:grow}
+\end{align}
+$$
+
+After the stock grows, a constant and patch-specific fraction $f_i$ of the total stock redistributes to patch $i$, so:
+
+$$
+\begin{align}
+X_{it+1} = f_iX_{t+1}
+\label{eqn:disperse}
+\end{align}
+$$
+
+The vessel-day price that a country charges is given by $\pi_i$ from Equations \ref{eqn:marginal_profit_1} and \ref{eqn:marginal_profit_j}. Therefore, patch-level license revenues are given by:
+
+$$
+\begin{align}
+\omega = \pi_iE_i
+\label{eqn:license_revenue}
+\end{align}
+$$
+
+Equations \ref{eqn:harvest_1} shows that low values of $\theta$ and $R > 0$ would increase escapement, which would lead to an increase in stock size (Equation \ref{eqn:grow}) and a benefit to all the other patches. But this would also cause the stock in the high seas ($X_{10}$) to increase, leading to an increased effort being allocated to the high seas (Equation \ref{eqn:effort_hs}) and a loss of these potential rents. Thus, the spillover benefits of increasing $R$ are never completely captured.
+
+The vessel-day price for parcels that do not implement a reserve ($j = c(2, 10)$) is given by:
+
+$$
+\pi(E_j) = pqX_j - \beta c E_j ^{\beta - 1}
+$$
+
+
+We can solve for $E_j$:
+
+$$
+\begin{split}
+\pi_j + \beta c E_j ^{\beta - 1} &= pqX_j \\
+\beta c E_j ^{\beta - 1} &= pqX_j - \pi_j \\
+E_j ^{\beta - 1} &= \frac{pqX_j - \pi_j}{\beta c } \\
+E_j &= \left(\frac{pqX_j - \pi_j}{\beta c }\right) ^ { \frac{1}{\beta - 1}}
+\end{split}
+$$
+
+For the parcel that implements the reserve ($i = 1$) the same equations are given by:
+
+$$
+\pi_1(E_1) = pqX_1 (\theta + (1 - \theta)(1 - R))- \beta c E_1 ^{\beta - 1}
+$$
+
+For simplicity, we can write $\Omega = (\theta + (1 - \theta)(1 - R))$, and the baove becomes
+
+
+$$
+\pi_1(E_1) = pqX_1\Omega - \beta c E_1 ^{\beta - 1}
+$$
+
+We can solve for $E_i$ as in the previous casse:
+
+$$
+\begin{split}
+\pi_1 + \beta c E_1 ^{\beta - 1} &= pqX_1\Omega \\
+\beta c E_1 ^{\beta - 1} &= pqX_1\Omega - \pi_1 \\
+E_1 ^{\beta - 1} &= \frac{pqX_1\Omega - \pi_1}{\beta c} \\
+E_1 &= \left(\frac{pqX_1\Omega - \pi_1}{\beta c }\right) ^ {\frac{1}{\beta - 1}}
+\end{split}
+$$
+
+The total vessel-days for cells that belong to PNA countries (*i.e.* i = (1, 9)) are constrained at 45,000, which we term $\bar{E}$. Therefore, total effort can be expressed as:
+
+$$
+\bar{E} = \left(\frac{pqX_1(\theta + (1 - \theta)(1 - R)) - \pi_1}{\beta c }\right) ^ {\frac{1}{\beta - 1}} + 
+\sum_{j = 2}^9\left(\frac{pqX_j - \pi_j}{\beta c }\right) ^ { \frac{1}{\beta - 1} }
+$$
+
+This parameterization shows that the cell-level effort is determined by the combination of stock size ($X_j$) and the price $\pi$. Trading between country will continue until all $\pi_i$ reach an equilibrium price of $\bar{\pi}$.
+
 # Setup
 
 ## Rmd options
@@ -28,17 +164,29 @@ rm(list = ls())
 library(startR)
 library(here)
 library(cowplot)
+library(magrittr)
 library(tidyverse)
 
 # Load functions
-source(here("scripts", "model", "grow.R"))
 source(here("scripts", "model", "E_vec_fxn.R"))
 source(here("scripts", "model", "pi_of_E.R"))
 source(here("scripts", "model", "max_Ei.R"))
-source(here("scripts", "model", "solve_pi.R"))
-```
 
-# Start checks
+# Some housekeeping
+update_geom_defaults("point",
+                     list(
+                       fill = "steelblue",
+                       color = "black",
+                       shape = 21,
+                       size = 3
+                     ))
+
+
+update_geom_defaults("line", list(color = "black",
+                                  size = 1))
+
+theme_set(startR::ggtheme_plot(font_size = 8))
+```
 
 ## Define parameters
 
@@ -126,7 +274,8 @@ We can now use the FFA catch data for skipjack and estimate yearly catches by EE
 
 ```{r}
 # Read in the catch data
-catches <- read.csv(here("raw_data", "FFA", "ps_skj_catches_spatial_timeseries.csv"), stringsAsFactors = F) %>%
+catches <- read.csv(here("raw_data", "FFA", "ps_skj_catches_spatial_timeseries.csv"),
+                    stringsAsFactors = F) %>%
   gather(year, catches, -eez_iso3) %>%
   mutate(year = as.numeric(str_remove(year, "X"))) %>%
   filter(year > 2010) %>%
@@ -165,18 +314,22 @@ cpue <- left_join(act, catches, by = c("year", "eez_iso3")) %>%
   arrange(eez_iso3)
 ```
 
+Let's take a look at the relationship between Effort and Catches:
+
 ```{r}
 left_join(act, catches, by = c("year", "eez_iso3")) %>%
   drop_na() %>% 
-  ggplot(mapping = aes(x = days, y = catches, color = year)) +
+  ggplot(mapping = aes(x = days, y = catches, fill = year)) +
   geom_smooth(method = "lm", color = "black") +
-  geom_point(size = 4) +
+  geom_point() +
   labs(x = "Effort (days)", y = "Catches (tonnes)") +
-  ggtitle("Relationship between effort and catches")
+  ggtitle("Relationship between effort and catches") +
+  scale_fill_viridis_c()
 ```
 
 ```{r}
 fvec_cpue <- c(cpue$cpue_prop, prop_hs)
+fvec_cpue <- c(0.12, 0.08, 0.07, 0.13, 0.07, 0.12, 0.09, 0.12, 0.1, 0.1)
 names(fvec_cpue) <- c(levels(cpue$eez_iso3), "HS")
 
 # Chose a source for the fvec
@@ -189,52 +342,102 @@ names(fvec) <- names(bvec)
 ```
 
 
-# Run some checks
+# Start checks
+
+## Is there a value of $\bar{E}$ for the given possible ranges of Biomass?
+
+The following plot shows the attainable levels of effort given price, catchability and biomass for cases where pi = 0. In other words, this just shows if harvesting at all would be profitable even in the absence of a vessel-day price.
+
+The graph shows that for biomass levels between 1 ton and current Byomass (`r Bnow`), many values of $E$ are above $\bar{E}$ (horizontal dashed line)
+
 
 ```{r}
-# Is there a value of E for the given possible ranges of Biomass?
 tibble(X = seq(1, Bnow, length.out = 100)) %>%
   rowwise() %>%
   mutate(E = sum(max_Ei(p = p, q = q, Xvec = X, theta = theta, R = R, beta = beta, c = c))) %>%
   ggplot(aes(x = X, y = E)) +
   geom_line() +
   geom_vline(xintercept = Bmsy) +
-  geom_hline(yintercept = E)
+  geom_hline(yintercept = E, linetype = "dashed") +
+  labs(x = "Biomass", y = "Effort (days)")
 ```
 
+For 95% of the values of biomass, there are attainable levels of effort that would produce positive catches.
 
 ```{r}
-# What's the aggregate demand for a given value of pi with Bmsy?
-# FIrst we need to establish the maximum chargable price to plot all ranges from 0 to max_pi
-max_pi <- max((p * q * Bnow * fvec))
+tibble(X = seq(1, Bnow, length.out = 100)) %>%
+  rowwise() %>%
+  mutate(E_calc = sum(max_Ei(p = p, q = q, Xvec = X, theta = theta, R = R, beta = beta, c = c)),
+         Eabove = E_calc > E) %$%
+  sum(Eabove)
+```
 
+## What's the aggregate demand for a given value of pi with Bmsy?
+
+First we need to establish the maximum chargable price to plot all ranges from 0 to max_pi.
+
+```{r}
+max_pi <- max((p * q * Bnow * fvec))
+```
+
+For given values, the maximum chargable price for VDS is `r max_pi`. Let's create a dataframe with this data. This data.frame essentially contains the demand curves for each country, based on the biomass in each patch. Biomass comes from the cpue vector we derived.
+
+```{r}
 check_E_pi <- tibble(pi = seq(0, max_pi, length.out = 100)) %>%
   rowwise() %>%
   mutate(E = list(
     tibble(
-      E = E_vec_fxn(p = p, q = q, Xvec = Xvec, pi = pi, theta = theta, R = R, beta = beta, c = c),
-      cty = names(fvec)
+      E = E_vec_fxn(p = p, q = q, Xvec = 0.9 * Xvec, pi = pi, theta = theta, R = R, beta = beta, c = c),
+      cty = names(fvec),
+      cty2 = as.character(1:length(fvec))
     )
   )) %>%
   unnest() %>%
   filter(!cty == "HS")
 ```
 
+The following graph shows all the demand curves for each country, given a value of E. The vertical dashed line shows the $\bar{E}$. Its intersections with each demand curve tell us how much vessels would be willing to pay to fish in each country.
+
 ```{r}
-ggplot(data = check_E_pi, mapping = aes(x = E, y = pi, color = cty)) +
-  geom_line(size = 1) +
-  geom_vline(xintercept = E, color = "red")
+(demands <- ggplot(data = check_E_pi, mapping = aes(x = E / 1000, y = pi, color = cty2)) +
+   geom_line(size = 1) +
+   geom_vline(xintercept = E / 1000, color = "red", linetype = "dashed") +
+   labs(x = "E (thousand vessel-days)", y = quo(pi)) +
+   guides(color = guide_legend("Patch", ncol = 2)) +
+   theme(legend.position = c(1, 1),
+         legend.justification = c(1, 1)) +
+   scale_color_brewer(palette = "Set1")
+   )
+```
+
+We can aggregate all these demand curves horizontally and obtain the total demand curve. This is essentially the curve along wich we want to find the optimal pi.
+
+```{r}
+(demands_agg <- check_E_pi %>%
+   group_by(pi) %>%
+   summarise(E = sum(E)) %>%
+   ggplot(aes(x = E / 1000, y = pi)) +
+   geom_line() +
+   geom_vline(xintercept = E / 1000, color = "red", linetype = "dashed") +
+   labs(x = "E (thousand vessel-days)", y = quo(pi))
+ )
+```
+
+```{r, fig.width = 7, fig.height = 3.5}
+(demand_curves <- plot_grid(demands, demands_agg, ncol = 2))
+```
+
+```{r}
+ggsave(plot = demand_curves,
+       filename = here("docs", "slides", "img", "demand_curves.png"),
+       width = 4,
+       height = 2)
 ```
 
 
+# Reproducibility chunk
 
 ```{r}
-check_E_pi %>%
-  group_by(pi) %>%
-  summarise(E = sum(E)) %>%
-  ggplot(aes(x = E, y = pi)) +
-  geom_line() +
-  geom_vline(xintercept = E, color = "red") +
-  geom_vline(xintercept = sum(max_Ei(p = p, q = q, Xvec = Xvec, theta = theta, R = R, beta = beta, c = c)[1:(n_patches - 1)]))
+sessionInfo()
 ```
 

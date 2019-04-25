@@ -97,7 +97,7 @@ DF_results <- DF_results %>%
 ## NO TRADING
 Evec <- Benchmark_results$b_vessel_days
 
-Benchmark_results2 <-
+Benchmark_results_no_trading <-
   PNA_no_trading(
     fvec = fvec,
     theta = theta,

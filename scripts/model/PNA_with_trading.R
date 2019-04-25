@@ -167,8 +167,6 @@ PNA_with_trading <- function(fvec = NULL, theta = NULL, R = NULL, r = NULL, K = 
   
   DF <- tibble(
     Country = names(fvec),
-    Reserve = R,
-    Movement = theta,
     Harvest = H_ss_vec,
     Vessel_Days = E_ss_vec,
     Stock = sum(X_ss_vec),
@@ -177,7 +175,8 @@ PNA_with_trading <- function(fvec = NULL, theta = NULL, R = NULL, r = NULL, K = 
     VDSrevenue = VDSrevenue_ss_vec,
     VDSrevenue_all = sum(VDSrevenue_ss_vec),
     VDSrevenue_notKIR = sum(VDSrevenue_ss_vec[2:n_patches])
-  )
+  ) #%>% 
+    # mutate(Country = fct_relevel(Country, "KIR"))
   
   return(DF)
 }

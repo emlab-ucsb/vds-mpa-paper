@@ -1,0 +1,469 @@
+---
+title: "Run the model"
+author: "Villaseñor-Derbez J.C."
+date: "Updated on `r Sys.Date()`"
+output:
+  html_document: 
+    code_folding: show
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+---
+
+# Setup
+
+## Rmd options
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warnings = FALSE,
+                      message = FALSE)
+
+# Clean the environment
+rm(list = ls())
+```
+
+## Load packages and functions
+
+```{r}
+# Load libraries
+library(startR)
+library(here)
+library(cowplot)
+library(tidyverse)
+
+# Load functions
+source(here("scripts", "model", "grow.R"))
+source(here("scripts", "model", "E_vec_fxn.R"))
+source(here("scripts", "model", "pi_of_E.R"))
+source(here("scripts", "model", "max_Ei.R"))
+source(here("scripts", "model", "solve_pi.R"))
+source(here("scripts", "model", "PNA_with_trading.R"))
+source(here("scripts", "model", "PNA_no_trading.R"))
+
+# Some housekeeping
+update_geom_defaults("point",
+                     list(
+                       fill = "steelblue",
+                       color = "black",
+                       shape = 21,
+                       size = 3
+                     ))
+
+
+update_geom_defaults("line", list(color = "black",
+                                  size = 1))
+
+theme_set(startR::ggtheme_plot())
+```
+
+## Define parameters
+
+```{r}
+# Reserve properties
+theta <- 1
+R <- 0
+
+# Bio
+MSY <- 1875600 # 50th percentile from MSY in table 8 of SA (https://www.wcpfc.int/node/27490)
+Bmsy <- 1628000 # 50th percentile from SBmsy in table 8 of SA (https://www.wcpfc.int/node/27490)
+K <- 6876526 # 50th percentile from SB_f0 in table 8 of SA (https://www.wcpfc.int/node/27490)
+Bc_B0 <- 0.51 # 50th percentile from SBlatest/SB_fo in table 8 of SA (https://www.wcpfc.int/node/27490)
+Cnow <- 1679444 # Catches now
+Bnow <- K * Bc_B0 # current Biomass (2012 - 2015 average)
+r <- 0.57 # From fishbase: Prior r = 0.57, 95% CL = 0.41 - 0.78 (https://www.fishbase.in/summary/107#)
+
+# Economic
+beta <- 1.3
+p <- 1100 # (1447 + 1467) / 2 #mean between thailand and japan values (Value of WCPFC-CA tuna fisheries 2017 report)
+E <- 45000
+q <- 12 / (0.1 * Bnow) # 2 * (0.8 * Cnow) / (E * 0.8 * Bnow)
+c <- 180 # 340
+
+# Vectors of initial biomass and movement
+# Proportional size of the high seas
+prop_hs <- 0.1
+# Number of patches
+n_patches <- 10
+# Biomass redistribution vector
+fvec <- c(rep(((1 - prop_hs) / (n_patches - 1)), (n_patches - 1)), prop_hs)
+# fvec <- c(0.12, 0.08, 0.07, 0.13, 0.07, 0.12, 0.09, 0.12, 0.1, 0.1)
+names(fvec) <- c("KIR", "FSM", "MHL", "NRU", "PLW", "PNG", "SLB", "TKL", "TUV", "HS")
+Xvec <- Bnow * fvec
+```
+
+# Cost of a reserve is governed by fish movement
+
+> Less movement leads to higer costs
+
+This first par uses no trading, but allows us to look at how movement ($\theta$) governs costs. The intuition is that, given the parameterization, high movement rates will lead to low costs because:
+
+$$\Omega = \theta + (1 - \theta)(1 - R)$$
+
+This shows that, no matter what the size of the reserve is, when $\theta = 1$, $\Omega = 1$.
+
+## Get initial conditions
+
+We first run a model that allows for trading to get the Effort vector that would maximize $pi$.
+
+```{r}
+Benchmark_results <-
+  PNA_with_trading(
+    fvec = fvec,
+    theta = theta,
+    R = R,
+    r = r,
+    K = K,
+    p = p,
+    q = q,
+    Xvec = Xvec,
+    beta = beta,
+    c = c,
+    E = E
+  ) %>%
+  select(
+    Country,
+    b_harvest = Harvest,
+    b_vessel_days = Vessel_Days,
+    b_stock = Stock,
+    b_stock_i = Stock_i,
+    b_vdsprice = VDSprice,
+    b_vdsrevenue = VDSrevenue,
+    b_vdsrevenue_all = VDSrevenue_all,
+    b_vdsrevenue_notKIR = VDSrevenue_notKIR
+  )
+```
+
+We then take these results, and use the observed efforts as the optimal efforts.
+
+```{r}
+Evec <- Benchmark_results$b_vessel_days
+
+Evec
+```
+
+## Run the model
+
+We now run the model with **NO** trading, using the Evec above as starting condition.
+
+```{r}
+# Create an empty tibble to store the results in the process
+Rvec <- seq(0, 1, 0.05)
+thetavec <- seq(0, 1, 0.1)
+
+DF_results_no_trading <-
+  expand.grid(R = Rvec, theta = thetavec) %>%
+  mutate(
+    res = map2(
+      theta,
+      R,
+      PNA_no_trading,
+      fvec = fvec,
+      r = r,
+      K = K,
+      p = p,
+      q = q,
+      Xvec = Xvec,
+      beta = beta,
+      c = c,
+      Evec = Evec
+    )
+  ) %>%
+  unnest()
+```
+
+We now take these results and add the benchmark results (no reserve) to calculate the cost of the reserve as the change in revenue. The proportional way of saying this is:
+
+$$
+\%C_R = \frac{\Pi_{R = 0} - \Pi_{R = r}}{\Pi_{R = 0}}
+$$
+Where $\Pi_{R = 0}$  is the vessel-day revenue when there is no reserve, hence the $R = 0$ subindex. The $\Pi_{R = r}$ denotes the vessel-day revenues when reserve has size ($r \in (0, 1)$). The vessel-day revenue is simply the vessel-day price times the number of vessel-days in patch $i$: $\pi \times E_i$.
+
+```{r}
+DF_1_no_trading <- DF_results_no_trading %>%
+  filter(Country == "KIR") %>%
+  left_join(Benchmark_results, by = "Country") %>%
+  mutate(
+    cost = b_vdsrevenue - VDSrevenue,
+    rel_cost = cost / b_vdsrevenue
+  )
+```
+
+We can now go ahead and plot these results. The figure below shows the $C_R$ defined above for different size of reserves $R$ in the x-axis, given values of $theta$ (colors). The graph shows how a smaller movement rate leads to increased costs to the country that implements the reserve. A movement of $\theta = 1$ implies no reserve, and thus leads to no losses. However, this parameter is unlikely. We also see how the losses are not proportional to 1. That is, a 10% closure does not lead to a 10% loss in profits.
+
+**Is this due to the concavity in costs? i.e. the $\beta$ parameter$?**
+
+Yes, it looks like a $\beta = 1.1$ actually reduces this.
+
+```{r, fig.width = 4, fig.height = 4}
+(
+  costs_no_trading_plot <-
+    ggplot(data = DF_1_no_trading) +
+    geom_line(aes(
+      x = R,
+      y = rel_cost,
+      group = theta,
+      color = theta
+    ),
+    size = 1
+    ) +
+    xlab("Portion of patch as reserve (R)") +
+    ylab("Costs (% of case with no reserve)") +
+    scale_color_viridis_c() +
+    theme(
+      text = element_text(size = 10),
+      axis.text = element_text(size = 8)
+    ) +
+    startR::ggtheme_plot() +
+    scale_y_continuous(labels = scales::percent) +
+    guides(color = guide_colorbar(title = quo("Movement ("~theta~")"),
+                                  ticks.colour = "black", frame.colour = "black")) +
+    theme(legend.justification = c(0, 0.9),
+          legend.position = c(0, 1)) +
+    geom_abline(intercept = 0, slope = 1, size = 1, linetype = "dashed", color = "red")
+)
+```
+
+```{r}
+ggsave(plot = costs_no_trading_plot,
+       filename = here("docs", "slides", "img", "cost_no_trading.png"),
+       width = 3,
+       height = 3)
+```
+
+
+# Trading affects costs
+
+> Trading reduces costs to implementing party
+
+We now run the same model, with same initial conditions, but allow trading as a reserve is closed.
+
+```{r}
+DF_results_with_trading <-
+  expand.grid(R = Rvec, theta = thetavec) %>%
+  mutate(
+    res = map2(
+      theta,
+      R,
+      PNA_with_trading,
+      fvec = fvec,
+      r = r,
+      K = K,
+      p = p,
+      q = q,
+      Xvec = Xvec,
+      beta = beta,
+      c = c,
+      E = E
+    )
+  ) %>%
+  unnest()
+```
+
+Again, put it together with the reference values to calculate costs.
+
+```{r}
+DF_1_with_trading <- DF_results_with_trading %>%
+  filter(Country == "KIR") %>%
+  left_join(Benchmark_results, by = "Country") %>%
+  mutate(
+    vessel_days_sold = b_vessel_days - Vessel_Days,
+    sales_revenue = vessel_days_sold * VDSprice,
+    all_VDSrevenue = VDSrevenue + sales_revenue,
+    cost = b_vdsrevenue - all_VDSrevenue,
+    rel_cost = cost / b_vdsrevenue
+  )
+```
+
+The following graph shows the same information as the graph above. However, in this case, the costs are significantly lower. This is because a party can sell it's original allocation to other parties. The reduction i
+
+```{r, fig.width = 4, fig.height = 4}
+(costs_with_trading_plot <- ggplot(data = DF_1_with_trading) +
+  geom_line(aes(
+    x = R,
+    y = rel_cost,
+    group = theta,
+    color = theta
+  ),
+  size = 1
+  ) +
+  xlab("Portion of patch as reserve (R)") +
+  ylab("Costs (% of case with no reserve)") +
+  scale_color_viridis_c() +
+  startR::ggtheme_plot() +
+  scale_y_continuous(labels = scales::percent) +
+  theme(legend.position = "None"))
+```
+
+```{r}
+ggsave(plot = costs_with_trading_plot,
+       filename = here("docs", "slides", "img", "cost_with_trading.png"),
+       width = 3,
+       height = 3)
+```
+
+
+## Cost reduction due to trading
+
+```{r}
+shorter_no_trading <- DF_1_no_trading %>% 
+  select(Country, R, theta, Vessel_Days, VDSprice, VDSrevenue, cost, rel_cost)
+
+shorter_trading <- DF_1_with_trading %>% 
+  select(Country, R, theta, Vessel_Days_trading = Vessel_Days, pi_trading = VDSprice, VDSrevenue_trading = VDSrevenue, cost_trading = cost, rel_cost_trading = rel_cost)
+
+both <- left_join(shorter_no_trading, shorter_trading, by = c("Country", "R", "theta")) %>% 
+  mutate(delta_cost = cost - cost_trading,
+         rel_delta_cost = delta_cost / cost) %>% 
+  filter(!R == 0,
+         !theta == 1)
+```
+
+
+```{r}
+(delta_costs_plot <- ggplot(data = both) +
+  geom_line(aes(
+    x = R,
+    y = rel_delta_cost,
+    group = theta,
+    color = theta
+  ),
+  size = 1
+  ) +
+  xlab("Portion of patch as reserve (R)") +
+  ylab("Costs avoided by trading") +
+  scale_color_viridis_c() +
+  theme(
+    text = element_text(size = 10),
+    axis.text = element_text(size = 8)
+  ) +
+  startR::ggtheme_plot() +
+  scale_y_continuous(labels = scales::percent) +
+  theme(legend.position = "None"))
+```
+
+All together
+
+```{r, fig.width = 4, fig.height = 7}
+(cost_plot <- cowplot::plot_grid(costs_no_trading_plot,
+                   costs_with_trading_plot,
+                   delta_costs_plot, ncol = 1))
+```
+
+Now let's save this figure.
+
+```{r}
+ggsave(plot = cost_plot,
+       filename = here("docs", "img", "cost_plot.pdf"), width = 4, height = 7)
+```
+
+## How does vessel-price change?
+
+### When there's no trading
+
+```{r}
+DF_results_no_trading %>% 
+  filter(!Country == "HS") %>% 
+  mutate(Country = fct_relevel(Country, "KIR")) %>% 
+  ggplot() +
+  geom_line(aes(
+    x = R,
+    y = VDSprice,
+    group = theta,
+    color = theta
+  ),
+  size = 1
+  ) +
+  xlab("Portion of patch as reserve (R)") +
+  ylab(quo("Vessel-day Price ("~pi~")")) +
+  scale_color_viridis_c() +
+  theme(
+    text = element_text(size = 10),
+    axis.text = element_text(size = 8)
+  ) +
+  startR::ggtheme_plot() +
+  guides(color = guide_colorbar(title = quo("Movement ("~theta~")"),
+                                ticks.colour = "black",
+                                frame.colour = "black")) +
+  facet_wrap(~Country, scales = "free_y")
+```
+
+### When there is trading
+
+```{r}
+ggplot(data = DF_1_with_trading) +
+  geom_line(aes(
+    x = R,
+    y = VDSprice,
+    group = theta,
+    color = theta
+  ),
+  size = 1
+  ) +
+  xlab("Portion of patch as reserve (R)") +
+  ylab(quo("Vessel-day Price ("~pi~")")) +
+  scale_color_viridis_c() +
+  theme(
+    text = element_text(size = 10),
+    axis.text = element_text(size = 8)
+  ) +
+  startR::ggtheme_plot() +
+  guides(color = guide_colorbar(title = quo("Movement ("~theta~")"),
+                                ticks.colour = "black",
+                                frame.colour = "black"))
+```
+
+## Where do vessels go?
+
+### With no trading
+
+```{r}
+DF_results_no_trading %>% 
+  filter(!Country == "HS") %>%
+  mutate(Country = fct_relevel(Country, "KIR")) %>% 
+  ggplot() +
+  geom_line(aes(
+    x = R,
+    y = Vessel_Days,
+    group = theta,
+    color = theta
+  ),
+  size = 1
+  ) +
+  xlab("Portion of patch as reserve (R)") +
+  ylab(quo("Vessel-Days")) +
+  scale_color_viridis_c() +
+  theme(
+    text = element_text(size = 10),
+    axis.text = element_text(size = 8)
+  ) +
+  startR::ggtheme_plot() +
+  guides(color = guide_colorbar(title = quo("Movement ("~theta~")"),
+                                ticks.colour = "black",
+                                frame.colour = "black")) +
+  facet_wrap(~Country, scales = "free_y")
+```
+
+
+# Reproducibility chunk
+
+```{r}
+sessionInfo()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

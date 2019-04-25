@@ -1,0 +1,192 @@
+---
+title: "Marine protected areas under effort-control management"
+author:
+  - Villaseñor-Derbez J.C.$^1$
+  - Lynham J.$^2$
+  - Costello C.$^{1, 3}$
+institute: 
+   - $^1$Bren School, UCSB
+   - $^2$Department of Economics, UHM
+   - $^3$emLAB, UCSB
+subtitle: "NCEAS-Future Earth Working Group"
+date: "May 6, 2019"
+output: beamer_presentation
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE)
+```
+
+## Outline
+
+- Scope of the project
+
+- Approach: model and assumptions
+
+- Data
+
+- Generalizability to Palau
+
+
+## Background
+
+```{r}
+
+suppressPackageStartupMessages({
+  library(startR)
+  library(here)
+  library(sf)
+  library(tidyverse)
+  library(ggdark)
+})
+
+source(here("scripts", "functions", "st_rotate.R"))
+
+rast <- readRDS(here("data", "rasterized_effort_by_region.rds")) %>% 
+  mutate(post = fct_relevel(
+    ifelse(year < 2015, "Before", "After"),
+    "Before")) %>% 
+  group_by(post, x, y) %>%
+  summarize(days = log10(sum(hours) / 24)) %>%
+  ungroup() %>% 
+  filter(between(x, 160, 210),
+         between(y, -15, 10))
+
+pipa <- read_sf(dsn = here("data", "spatial", "PIPA"),
+                layer = "PIPA") %>% 
+  st_rotate()
+
+pna <- read_sf(dsn = here("data", "spatial", "PNA_EEZ"),
+               layer = "PNA_EEZ") %>% 
+  select(ISO_Ter3) %>% 
+  st_simplify(11) %>% 
+  st_rotate() %>% 
+  st_union(by_feature = T) %>% 
+  st_crop(y = c(xmin = 160, xmax = 210, ymin = -15, ymax = 10))
+
+colors = c(
+  "#0C276C",
+  "#0B3B74",
+  "#0A4E7C",
+  "#096284",
+  "#08768C",
+  "#078994",
+  "#059D9B",
+  "#04B0A3",
+  "#03C4AB",
+  "#02D8B3",
+  "#01EBBB",
+  "#00FFC3"
+)
+
+ggplot() +
+  geom_raster(data = rast,
+              mapping = aes(x = x, y = y, fill = days)) +
+  geom_sf(data = pna, fill = "transparent", color = "steelblue") +
+  geom_sf(data = pipa, fill = "transparent", color = "red", size = 1) +
+  facet_wrap(~post, ncol = 1) +
+  # scale_fill_viridis_c() +
+  scale_fill_gradientn(colors = colors) +
+  guides(fill = guide_colorbar(title = quo(log[10]~"(days)"),
+                               frame.colour = "white",
+                               ticks.colour = "white")) +
+  dark_theme_minimal() +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme(strip.text = element_text(size = 12)) +
+  labs(x = "", y = "") +
+  ggtitle(label = "Phoenix Islands Protected Area (PIPA), Kiribati")
+```
+
+
+## Scope and Motivation
+
+- For the countries:
+
+
+  - What are the costs associated to establishing an MPA?
+
+  - What factors drive these costs?
+
+  - How can these costs be reduced or eliminated?
+
+- For the fishing vessels:
+
+  - How do they respond?
+
+  - Where do they go?
+
+
+## Approach
+
+- 10-patch model of the fishery (9 patches under VDS, one patch under Open Access)
+
+- Vessel-level profits for fishing in patch $i$ are:
+
+$$
+\Pi_i(E_i,X_i,R) = pqE_iX_i\Omega_i-cE_i^\beta
+$$
+
+
+- In patch 1, $\Omega_1 = \theta + (1 - \theta)(1 - R)$
+
+- $\Omega = 1$ for patches $i > 1$
+
+- Vessel-day price must equate the marginal profits from the last unit of effort in patches $i = (1, 9)$
+
+$$
+\pi_i(E_i) = pqX_i\Omega_i- \beta cE_i^{\beta-1}
+$$
+
+## Approach
+
+- Effort is capped at 45,000 vessel-days ($\bar{E}$)
+
+- Measure country-level demand curves
+
+  - No trading: price is patch-specific
+  
+  - Trading: price is the same for all patches
+
+```{r}
+knitr::include_graphics(path = here("docs", "slides", "img", "demand_curves.png"))
+```
+
+## Approach
+
+## Less movement increases costs
+
+```{r}
+knitr::include_graphics(here("docs", "slides", "img", "cost_no_trading.png"))
+```
+
+
+## Vessel-day trading reduces costs
+
+```{r}
+knitr::include_graphics(here("docs", "slides", "img", "cost_with_trading.png"))
+```
+
+## Allocation rules matter
+
+## What can we learn from PIPA
+
+
+- Implemented in January, 2015
+
+- 397,447 Km^2^
+
+- 1.5 times area of Ecuador
+
+- ~2% of total PNA area
+
+- ~10% of fishing activity in PNA
+
+
+## Generalizability to Palau
+
+
+
+
