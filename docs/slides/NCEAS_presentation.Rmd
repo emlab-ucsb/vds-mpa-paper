@@ -1,5 +1,5 @@
 ---
-title: "Marine protected areas under effort-control management"
+title: "Marine Conservation and Fishing Effort Markets"
 author:
   - Villaseñor-Derbez J.C.$^1$
   - Lynham J.$^2$
@@ -10,107 +10,74 @@ institute:
    - $^3$emLAB, UCSB
 subtitle: "NCEAS-Future Earth Working Group"
 date: "May 6, 2019"
-output: beamer_presentation
+output: 
+  beamer_presentation: 
+    theme: Darmstadt
+header-includes:
+  - \usepackage{media9}
 ---
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
-                      warning = FALSE)
+                      warning = FALSE#,
+                      # fig.align = "center"
+                      )
+
+suppressPackageStartupMessages({
+  library(here)
+})
 ```
 
 ## Outline
 
+- Background and motivation
+
 - Scope of the project
 
-- Approach: model and assumptions
+- Approach
 
-- Data
+  - Model and assumptions
+
+  - Phoenix Island Protected Area
 
 - Generalizability to Palau
 
+# Background and motivation
 
-## Background
+## Motivation
 
-```{r}
+\begin{center}
+	\includemedia[
+    label=video1,
+    width=300pt,height=225pt,%width=300pt,height=225pt,
+	]{}{GFW_video.swf}
 
-suppressPackageStartupMessages({
-  library(startR)
-  library(here)
-  library(sf)
-  library(tidyverse)
-  library(ggdark)
-})
+    \mediabutton[mediacommand=video1:playPause,
+    overface=\color{blue}{\fbox{\strut Play/Pause}},
+    downface=\color{red}{\fbox{\strut Play/Pause}}
+    ]{\fbox{\strut Play/Pause}}
+\end{center}
 
-source(here("scripts", "functions", "st_rotate.R"))
+## Motivation
 
-rast <- readRDS(here("data", "rasterized_effort_by_region.rds")) %>% 
-  mutate(post = fct_relevel(
-    ifelse(year < 2015, "Before", "After"),
-    "Before")) %>% 
-  group_by(post, x, y) %>%
-  summarize(days = log10(sum(hours) / 24)) %>%
-  ungroup() %>% 
-  filter(between(x, 160, 210),
-         between(y, -15, 10))
+### Relationship between closure size and losses
 
-pipa <- read_sf(dsn = here("data", "spatial", "PIPA"),
-                layer = "PIPA") %>% 
-  st_rotate()
+Does a 30\% closure mean a 30\% loss in revenue?
 
-pna <- read_sf(dsn = here("data", "spatial", "PNA_EEZ"),
-               layer = "PNA_EEZ") %>% 
-  select(ISO_Ter3) %>% 
-  st_simplify(11) %>% 
-  st_rotate() %>% 
-  st_union(by_feature = T) %>% 
-  st_crop(y = c(xmin = 160, xmax = 210, ymin = -15, ymax = 10))
+# Scope and Approach
 
-colors = c(
-  "#0C276C",
-  "#0B3B74",
-  "#0A4E7C",
-  "#096284",
-  "#08768C",
-  "#078994",
-  "#059D9B",
-  "#04B0A3",
-  "#03C4AB",
-  "#02D8B3",
-  "#01EBBB",
-  "#00FFC3"
-)
+## Scope
 
-ggplot() +
-  geom_raster(data = rast,
-              mapping = aes(x = x, y = y, fill = days)) +
-  geom_sf(data = pna, fill = "transparent", color = "steelblue") +
-  geom_sf(data = pipa, fill = "transparent", color = "red", size = 1) +
-  facet_wrap(~post, ncol = 1) +
-  # scale_fill_viridis_c() +
-  scale_fill_gradientn(colors = colors) +
-  guides(fill = guide_colorbar(title = quo(log[10]~"(days)"),
-                               frame.colour = "white",
-                               ticks.colour = "white")) +
-  dark_theme_minimal() +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0)) +
-  theme(strip.text = element_text(size = 12)) +
-  labs(x = "", y = "") +
-  ggtitle(label = "Phoenix Islands Protected Area (PIPA), Kiribati")
-```
-
-
-## Scope and Motivation
+Can economic instruments incentivize conservation?
 
 - For the countries:
-
 
   - What are the costs associated to establishing an MPA?
 
   - What factors drive these costs?
 
-  - How can these costs be reduced or eliminated?
+  - Can these costs be reduced or eliminated?
 
 - For the fishing vessels:
 
@@ -121,28 +88,33 @@ ggplot() +
 
 ## Approach
 
-- 10-patch model of the fishery (9 patches under VDS, one patch under Open Access)
+- 10-patch model of the tuna purse-seine fishery
+  
+  - 9 patches under VDS
+  - one patch under Open Access
 
-- Vessel-level profits for fishing in patch $i$ are:
+- Profits from fishing in patch $i$ are:
 
-$$
-\Pi_i(E_i,X_i,R) = pqE_iX_i\Omega_i-cE_i^\beta
-$$
+$$\Pi_i(E_i,X_i,R) = pqE_iX_i\Omega_i-cE_i^\beta$$
 
 
-- In patch 1, $\Omega_1 = \theta + (1 - \theta)(1 - R)$
-
-- $\Omega = 1$ for patches $i > 1$
+$$\Omega_1 = \theta + (1 - \theta)(1 - R)$$
 
 - Vessel-day price must equate the marginal profits from the last unit of effort in patches $i = (1, 9)$
 
-$$
-\pi_i(E_i) = pqX_i\Omega_i- \beta cE_i^{\beta-1}
-$$
+$$\pi_i(E_i) = pqX_i\Omega_i- \beta cE_i^{\beta-1}$$
 
 ## Approach
 
+- Patch-level effort is then
+
+$$E_i = \left(\frac{pqX_i\Omega_i - \pi_i}{\beta c }\right) ^ { \frac{1}{\beta - 1}}$$
+
 - Effort is capped at 45,000 vessel-days ($\bar{E}$)
+
+$$\bar{E} = \sum_{i = 1}^9\left(\frac{pqX_i\Omega_i - \pi}{\beta c }\right) ^ {\frac{1}{\beta - 1}}$$
+
+## Approach
 
 - Measure country-level demand curves
 
@@ -151,19 +123,39 @@ $$
   - Trading: price is the same for all patches
 
 ```{r}
+# Recortar para que salgan hasta 3000 y 10000 solamente
 knitr::include_graphics(path = here("docs", "slides", "img", "demand_curves.png"))
 ```
 
-## Approach
+# Model predictions
 
-## Less movement increases costs
+## Model predictions
+
+### Relationship between closure size and losses
+
+Does a 30\% closure mean a 30\% loss in revenue?
+
+## Losses with no trading
 
 ```{r}
 knitr::include_graphics(here("docs", "slides", "img", "cost_no_trading.png"))
 ```
 
+## Model predictions
 
-## Vessel-day trading reduces costs
+### A market for fishing efforts
+
+- What is the effect of trading?
+
+- Can costs be reduced?
+
+## Trading significantly reduces costs
+
+```{r}
+knitr::include_graphics(here("docs", "slides", "img", "cost_with_trading_long_axis.png"))
+```
+
+## Trading significantly reduces costs
 
 ```{r}
 knitr::include_graphics(here("docs", "slides", "img", "cost_with_trading.png"))
@@ -171,21 +163,95 @@ knitr::include_graphics(here("docs", "slides", "img", "cost_with_trading.png"))
 
 ## Allocation rules matter
 
-## What can we learn from PIPA
+- Vessel-days are allocated to countries each year
 
+- Combination of biomass and in-EEZ usage
+
+$$
+E_i^* = \alpha \left(\frac{\sum_{\tau = 0}^{\hat{\tau}}E_{i,t-\tau}}{\bar{E}\hat{\tau}} \right) +
+(1 - \alpha) \left(\frac{\sum_{\tau = 0}^{\hat{\tau}}X_{i,t-\tau}}{\bar{X}\hat{\tau}} \right)
+$$
+
+- $\alpha$ is a weight on historical effort ($E_i$) and historical biomass ($B_i$)
+
+What is the importance of allocation rules?
+
+## "*Biomass-based*" allocation reduces costs
+
+```{r}
+knitr::include_graphics(here("docs", "slides", "img", "allocation_cost_plot.pdf"))
+```
+
+# PIPA
+
+## What can we learn from PIPA?
+
+PIPA:
 
 - Implemented in January, 2015
 
-- 397,447 Km^2^
+- 397,447 $Km^2$
 
-- 1.5 times area of Ecuador
+- ~2\% of total PNA area
 
-- ~2% of total PNA area
+- ~10\% of fishing activity in PNA
 
-- ~10% of fishing activity in PNA
+GFW data:
+
+- 313 tuna purse seine vessels that fished in PNA
+
+- 92 Fished both before and after PIPA implementation:
+
+  - 64 Fished within PIPA before implementation
+
+- Devideded into three groups
+
+## Two fleets
+
+```{r}
+knitr::include_graphics(here("docs", "slides", "img", "sample_tracks.png"))
+```
 
 
-## Generalizability to Palau
+## Effort displacement
+
+```{r}
+knitr::include_graphics(here("docs", "img", "all_PS_VDS_year.pdf"))
+```
+
+## Effort displacement in Kiribati
+
+```{r}
+knitr::include_graphics(here("docs", "img", "all_PS_VDS_KIR_year.pdf"))
+```
+
+## Effort displacement raster
+
+```{r}
+knitr::include_graphics(here("docs", "img", "rasterized_change.png"))
+```
+
+# Generalizability to Palau
+
+# Extra slides - GFW data
+
+## Effort vs catches
+
+```{r}
+knitr::include_graphics(here("docs", "slides", "img", "catch_effort_plot.png"))
+```
+
+## Effort and revenues
+
+```{r}
+knitr::include_graphics(here("docs", "img", "revenue_FFA_GFW_linear.pdf"))
+```
+
+## Vessel statistics
+
+A short table with information on number of vessels per year and class
+
+Palau-specific information about longliners
 
 
 
