@@ -33,7 +33,7 @@ PNA_with_trading <- function(fvec = NULL, theta = NULL, R = NULL, r = NULL, K = 
     err = 0
   )
   
-  tol <- 0.001 * Bnow
+  tol <- 0.0001 * Bnow
   diff <- (tol * 2)^2
   
   ct <- 1

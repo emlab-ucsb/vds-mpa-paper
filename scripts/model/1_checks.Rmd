@@ -317,15 +317,26 @@ cpue <- left_join(act, catches, by = c("year", "eez_iso3")) %>%
 Let's take a look at the relationship between Effort and Catches:
 
 ```{r}
-left_join(act, catches, by = c("year", "eez_iso3")) %>%
-  drop_na() %>% 
-  ggplot(mapping = aes(x = days, y = catches, fill = year)) +
-  geom_smooth(method = "lm", color = "black") +
-  geom_point() +
-  labs(x = "Effort (days)", y = "Catches (tonnes)") +
-  ggtitle("Relationship between effort and catches") +
-  scale_fill_viridis_c()
+(catch_effort_plot <- left_join(act, catches, by = c("year", "eez_iso3")) %>%
+   drop_na() %>% 
+   ggplot(mapping = aes(x = days, y = catches / 1000, fill = year)) +
+   geom_smooth(method = "lm", color = "black") +
+   geom_point() +
+   labs(x = "Effort (days)", y = "Catches (Thousannd tonnes)") +
+   ggtitle("Relationship between effort and catches") +
+   scale_fill_viridis_c() +
+   guides(fill = guide_colorbar(title = "Year",
+                                frame.colour = "black",
+                                ticks.colour = "black")))
 ```
+
+```{r}
+ggsave(plot = catch_effort_plot,
+       filename = here("docs", "slides", "img", "catch_effort_plot.png"),
+       width = 4,
+       height = 3)
+```
+
 
 ```{r}
 fvec_cpue <- c(cpue$cpue_prop, prop_hs)
@@ -399,13 +410,13 @@ check_E_pi <- tibble(pi = seq(0, max_pi, length.out = 100)) %>%
 The following graph shows all the demand curves for each country, given a value of E. The vertical dashed line shows the $\bar{E}$. Its intersections with each demand curve tell us how much vessels would be willing to pay to fish in each country.
 
 ```{r}
-(demands <- ggplot(data = check_E_pi, mapping = aes(x = E / 1000, y = pi, color = cty2)) +
+(demands <- ggplot(data = filter(check_E_pi, E < 300000),
+                   mapping = aes(x = E / 1000, y = pi, color = cty2)) +
    geom_line(size = 1) +
    geom_vline(xintercept = E / 1000, color = "red", linetype = "dashed") +
    labs(x = "E (thousand vessel-days)", y = quo(pi)) +
    guides(color = guide_legend("Patch", ncol = 2)) +
-   theme(legend.position = c(1, 1),
-         legend.justification = c(1, 1)) +
+   theme(legend.position = "none") +
    scale_color_brewer(palette = "Set1")
    )
 ```
@@ -416,6 +427,8 @@ We can aggregate all these demand curves horizontally and obtain the total deman
 (demands_agg <- check_E_pi %>%
    group_by(pi) %>%
    summarise(E = sum(E)) %>%
+   ungroup() %>% 
+   filter(E < 300000) %>% 
    ggplot(aes(x = E / 1000, y = pi)) +
    geom_line() +
    geom_vline(xintercept = E / 1000, color = "red", linetype = "dashed") +

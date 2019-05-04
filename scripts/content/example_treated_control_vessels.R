@@ -8,36 +8,43 @@ library(magrittr)
 
 source(here::here("scripts", "functions", "st_rotate.R"))
 
-# Create a connection to Google BigQuery
-# For this to run, you require authentication and be part of ucsb-gfw
-BQc <- bigrquery::dbConnect(
-  drv = bigrquery::bigquery(),
-  project = "ucsb-gfw", # This is the project, to which you must belong
-  dataset = "mpa_displacement", # This is the dataset, where I keep all the tables
-  allowLargeResults = TRUE #We're downloading about 10 GB of data
-)
-
-# List all tables to test the connection
-DBI::dbListTables(BQc)
-
-
 # DOWNLOAD THE DATA
 # Create a tbl pointing to vessel tracks
-vessel_tracks <- dplyr::tbl(BQc, "sample_treated_control_vessels") %>%
-  collect() # collect brings the information out of the database and into memory
+vessel_tracks <- get_table(project = "ucsb-gfw",
+                           dataset = "mpa_displacement",
+                           table = "sample_treated_control_vessels")
 
 pipa <- sf::read_sf(dsn = here::here("data", "spatial", "PIPA"), layer = "PIPA") %>% 
   sf::st_transform(crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
   st_rotate()
 
-vessel_tracks %>% 
+pna <- read_sf(dsn = here("data", "spatial", "PNA_EEZ"),
+               layer = "PNA_EEZ") %>% 
+  select(ISO_Ter1) %>% 
+  st_simplify(10) %>% 
+  st_rotate() %>% 
+  st_union(by_feature = T)
+
+sample_tracks <- vessel_tracks %>% 
   mutate(year = lubridate::year(timestamp),
          lon = ifelse(lon < 0, lon + 360, lon)) %>% 
-  filter(fishing, year < 2015) %>% 
+  filter(fishing, year == 2014,
+         between(lat, -15, 17),
+         between(lon, 129, 213)) %>% 
   ggplot() +
-  geom_point(aes(x = lon, y = lat, color = treated)) +
+  geom_sf(data = pna, fill = "gray90", alpha = 0.5, color = "black", size = 0.1) +
+  geom_point(aes(x = lon, y = lat, fill = treated),
+             size = 1,
+             shape = 21,
+             color = "black") +
   geom_sf(data = pipa, fill = "transparent", color = "red", size = 1) +
-  cowplot::theme_cowplot() +
-  scale_color_brewer(palette = "Set1") +
-  guides(color = guide_legend(title = "Group")) +
-  theme(text = element_text(size = 12))
+  ggtheme_map() +
+  scale_fill_brewer(palette = "Set1") +
+  theme(text = element_text(size = 12),
+        legend.position = "None") +
+  labs(x = "Longitude", y = "Latitude")
+
+ggsave(plot = sample_tracks,
+       filename = here("docs", "slides", "img", "sample_tracks.png"),
+       width = 4.5,
+       height = 2.5)

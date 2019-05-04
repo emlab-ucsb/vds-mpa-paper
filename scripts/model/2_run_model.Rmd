@@ -29,8 +29,10 @@ rm(list = ls())
 ```{r}
 # Load libraries
 library(startR)
+library(magrittr)
 library(here)
 library(cowplot)
+library(furrr)
 library(tidyverse)
 
 # Load functions
@@ -279,6 +281,31 @@ DF_1_with_trading <- DF_results_with_trading %>%
 The following graph shows the same information as the graph above. However, in this case, the costs are significantly lower. This is because a party can sell it's original allocation to other parties. The reduction i
 
 ```{r, fig.width = 4, fig.height = 4}
+(costs_with_trading_plot_long_axis <- ggplot(data = DF_1_with_trading) +
+  geom_line(aes(
+    x = R,
+    y = rel_cost,
+    group = theta,
+    color = theta
+  ),
+  size = 1
+  ) +
+  xlab("Portion of patch as reserve (R)") +
+  ylab("Costs (% of case with no reserve)") +
+  scale_color_viridis_c() +
+  startR::ggtheme_plot() +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  theme(legend.position = "None"))
+```
+
+```{r}
+ggsave(plot = costs_with_trading_plot_long_axis,
+       filename = here("docs", "slides", "img", "cost_with_trading_long_axis.png"),
+       width = 3,
+       height = 3)
+```
+
+```{r}
 (costs_with_trading_plot <- ggplot(data = DF_1_with_trading) +
   geom_line(aes(
     x = R,
@@ -295,6 +322,7 @@ The following graph shows the same information as the graph above. However, in t
   scale_y_continuous(labels = scales::percent) +
   theme(legend.position = "None"))
 ```
+
 
 ```{r}
 ggsave(plot = costs_with_trading_plot,
@@ -333,7 +361,7 @@ both <- left_join(shorter_no_trading, shorter_trading, by = c("Country", "R", "t
   ) +
   xlab("Portion of patch as reserve (R)") +
   ylab("Costs avoided by trading") +
-  scale_color_viridis_c() +
+  scale_color_viridis_c(limits = c(0, 1)) +
   theme(
     text = element_text(size = 10),
     axis.text = element_text(size = 8)
@@ -414,35 +442,143 @@ ggplot(data = DF_1_with_trading) +
                                 frame.colour = "black"))
 ```
 
-## Where do vessels go?
-
-### With no trading
+# Allocation rules matter
 
 ```{r}
-DF_results_no_trading %>% 
-  filter(!Country == "HS") %>%
-  mutate(Country = fct_relevel(Country, "KIR")) %>% 
-  ggplot() +
-  geom_line(aes(
-    x = R,
-    y = Vessel_Days,
-    group = theta,
-    color = theta
-  ),
-  size = 1
-  ) +
+source(here("scripts", "model", "allocate.R"))
+source(here("scripts", "model", "allocate_wrap.R"))
+source(here("scripts", "model", "move_in_time.R"))
+source(here("scripts", "model", "move_in_time_no_trading.R"))
+```
+
+
+We first obtain the optimal allocation by running the model until steady state and with no reserves.
+
+```{r}
+
+alphas <- c(0, 0.25, 0.5, 0.75, 1)
+
+delta <- 1 / 1.1
+
+plan(multiprocess)
+
+allocation <-
+  expand.grid(
+    R = Rvec,
+    theta = c(0, 0.5, 1),
+    alpha = alphas,
+    trade = c(T, F)
+  ) %>%
+  as_tibble() %>%
+  mutate(
+    resutls = future_pmap(
+      .l = list(
+        alpha = alpha,
+        R = R,
+        theta = theta,
+        trade = trade
+      ),
+      .f = allocate_wrap, 
+      fvec = fvec,
+      r = r,
+      K = K,
+      p = p,
+      q = q,
+      Xvec = Xvec,
+      beta = beta,
+      c = c,
+      E = E
+    )
+  ) %>%
+  unnest() %>%
+  filter(country == "KIR") %>%
+  mutate(
+    rev_dir = Ei * pi,
+    deltaE = Ea - Ei,
+    rev_sells = deltaE * pi,
+    rev_tot = rev_dir + rev_sells,
+    fct = delta ^ year,
+    rev_tot_disc = rev_tot * fct
+  )
+
+best_rev <- allocate_wrap(
+  alpha = 0,
+  R = 0,
+  theta = 1,
+  trade = T,
+  fvec = fvec,
+  r = r,
+  K = K,
+  p = p,
+  q = q,
+  Xvec = Xvec,
+  beta = beta,
+  c = c,
+  E = E
+) %>%
+  filter(country == "KIR") %>%
+  mutate(
+    rev_dir = Ei * pi,
+    deltaE = Ea - Ei,
+    rev_sells = deltaE * pi,
+    rev_tot = rev_dir + rev_sells,
+    fct = delta ^ year,
+    rev_tot_disc = rev_tot * fct
+  ) %$%
+  sum(rev_tot_disc)
+```
+
+```{r}
+(allocation_cost_plot <- allocation %>%
+  mutate(trade = ifelse(trade, "Trading", "No Trading"),
+         theta = as.character(theta)) %>% 
+  group_by(trade, alpha, R, theta) %>%
+  summarize(rev = sum(rev_tot_disc)) %>%
+  ungroup() %>%
+  mutate(cost = (best_rev - rev) / best_rev) %>%
+  ggplot(aes(x = R, y = cost, color = alpha, group = paste(alpha, theta), linetype = theta)) +
+  geom_line(size = 1) +
+  scale_y_continuous(labels = scales::percent) +
   xlab("Portion of patch as reserve (R)") +
-  ylab(quo("Vessel-Days")) +
+  ylab("Costs (% of case with no reserve)") +
   scale_color_viridis_c() +
-  theme(
-    text = element_text(size = 10),
-    axis.text = element_text(size = 8)
-  ) +
-  startR::ggtheme_plot() +
-  guides(color = guide_colorbar(title = quo("Movement ("~theta~")"),
-                                ticks.colour = "black",
-                                frame.colour = "black")) +
-  facet_wrap(~Country, scales = "free_y")
+  guides(color = guide_colorbar(ticks.colour = "black", frame.colour = "black")) +
+  ggtheme_plot() +
+  facet_wrap(~trade) +
+  guides(color = guide_colorbar(title = quo("Allocation\nparameter ("~alpha~")")),
+         linetype = guide_legend(title = quo("Movement\nparameter ("~theta~")"))))
+```
+
+```{r}
+ggsave(
+  plot = allocation_cost_plot,
+  filename = here("docs", "slides", "img", "allocation_cost_plot.pdf"),
+  width = 5,
+  height = 3
+)
+```
+
+
+```{r}
+allocation %>%
+  filter(!trade) %>% 
+  ggplot(aes(x = year, y = Ea, color = R, group = paste(alpha, R, theta))) +
+  geom_line(size = 1) +
+  facet_grid(alpha ~ theta) +
+  scale_color_viridis_c() +
+  guides(color = guide_colorbar(ticks.colour = "black", frame.colour = "black")) +
+  ggtheme_plot()
+```
+
+```{r}
+allocation %>%
+  filter(theta == 0.5, !trade) %>% 
+  ggplot(aes(x = year, y = Xi, color = R, group = paste(alpha, R))) +
+  geom_line(size = 1) +
+  facet_grid(~alpha) +
+  scale_color_viridis_c() +
+  guides(color = guide_colorbar(ticks.colour = "black", frame.colour = "black")) +
+  ggtheme_plot()
 ```
 
 

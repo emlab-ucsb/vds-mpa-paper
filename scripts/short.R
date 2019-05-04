@@ -277,66 +277,20 @@ test %>%
 
 
 
-check_losses <- function(alpha, R, theta) {
-  no_reserve <- PNA_with_trading(fvec = fvec, theta = theta, R = R, r = r, K = K, p = p, q = q, Xvec = Xvec, beta = beta, c = c, E = E) %>%
-    mutate(
-      year = 0,
-      Ea = Vessel_Days,
-    ) %>%
-    select(
-      year,
-      country = Country,
-      Ea,
-      Ei = Vessel_Days,
-      Xi = Stock_i,
-      pi = VDSprice
-    )
 
 
-  reserve <- PNA_with_trading(fvec = fvec, theta = 0.5, R = 0.1, r = r, K = K, p = p, q = q, Xvec = Xvec, beta = beta, c = c, E = E) %>%
-    mutate(
-      year = 1,
-      Ea = no_reserve$Ea
-    ) %>%
-    select(
-      year,
-      country = Country,
-      Ea,
-      Ei = Vessel_Days,
-      Xi = Stock_i,
-      pi = VDSprice
-    )
 
-  alloc_input <- rbind(no_reserve, reserve) %>%
-    filter(!country == "HS")
-
-  allocations <- alloc_input %>%
-    filter(year == 100)
-
-  for (i in 1:8) {
-    alloc_i <- allocate(
-      alloc_input = alloc_input,
-      alpha = alpha,
-      year = i
-    )
-    alloc_input <- rbind(alloc_input, alloc_i)
-  }
-
-  return(alloc_input)
-}
-
-
-Rs <- c(0.1, 0.3)
-thetas <- seq(0, 1, by = 0.2)
-alphas <- seq(0, 1, by = 0.1)
+thetas <- c(0)
+alphas <- c(0, 0.5, 1)
+trades <- c(T, F)
 
 delta <- 1 / 1.1
 
 plan(multiprocess)
 
-jc <- expand.grid(R = Rs, theta = thetas, alpha = alphas) %>%
+jc <- expand.grid(R = Rvec, theta = thetas, alpha = alphas, trade = trades) %>%
   as_tibble() %>%
-  mutate(resutls = furrr::future_pmap(.l = list(alpha = alpha, R = R, theta = theta), .f = check_losses)) %>%
+  mutate(resutls = future_pmap(.l = list(alpha = alpha, R = R, theta = theta, trade = trade), .f = check_losses)) %>%
   unnest() %>%
   filter(country == "KIR") %>%
   mutate(
@@ -348,45 +302,28 @@ jc <- expand.grid(R = Rs, theta = thetas, alpha = alphas) %>%
   ) %>%
   mutate(rev_tot = rev_tot * fct)
 
-no_reserve <- PNA_with_trading(fvec = fvec, theta = theta, R = R, r = r, K = K, p = p, q = q, Xvec = Xvec, beta = beta, c = c, E = E) %>%
-  mutate(
-    year = 0,
-    Ea = Vessel_Days,
-  ) %>%
-  select(
-    year,
-    country = Country,
-    Ea,
-    Ei = Vessel_Days,
-    Xi = Stock_i,
-    pi = VDSprice
-  )
-
-best_rev <- check_losses(alpha = 0, R = 0, theta = 1) %>%
+best_rev <- check_losses(alpha = 0, R = 0, theta = 1, trade = F) %>%
   filter(country == "KIR") %>%
   mutate(
     rev_dir = Ei * pi,
     deltaE = Ea - Ei,
     rev_sells = deltaE * pi,
     rev_tot = rev_dir + rev_sells,
-    fct = delta^year
+    fct = delta ^ year
   ) %>%
   mutate(rev_tot = rev_tot * fct) %$%
   sum(rev_tot)
 
 jc %>%
-  group_by(alpha, R, theta) %>%
+  group_by(trade, alpha, R, theta) %>%
   summarize(rev = sum(rev_tot)) %>%
   ungroup() %>%
-  mutate(
-    cost = (best_rev - rev) / best_rev,
-    R = paste("R = ", R)
-  ) %>%
-  ggplot(aes(x = alpha, y = cost, color = theta, group = theta)) +
+  mutate(cost = (best_rev - rev) / best_rev) %>%
+  ggplot(aes(x = R, y = cost, color = alpha, group = paste(alpha, trade))) +
   geom_line(size = 1) +
   scale_y_continuous(labels = scales::percent) +
-  labs(x = quo(alpha), y = quo("Cost (relative to" ~ alpha ~ "= 0)")) +
-  facet_wrap(~R, ncol = 1) +
+  labs(x = "R", y = quo("Cost (relative to" ~ alpha ~ "= 0)")) +
+  facet_wrap(~trade, ncol = 2) +
   scale_color_viridis_c() +
   guides(color = guide_colorbar(ticks.colour = "black", frame.colour = "black")) +
   ggtheme_plot()
