@@ -10,7 +10,7 @@
 
 # Load packages
 library(ggrepel)
-library(ggsflabel)
+library(ggsflabel) #devtools::install_github("yutannihilation/ggsflabel")
 library(countrycode)
 library(startR)
 library(sf)
@@ -77,11 +77,16 @@ pipa <- sf::read_sf(dsn = here("data", "spatial", "PIPA"), layer = "PIPA") %>%
   sf::st_transform(crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
   st_rotate()
 
+pnms <- read_sf(dsn = here::here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>%
+  filter(WDPAID == "555622118") %>%
+  select(WDPAID)
+
 plot <- ggplot() +
-  geom_sf(data = eez, aes(color = KIR, fill = VDS), alpha = 0.5, size = 0.1) +
+  geom_sf(data = eez, aes(color = KIR, fill = VDS), alpha = 0.5, size = 0.5) +
   geom_sf(data = pipa, fill = "red") +
+  geom_sf(data = pnms, fill = "purple", size = 0) +
   geom_sf(data = small_coast, color = "black", fill = "#E3E3E3", size = 0.1) +
-  geom_sf_label_repel(data = labels, mapping = aes(label = ISO_Ter1), force = 400, seed = 2) +
+  geom_sf_label_repel(data = labels, mapping = aes(label = ISO_Ter1), force = 40, seed = 2) +
   ggtheme_plot() +
   scale_color_manual(values = c("black", "red")) +
   scale_fill_manual(values = c("transparent", "steelblue")) +

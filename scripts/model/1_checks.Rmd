@@ -11,138 +11,114 @@ output:
       collapsed: false
 ---
 
-# Model description
+#Model for marine conservation with effort markets
 
-We model the PNA as a ten-patch discrete-time meta-population system, where Patch 1 is considering a spatial closure. Patches 2-9 are the other PNA countries, and Patch 10 represents the high seas and non-PNA countries. The stock of fish in each country is relatively stationary within a single fishing season, but redistributes across all patches annually. The price of fish is $p$, and catchability is given by $q$.
+We model a ten-patch discrete-time meta-population system, where Patch 1 is considering a spatial closure. Patches 1 - 9 opperate under a vessel-day schemePatches, and Patch 10 represents the high seas and other areas not managed under a VDS. The stock of fish in each country is relatively stationary within a single fishing season, but redistributes across all patches annually. The price of fish is $p$, and catchability is given by $q$. These parameters are held constant across patches.
 
-In the absence of a reserve, the revenue for vessels in patch $i$ is given by $pqE_iX_i$, where $E_i$ and $X_i$ are effort (vessel-days) and stock size in patch $i$ at the beginning of a period. The cost of fishing in patch $i$ is given by $cE_i^\beta$, where $\beta = 1.3$ matches commonly-used cost functions. Patch 1 considers a spatial closure by implementing a reserve as a fraction $R$ of the total patch ($R \in[0,1)$). Fish move within a patch based on $\theta$, where $\theta = 0$ implies no movement within the patch, and $\theta = 1$ implies that fish within the patch are well mixed during the fishing season. In this patch, revenues are given by $pqE_1X1(\theta + (1 - \theta)(1 - R))$. The parameterization of movement and reserve size imply that profit from fishing Patch 1 is given by:
+##Fishery dynamics
 
-$$
-\begin{align}
-\Pi_1(E_1,X_1,R) = pqE_1X_1(\theta + (1 - \theta)(1 - R))-cE_1^\beta
-\end{align}
-$$
+In the absence of a reserve, the revenue for vessels in patch $i$ is given by $pqE_iX_i$, where $E_i$ and $X_i$ are effort (vessel-days) and stock size in patch $i$ at the beginning of a period. The cost of fishing in patch $i$ is given by $cE_i^\beta$, where $\beta = 1.3$ matches commonly-used cost functions.
 
-And profits from fishing in Patch $j = \{2, 3, ..., 10\}$ are:
+Patch 1 considers a spatial closure by implementing a reserve as a fraction $R$ of the total patch ($R \in[0,1)$). Fish move within a patch based on $\theta$, where $\theta = 0$ implies no movement within the patch, and $\theta = 1$ implies that fish within the patch are well mixed during the fishing season. In this patch, revenues are given by $pqE_1X1(\theta + (1 - \theta)(1 - R))$. The parameterization of movement and reserve size imply that profit from fishing Patch 1 is given by:
 
 $$
-\begin{align}
-\Pi_j(E_j,X_j) = pqE_jX_j-cE_j^\beta
-\end{align}
+\Pi_1(E_1,X_1,R) = pqE_1X_1\Omega_i-cE_1^\beta
+$$
+
+With $\Omega_i = (\theta + (1 - \theta)(1 - R))$ being a parameterization that combines reserve size as a proportion of patch ($R =  (0, 1)$) and within-patch fish movement ($\theta$). Under this parameterization, $\Omega_{i \not 1} = 1$ since only Patch 1 implements a reserve.
+
+Profits from fishing in each Patch are:
+
+$$
+\Pi_i(E_i,X_i) = pqE_iX_i\Omega_i-cE_i^\beta
 $$
 
 The above equations imply that the marginal profit from the last unit of effort in a patch are given by:
 
 $$
-\begin{align}
-\pi_1(E_1) = pqX_1(\theta + (1 - \theta)(1 - R)) - \beta cE_1^{\beta-1}
-\label{eqn:marginal_profit_1}
-\\
-\pi_j(E_j) = pqX_j - \beta cE_j^{\beta-1}
-\label{eqn:marginal_profit_j}
-\end{align}
+\pi_1(E_1) = pqX_1\Omega_i - \beta cE_1^{\beta-1}
+\label{eqn:marginal_profit}
 $$
 
-In practice, the effort levels in each PNA patch are given (so $E_{1},\ E_{2},...,E_{9}$ are given) and the effort level on the high seas ($E_{10}$) is a result of open access dynamics. Therefore, we assume that effort continues to enter Patch 10 until the profit from the last unit of effort is exactly zero, indicating that $E_{10}$ is the value for which $\pi_{10}(E_{10})  = 0$. Setting Equation \ref{eqn:marginal_profit_j} equal to zero and solving for $E_j$ gives:
+In practice, the effort levels in each Patch are allocated by management (so $E_{1},\ E_{2},...,E_{9}$ are given) and the
+effort level on the high seas ($E_{10}$) is a result of open access dynamics. Therefore, we assume that effort continues to enter Patch 10 until the profit from the last unit of effort is exactly zero, indicating that $E_{10}$ is the value for which $\pi_{10}(E_{10})  = 0$. Setting Equation \ref{eqn:marginal_profit} for $i = 10$ equal to zero and removing $\Omega_{10} = 1$ for simplicity, we can solve for $E_{10}$:
 
 $$
-\begin{align}
 E_{10} = \left(\frac{pqX_{10}}{\beta c}\right)^{\frac{1}{(\beta - 1)}}
 \label{eqn:effort_hs}
-\end{align}
 $$
 
-The patch-level harvest is then determined by effort and stock size:
+Under vds-operated patches, however, profits from marginal effort must equate the cost of fishing in the patch. Therefore vessel-day price for patches under vds ($i = (1, 9)$) is  given by:
 
 $$
-\begin{align}
-H_1 = qE_1X_1 (\theta + (1 - \theta)(1 - R))
-\label{eqn:harvest_1}
-\\
-H_j = qE_jX_j
-\label{eqn:harvest_j}
-\end{align}
+\pi(E_i) = pqX_i\Omega_i - \beta c E_i ^{\beta - 1}
 $$
 
-Therefore, escapement in patch $i$ is the difference between initial stock size and harvests given by $e_{it} = X{it} - H_{it}$ and total escapement is $e_t=\sum_{i=1}^{10}e_{it}$. The entire stock then grows according to:
+We can solve for $E_i$ and obtain:
+
+\begin{equation}
+	\begin{split}
+		\pi_i + \beta c E_i ^{\beta - 1} &= pqX_i\Omega_i \\
+		\beta c E_i ^{\beta - 1} &= pqX_i\Omega_i - \pi_i \\
+		E_i ^{\beta - 1} &= \frac{pqX_i\Omega_i - \pi_1}{\beta c} \\
+		E_i &= \left(\frac{pqX_i\Omega_i - \pi_1}{\beta c }\right) ^ {\frac{1}{\beta - 1}}
+	\end{split}
+\label{eqn:demands}
+\end{equation}
+
+Therefore, total allowable effort in the fishery is given by:
 
 $$
-\begin{align}
-X_{t+1} = e_t + \frac{(\phi + 1)}{\phi}ge_t\left(1 - \left(\frac{e_t}{K}\right) ^{\phi}\right)
+\bar{E} = \sum_{i = 1}^9\left(\frac{pqX_i\Omega_i - \pi}{\beta c }\right) ^ {\frac{1}{\beta - 1}}
+\label{eqn:Ebar}
+$$
+
+## Stock dynamics
+
+Patch-level harvest is then determined by effort and stock size:
+
+$$
+H_i = qE_iX_i\Omega_i
+\label{eqn:harvest}
+$$
+
+Therefore, escapement in patch $i$ is the difference between initial stock size and harvests given by $e_{it} = X{it} - H_{it}$ and total escapement is $e_t=\sum_{i=1}^{10}e_{it}$. The entire stock then grows logistically according to:
+
+$$
+X_{t+1} = e_t + e^{r \times \frac{e}{K}}
 \label{eqn:grow}
-\end{align}
 $$
+
+Where $r$ and $K$ are species-specific intrinsic growth rate and carrying capacity.
 
 After the stock grows, a constant and patch-specific fraction $f_i$ of the total stock redistributes to patch $i$, so:
 
 $$
-\begin{align}
 X_{it+1} = f_iX_{t+1}
 \label{eqn:disperse}
-\end{align}
 $$
 
-The vessel-day price that a country charges is given by $\pi_i$ from Equations \ref{eqn:marginal_profit_1} and \ref{eqn:marginal_profit_j}. Therefore, patch-level license revenues are given by:
+## Vessel-day revenues
+
+The vessel-day price that a country charges is given by $\pi_i$ from Eqn \ref{eqn:marginal_profit}. Therefore, patch-level license revenues are given by:
 
 $$
-\begin{align}
 \omega = \pi_iE_i
 \label{eqn:license_revenue}
-\end{align}
 $$
 
-Equations \ref{eqn:harvest_1} shows that low values of $\theta$ and $R > 0$ would increase escapement, which would lead to an increase in stock size (Equation \ref{eqn:grow}) and a benefit to all the other patches. But this would also cause the stock in the high seas ($X_{10}$) to increase, leading to an increased effort being allocated to the high seas (Equation \ref{eqn:effort_hs}) and a loss of these potential rents. Thus, the spillover benefits of increasing $R$ are never completely captured.
+Equation \ref{eqn:harvest} shows that low values of $\theta$ and $R > 0$ would increase escapement, which would lead to an increase in stock size (Equation \ref{eqn:grow}) and a benefit to all the other patches. But this would also cause the stock in the high seas ($X_{10}$) to increase, leading to an increased effort being allocated to the high seas (Equation \ref{eqn:effort_hs}) and a loss of these potential rents. Thus, the spillover benefits of increasing $R$ are never completely captured.
 
-The vessel-day price for parcels that do not implement a reserve ($j = c(2, 10)$) is given by:
+## Allocation rules
 
-$$
-\pi(E_j) = pqX_j - \beta c E_j ^{\beta - 1}
-$$
-
-
-We can solve for $E_j$:
+In the second scenario above, effort from a patch with conservation is traded to other patches. This means that its allocation will decrease as purse seine effort in its EEZ is reduced. After solving for the new equilibrium for each combination of $R$ and $\theta$, we project the fishery 50 years in time. At the end of every time, vessel-days are allocated to each patch based on the following rule:
 
 $$
-\begin{split}
-\pi_j + \beta c E_j ^{\beta - 1} &= pqX_j \\
-\beta c E_j ^{\beta - 1} &= pqX_j - \pi_j \\
-E_j ^{\beta - 1} &= \frac{pqX_j - \pi_j}{\beta c } \\
-E_j &= \left(\frac{pqX_j - \pi_j}{\beta c }\right) ^ { \frac{1}{\beta - 1}}
-\end{split}
+E_i^* = \alpha \left(\frac{\sum_{\tau = 0}^{\hat{\tau}}E_{i,t-\tau}}{\bar{E}\hat{\tau}} \right) +
+(1 - \alpha) \left(\frac{\sum_{\tau = 0}^{\hat{\tau}}X_{i,t-\tau}}{\bar{X}\hat{\tau}} \right)
 $$
 
-For the parcel that implements the reserve ($i = 1$) the same equations are given by:
-
-$$
-\pi_1(E_1) = pqX_1 (\theta + (1 - \theta)(1 - R))- \beta c E_1 ^{\beta - 1}
-$$
-
-For simplicity, we can write $\Omega = (\theta + (1 - \theta)(1 - R))$, and the baove becomes
-
-
-$$
-\pi_1(E_1) = pqX_1\Omega - \beta c E_1 ^{\beta - 1}
-$$
-
-We can solve for $E_i$ as in the previous casse:
-
-$$
-\begin{split}
-\pi_1 + \beta c E_1 ^{\beta - 1} &= pqX_1\Omega \\
-\beta c E_1 ^{\beta - 1} &= pqX_1\Omega - \pi_1 \\
-E_1 ^{\beta - 1} &= \frac{pqX_1\Omega - \pi_1}{\beta c} \\
-E_1 &= \left(\frac{pqX_1\Omega - \pi_1}{\beta c }\right) ^ {\frac{1}{\beta - 1}}
-\end{split}
-$$
-
-The total vessel-days for cells that belong to PNA countries (*i.e.* i = (1, 9)) are constrained at 45,000, which we term $\bar{E}$. Therefore, total effort can be expressed as:
-
-$$
-\bar{E} = \left(\frac{pqX_1(\theta + (1 - \theta)(1 - R)) - \pi_1}{\beta c }\right) ^ {\frac{1}{\beta - 1}} + 
-\sum_{j = 2}^9\left(\frac{pqX_j - \pi_j}{\beta c }\right) ^ { \frac{1}{\beta - 1} }
-$$
-
-This parameterization shows that the cell-level effort is determined by the combination of stock size ($X_j$) and the price $\pi$. Trading between country will continue until all $\pi_i$ reach an equilibrium price of $\bar{\pi}$.
+Where  $\alpha$ is a weight on historical effort ($E_i$) and $1-\alpha$ is the weight in historical biomass ($B_i$). We use $\hat{\tau}= 7$ to obtain a moving mean of 7 years for these measures. The difference between allocated days ($E_i^*$) and used days (determined by Eq: \ref{eqn:demands}) for patch 1 are the sales. We then calculate vessel-day revenues to each country over the 50-year time horizon and compare them to a case where there is no reserve and allocations are based solely on biomass ($\alpha = 0$).
 
 # Setup
 

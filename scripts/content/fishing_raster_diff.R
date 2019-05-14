@@ -92,7 +92,7 @@ ggplot() +
   theme(legend.position = "bottom")
 
 
-yearly_effort_raster <-readRDS(file = here("data", "rasterized_effort_by_region.rds")) %>% 
+yearly_effort_raster <- readRDS(file = here("data", "rasterized_effort_by_region.rds")) %>% 
   mutate(post = ifelse(year < 2015, "Pre", "Post")) %>% 
   # filter(year %in% c(2013, 2017)) %>% 
   group_by(x, y, post, treated) %>%
@@ -115,7 +115,9 @@ ggplot() +
 # change for displaced
 
 yearly_effort_raster <-readRDS(file = here("data", "rasterized_effort_by_region.rds")) %>% 
-  mutate(post = ifelse(year < 2015, "Pre", "Post"))
+  mutate(post = ifelse(year < 2015, "Pre", "Post")) %>% 
+  filter(between(x, 135, 213),
+         between(y, -26.5, 23))
 
 change_displaced <- yearly_effort_raster %>% 
   filter(treated == "Treated") %>%
@@ -128,8 +130,10 @@ change_displaced <- yearly_effort_raster %>%
   geom_raster(mapping = aes(x = x, y = y, fill = dif)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas, fill = "transparent", color = "red") +
-  scale_fill_viridis_c() +
-  theme_cowplot() +
+  # scale_fill_viridis_c() +
+  # scale_fill_gradientn(colours = pal) +
+  scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white") +
+  cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         panel.grid.major = element_line(color = "transparent")) +
@@ -137,6 +141,11 @@ change_displaced <- yearly_effort_raster %>%
                                ticks.colour = "black",
                                frame.colour = "black")) +
   labs(x = "", y = "")
+
+ggsave(plot = change_displaced,
+       file = here("docs", "img", "fishing_raster_displaced.png"),
+       height = 2.5,
+       width = 4.5)
 
 change_not_displaced <- yearly_effort_raster %>% 
   filter(treated == "Control") %>%
@@ -149,8 +158,9 @@ change_not_displaced <- yearly_effort_raster %>%
   geom_raster(mapping = aes(x = x, y = y, fill = dif)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas, fill = "transparent", color = "red") +
-  scale_fill_viridis_c() +
-  theme_cowplot() +
+  # scale_fill_viridis_c() +
+  scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white") +
+  cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         panel.grid.major = element_line(color = "transparent")) +
@@ -158,6 +168,11 @@ change_not_displaced <- yearly_effort_raster %>%
                                ticks.colour = "black",
                                frame.colour = "black")) +
   labs(x = "", y = "")
+
+ggsave(plot = change_not_displaced,
+       file = here("docs", "img", "fishing_raster_not_displaced.png"),
+       height = 2.5,
+       width = 4.5)
 
 difference_between_groups <- yearly_effort_raster %>% 
   group_by(x, y, post, treated) %>%
@@ -171,8 +186,9 @@ difference_between_groups <- yearly_effort_raster %>%
   geom_raster(mapping = aes(x = x, y = y, fill = dif)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas, fill = "transparent", color = "red") +
-  scale_fill_viridis_c() +
-  theme_cowplot() +
+  # scale_fill_viridis_c() +
+  scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white") +
+  cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         panel.grid.major = element_line(color = "transparent")) +
@@ -180,6 +196,12 @@ difference_between_groups <- yearly_effort_raster %>%
                                ticks.colour = "black",
                                frame.colour = "black")) +
   labs(x = "", y = "")
+
+ggsave(plot = difference_between_groups,
+       file = here("docs", "img", "fishing_raster_difference_between_groups.png"),
+       height = 2.5,
+       width = 4.5)
+
 
 plot_change <- plot_grid(change_displaced,
                          change_not_displaced,

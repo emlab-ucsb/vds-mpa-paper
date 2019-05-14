@@ -119,20 +119,31 @@ all_PS_VDS_KIR_year_plot <-
        mapping = aes(x = year, y = days, fill = group)) +
   geom_col(color = "black") +
   scale_fill_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
+  geom_hline(yintercept = 11, linetype = "dashed") +
   cowplot::theme_cowplot() +
   guides(fill = guide_legend(title = "Group")) +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         legend.text = element_text(size = 8),
-        legend.justification = c(0, 1),
-        legend.position = c(0, 1))+
+        legend.position = "None")+
   labs(x = "Year", y = "Vessel-days (1,000)")
 
 #Save plot
 ggsave(all_PS_VDS_KIR_year_plot,
-       filename = here("docs", "img", "all_PS_VDS_KIR_year.pdf"),
+       filename = here("docs", "img", "all_PS_VDS_KIR_year_DID.pdf"),
        width = 6,
        height = 4)
+
+#Both bars
+p22 <- plot_grid(all_PS_VDS_year_plot,
+                 all_PS_VDS_KIR_year_plot,
+                 ncol = 1, labels = "AUTO")
+
+#Save plot
+ggsave(p22,
+       filename = here("docs", "img", "all_PS_VDS_PNA_KIR_year.pdf"),
+       width = 3.4,
+       height = 5.4)
 
 # annual PS VDS by country
 

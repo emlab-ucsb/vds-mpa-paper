@@ -69,7 +69,7 @@ mpas <- read_sf(dsn = here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>%
 
 
 # Load raster
-yearly_effort_raster <-readRDS(file = here("data", "rasterized_effort_by_region.rds"))
+yearly_effort_raster <- readRDS(file = here("data", "rasterized_effort_by_region.rds"))
 
 
 # Plot it
@@ -89,5 +89,8 @@ plot <- yearly_effort_raster %>%
   theme(legend.position = "bottom") #+
   # guides(fill = guide_legend(title = "% hours"))
 
-ggsave(plot, filename = here("docs", "img", "fishing_raster.png"), width = 7.5, height = 9)
+ggsave(plot,
+       filename = here("docs", "img", "fishing_raster.png"),
+       width = 7.5,
+       height = 9)
 
