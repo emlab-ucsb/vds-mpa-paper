@@ -1,5 +1,5 @@
 ---
-title: "Marine Conservation and Fishing Effort Markets"
+title: "Marine Conservation and Fishing Effort Markets[^*]"
 author:
   - Villaseñor-Derbez J.C.$^1$
   - Lynham J.$^2$
@@ -15,7 +15,18 @@ output:
     theme: Darmstadt
 header-includes:
   - \usepackage{media9}
+  - \usepackage{eso-pic,graphicx,transparent}
 ---
+
+[^*]: This is work in progress developed for the NCEAS working group. Please do not share externally. Results are yet to be refined and peer-reviewed.
+
+\AddToShipoutPictureFG{
+  \AtPageCenter{% or \AtTextCenter
+    \makebox[0pt]{\rotatebox[origin=c]{45}{%
+      \scalebox{5}{\texttransparent{0.3}{DRAFT}}%
+    }}
+  }
+}
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE,
@@ -39,7 +50,7 @@ suppressPackageStartupMessages({
 
   - Model and assumptions
 
-  - Phoenix Island Protected Area
+  - Phoenix Island Protected Area*
 
 - Generalizability to Palau
 
@@ -61,9 +72,13 @@ suppressPackageStartupMessages({
 
 ## Motivation
 
-### Relationship between closure size and losses
+### Effort displacement by large-scale MPAs
 
-Does a 30\% closure mean a 30\% loss in revenue?
+- Where was effort displaced to?
+
+- Does effort displacement imply revenue losses from VDS?
+
+- Does a 30\% closure mean a 30\% loss in revenue?
 
 # Scope and Approach
 
@@ -182,7 +197,49 @@ What is the importance of allocation rules?
 knitr::include_graphics(here("docs", "slides", "img", "allocation_cost_plot.pdf"))
 ```
 
-# PIPA
+# Generalizability to Palau
+
+## Palau Vessel-day schemes
+
+- Purse seine vessel-days
+
+  - 700 purse seine vessel-days
+  
+  - \$5.60 - \$8.75 Million USD
+  
+  - Tradable
+  
+  - Trading might reduce costs, but allocation rules matter
+  
+- Longline vessel-days
+
+  - 10,500 longline vessel-days
+
+  - \$2.10 Million USD
+  
+  - Non-tradable
+
+## Conclusions
+
+- Under no trading, implementing a reserve is costly
+
+  - More fish movement reduces costs
+
+- Trading lessens the blow of a spatial closure
+
+  - \% costs avoided by trading decrease as biomass in implementing patch increases
+  
+- Allocation rules matter
+
+  - A biomass-based allocation ($\alpha = 0$) reduces long-term costs
+
+# Extra slides
+
+## GFW summary for Palau
+
+```{r}
+knitr::include_graphics(here("docs", "slides", "img", "vessels_in_plw.png"))
+```
 
 ## What can we learn from PIPA?
 
@@ -192,9 +249,11 @@ PIPA:
 
 - 397,447 $Km^2$
 
-- ~2\% of total PNA area
+- 2.7\% of total PNA area
 
-- ~10\% of fishing activity in PNA
+- 11\% of Kiribati EEZ
+
+- 22\% of Kiribati EEZ (excluding Line Islands)
 
 GFW data:
 
@@ -204,19 +263,12 @@ GFW data:
 
   - 64 Fished within PIPA before implementation
 
-- Devideded into three groups
+- 2012 - Present
 
-## Two fleets
+## Two "fleets"
 
 ```{r}
 knitr::include_graphics(here("docs", "slides", "img", "sample_tracks.png"))
-```
-
-
-## Effort displacement
-
-```{r}
-knitr::include_graphics(here("docs", "img", "all_PS_VDS_year.pdf"))
 ```
 
 ## Effort displacement in Kiribati
@@ -225,15 +277,31 @@ knitr::include_graphics(here("docs", "img", "all_PS_VDS_year.pdf"))
 knitr::include_graphics(here("docs", "img", "all_PS_VDS_KIR_year.pdf"))
 ```
 
-## Effort displacement raster
+## Effort displacement in all PNA
 
 ```{r}
-knitr::include_graphics(here("docs", "img", "rasterized_change.png"))
+knitr::include_graphics(here("docs", "img", "all_PS_VDS_year.pdf"))
 ```
 
-# Generalizability to Palau
+## Displaced vessels
 
-# Extra slides - GFW data
+```{r}
+knitr::include_graphics(here("docs", "img", "fishing_raster_displaced.png"))
+```
+
+## Non-displaced vessels
+
+```{r}
+knitr::include_graphics(here("docs", "img", "fishing_raster_not_displaced.png"))
+```
+
+## Difference
+
+```{r}
+knitr::include_graphics(here("docs", "img", "fishing_raster_difference_between_groups.png"))
+```
+
+# GFW Data
 
 ## Effort vs catches
 
@@ -246,13 +314,5 @@ knitr::include_graphics(here("docs", "slides", "img", "catch_effort_plot.png"))
 ```{r}
 knitr::include_graphics(here("docs", "img", "revenue_FFA_GFW_linear.pdf"))
 ```
-
-## Vessel statistics
-
-A short table with information on number of vessels per year and class
-
-Palau-specific information about longliners
-
-
 
 
