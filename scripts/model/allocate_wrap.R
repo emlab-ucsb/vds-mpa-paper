@@ -61,7 +61,6 @@ allocate_wrap <- function(alpha, R, theta, trade = NULL, fvec = NULL, r = NULL, 
   
   if(trade) {
 
-    ##### START TESTING
     Xvec <- no_reserve$Xi
     Ea <- no_reserve$Ea
     reserve <-
@@ -80,8 +79,6 @@ allocate_wrap <- function(alpha, R, theta, trade = NULL, fvec = NULL, r = NULL, 
         Ea = Ea,
         year = 1
       )
-    
-    #### END TETING ##########
     
   } else {
     # Extract optimal allocation vector of efforts
@@ -104,7 +101,7 @@ allocate_wrap <- function(alpha, R, theta, trade = NULL, fvec = NULL, r = NULL, 
   
   alloc_input <- rbind(no_reserve, reserve)
   
-  for (i in 1:20) {
+  for (i in 1:50) {
     alloc_i <- allocate(
       alloc_input = alloc_input,
       alpha = alpha,

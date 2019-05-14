@@ -16,7 +16,7 @@
 allocate <- function(alloc_input, alpha, this_year, fvec = NULL, theta = NULL, R = NULL, r = NULL, K = NULL, p = NULL, q = NULL, beta = NULL, c = NULL, E = NULL, trade = NULL) {
   
   allocations <- alloc_input %>% 
-    filter(year > (this_year - 4),
+    filter(year > (this_year - 6),
            !country == "HS") %>% 
     group_by(country) %>%
     summarize(
