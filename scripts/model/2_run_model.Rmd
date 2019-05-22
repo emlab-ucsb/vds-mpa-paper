@@ -263,7 +263,7 @@ Yes, it looks like a $\beta = 1.1$ actually reduces this.
     size = 1
     ) +
     xlab("Portion of patch as reserve (R)") +
-    ylab("Costs\n(% of case with R = 0)") +
+    ylab("Losses\n(relative to R = 0)") +
     scale_color_viridis_c() +
     theme(
       text = element_text(size = 10),
@@ -344,7 +344,7 @@ The following graph shows the same information as the graph above. However, in t
   size = 1
   ) +
   xlab("Portion of patch as reserve (R)") +
-  ylab("Costs (% of case with R = 0)") +
+  ylab("Losses (relative to R = 0)") +
   scale_color_viridis_c() +
   startR::ggtheme_plot() +
   scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
@@ -369,7 +369,7 @@ ggsave(plot = costs_with_trading_plot_long_axis,
   size = 1
   ) +
   xlab("Portion of patch as reserve (R)") +
-  ylab("Costs\n(% of case with R = 0)") +
+  ylab("Losses\n(relative to R = 0)") +
   scale_color_viridis_c() +
   startR::ggtheme_plot() +
   scale_y_continuous(labels = scales::percent_format(accuracy = 0.01)) +
@@ -419,7 +419,8 @@ both <- left_join(shorter_no_trading, shorter_trading, by = c("Country", "R", "t
     axis.text = element_text(size = 8)
   ) +
   startR::ggtheme_plot() +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 0.1)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 0.1),
+                     limits = c(0.885, 1)) +
   theme(legend.position = "None"))
 ```
 
@@ -664,7 +665,8 @@ best_rev <- allocate_wrap(
    mutate(cost = (best_rev - rev) / best_rev) %>%
    ggplot(aes(x = R, y = cost, color = alpha, group = paste(alpha, theta), linetype = theta)) +
    geom_line(size = 1.5) +
-   scale_y_continuous(labels = scales::percent) +
+   scale_y_continuous(labels = scales::percent,
+                      limits = c(0, 1)) +
    xlab("Portion of patch as reserve (R)") +
    ylab("Costs\n(% of case with R = 0)") +
    scale_color_viridis_c() +

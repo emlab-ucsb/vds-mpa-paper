@@ -135,8 +135,8 @@ ggsave(all_PS_VDS_KIR_year_plot,
        height = 4)
 
 #Both bars
-p22 <- plot_grid(all_PS_VDS_year_plot,
-                 all_PS_VDS_KIR_year_plot,
+p22 <- plot_grid(all_PS_VDS_KIR_year_plot,
+                 all_PS_VDS_year_plot,
                  ncol = 1, labels = "AUTO")
 
 #Save plot

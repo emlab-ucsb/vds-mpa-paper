@@ -79,7 +79,7 @@ vessel_activity <- readRDS(file = here("raw_data",
                                        "activity_by_vessel_year_eez.rds")) %>% 
   filter(best_vessel_class == "tuna_purse_seines",
          eez_iso3 %in% PNA_countries) %>% 
-  mutate(days = hours / 24) %>% 
+  mutate(days = hours_length / 24) %>% 
   group_by(year, eez_iso3) %>% 
   summarize(days = sum(days)) %>% 
   left_join(vds_price_per_year, by = "year") %>% 
@@ -136,6 +136,26 @@ log_revenue_FFA_GFW <-
   scale_size_continuous(breaks = c(1, 5, 10), range = c(1, 4)) +
   guides(fill = F)
 
+revenue_FFA_effort_GFW <-
+  ggplot(vessel_activity, aes(x = days, y = revenue)) +
+  geom_point(aes(fill = country, size = days),
+             shape = 21,
+             # size = 3,
+             alpha = 0.7) +
+  geom_smooth(method = "lm",
+              linetype = "dashed",
+              color = "black",
+              se = F) +
+  scale_fill_brewer(palette = "Set1", guide = F) +
+  theme_cowplot()  +
+  theme(text = element_text(size = 10),
+        axis.text = element_text(size = 8)) +
+  guides(fill = guide_legend(title = "Country", ncol = 1),
+         size = guide_legend(title = "Vessel-days (1,000)", ncol = 3)) +
+  labs(x = "Vessel-days (1,000)",
+       y = "Reported revenue\n(million USD)") +
+  scale_size_continuous(breaks = c(1, 5, 10))
+
 # Put together
 p <- plot_grid(p1,
                log_revenue_FFA_GFW,
@@ -150,6 +170,11 @@ ggsave(p,
 
 ggsave(revenue_FFA_GFW,
        filename = here("docs", "img", "revenue_FFA_GFW_linear.pdf"),
+       width = 5.5,
+       height = 3.4)
+
+ggsave(revenue_FFA_effort_GFW,
+       filename = here("docs", "img", "revenue_FFA_effort_GFW.pdf"),
        width = 5.5,
        height = 3.4)
 

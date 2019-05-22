@@ -134,7 +134,27 @@ ps_rast %>%
 
 #91.70 % of purse seine VDS occurs inside PNMS boundaries
 
+# Time series of hours
 
+PLW_GFW_ts <- plw %>%
+  filter(year < 2019) %>% 
+  group_by(year, best_vessel_class) %>%
+  summarise(days = sum(days, na.rm = T)) %>% 
+  ungroup() %>% 
+  mutate(best_vessel_class = ifelse(best_vessel_class == "drifting_longlines",
+                                    "Longlines",
+                                    "Purse seines")) %>% 
+  ggplot(aes(x = year, y = days)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~best_vessel_class, scales = "free_y") +
+  labs(x = "Year", y = "Vessel-days") +
+  ggtheme_plot()
+
+ggsave(plot = PLW_GFW_ts,
+       filename = here("docs", "img", "PLW_GFW_ts.pdf"),
+       width = 5,
+       height = 2.5)
 
 
 

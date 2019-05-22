@@ -32,6 +32,10 @@ mpas <- read_sf(dsn = here::here("data", "spatial", "LSMPAs"), layer = "LSMPAs")
   filter(!name == "Longline",
          !strict == "Others")
 
+pnms <- read_sf(dsn = here::here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>%
+  filter(WDPAID == "555622118") %>%
+  select(WDPAID)
+
 coast <- map_data('world', wrap=c(-20,340), ylim=c(-85,75))%>%
   select(group, lat, long) %>%
   st_as_sf(coords = c("long", "lat"), crs = 4326) %>%
@@ -47,6 +51,7 @@ plot <- ggplot() +
   geom_sf(data = coast, fill = "#E3E3E3", color = "black", size = 0.1) +
   geom_sf(data = mpas, fill = "transparent", color = "black") +
   geom_sf(data = mpas, aes(fill = Legend), color = "transparent") +
+  geom_sf(data = pnms, fill = "purple", color = "black") +
   theme_nothing() +
   scale_fill_manual(values = c("steelblue", "red", "steelblue1")) +
   theme(legend.position = "none",
@@ -56,11 +61,11 @@ plot <- ggplot() +
   labs(x = NULL, y = NULL)
 
 ggsave(plot, filename = here::here("docs", "img", "LSMPAs_map.png"),
-       width = 3.4,
-       height = 1.7)
+       width = 6,
+       height = 3)
 ggsave(plot, filename = here::here("docs", "img", "LSMPAs_map.pdf"),
-       width = 3.4,
-       height = 1.7)
+       width = 6,
+       height = 3)
 
 
 

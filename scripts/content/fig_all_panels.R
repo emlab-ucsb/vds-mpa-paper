@@ -168,7 +168,7 @@ plot <- cowplot::plot_grid(
 ggsave(plot = plot,
        filename = here("docs", "img", "all_panels.pdf"),
        width = 6.5,
-       height = 8.7)
+       height = 8)
 
 
 
