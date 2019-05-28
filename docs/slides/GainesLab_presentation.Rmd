@@ -77,6 +77,13 @@ suppressPackageStartupMessages({
     ]{\fbox{\strut Play/Pause}}
 \end{center}
 
+## Motivation
+
+```{r, out.width = "250px"}
+knitr::include_graphics("../img/PNA_map.png")
+```
+
+
 # Scope and Approach
 
 ## Scope
@@ -101,7 +108,7 @@ Can economic instruments incentivize conservation?
 
 ## Approach
 
-- 10-patch model of the tuna purse-seine fishery
+- 10-patch spatial bioeconomic model of the tuna fishery
   
   - 9 patches under VDS
   - one patch under Open Access
@@ -115,7 +122,7 @@ $$\Omega_1 = \theta + (1 - \theta)(1 - R)$$
 
 - Vessel-day price must equate the marginal profits from the last unit of effort in patches $i = (1, 9)$
 
-$$\pi_i(E_i) = pqX_i\Omega_i- \beta cE_i^{\beta-1}$$
+$$\pi_i = pqX_i\Omega_i- \beta cE_i^{\beta-1}$$
 
 ## Approach
 
@@ -150,7 +157,7 @@ Does a 30\% closure mean a 30\% loss in revenue?
 
 ## Losses with no trading
 
-```{r}
+```{r, out.height = "200px"}
 knitr::include_graphics(here("docs", "slides", "img", "cost_no_trading.png"))
 ```
 
@@ -164,13 +171,13 @@ knitr::include_graphics(here("docs", "slides", "img", "cost_no_trading.png"))
 
 ## Trading significantly reduces costs
 
-```{r}
+```{r, out.height = "200px"}
 knitr::include_graphics(here("docs", "slides", "img", "cost_with_trading_long_axis.png"))
 ```
 
 ## Trading significantly reduces costs
 
-```{r}
+```{r, out.height = "200px"}
 knitr::include_graphics(here("docs", "slides", "img", "cost_with_trading.png"))
 ```
 
@@ -247,7 +254,7 @@ knitr::include_graphics(here("docs", "img", "all_PS_VDS_year.pdf"))
 
 - Have not evaluted the possible implications
 
-## Likely costs to Palau
+## Likely costs to Palau (2018)
 
 ```{r, fig.widht = 4, fig.align = "left"}
 knitr::include_graphics("../img/plw_2018_slides.png")
