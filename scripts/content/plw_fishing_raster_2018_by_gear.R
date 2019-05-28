@@ -102,6 +102,20 @@ ggsave(plw_2018,
        width = 7,
        height = 3.5)
 
+# For slides
+# Export plot as png
+plw_2018_slides <- plot_grid(plw_2018_ll + 
+                               theme(legend.position = "None"),
+                             plw_2018_ps + 
+                               theme(legend.position = "None"),
+                             ncol = 2,
+                             labels = c("Longlines", "Purse seines"),
+                             label_fontface = "plain",
+                             label_size = 12)
+ggsave(plw_2018_slides,
+       filename = here("docs", "img", "plw_2018_slides.png"),
+       width = 4.5,
+       height = 3)
 
 #### Effort within PNMS?
 # How much longline effort is displaced?

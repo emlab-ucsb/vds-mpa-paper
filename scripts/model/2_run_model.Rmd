@@ -668,7 +668,7 @@ best_rev <- allocate_wrap(
    scale_y_continuous(labels = scales::percent,
                       limits = c(0, 1)) +
    xlab("Portion of patch as reserve (R)") +
-   ylab("Costs\n(% of case with R = 0)") +
+   ylab("Losses\n(relative to R = 0)") +
    scale_color_viridis_c() +
    scale_linetype_manual(values = c("solid", "dashed", "dotted")) +
    ggtheme_plot() +
