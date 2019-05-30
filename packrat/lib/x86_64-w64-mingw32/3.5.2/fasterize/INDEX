@@ -1,2 +1,0 @@
-fasterize               Rasterize an sf object of polygons
-raster,sf-method        Create a raster from an sf object
