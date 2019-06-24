@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2016)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: Markets_Conservation_June17.aux
+The style file: Science.bst
+Database file #1: references.bib
+You've used 20 entries,
+            2300 wiz_defined-function locations,
+            847 strings with 10481 characters,
+and the built_in function-call counts, 4080 in all, are:
+= -- 357
+> -- 200
+< -- 0
++ -- 100
+- -- 50
+* -- 326
+:= -- 655
+add.period$ -- 20
+call.type$ -- 20
+change.case$ -- 4
+chr.to.int$ -- 0
+cite$ -- 20
+duplicate$ -- 215
+empty$ -- 352
+format.name$ -- 66
+if$ -- 922
+int.to.chr$ -- 0
+int.to.str$ -- 20
+missing$ -- 17
+newline$ -- 63
+num.names$ -- 20
+pop$ -- 82
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 119
+stack$ -- 0
+substring$ -- 170
+swap$ -- 62
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 34
+width$ -- 22
+write$ -- 163

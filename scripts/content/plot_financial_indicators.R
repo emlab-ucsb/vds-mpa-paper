@@ -124,7 +124,7 @@ log_revenue_FFA_GFW <-
               se = F) +
   geom_abline(intercept = 0, slope = 1) +
   scale_fill_brewer(palette = "Set1", guide = F) +
-  theme_cowplot()  +
+  theme_cowplot() +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         legend.justification = c(0, 1),

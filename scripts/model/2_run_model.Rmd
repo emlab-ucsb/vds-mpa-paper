@@ -103,6 +103,8 @@ Xvec <- Bnow * fvec
 
 ### Create and export a table of parameters and sources
 
+Create a table
+
 ```{r}
 params <- tibble(
   parameter = c(
@@ -139,11 +141,22 @@ params <- tibble(
 
 params %>% 
   knitr::kable(col.names = c("Parameter", "Value", "Source"),
+               format = "html",
+               escape = F) %>% 
+  kableExtra::kable_styling(latex_options = "scale_down")
+```
+
+Export the table
+
+```{r}
+params %>% 
+  knitr::kable(col.names = c("Parameter", "Value", "Source"),
                format = "latex",
                escape = F) %>% 
   kableExtra::kable_styling(latex_options = "scale_down") %>%
   cat(file = here("docs", "tab", "parameters.tex"))
 ```
+
 
 We use the model above run three different simulations. We test the model across a range reserve sizes and movement parameters. We use to main scenarios. The first scenario does not allow trading. In this case, total allowable effort ($\bar{E}$) and biomass $B_{now}$ are known and equally distributed among patches 1-9. For patch 10, we solve for Ei until biomass converges to match $B_{now}$. We then proceed to ``close'' a portion of Patch 1, and calculate the vessel-day price in Patch 1 given that only $X_i\Omega_i$ biomass is available for harvest. We compare vessel-day revenues of each scenario to a case with no reserve ($R = 0$). This produces a measure of the cost of implementing a spatial closure of size $R$ in patch 1.
 
@@ -400,7 +413,7 @@ shorter_no_trading <- DF_1_no_trading %>%
   select(Country, R, theta, Vessel_Days, VDSprice, VDSrevenue, cost, rel_cost)
 
 shorter_trading <- DF_1_with_trading %>% 
-  select(Country, R, theta, Vessel_Days_trading = Vessel_Days, pi_trading = VDSprice, VDSrevenue_trading = VDSrevenue, cost_trading = cost, rel_cost_trading = rel_cost)
+  select(Country, R, theta, Vessel_Days_trading = Vessel_Days, pi_trading = VDSprice, VDSrevenue_trading = all_VDSrevenue, cost_trading = cost, rel_cost_trading = rel_cost)
 
 both <- left_join(shorter_no_trading, shorter_trading, by = c("Country", "R", "theta")) %>% 
   mutate(delta_cost = cost - cost_trading,
@@ -451,6 +464,54 @@ ggsave(plot = cost_plot,
        width = 3.4,
        height = 7)
 ```
+
+# Change in effort and revenue with and without trading
+
+```{r}
+# Create a data.frame of effort by scenario
+effort <- both %>% select(R, theta, Vessel_Days, Vessel_Days_trading) %>%
+  gather(model, effort, -c(R, theta)) %>%
+  mutate(model = ifelse(str_detect(model, "trading"), "Trading", "No trading"))
+
+# Repeat for revenues and merge
+revenues <- both %>% select(R, theta, VDSrevenue, VDSrevenue_trading) %>%
+  gather(model, revenues, -c(R, theta)) %>%
+  mutate(model = ifelse(str_detect(model, "trading"), "Trading", "No trading")) %>%
+  left_join(effort, by = c("R", "theta", "model"))
+```
+
+Plot it
+
+```{r, fig.width = 6, fig.height = 4}
+(
+  effort_and_revenues <- ggplot(data = revenues,
+                                mapping = aes(x = effort / 1e3,
+                                              y = revenues / 1e6,
+                                              fill = theta,
+                                              size = R,
+                                              shape = model)) +
+    geom_point(color = "black") +
+    scale_fill_viridis_c() +
+    scale_shape_manual(values = c(24, 21)) +
+    labs(x = "Vessel-days (1,000)", y = "Revenue (million US$)") +
+    guides(shape = guide_legend(title = "Scenario"),
+           size = guide_legend(title = "Reserve size (R)"),
+           fill = guide_colorbar(title = quo("Movement ("~theta~")"),
+                                 frame.colour = "black",
+                                 ticks.colour = "black"))
+)
+```
+
+Save it
+
+```{r}
+ggsave(plot = effort_and_revenues,
+       file = here("docs", "img","effort_and_revenues.pdf"),
+       width = 6,
+       height = 4)
+```
+
+
 
 ## How does vessel-price change?
 
@@ -590,7 +651,7 @@ We first obtain the optimal allocation by running the model until steady state a
 
 ```{r}
 
-alphas <- c(0, 0.25, 0.5, 0.75, 1)
+alphas <- c(0, 0.5, 1)
 
 delta <- 1 / 1.1
 
@@ -599,7 +660,7 @@ plan(multiprocess)
 allocation <-
   expand.grid(
     R = Rvec,
-    theta = c(0.25, 0.5, 0.75),
+    theta = c(0, 0.25, 0.5, 0.75, 1),
     alpha = alphas,
     trade = T
   ) %>%
@@ -662,17 +723,17 @@ best_rev <- allocate_wrap(
   sum(rev_tot)
 ```
 
-```{r, fig.height = 3.5, fig.width = 4.5}
+```{r, fig.height = 3.5, fig.width = 5.5}
 (allocation_cost_plot <- allocation %>%
    filter(R > 0,
           trade) %>% 
    mutate(trade = ifelse(trade, "Trading", "No Trading"),
-          theta = as.character(theta)) %>% 
+          alpha = as.character(alpha)) %>% 
    group_by(trade, alpha, R, theta) %>%
    summarize(rev = sum(rev_tot)) %>%
    ungroup() %>%
    mutate(cost = (best_rev - rev) / best_rev) %>%
-   ggplot(aes(x = R, y = cost, color = alpha, group = paste(alpha, theta), linetype = theta)) +
+   ggplot(aes(x = R, y = cost, color = theta, group = paste(alpha, theta), linetype = alpha)) +
    geom_line(size = 1.5) +
    scale_y_continuous(labels = scales::percent,
                       limits = c(0, 1)) +
@@ -681,11 +742,10 @@ best_rev <- allocate_wrap(
    scale_color_viridis_c() +
    scale_linetype_manual(values = c("solid", "dashed", "dotted")) +
    ggtheme_plot() +
-   # facet_wrap(~trade, ncol = 1) +
-   guides(color = guide_colorbar(title = quo("Allocation\nparameter ("~alpha~")"),
+   guides(color = guide_colorbar(title = bquote("Movement ("~theta~")"),
                                  ticks.colour = "black",
                                  frame.colour = "black"),
-          linetype = guide_legend(title = quo("Movement\nparameter ("~theta~")"),
+          linetype = guide_legend(title = bquote("Allocaion ("~alpha~")"),
                                   override.aes = list(size = 0.5))))
 ```
 
@@ -694,7 +754,7 @@ best_rev <- allocate_wrap(
 ggsave(
   plot = allocation_cost_plot,
   filename = here("docs", "img", "allocation_cost_plot.pdf"),
-  width = 4.5,
+  width = 5.5,
   height = 3.5
 )
 ```
@@ -708,29 +768,6 @@ ggsave(
   width = 5,
   height = 3
 )
-```
-
-
-```{r, eval = F}
-allocation %>%
-  filter(!trade) %>% 
-  ggplot(aes(x = year, y = Ea, color = R, group = paste(alpha, R, theta))) +
-  geom_line(size = 1) +
-  facet_grid(alpha ~ theta) +
-  scale_color_viridis_c() +
-  guides(color = guide_colorbar(ticks.colour = "black", frame.colour = "black")) +
-  ggtheme_plot()
-```
-
-```{r, eval = F}
-allocation %>%
-  filter(theta == 0.5, !trade) %>% 
-  ggplot(aes(x = year, y = Xi, color = R, group = paste(alpha, R))) +
-  geom_line(size = 1) +
-  facet_grid(~alpha) +
-  scale_color_viridis_c() +
-  guides(color = guide_colorbar(ticks.colour = "black", frame.colour = "black")) +
-  ggtheme_plot()
 ```
 
 

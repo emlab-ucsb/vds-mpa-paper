@@ -65,7 +65,6 @@ eez <- read_sf(dsn = here("data", "spatial", "EEZ_subset"),
 
 labels <- eez %>% 
   filter(ISO_Ter1 %in% VDS_countries) %>% 
-  # lwgeom::st_make_valid() %>% 
     mutate(label = countrycode(sourcevar = ISO_Ter1,
                                origin = "iso3c",
                                destination = "country.name"),
@@ -90,7 +89,8 @@ plot <- ggplot() +
   ggtheme_plot() +
   scale_color_manual(values = c("black", "red")) +
   scale_fill_manual(values = c("transparent", "steelblue")) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  labs(x = "", y = "")
 
 ggsave(plot = plot,
        filename = here("docs", "img", "PNA_map.png"),

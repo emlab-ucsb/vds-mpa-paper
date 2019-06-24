@@ -18,8 +18,7 @@ source(here("scripts", "functions", "st_rotate.R"))
 plw_eez <- read_sf(here::here("data", "spatial", "PNA_EEZ"), "PNA_EEZ") %>% 
   st_rotate() %>%
   select(ISO_Ter1) %>% 
-  filter(ISO_Ter1 %in% c("PLW")) %>% 
-  st_simplify(100)
+  filter(ISO_Ter1 %in% c("PLW"))
 
 # Load PNMS boundaries
 pnms <- read_sf(dsn = here::here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>%
@@ -32,7 +31,7 @@ plw <- get_table(dataset = "mpa_displacement",
   group_by(year, best_vessel_class, lon, lat) %>% 
   summarize(days = sum(hours, na.rm = T) / 24) %>% 
   ungroup()
-
+# 
 # Save effort data for reproducibility
 # write.csv(x = plw,
 #           file = here("raw_data", "plw_fishing_raster_2018_by_year.csv"),
@@ -66,7 +65,8 @@ plw <- get_table(dataset = "mpa_displacement",
 
 # Plot purse seine fishing effort for 2018
 (plw_2018_ps <- plw %>% 
-    filter(best_vessel_class == "tuna_purse_seines") %>% 
+    filter(year == 2018,
+           best_vessel_class == "tuna_purse_seines") %>% 
     ggplot() +
     geom_raster(aes(x = lon, y = lat, fill = days)) +
     geom_sf(data = plw_eez, fill = "transparent", color = "black", size = 2) +
@@ -163,7 +163,7 @@ PLW_GFW_ts <- plw %>%
                                     "Purse seines")) %>% 
   ggplot(aes(x = year, y = days)) +
   geom_line() +
-  geom_point() +
+  geom_point(shape = 21, fill = "steelblue", color = "black") +
   facet_wrap(~best_vessel_class, scales = "free_y") +
   labs(x = "Year", y = "Vessel-days") +
   ggtheme_plot()
@@ -232,9 +232,63 @@ ggsave(plot = plw_ts_plot,
        width = 6,
        height = 4)
 
+ll_plot <- plw %>% 
+  filter(best_vessel_class == "drifting_longlines",
+         year < 2019) %>% 
+  ggplot() +
+  geom_raster(aes(x = lon, y = lat, fill = days)) +
+  geom_sf(data = plw_eez, fill = "transparent", color = "black", size = 2) +
+  geom_sf(data = pnms, fill = "transparent", color = "red", size = 1) +
+  scale_fill_viridis_c(option = "C",
+                       trans = "log10",
+                       limits = c(0.01, 1400),
+                       breaks = c(0.01, 0.1, 1, 10, 100, 1000),
+                       labels = c(0.01, 0.1, 1, 10, 100, 1000),
+                       na.value = 0.1) +
+  scale_x_continuous(breaks = seq(130, 136, by = 3)) +
+  theme_minimal() +
+  guides(fill = guide_colorbar(title = "Vessel-days",
+                               frame.colour = "black",
+                               ticks.colour = "black")) +
+  labs(x = "", y = "") +
+  facet_wrap(~year, ncol = 3) +
+  theme(legend.justification = c(0, 1),
+        legend.position = c(0.35, 0.3)) +
+  ggtitle("Longline vessel-days in Palau 2012 - 2018")
 
+ggsave(plot = ll_plot,
+       filename = here("docs", "img", "plw_ll_effort_map_time.pdf"),
+       width = 6,
+       height = 8)
 
+ps_plot <- plw %>% 
+  filter(best_vessel_class == "tuna_purse_seines",
+         year < 2019) %>% 
+  ggplot() +
+  geom_raster(aes(x = lon, y = lat, fill = days)) +
+  geom_sf(data = plw_eez, fill = "transparent", color = "black", size = 2) +
+  geom_sf(data = pnms, fill = "transparent", color = "red", size = 1) +
+  scale_fill_viridis_c(option = "C",
+                       trans = "log10",
+                       limits = c(0.01, 1.6),
+                       breaks = c(0.01, 0.03, 0.1, 0.3, 1),
+                       labels = c(0.01, 0.03, 0.1, 0.3, 1),
+                       na.value = 0.1) +
+  scale_x_continuous(breaks = seq(130, 136, by = 3)) +
+  theme_minimal() +
+  guides(fill = guide_colorbar(title = "Vessel-days",
+                               frame.colour = "black",
+                               ticks.colour = "black")) +
+  labs(x = "", y = "") +
+  facet_wrap(~year, ncol = 3) +
+  theme(legend.justification = c(0, 1),
+        legend.position = c(0.35, 0.3)) +
+  ggtitle("Purse seine vessel-days in Palau 2012 - 2018")
 
+ggsave(plot = ps_plot,
+       filename = here("docs", "img", "plw_ps_effort_map_time.pdf"),
+       width = 6,
+       height = 8)
 
 
 
