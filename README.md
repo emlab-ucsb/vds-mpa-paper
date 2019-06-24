@@ -21,6 +21,7 @@ The repository contains five key directories:
 - `docs`: Contains the `*.tex` files, bibliography, and `*.pdf` of the manuscript.
 
 The key files to run the model are located in `scripts/model/*`, and can be seen as html documents of docuemented code. Key scripts that generate content are under `scripts/content/*`.
+
 --------- 
 
 
