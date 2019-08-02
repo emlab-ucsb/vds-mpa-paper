@@ -1,0 +1,288 @@
+% Use only LaTeX2e, calling the article.cls class and 12-point type.
+
+\documentclass[12pt]{article}
+
+\usepackage{times}
+
+% Packages I manually added
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\topmargin 0.0cm
+\oddsidemargin 0.2cm
+\textwidth 16cm
+\textheight 21cm
+\footskip 1.0cm
+
+
+\title{Well-Designed Environmental Markets Enable Conservation}
+
+
+% Place the author information here.  Please hand-code the contact
+% information and notecalls; do *not* use \footnote commands.  Let the
+% author contact information appear immediately below the author names
+% as shown.  We would also prefer that you don't change the type-size
+% settings shown here.
+
+\author{Juan Carlos Villase\~{n}or-Derbez,$^{1\ast}$ John Lynham,$^{2}$ Christopher Costello$^{1}$\\
+\\
+\normalsize{$^{1}$Bren School of Environmental Science \& Management,}\\
+\normalsize{University of California at Santa Barbara, Santa Barbara, CA}\\
+\normalsize{$^{2}$Department of Economics, University of Hawaii at Manoa, Honolulu, HI}\\
+\\
+\normalsize{$^\ast$To whom correspondence should be addressed; E-mail: juancarlos@ucsb.edu.}
+}
+
+% Include the date command, but leave its argument blank.
+
+\date{}
+
+
+
+%%%%%%%%%%%%%%%%% END OF PREAMBLE %%%%%%%%%%%%%%%%
+
+
+
+\begin{document}
+
+% Double-space the manuscript.
+
+\baselineskip24pt
+
+% Make the title.
+
+\maketitle
+
+
+
+% Place your abstract within the special {sciabstract} environment.
+\begin{abstract}
+Will rights-based approaches to managing natural resources facilitate, or impede large-scale conservation? We study this question in the context of environmental markets for fishing rights and Marine Protected Areas. We combine spatial bioeconomic modeling and real-world vessel-tracking data to assess how market design incentivizes or penalizes conservation. We show that the answer hinges on two design features of the market. First, only when trading of rights across countries is allowed, can a conservation-minded country capture the economic spillover benefits of their conservation actions. Second, allocation of rights must depend only on biological features, and not on economic factors such as a country's past effort or catch. Overall, these results show that environmental markets can incentivize conservation, but that seemingly innocuous design features of environmental markets can have indelible impacts on a nation's willingness to engage in large-scale conservation.
+\end{abstract}
+
+\clearpage
+
+\section{Main}
+
+Environmental markets have been proposed as instruments for resource management and conservation \cite{arsel_2012,sullivan_2013}. Rights-based approaches internalize the social costs and can solve a diverse set of environmental issues \cite{libecap_2009}. For example, implementation of individual transferable quotas in fisheries management can prevent fisheries collapse and reduce the ``race to fish'' \cite{costello_2008,birkenbach_2017}, and tradable emissions permits can reduce air pollution \cite{joskow_1998}. Rights-based resource management can facilitate management and incentivize investments, but will it facilitate or impede conservation? The answer must depend on how markets are designed, which ultimately shape incentives and the decission making process. We explore the role of market design features in incentivizing or limitting conservation in the context of markets for fishing rights and Marine Protected Areas (MPAs).
+
+Recognizing a need to protect biodiversity and ecosystem services, various international bodies have committed to dramatically expand marine protection around the world\cite{oleary_2016}. Currently only about 3\% of the world's oceans are strongly protected \cite{sala_2018}, but these commitments call for 10\%-30\% of the ocean to be off-limits to fishing \cite{oleary_2016,dinerstein_2019}. To achieve these goals, huge swaths of sovereign nations' waters must be closed to fishing. What incentives might motivate a country to engage in such large-scale marine protection? Would any country rationally close 10\%, 30\%, or even 100\% of its waters to fishing if this means losing all fishing revenue from within the closed area? Fishing effort markets, where nations sell fishing rights to fishing vessels, may provide a mechanism to incentivize large-scale marine conservation. Here we show how the market can be designed (if new) or modified (if already existing) to incentivize large-scale marine conservation.
+
+We are motivated by a real-world institution called the Parties to the Nauru Agreement (PNA). Like an OPEC for tuna, the PNA is a coalition of nine Pacific island nations that collectively manages tuna fishing in its members' waters\cite{havice_2013,aqorau_2018}. These waters account for 14.5 million km\textsuperscript{2} (an area four times larger than the continental US), and over 60\% of skipjack tuna catch in the Western Central Pacific \cite{havice_2013}. The PNA manages the tuna purse seine fishery using a vessel-day scheme (VDS) where total fishing effort is capped at 45,000 vessel-days. These are allocated across the nine nations, which then sell them to fishing vessels. Member nations derive enormous benefits from leasing tuna fishing rights to foreign fleets, in some cases exceeding half of a country's GDP. In addition to highly productive tuna fisheries, the PNA waters provide a wealth of ecosystem benefits, hence the focus on large-scale conservation efforts in the region \cite{mcleod_2019}. In 2015, Kiribati implemented the Phoenix Islands Protected Area and Palau will close 80 of it's national waters by December 2020. We draw from the PNA approach to managing tuna fisheries and build on it to show how a market-based solutions can incentivize conservation.
+
+Not all market-based approaches to environmental management are created equal. A pervasive finding across a range of natural resources is that features of markets, such as the allocation of rights, can have implications for the market's functioning \cite{libecap_1989}. In the context of fishing effort markets, we find that two market design features are pivotal in determining the incentives for large-scale marine conservation: trading and allocation rules. But why would these affect the incentives for conservation? Consider the incentives for a country to close 100\% of its waters. Such a closure would surely benefit other countries through the spillover of fish from the protected area to the waters of the other countries. If the conserving country could sell the rights to catch the fish that spill-over, other countries would likely buy them, offsetting the costs of not fishing its own waters. But if the conserving country was not allowed to sell these rights, then it would lose all of its fishing revenue. The rules for how fishing rights are allocated across countries are equally important. Suppose rights are allocated each year based on the previous year's fishing effort: the more a country fishes, the more it gets allocated the next year. This would clearly disadvantage a conservation-minded country and, in fact, might reward undesirable behavior.
+
+\subsection{Designing markets for conservation}
+
+To examine how market design incentivizes or punishes large scale conservation, we develop a 10-patch spatial bioeconomic model that mirrors the strategies and spatial connections among the nine PNA nations and the high seas. Patches 1 to 9 represent each country and they operate under a ``vessel-day scheme'' (VDS), where vessel-days are capped for each country and closely tracked. Patch 10 represents the high seas, where fishing days are governed by economic conditions. We examine the effects of large-scale conservation in Country 1 under markets with and without trading between countries. In all cases, we solve for the equilibrium vessel-day price, fishing effort redistribution, and fish stock that would be expected to occur in the market. We quantify the change in revenue to Country 1 and compare each scenario to a benchmark scenario without any conservation action. We simulate these outcomes across a range of reserve sizes and assumptions about within-patch stock movement (see the Methods section for a details).
+
+We first simulate a fishery where trading between countries is not allowed, and find that a spatial closure in Patch 1 will always result in a loss in revenues to Patch 1 (Fig. \ref{fig:PNA_model}A). Higher within-patch stock movement ($\theta$ = 0 implies no within-patch movement and $\theta = 1$ implies that fish are well-mixed within the fishing season) allows vessels to harvest the stock within the remaining open area, lowering the cost to Country 1. The closure-to-cost ratio for any reserve size is greater than 1:1 when stock movement is low (\emph{i.e.} $\theta < 0.2$), implying that a 30\% closure would result in at least a 30\% loss in revenues. Even for a highly mobile stock where fish can move in and out of the reserve, a spatial closure reduces the amount of biomass that is available for harvest in the conserving patch (\emph{i.e.} biomass outside the reserve), which reduces vessels' willingness to pay to fish in such waters (Fig. S1). When countries cannot trade, the costs of conservation are incurred by Patch 1, but the benefits are received by the eight other patches (revenues increase between 0\% and 6\%; Fig. S2) and the high seas.
+
+How would trading between countries change these results? We simulate the same fishery, but now allow for vessel-days to be traded across patches. As before, a closure in Patch 1 lowers the value of vessel-days in that patch. But increased biomass in other patches causes prices in Patches 2 to 8 to increase. As a result, vessel-days from Patch 1 are traded to Patches 2 to 9, until prices are the same across all patches (Fig. S3). Under this market design, revenue losses are less than 1\%, compared to the benchmark scenario with no reserve (Fig. \ref{fig:PNA_model}B). With trading, the relative revenue drop will always be smaller than the relative effort drop, and the opposite is observed when there is no trading (Fig. S4). Overall, 88\% to 99\% of the costs of conservation can be avoided if markets are designed to enable trading (Fig. \ref{fig:PNA_model}C).
+
+We have shown that trading significantly reduces the costs of conservation. However, a new problem arises. How should rights be re-allocated every year? We test a range of allocation rules that weight effort ($\alpha$) and biomass ($1 - \alpha$) differently, and compare the resulting revenues to a fishery operating for 50 years without any closures. We find that when allocation is based on historical effort only (\emph{i.e.} $\alpha = 1$), implementing a reserve results in long-term losses to the conserving country of 20\% to 93\%, depending on the size of reserve and stock movement (Fig. \ref{fig:allocation_cost_plot}). However, a biomass-only allocation rule (\emph{i.e.} $\alpha = 0$) results in revenue losses as low as 0.1\% to 0.7\%, essentially eliminating the costs of conservation. This result implies that if allocation is based purely on the biological features of a stock (\emph{e.g.} the biomass within a nation's waters), and not on fishing effort, the incentives are sustained through time. 
+
+\subsection{Markets and conservation in practice}
+
+An MPA was recently implemented in PNA waters, providing the ideal empirical setting to test our predictions. In January 2015, Kiribati closed 11.5\% of its EEZ (397,447 km\textsuperscript{2}), effectively displacing all fishing effort within its boundaries \cite{mccauley_2016,mcdermott_2018}. We combine vessel-tracking data \cite{kroodsma_2018} and country-level license revenue data \cite{ffa_2017} to quantify the displacement of fishing effort and the likely costs of conservation. Of the 313 tuna purse seine vessels that fished in PNA waters between 2012 and 2018, 64 ``displaced'' vessels fished within PIPA at least once prior to its implementation and 28 ``non-displaced vessels'' never fished in PIPA waters. The remaining 221 vessels were not continuously observed before and after but are included in our analyses, and we refer to these as ``other vessels''.
+
+Consistent with our models' prediction, PIPA caused vessels to relocate largely outside of Kiribati, and into other PNA countries' waters (Fig. S5 - S6). Indeed, displaced vessels fished 922 fewer days (a 10\% reduction) in Kiribati, but spent just 48 fewer days in PNA waters (Figs. \ref{fig:empirical}).  The reduction in effort in Kiribati and constant effort at the PNA-level suggest that trading facilitated redistribution of effort within PNA waters. On the other hand, non-displaced and other vessels spent 1,621 and 2,034 additional days in Kiribati in 2015, relative to 2014. The same pattern is observed at the PNA level, with non-displaced and other vessels spending an additional 3,789 and 3,691 vessel-days, respectively. By 2018, we observe a net decrease of vessel-days within Kiribati, from 12,282 in 2014 to just 7,542 in 2018, with displaced vessels driving the decrease (Fig. \ref{fig:empirical}A).
+
+As predicted by our theoretical model, the implementation of PIPA resulted in a decrease in fishing effort within Kiribati's water without large revenue losses. Kiribati's reported revenue increased from US\$127.3 million in 2014 to US\$148.8 million in 2015, before decreasing to US\$118.3 million in 2016 (Fig. \ref{fig:empirical}C). The increase and subsequent decrease in revenues matches the vessel-day patterns observed for Kiribati in 2014 to 2016 (Fig. \ref{fig:empirical}D). But, critically, the drop in revenue in 2016 (20\%) is smaller than the drop in VDS effort (35\%). This confirms a key prediction of our model: with trading, the relative revenue drop will always be smaller than the relative effort drop but, without trading, the exact opposite relationship would hold (Fig. S4). At the PNA level, total revenues showed a net increase of \$64.7 and \$28 million USD for 2015 and 2016 respectively (Fig. S8), despite the PIPA closure.
+
+Our findings may help inform management and implementation of existing and upcoming MPAs in the PNA. In December 2020, Palau will close nearly 80\% of its EEZ to commercial fishing to create the Palau National Marine Sanctuary (PNMS): the 14\textsuperscript{th} largest protected area in the world (Fig. \ref{fig:PNA_map}). Vessel-tracking data (2012 to 2018) shows that the proposed PNMS would displace $65.6 \pm 0.08$\% ($\pm$ 1SD) of longline vessel-days (non-tradable) and $82.2 \pm 0.08$\% ($\pm$ 1SD) of purse seine vessel-days (tradable; Fig. S10-S11). While trading will allow Palau, Kiribati, and other PNA members to reduce revenue losses, our model suggests that they must also advocate for a biomass-based allocation rule to ensure long-term financial security. The Parties to the Nauru Agreement have shown that rights-based management of transboundary resources can result in large management and economic benefits \cite{havice_2013,aqorau_2018}. By facilitating trade and allocating rights based on biomass, they may become pioneers in effective large-scale marine conservation.
+
+In our study, only one of the countries considers the implementation of a protected area. However, an important aspect to consider is that of cooperative conservation. Consider the case where two nations contain high and low proportions of habitat that must be protected. Should both nations try to attain the same conservation targets of say, 30\% protection of their respective extension? Or is there a more cost-effective scenario that maximizes conservation but minimizes costs, and what would the role of environmental markets be in achieving it? Furthrer research should explore the role of heterogeneous costs and benefits between users, and the way in which these can shape conservation outcomes.
+
+The use of environmental markets for conservation is a common but contended approach among conservation scientists \cite{sandbrook_2019}. One of the driving concerns is that markets may create the wrong incentives that would lead to undesirable outcomes. Effective environmental markets should be designed to incentivize and sustain conservation \cite{adams_2014}. We show that rights-based management can provide incentives for large-scale conservation. However, we must emphasize that design features of a market can have indelible impacts on a country’s willingness to engage in such projects. In the case of fishing rigths and MPAs, transferable fishing rights and a biomass-based allocation rule are two necessary conditions to achieve the desired outcomes.
+
+International goals over the next decade have set ambitious targets for terrestrial and marine conservation, which will provide benefits ranging from preserving biodiversity to enhancing human well-being \cite{oleary_2016,dinerstein_2019,roberts_2017,ban_2019}. Our work shows how well-designed environmental markets can reduce costs and provide the right incentives for effective large-scale conservation.
+
+\clearpage
+
+\section{Methods}
+
+\subsection{Bioeconomic model}
+
+We model a ten-patch discrete-time meta-population system, where Patch 1 is considering a spatial closure. Patches 1 - 9 operate under a vessel-day scheme, and Patch 10 represents the high seas and other areas not managed under a VDS. The stock of fish in each country is relatively stationary within a single fishing season, but  growth from escapement redistributes across all patches annually. The price of fish is $p$, and catchability is given by $q$. These parameters are held constant across patches.
+
+\subsubsection{Fishery dynamics}
+
+In the absence of a reserve, the revenue for vessels in patch $i$ is given by $pqE_iX_i$, where $E_i$ and $X_i$ are effort (vessel-days) and stock size in patch $i$ at the beginning of a period. The cost of fishing in patch $i$ is given by $cE_i^\beta$, where $\beta = 1.3$ matches commonly-used cost functions.
+
+Patch 1 considers a spatial closure by implementing a reserve as a fraction $R$ of the total patch ($R \in[0,1)$). Fish move within a patch based on $\theta$, where $\theta = 0$ implies no movement within the patch, and $\theta = 1$ implies that fish move so much that they can be caught from anywhere within the patch. In this patch, revenues are given by $pqE_1X_1(\theta + (1 - \theta)(1 - R))$. The parameterization of movement and reserve size imply that profit from fishing Patch 1 is given by:
+
+$$
+\Pi_1(E_1,X_1,R) = pqE_1X_1\Omega_1-cE_1^\beta
+$$
+
+\noindent with $\Omega_1 = (\theta + (1 - \theta)(1 - R))$ being a parameterization that combines reserve size as a proportion of patch ($R =  [0, 1)$) and within-patch fish movement ($\theta$). Under this parameterization, $\Omega_{i \neq 1} = 1$ since only Patch 1 implements a reserve.
+
+Therefore, we can generalize the patch-level profit equation to:
+
+$$
+\Pi_i(E_i,X_i, R_i) = pqE_iX_i\Omega_i-cE_i^\beta
+$$
+
+\noindent The above equations imply that the marginal profit from the last unit of effort in a patch are given by:
+
+\begin{equation}
+\pi_i(E_i) = \frac{\partial \Pi_i}{\partial E_i} = pqX_i\Omega_i - \beta cE_i^{\beta-1}
+\label{eqn:marginal_profit}
+\end{equation}
+
+In practice, the effort levels in each Patch are allocated by management (so $E_{1},\ E_{2},...,E_{9}$ are given) and the effort level on the high seas ($E_{10}$) is a result of open access dynamics. Therefore, we assume that effort continues to enter Patch 10 until the profit from the last unit of effort is exactly zero, indicating that $E_{10}$ is the value for which $\pi_{10}(E_{10})  = 0$. Setting Equation \ref{eqn:marginal_profit} for $i = 10$ equal to zero and removing $\Omega_{10} = 1$ for simplicity, we can solve for $E_{10}$:
+
+\begin{equation}
+E_{10} = \left(\frac{pqX_{10}}{\beta c}\right)^{\frac{1}{(\beta - 1)}}
+\label{eqn:effort_hs}
+\end{equation}
+
+Under VDS-operated patches, however, profits from the marginal unit of effort should equate to the price of fishing in the patch. Therefore vessel-day price for patches under VDS ($i = (1, 9)$) is  given by:
+
+$$
+\pi_i = pqX_i\Omega_i - \beta c E_i ^{\beta - 1}
+$$
+
+\noindent Solving for $E_i$ we obtain:
+
+\begin{equation}
+E_i = \left(\frac{pqX_i\Omega_i - \pi_i}{\beta c }\right) ^ {\frac{1}{\beta - 1}}
+\label{eqn:demands}
+\end{equation}
+
+Equation \ref{eqn:demands} tells us the patch-level effort for a given patch-specific stock size ($X_i$) and vessel-day price ($\pi_i$). A vessel-day scheme establishes a cap on total effort allowed. This means that fishing effort from Patches 1 - 9 must add up to this limit (45,000 vessel-days). Therefore, total allowable effort in the fishery is given by:
+
+\begin{equation}
+\bar{E} = \sum_{i = 1}^9\left(\frac{pqX_i\Omega_i - \pi}{\beta c }\right) ^ {\frac{1}{\beta - 1}}
+\label{eqn:Ebar}
+\end{equation}
+
+\noindent In the above Equation, vessel-day price is the same across all patches when trading is allowed; the subindex is dropped for this parameter.
+
+\subsubsection{Stock dynamics}
+
+Patch-level harvest is then determined by effort and stock size:
+
+\begin{equation}
+H_i = qE_iX_i\Omega_i
+\label{eqn:harvest}
+\end{equation}
+
+
+\noindent Therefore, escapement in patch $i$ in time period $t$ is the difference between initial stock size and harvest given by $e_{i,t} = X_{i,t} - H_{i,t}$ and total escapement is $e_t=\sum_{i=1}^{10}e_{i,t}$. The entire stock then grows logistically according to:
+
+\begin{equation}
+X_{t+1} = e_t \times  e^{r \left(1 - \frac{e_t}{K} \right)}
+\label{eqn:grow}
+\end{equation}
+
+\noindent where $r$ and $K$ are species-specific intrinsic growth rate and carrying capacity. After the stock grows, a constant and patch-specific fraction $f_i$ of the total stock redistributes to patch $i$, so:
+
+\begin{equation}
+X_{i,t+1} = f_iX_{t+1}
+\label{eqn:disperse}
+\end{equation}
+
+\subsubsection{Vessel-day revenues}
+
+The vessel-day price that a country charges is given by $\pi_i$ from Eqn \ref{eqn:marginal_profit}. Therefore, patch-level license revenues are given by:
+
+\begin{equation}
+\omega_i = \pi_iE_i
+\label{eqn:license_revenue}
+\end{equation}
+
+\noindent Equation \ref{eqn:harvest} shows that low values of $\theta$ and $R > 0$ would decrease harvest and increase escapement in Patch 1, for a given level of effort and stock size. This would lead to an increase in total stock size (Equation \ref{eqn:grow}) and a benefit to all the other patches. But this would also cause the stock in the high seas ($X_{10}$) to increase, leading to increased effort being allocated to the high seas (Equation \ref{eqn:effort_hs}) and a loss of these potential rents. Thus, the spillover benefits of increasing $R$ are never completely captured. Information on model parameterization is provided in our Supplementary Materials.
+
+\subsubsection{Simulations}
+
+We run simulations under two market designs and test the model across a range of reserve sizes and within-patch movement parameters.The first scenario does not allow trading. In this case, total allowable effort ($\bar{E}$) and biomass $B_{now}$ are known and equally distributed among patches 1-9. For patch 10, we solve for Eq \ref{eqn:effort_hs} until biomass converges to match $B_{now}$. We then proceed to ``close'' a portion of Patch 1, and calculate the vessel-day price in Patch 1 given that only $X_i\Omega_i$ biomass is available for harvest. We compare vessel-day revenues of each scenario to a case with no reserve ($R = 0$). This produces a measure of the cost of implementing a spatial closure of size $R$ in Patch 1.
+
+The second scenario allows trading. We start again by solving for the high seas to obtain total effort. Since a closure is not in effect and VDS-managed effort is equally distributed across the 9 patches, this equilibrium is the same as the first step above. We then implement a spatial closure in Patch 1. This essentially lowers the price fishers would be willing to pay to fish in a patch with only biomass $X_i\Omega_i$, lowering demand for vessel-days in Patch 1. Patches 2 - 9 have a higher demand for vessel days, and therefore a portion of vessel-days from Patch 1 are sold to Patches 2 - 9. This increases effort in these patches, which reduces escapement and therefore biomass. This reduction in biomass in turn will modify the marginal profit and willingness to pay to fish in each country. We therefore iterate this process until biomass stabilizes, finding the system's equilibrium. Like before, we calculate vessel-day revenues to each patch and compare them to a case with no reserve in Patch 1.
+
+Annual vessel-days are often allocated based on a combination of historical within-patch effort and biomass. In the PNA, for example, 60\% of the allocation is calculated based on EEZ effort over the last seven years and 40\% is calculated based on the 10-year average of each country’s share of estimated skipjack and yellowfin biomass within its EEZ (This is explained in more detail in Article 12.5 of the 2012 Amendment to the Palau Agreement and in \cite{Hagrannsoknir2014}). Trading vessel-days to other countries would imply that historical within-patch effort declines through time. The allocated days to a patch with a full spatial closure would eventually be reduced to just the 40\% based on biomass.
+
+In the trading scenario above, effort from Patch 1 (with the reserve) is traded to other patches. This means that its allocation will decrease as purse seine effort in its EEZ is reduced. To analyze the consequences of different allocation rules when trading is allowed, we simulate a fishery 50 years into the future, and annually re-allocate vessel-days based on a 7-year running mean of patch-level effort and biomass. At the end of every time period (a year), vessel-days are re-allocated to each patch based on the following rule:
+
+$$
+E_{i,t+1}^* = \alpha
+\left(\frac{\sum_{\tau = 0}^{\hat{\tau}}E_{i,t-\tau}}{\sum_{\tau = 0}^{\hat{\tau}}\bar{E}_{{t-\tau}}}
+	\right)
+	+
+(1 - \alpha)
+\left(\frac{\sum_{\tau = 0}^{\hat{\tau}}X_{i,t-\tau}}{\sum_{\tau = 0}^{\hat{\tau}}\bar{X}_{t-\tau}} \right)
+$$
+
+\noindent where $\alpha$ is a weight on historical effort ($E_i$) and $1-\alpha$ is the weight on historical biomass ($B_i$). We use $\hat{\tau}= 6$ to obtain a moving mean of 7 years for these measures. The difference between allocated days ($E_i^*$) and used days (determined by Equation \ref{eqn:demands}) for Patch 1 are the sales. We then calculate vessel-day revenues to each country over the 50-year time horizon and compare to a case where there is no reserve and allocations are based solely on biomass ($\alpha = 0$).
+
+\subsection{Empirical case study}
+
+\subsubsection{Vessel tracking data and MPAs}
+
+Automatic Identification Systems (AIS) are on-board devices that provide at-sea safety and prevent ship collisions by broadcasting vessel position, course, and activity to surrounding vessels. These broadcast messages can be received by satellites and land-based antennas. We use AIS data provided by Global Fishing Watch \cite{kroodsma_2018} to track 313 tuna purse seiners that fished within the PNA. Of the 313 tuna purse seine vessels that fished in PNA waters between 2012 and 2018, 64 ``displaced'' vessels fished within PIPA at least once prior to its implementation, 28 ``non-displaced vessels'' never fished in PIPA waters, and  221 ``other vessels'' were not continuously observed before and after. Together, these vessels represent more than 20 million geo-referenced positions.
+
+We use these data to calculate the number of vessel-days that the 313 purse seiners spent in each PNA country and in PNA waters as a whole. The vessel-day equivalent of a day of fishing depends on vessel size, a measure used to control for effort creep. A day of activity by vessels smaller than 50 meters long counts as half a vessel-day, a day of activity by vessels 50 - 80 meters counts as one day, and a day of activity by vessels larger than 80 meters counts as 1.5 vessel-days. Vessel length is an observable characteristic in our dataset, and therefore we make the pertinent corrections when calculating vessel days.
+
+Shapefiles of Exclusive Economic Zones were obtained through Marine Ecoregions of The World, we use World EEZ v10 (2018-02-21) available for download at: http://www.marineregions.org. Shapefiles for Marine Protected Areas (Phoenix Islands Protected Area and Palau National Marine Sanctuary) come from the World Database of Protected Areas, and were downloaded in March 2019 from: https://www.protectedplanet.net. All analyses were performed in R version 3.5.3 \cite{rcore_2018}.
+
+\subsubsection{Revenues and catches}
+
+We obtained information on revenues from the Pacific Islands Forum Fisheries Agency \emph{Tuna Development Indicators 2016} report.  Specifically, we use data compiled by the Pacific Islands Forum Fisheries Agency (FFA\cite{ffa_2017}) where annual revenues from license fees (for VDS and other access programs) are reported for each country (2008 - 2016; Fig. \ref{fig:empirical}C; Fig. S8 - S9). For countries in the PNA, these revenues show a combination of vessel-day license fees as well as joint-venture operations.
+
+
+\bibliography{references}
+\bibliographystyle{nature}
+
+\section{Supplementary Information}
+
+Supplementary Information is linked to the online version of the paper at www.nature.com/nature
+
+\section{Acknowledgements}
+
+Juan Carlos Villaseñor-Derbez was supported by UCMexus-CONACyT (CVU: 669403) and the Latin American Fisheries Fellowship Program.
+
+\section{Author Contributions}
+
+All authors contributed equally.
+
+\section{Author information}
+
+Reprints and permissions information is available at www.nature.com/reprints. The authors declare no competing interests. Correspondence and requests for materials should be addressed to juancarlos@ucsb.edu.
+
+\clearpage
+
+\FloatBarrier
+
+% PNA model output for costs
+\begin{figure}[htbp]
+\centering
+\includegraphics{img/PNA_model.pdf}
+\caption{\label{fig:PNA_model}Cost of spatial closures in a vessel-day fishery. Each line represents a possible value of stock movement ($\theta$; line color). The revenue losses to Patch 1 (vertical axis) are relative to a fishery with no spatial closures, and are shown as a function of reserve size ($R$; horizontal axis) and movement (color). Costs are shown for Patch 1 when there is no trading (A) and when trading is allowed (B). Costs avoided by trading are shown in (C). Dashed red line in (A) is a 1:1 line.}
+\end{figure}
+
+% Costs of different allocation rules
+\begin{figure}[htbp]
+\centering
+\includegraphics{img/allocation_cost_plot.pdf}
+\caption{\label{fig:allocation_cost_plot}Costs of a spatial closure for Patch 1 under different allocation rules. Each line represents the revenue losses for a combination of allocation rules ($\alpha$; line type) and movement ($\theta$; color) for different reserve sizes ($R$; horizontal axis). An effort-based allocation and low movement values result in the highest costs. Cost can be minimized for all movement values if allocation is based on biomass.}
+\end{figure}
+
+% Effort redistribution bars for PNA and KIR
+\begin{figure}[htbp]
+\centering
+\includegraphics{img/empirical.pdf}
+\caption{\label{fig:empirical}Effort displacement and license revenues. Pannels (A) and (B) show AIS-derived annual vessel-days for Kiribati and for all Parties to the Nauru Agreement (PNA). Annual effort is broken down by displaced, non-displaced, and other vessels. The dashed horizontal lines represent the total allowable effort in Kiribati (11,000 days \cite{yeeting2018stabilising}) and the PNA (45,000 days). Pannel (C) shows annual revenue from fishing license fees by country and year (2008 - 2016) and pannel (D) shows the correspondence between FFA-reported revenues and AIS-derived vessel-day observations (2012 - 2016). The dashed line represents line of best fit.}
+\end{figure}
+
+% Map of LSMPAS in PNA
+\begin{figure}
+\centering
+\includegraphics{img/PNA_map.png}
+\caption{\label{fig:PNA_map}Map of the Exclusive Economic Zones (EEZs) and Marine Protected Areas in the PNA. Parties to the Nauru Agreement (PNA) are shown in blue, while empty polygons indicate all others. A red line indicates the Kiribati EEZ. The solid red and purple polygons show The Phoenix Islands Protected Area implemented in 2015 and the proposed Palau National Marine Sanctuary. Land masses are shown in gray. Labels indicate ISO3 country codes for PNA members (PLW: Palau, PNG: Papua New Guinea, FSM: Federal States of Micronesia, SLB: Solomon Islands, NRU: Nauru, MHL: Marshal Islands, KIR: Kiribati, TUV: Tuvalu, TKL: Tokelau).}
+\end{figure}
+
+\end{document}
