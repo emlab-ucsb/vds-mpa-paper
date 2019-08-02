@@ -13,6 +13,7 @@
 
 # Load packages
 library(tidyverse)
+library(ggridges)
 
 # Load data
 # I only want fishing tracks of purse seiners inside KIR before 2018
@@ -37,7 +38,11 @@ kir_fishing <- tracks %>%
 #### THE PLOT ########################################################################
 
 hist_kir_fishing <- ggplot() +
-  ggridges::geom_density_ridges(data = kir_fishing, aes(x = prop_hours, y = year, fill = year_c), alpha = 0.5) +
+  geom_density_ridges(data = kir_fishing,
+                      aes(x = prop_hours, y = year, fill = year_c),
+                      alpha = 0.5,
+                      quantile_lines = TRUE,
+                      quantiles = 2) +
   scale_fill_brewer(palette = "Set1") +
   cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
@@ -47,6 +52,9 @@ hist_kir_fishing <- ggplot() +
   labs(x = "Proportion of fishing hours in KIR", y = "Year") +
 scale_x_continuous(labels = scales::percent_format(accuracy = 1))
 
-ggsave(hist_kir_fishing, filename = here::here("docs", "img", "hist_kir_fishing.pdf"), width = 6, height = 3.5)
+# Save the plot
+ggsave(plot = hist_kir_fishing,
+       filename = here::here("docs", "img", "hist_kir_fishing.pdf"),
+       width = 6, height = 3.5)
 
 
