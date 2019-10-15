@@ -25,10 +25,7 @@ PNA_countries <- c(PNA_without_KIR, "KIR")
 # Load data
 vessel_activity <- readRDS(file = here("raw_data",
                                        "activity_by_vessel_year_eez.rds")) %>% 
-  filter(best_vessel_class == "tuna_purse_seines") %>% 
-  mutate(treated = ifelse(treated, "Displaced", "Non-displaced"),
-         group = ifelse(is.na(treated), "Others", treated),
-         group = fct_relevel(group, "Non-displaced", "Others", "Displaced"),
+  mutate(group = ifelse(group == "displaced", "Displaced", "Non-displaced"),
          location = case_when(eez_iso3 == "KIR" ~ "KIR",
                               eez_iso3 %in% PNA_without_KIR ~ "other PNA countries",
                               eez_iso3 == "HS" ~"HS",
@@ -47,7 +44,6 @@ all_PS_VDS_year_data <- vessel_activity %>%
 all_PS_VDS_year_plot <- ggplot(data = all_PS_VDS_year_data,
                                mapping = aes(x = year, y = days, fill = group)) +
   geom_col(color = "black") +
-  scale_fill_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
   geom_hline(yintercept = 45, linetype = "dashed") +
   cowplot::theme_cowplot() +
   guides(fill = guide_legend(title = "Group")) +
@@ -55,8 +51,9 @@ all_PS_VDS_year_plot <- ggplot(data = all_PS_VDS_year_data,
         axis.text = element_text(size = 8),
         legend.text = element_text(size = 8),
         legend.justification = c(0, 1),
-        legend.position = c(-0.01, 0.98))+
-  labs(x = "Year", y = "Vessel-days (1,000)")
+        legend.position = c(0, 1))+
+  labs(x = "Year", y = "Vessel-days (1,000)") +
+  scale_fill_brewer(palette = "Set1")
 
 ############ PS VDS for KIR
 all_PS_VDS_year_KIR_data <- vessel_activity %>% 
@@ -70,7 +67,6 @@ all_PS_VDS_KIR_year_plot <-
   ggplot(data = all_PS_VDS_year_KIR_data,
          mapping = aes(x = year, y = days, fill = group)) +
   geom_col(color = "black") +
-  scale_fill_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
   geom_hline(yintercept = 11, linetype = "dashed") +
   cowplot::theme_cowplot() +
   guides(fill = guide_legend(title = "Group")) +
@@ -78,7 +74,8 @@ all_PS_VDS_KIR_year_plot <-
         axis.text = element_text(size = 8),
         legend.text = element_text(size = 8),
         legend.position = "None")+
-  labs(x = "Year", y = "Vessel-days (1,000)")
+  labs(x = "Year", y = "Vessel-days (1,000)") +
+  scale_fill_brewer(palette = "Set1")
 
 # Financial data
 financial_data <- read.csv(file = here("data", "financial_data.csv")) %>% 
@@ -116,14 +113,14 @@ vessel_activity_ffa <- vessel_activity %>%
 
 revenue_FFA_GFW <-
   ggplot(vessel_activity_ffa, aes(x = days, y = revenue)) +
+  geom_smooth(method = "lm",
+              linetype = "dashed",
+              color = "black",
+              se = T) +
   geom_point(aes(fill = country),
              size = 3,
              shape = 21,
              alpha = 0.7) +
-  geom_smooth(method = "lm",
-              linetype = "dashed",
-              color = "black",
-              se = F) +
   scale_fill_brewer(palette = "Set1", guide = F) +
   theme_cowplot() +
   theme(text = element_text(size = 10),

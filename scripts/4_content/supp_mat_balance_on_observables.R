@@ -16,26 +16,13 @@ library(ggridges)
 library(tidyverse)
 
 # Load vessel info
-vessel_info <- read.csv(file = here("raw_data", "vessel_info_pna_purse_seines.csv")) %>% 
-  mutate(ssvid = as.character(ssvid))
-
-# Load vessel activity (this has the treatment groups)
-vessel_activity <- readRDS(file = here("raw_data",
-                                       "activity_by_vessel_year_eez.rds"))
-# Get the group for each ssvid
-vessel_treatments <- vessel_activity %>% 
-  mutate(treated = ifelse(treated, "Displaced", "Non-displaced")) %>% 
-  group_by(ssvid, treated) %>% 
-  count() %>% 
-  ungroup() %>% 
-  select(-n)
+vessel_info <- readRDS(file = here("raw_data",
+                                   "vessel_info_pna_purse_seines.rds"))
 
 # Combien both datasets, and clean-up
 balance_table <- vessel_info %>% 
-  left_join(vessel_treatments, by = "ssvid") %>% 
-  mutate(group = ifelse(is.na(treated), "Others", treated),
-         group = fct_relevel(group, "Non-displaced", "Others", "Displaced")) %>% 
-  select(-c(flag, treated)) %>% 
+  mutate(group = ifelse(group == "displaced", "Displaced", "Non-displaced")) %>% 
+  select(-c(flag)) %>% 
   gather(measure, value, -c(ssvid, group)) %>% 
   mutate(measure = case_when(measure == "crew_size" ~ "Crew size (n)",
                              measure == "engine_power_kw" ~ "Engine Power (KW)",
@@ -48,7 +35,6 @@ density_plot <- balance_table %>%
   ggplot(aes(x = value, fill = group)) +
   geom_density(alpha = 0.5) +
   facet_wrap(~measure, scales = "free", ncol = 2) +
-  scale_fill_manual(values = c("#E41A1C", "#4DAF4A", "#377EB8")) +
   ggtheme_plot() +
   guides(fill = guide_legend(title = "Group")) +
   theme(text = element_text(size = 10),
@@ -56,7 +42,8 @@ density_plot <- balance_table %>%
         legend.text = element_text(size = 8),
         legend.justification = c(1, 1),
         legend.position = c(1, 0.3)) +
-  labs(x = "Value", y = "Density")
+  labs(x = "Value", y = "Density") +
+  scale_fill_brewer(palette = "Set1")
 
 # Expor it
 ggsave(plot = density_plot,
@@ -80,12 +67,13 @@ my_ttest <- function(data){
 # Function to apply broom::tidy
 my_broom <- function(x) {
   broom::tidy(x) %>% 
-    select(estimate, statistic, p.value)
+    select(estimate, statistic, p.value) %>% 
+    mutate(estimate = round(estimate, 2),
+           statistic = round(statistic, 2))
 }
 
 # Calculate t-test
 ttest <- balance_table %>% 
-  filter(!group == "Others") %>% 
   select(-ssvid) %>% 
   group_by(measure) %>% 
   nest() %>% 
@@ -96,10 +84,12 @@ ttest <- balance_table %>%
 ttest_stars <- ttest %>% 
   select(measure, tidy) %>% 
   unnest(cols = tidy) %>% 
-  mutate(star = case_when(p.value < 0.001 ~ "**",
-                          p.value < 0.01 ~ "*",
-                          T ~ "")) %>% 
-  select(measure, star)
+  mutate(star = case_when(p.value < 0.01 ~ "***",
+                          p.value < 0.05 ~ "**",
+                          p.value < 0.1 ~ "*",
+                          T ~ ""),
+         dif = paste0(estimate, " (", statistic, ") ", star)) %>% 
+  select(measure, Difference = dif)
 
 # Create balance table and export
 balance_table %>% 
@@ -107,13 +97,11 @@ balance_table %>%
   summarize(value = mean_sd(value)) %>% 
   ungroup() %>% 
   spread(group, value) %>% 
-  select(measure, `Non-displaced`, Displaced, Others) %>% 
+  select(measure, `Non-displaced`, Displaced) %>% 
   left_join(ttest_stars, by = "measure") %>% 
-  mutate(Displaced = paste0(Displaced, star)) %>% 
-  select(-star) %>% 
   rename(Characteristic = measure) %>% 
   knitr::kable(format = "latex",
-               caption = "Average values on observable characteristics by vessel for displaced (n = 88), non-displaced (n = 97), and other vessels (n = 128). Numbers in parentheses indicate standard deviation. Asterisks inicate significant differences between the displaced and non-displaced groups using a two-tailed t-test (* p < 0.01; ** p < 0.001).") %>% 
+               caption = "Mean values on observable characteristics by vessel for displaced (n = 64), and non-displaced vessels (n = 254). Numbers in parentheses indicate standard deviation. The last column contains the difference in means (t-scores), with asterisks inicating significant differences as indicated by a two-tailed t-test (* p < 0.1; ** p< 0.05; *** p < 0.01).") %>% 
   cat(file = here("docs", "tab", "balance_table.tex"))
 
 

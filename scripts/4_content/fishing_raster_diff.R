@@ -13,11 +13,12 @@
 # Load packages
 library(here)
 library(sf)
+library(cowplot)
 library(tidyverse)
 
 # Source local functions
-source(here("scripts", "functions", "st_rotate.R"))
-source(here("scripts", "functions", "sfc_as_cols.R"))
+source(here("scripts", "0_functions", "st_rotate.R"))
+source(here("scripts", "0_functions", "sfc_as_cols.R"))
 
 ##### EEZs #################################################
 # Countries I want to show
@@ -50,7 +51,7 @@ eez <- read_sf(dsn = here("data", "spatial", "EEZ_subset"),
          PNA = ifelse(PNA, "PNA", "Non-PNA")) %>% 
   group_by(ISO_Ter1, PNA, KIR) %>% 
   summarize() %>% 
-  st_simplify(0.05)
+  rmapshaper::ms_simplify()
 
 ##### MPAS #################################################
 # Load MPA shapefiles
@@ -70,68 +71,27 @@ mpas <- read_sf(dsn = here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>%
          iso3 %in% countries)
 
 
-# Load raster
-yearly_effort_raster <-readRDS(file = here("data", "rasterized_effort_by_region.rds")) %>% 
-  mutate(post = ifelse(year < 2015, "Pre", "Post")) %>% 
-  group_by(x, y, post, treated) %>% 
-  summarize(days = sum(hours, na.rm = T) / 24) %>% 
-  ungroup() %>% 
-  spread(post, days, fill = 0) %>% 
-  mutate(dif = Post - Pre) %>% 
-  filter(!dif == 0)
-
-ggplot() +
-  geom_raster(data = yearly_effort_raster,
-              mapping = aes(x = x, y = y, fill = dif)) +
-  facet_wrap(~treated, ncol = 1) +
-  # geom_sf(data = eez, fill = "transparent", color = "black") +
-  geom_sf(data = mpas, fill = "transparent", color = "red") +
-  scale_fill_gradientn(#trans = "log10",
-                       colors = viridis::viridis_pal()(100)) +
-  # scale_fill_viridis_c(trans = "log10") +
-  startR::ggtheme_map() +
-  theme(legend.position = "bottom")
-
-
-yearly_effort_raster <- readRDS(file = here("data", "rasterized_effort_by_region.rds")) %>% 
-  mutate(post = ifelse(year < 2015, "Pre", "Post")) %>% 
-  # filter(year %in% c(2013, 2017)) %>% 
-  group_by(x, y, post, treated) %>%
-  summarize(days = mean(hours, na.rm = T) / 24) %>% 
-  ungroup() %>% 
-  spread(treated, days, fill = 0) %>% 
-  mutate(dif = Treated - Control)
-
-ggplot() +
-  geom_raster(data = yearly_effort_raster,
-              mapping = aes(x = x, y = y, fill = dif)) +
-  facet_wrap(~post, ncol = 1) +
-  # geom_sf(data = eez, fill = "transparent", color = "black") +
-  geom_sf(data = mpas, fill = "transparent", color = "red") +
-  scale_fill_gradientn(#trans = "log10",
-    colors = viridis::viridis_pal()(10)) +
-  # scale_fill_viridis_c(trans = "log10") +
-  startR::ggtheme_map()
+# Load effort raster
+yearly_effort_raster <-readRDS(file = here("raw_data", "rasterized_effort_by_group.rds")) %>% 
+  mutate(post = ifelse(year < 2015, "Pre", "Post"),
+         lon_bin_center = ifelse(lon_bin_center < 0,
+                                 lon_bin_center + 180,
+                                 lon_bin_center - 180) + 180) %>% 
+  filter(between(lon_bin_center, 129, 213),
+         between(lat_bin_center, -26.5, 23))
 
 # change for displaced
-yearly_effort_raster <-readRDS(file = here("data", "rasterized_effort_by_region.rds")) %>% 
-  mutate(post = ifelse(year < 2015, "Pre", "Post")) %>% 
-  filter(between(x, 129, 213),
-         between(y, -26.5, 23))
-
 change_displaced <- yearly_effort_raster %>% 
-  filter(treated == "Treated") %>%
-  group_by(x, y, post) %>%
+  filter(group == "displaced") %>%
+  group_by(lon_bin_center, lat_bin_center, post) %>% 
   summarize(days = mean(hours, na.rm = T) / 24) %>% 
   ungroup() %>% 
   spread(post, days, fill = 0) %>% 
   mutate(dif = Post - Pre) %>% 
   ggplot() +
-  geom_raster(mapping = aes(x = x, y = y, fill = dif)) +
+  geom_tile(mapping = aes(x = lon_bin_center, y = lat_bin_center, fill = dif)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas, fill = "transparent", color = "red") +
-  # scale_fill_viridis_c() +
-  # scale_fill_gradientn(colours = pal) +
   scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white") +
   cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
@@ -146,19 +106,18 @@ ggsave(plot = change_displaced,
        file = here("docs", "img", "fishing_raster_displaced.png"),
        height = 2.5,
        width = 4.5)
-
+# Change for not displaced
 change_not_displaced <- yearly_effort_raster %>% 
-  filter(treated == "Control") %>%
-  group_by(x, y, post) %>%
+  filter(!group == "displaced") %>%
+  group_by(lon_bin_center, lat_bin_center, post) %>% 
   summarize(days = mean(hours, na.rm = T) / 24) %>% 
   ungroup() %>% 
   spread(post, days, fill = 0) %>% 
   mutate(dif = Post - Pre) %>% 
   ggplot() +
-  geom_raster(mapping = aes(x = x, y = y, fill = dif)) +
+  geom_tile(mapping = aes(x = lon_bin_center, y = lat_bin_center, fill = dif)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas, fill = "transparent", color = "red") +
-  # scale_fill_viridis_c() +
   scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white") +
   cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
@@ -174,19 +133,19 @@ ggsave(plot = change_not_displaced,
        height = 2.5,
        width = 4.5)
 
+# Difference between groups
 difference_between_groups <- yearly_effort_raster %>% 
-  group_by(x, y, post, treated) %>%
+  group_by(lon_bin_center, lat_bin_center, post, group) %>%
   summarize(days = mean(hours, na.rm = T) / 24) %>% 
   ungroup() %>% 
   spread(post, days, fill = 0) %>% 
   mutate(dif = Post - Pre) %>% 
-  spread(treated, dif, fill = 0) %>% 
-  mutate(dif = Treated - Control) %>% 
+  spread(group, dif, fill = 0) %>% 
+  mutate(dif = displaced - non_displaced) %>% 
   ggplot() +
-  geom_raster(mapping = aes(x = x, y = y, fill = dif)) +
+  geom_tile(mapping = aes(x = lon_bin_center, y = lat_bin_center, fill = dif)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas, fill = "transparent", color = "red") +
-  # scale_fill_viridis_c() +
   scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white") +
   cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
