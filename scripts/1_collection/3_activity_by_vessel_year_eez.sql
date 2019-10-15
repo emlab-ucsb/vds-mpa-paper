@@ -1,3 +1,19 @@
+###########################################################
+# This query gets different measures of fishing and activity
+# for each of the 318 vessels that we are interested in.
+# The query proceeds as follws:
+# 1) Subquery of PNA EEz info
+# 2) Subquery with activity by vessel for each PNA eez
+# 3) Subquery with general activity by vessel for all eezs
+# 4) Lookup table for all EEZs
+# 5) Combine everything
+###########################################################
+#
+#
+#
+#
+########
+# 1) Subquery of PNA EEz info
 WITH
   pna_eezs AS (
   SELECT
@@ -19,6 +35,7 @@ WITH
   #
   #
   ########
+  # 2) Subquery with activity by vessel for each PNA eez
   pna_fishing_vessels AS (
   SELECT
     SUM(e.fishing_hours) fishing_hours_in_PNA,
@@ -35,9 +52,7 @@ WITH
       *
     FROM
       pna_eezs )
-    AND e.fishing_hours > 1
-    AND on_fishing_list_best
-    AND ssvid NOT IN ("1")
+    AND ssvid IN (SELECT ssvid FROM `mpa_displacement.a_ssvids_displaced_and_not_displaced`)
     AND year < 2019
   GROUP BY
     ssvid,
@@ -45,7 +60,9 @@ WITH
   #
   #
   #
-  ####
+  #
+  ########
+  # 3) Subquery with general activity by vessel for all eezs
   fishing_activity AS (
   SELECT
     year,
@@ -53,11 +70,6 @@ WITH
       NULL,
       e.value) eez_code,
     ssvid,
-    best.best_vessel_class AS best_vessel_class,
-    best.best_length_m AS best_length,
-    best.best_flag AS flag,
-    ais_identity.shipname_mostcommon.value AS broadcast_shipname,
-    ais_identity.n_shipname_mostcommon.value AS broadcast_callsign,
     e.hours AS hours,
     activity.fishing_hours AS total_fishing_hours_in_year,
     activity.active_hours AS total_active_hours_in_year,
@@ -66,12 +78,13 @@ WITH
     `world-fishing-827.gfw_research.vi_ssvid_byyear_v20190430`
   CROSS JOIN
     UNNEST(activity.eez) AS e
-  WHERE
-    best.best_vessel_class IN ("tuna_purse_seines")),
+  WHERE ssvid IN (SELECT ssvid FROM `mpa_displacement.a_ssvids_displaced_and_not_displaced`)),
+  #
   #
   #
   #
   #########
+  # 4) Lookup table for all EEZs
   eez_lookup AS (
   SELECT
     CAST(eez_id AS string) eez_code,
@@ -81,18 +94,9 @@ WITH
   #
   #
   #
-  #######
-  vessel_groups AS (
-  SELECT
-    year,
-    CAST(mmsi AS string) AS ssvid,
-    treated
-  FROM
-    `ucsb-gfw.mpa_displacement.vessel_info_pna_and_pipa`),
-  #
-  #
   #
   #######
+  # 5) Combine everything
 results AS (SELECT
   year,
   IF (eez_code IS NULL,
@@ -102,21 +106,18 @@ results AS (SELECT
     "HS",
     eez_iso3) AS eez_iso3,
   ssvid,
-  treated,
-  best_vessel_class,
-  best_length,
+  `group`,
+  `group` = "displaced" AS treated,
+  flag, length_m, tonnage_gt, engine_power_kw, crew_size,
   CASE
-    WHEN best_length < 50 THEN 0.5
-    WHEN best_length BETWEEN 50 AND 80 THEN 1
+    WHEN length_m < 50 THEN 0.5
+    WHEN length_m BETWEEN 50 AND 80 THEN 1
     ELSE 1.5
   END AS length_factor,
-  flag,
-  broadcast_shipname,
-  broadcast_callsign,
   hours,
   CASE
-    WHEN best_length < 50 THEN 0.5 * hours
-    WHEN best_length BETWEEN 50 AND 80 THEN 1 * hours
+    WHEN length_m < 50 THEN 0.5 * hours
+    WHEN length_m BETWEEN 50 AND 80 THEN 1 * hours
     ELSE 1.5 * hours
   END AS hours_length,
   fishing_hours_in_PNA,
@@ -131,11 +132,7 @@ JOIN
 USING
   (ssvid,
     year)
-LEFT JOIN
-  vessel_groups
-USING
-  (ssvid,
-    year)
+LEFT JOIN `mpa_displacement.a_vessel_info_pna_purse_seines` USING (ssvid)
 LEFT JOIN
   eez_lookup
 USING
