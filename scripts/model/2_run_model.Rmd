@@ -745,7 +745,7 @@ best_rev <- allocate_wrap(
    guides(color = guide_colorbar(title = bquote("Movement ("~theta~")"),
                                  ticks.colour = "black",
                                  frame.colour = "black"),
-          linetype = guide_legend(title = bquote("Allocaion ("~alpha~")"),
+          linetype = guide_legend(title = bquote("Allocation ("~alpha~")"),
                                   override.aes = list(size = 0.5))))
 ```
 

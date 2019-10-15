@@ -1,5 +1,3 @@
-/* activity_by_vessel_year_eez */
-
 WITH
   pna_eezs AS (
   SELECT
@@ -19,6 +17,8 @@ WITH
   #
   #
   #
+  #
+  ########
   pna_fishing_vessels AS (
   SELECT
     SUM(e.fishing_hours) fishing_hours_in_PNA,
@@ -26,7 +26,7 @@ WITH
     ssvid,
     year
   FROM
-    `world-fishing-827.gfw_research.vi_ssvid_byyear`
+    `world-fishing-827.gfw_research.vi_ssvid_byyear_v20190430`
   CROSS JOIN
     UNNEST(activity.eez) AS e
   WHERE
@@ -35,13 +35,13 @@ WITH
       *
     FROM
       pna_eezs )
+    AND e.fishing_hours > 1
     AND on_fishing_list_best
-    AND activity.offsetting IS FALSE
+    AND ssvid NOT IN ("1")
+    AND year < 2019
   GROUP BY
     ssvid,
-    year
-  HAVING
-    fishing_hours_in_PNA > 10 ),
+    year),
   #
   #
   #
@@ -49,9 +49,12 @@ WITH
   fishing_activity AS (
   SELECT
     year,
-    e.value AS eez_code,
+    IF(e.value IS NULL,
+      NULL,
+      e.value) eez_code,
     ssvid,
     best.best_vessel_class AS best_vessel_class,
+    best.best_length_m AS best_length,
     best.best_flag AS flag,
     ais_identity.shipname_mostcommon.value AS broadcast_shipname,
     ais_identity.n_shipname_mostcommon.value AS broadcast_callsign,
@@ -60,12 +63,11 @@ WITH
     activity.active_hours AS total_active_hours_in_year,
     activity.hours AS total_hours_in_year
   FROM
-    `world-fishing-827.gfw_research.vi_ssvid_byyear`
+    `world-fishing-827.gfw_research.vi_ssvid_byyear_v20190430`
   CROSS JOIN
     UNNEST(activity.eez) AS e
   WHERE
-    best.best_vessel_class IN ("drifting_longlines",
-      "tuna_purse_seines")),
+    best.best_vessel_class IN ("tuna_purse_seines")),
   #
   #
   #
@@ -86,12 +88,12 @@ WITH
     CAST(mmsi AS string) AS ssvid,
     treated
   FROM
-    `ucsb-gfw.mpa_displacement.vessel_info_pna_and_pipa`)
+    `ucsb-gfw.mpa_displacement.vessel_info_pna_and_pipa`),
   #
   #
   #
   #######
-SELECT
+results AS (SELECT
   year,
   IF (eez_code IS NULL,
     "HS",
@@ -102,10 +104,21 @@ SELECT
   ssvid,
   treated,
   best_vessel_class,
+  best_length,
+  CASE
+    WHEN best_length < 50 THEN 0.5
+    WHEN best_length BETWEEN 50 AND 80 THEN 1
+    ELSE 1.5
+  END AS length_factor,
   flag,
   broadcast_shipname,
   broadcast_callsign,
   hours,
+  CASE
+    WHEN best_length < 50 THEN 0.5 * hours
+    WHEN best_length BETWEEN 50 AND 80 THEN 1 * hours
+    ELSE 1.5 * hours
+  END AS hours_length,
   fishing_hours_in_PNA,
   total_hours_in_PNA,
   total_fishing_hours_in_year,
@@ -118,8 +131,10 @@ JOIN
 USING
   (ssvid,
     year)
-JOIN vessel_groups
-USING(ssvid,
+LEFT JOIN
+  vessel_groups
+USING
+  (ssvid,
     year)
 LEFT JOIN
   eez_lookup
@@ -127,4 +142,11 @@ USING
   (eez_code)
 ORDER BY
   year,
-  fishing_hours_in_PNA DESC
+  fishing_hours_in_PNA DESC)
+  #
+  #
+  #
+  #
+  ########
+  
+  SELECT * FROM results ORDER BY ssvid

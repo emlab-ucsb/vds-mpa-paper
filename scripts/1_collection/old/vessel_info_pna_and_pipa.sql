@@ -1,10 +1,7 @@
-/* Last run January 19, 2019 */
+/* Last run Oct 14, 2019 */
 
 SELECT
   mmsi,
-  year,
-  best_label,
-  iso3,
   IF(mmsi IN (
     SELECT
       mmsi
