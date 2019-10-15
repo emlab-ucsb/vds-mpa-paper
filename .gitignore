@@ -20,3 +20,4 @@ data/vessel_tracks_2012_2018_baci.rds
 packrat/lib/*
 packrat/lib*/
 /packrat*
+docs/CoverLetter.docx
