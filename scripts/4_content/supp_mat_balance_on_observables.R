@@ -11,6 +11,7 @@
 ####################################################
 
 # Load packages
+library(startR)
 library(here)
 library(ggridges)
 library(tidyverse)
@@ -21,7 +22,8 @@ vessel_info <- readRDS(file = here("raw_data",
 
 # Combien both datasets, and clean-up
 balance_table <- vessel_info %>% 
-  mutate(group = ifelse(group == "displaced", "Displaced", "Non-displaced")) %>% 
+  mutate(group = ifelse(group == "displaced", "Displaced", "Non-displaced"),
+         group = fct_relevel(group, "Non-displaced")) %>% 
   select(-c(flag)) %>% 
   gather(measure, value, -c(ssvid, group)) %>% 
   mutate(measure = case_when(measure == "crew_size" ~ "Crew size (n)",
@@ -97,7 +99,7 @@ balance_table %>%
   summarize(value = mean_sd(value)) %>% 
   ungroup() %>% 
   spread(group, value) %>% 
-  select(measure, `Non-displaced`, Displaced) %>% 
+  select(measure, Displaced, `Non-displaced`) %>% 
   left_join(ttest_stars, by = "measure") %>% 
   rename(Characteristic = measure) %>% 
   knitr::kable(format = "latex",

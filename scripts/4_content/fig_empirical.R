@@ -26,6 +26,7 @@ PNA_countries <- c(PNA_without_KIR, "KIR")
 vessel_activity <- readRDS(file = here("raw_data",
                                        "activity_by_vessel_year_eez.rds")) %>% 
   mutate(group = ifelse(group == "displaced", "Displaced", "Non-displaced"),
+         group = fct_relevel(group, "Non-displaced"),
          location = case_when(eez_iso3 == "KIR" ~ "KIR",
                               eez_iso3 %in% PNA_without_KIR ~ "other PNA countries",
                               eez_iso3 == "HS" ~"HS",
@@ -41,8 +42,9 @@ all_PS_VDS_year_data <- vessel_activity %>%
   ungroup()
 
 # Bar plot
-all_PS_VDS_year_plot <- ggplot(data = all_PS_VDS_year_data,
-                               mapping = aes(x = year, y = days, fill = group)) +
+all_PS_VDS_year_plot <- 
+  ggplot(data = all_PS_VDS_year_data,
+         mapping = aes(x = year, y = days, fill = group)) +
   geom_col(color = "black") +
   geom_hline(yintercept = 45, linetype = "dashed") +
   cowplot::theme_cowplot() +

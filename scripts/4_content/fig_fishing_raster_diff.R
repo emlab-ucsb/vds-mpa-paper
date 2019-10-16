@@ -106,6 +106,7 @@ ggsave(plot = change_displaced,
        file = here("docs", "img", "fishing_raster_displaced.png"),
        height = 2.5,
        width = 4.5)
+
 # Change for not displaced
 change_not_displaced <- yearly_effort_raster %>% 
   filter(!group == "displaced") %>%
@@ -173,6 +174,10 @@ ggsave(plot = plot_change,
        height = 7,
        width = 5)
 
+ggsave(plot = plot_change,
+       file = here("docs", "img", "fishing_raster_diff.pdf"),
+       height = 7,
+       width = 5)
 
 
 
