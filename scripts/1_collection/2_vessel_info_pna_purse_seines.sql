@@ -15,6 +15,11 @@ SELECT
   ssvid,
   best.best_flag AS flag,
   best.best_length_m AS length_m,
+  CASE
+    WHEN best.best_length_m < 50 THEN 0.5
+    WHEN best.best_length_m BETWEEN 50 AND 80 THEN 1
+    ELSE 1.5
+  END AS length_factor,
   best.best_tonnage_gt AS tonnage_gt,
   best.best_engine_power_kw AS engine_power_kw,
   best.best_crew_size AS crew_size,

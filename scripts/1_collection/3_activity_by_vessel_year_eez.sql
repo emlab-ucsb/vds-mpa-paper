@@ -109,17 +109,9 @@ results AS (SELECT
   `group`,
   `group` = "displaced" AS treated,
   flag, length_m, tonnage_gt, engine_power_kw, crew_size,
-  CASE
-    WHEN length_m < 50 THEN 0.5
-    WHEN length_m BETWEEN 50 AND 80 THEN 1
-    ELSE 1.5
-  END AS length_factor,
+  length_factor,
   hours,
-  CASE
-    WHEN length_m < 50 THEN 0.5 * hours
-    WHEN length_m BETWEEN 50 AND 80 THEN 1 * hours
-    ELSE 1.5 * hours
-  END AS hours_length,
+  hours * length_factor AS hours_length,
   fishing_hours_in_PNA,
   total_hours_in_PNA,
   total_fishing_hours_in_year,
