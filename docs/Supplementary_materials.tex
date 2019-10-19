@@ -69,9 +69,7 @@
 
 \setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
 
-\section{Supplementary Materials}
-
-\subsection{Model parameterization}
+\section{Model parameterization}
 
 We calibrate our model to loosely match the fishery dynamics observed for the VDS operated by the PNA. The table below contains the values used to parameterize the model.
 
@@ -110,35 +108,30 @@ f & 0.1 & Biomass is equally distributed between countries\\
 \end{table}
 
 
-\subsection{Empirical Analysis}
+\section{Balance on observables}
 
-We observe four characteristics for every vessel: crew size, engine power, vessel length, and tonnage capacity. Figure \ref{fig:balance_density_plot} shows the distribution of these variables for each group of vessels. Table \ref{tab:balance_table} present the mean, and standard deviation of each observable. Group of vessels are similar on observables, and choice to fish inside PIPA before implementation does not appear to be driven by observable characteristics.
+We observe four characteristics for every vessel: crew size, engine power, vessel length, and tonnage capacity. Figure \ref{fig:balance_density_plot} shows the distribution of these variables for each group of vessels. Table \ref{tab:balance_table} presentsibut the mean, and standard deviation of each observable. Group of vessels are similar on observables, and choice to fish inside PIPA before implementation does not appear to be driven by observable characteristics.
 
-\begin{table}[h]
+\begin{table}[H]
 
 \caption{\label{tab:balance_table}Mean values on observable characteristics by vessel for displaced (n = 64), and non-displaced vessels (n = 254). Numbers in parentheses indicate standard deviation. The last column contains the difference in means (t-scores), with asterisks inicating significant differences as indicated by a two-tailed t-test (* p < 0.1; ** p< 0.05; *** p < 0.01).}
 \centering
 \begin{tabular}{l|l|l|l}
 \hline
-Characteristic & Non-displaced & Displaced & Difference\\
+Characteristic & Displaced & Non-displaced & Difference\\
 \hline
-Crew size (n) & 30.46 (6.25) & 26.38 (3.94) & -4.08 (-6.49) ***\\
+Crew size (n) & 26.38 (3.94) & 30.46 (6.25) & 4.08 (6.49) ***\\
 \hline
-Engine Power (KW) & 2559.89 (588.28) & 2983.6 (558.76) & 423.71 (5.36) ***\\
+Engine Power (KW) & 2983.6 (558.76) & 2559.89 (588.28) & -423.71 (-5.36) ***\\
 \hline
-Length (m) & 68.97 (8.42) & 74.23 (9.71) & 5.25 (3.97) ***\\
+Length (m) & 74.23 (9.71) & 68.97 (8.42) & -5.25 (-3.97) ***\\
 \hline
-Tonnage (GT) & 1383.41 (533.56) & 1718.14 (653.38) & 334.73 (3.79) ***\\
+Tonnage (GT) & 1718.14 (653.38) & 1383.41 (533.56) & -334.73 (-3.79) ***\\
 \hline
 \end{tabular}
 \end{table}
 
-
-\subsubsection{Effort redistribution}
-
-We can compare the footprint of displaced and non-displaced vessels before and after the implementation of PIPA to better understand the effort redistribution. Non-displaced vessels serve as a control group that was not subject to a spatial closure but might have redistributed in response to changing environmental conditions, such as ENSO. The spatial redistribution patterns of displaced vessels relative to non-displaced vessels suggest that some relocated to other waters in Kiribati (\emph{i.e.} Gilbert islands and Line islands), but also the Marshall Islands, Tuvalu, Nauru, and the high seas (Fig \ref{fig:fishing_raster_diff}).
-
-\subsubsection{Data and code availability}
+\section{Data and code availability}
 
 Raw data and code used in this work are available on \href{https://github.com/jcvdav/MPA_displacement}{github}.
 
@@ -180,20 +173,14 @@ Raw data and code used in this work are available on \href{https://github.com/jc
 
 \begin{figure}
 \centering
-\includegraphics{img/fishing_raster_diff.png}
-\caption{\label{fig:fishing_raster_diff}Change in spatial footprint of analyzed vessels. Black lines show Exclusive Economic Zones (EEZ), red lines show proposed and existing Marine Protected Areas. Panels A and B show the change through time (after - before) for displaced (panel A; n = 64) and non-displaced vessels (panel B; n = 28). Panel C shows the difference between A and B (displaced - non-displaced), highlighting areas where displaced vessels redistributed to, relative to non-displaced vessels. Note that displaced vessels allocate more hours to the Gilbert Islands and Line islands EEZs, but also Tuvalu and the high seas surrounding PIPA and Kiribati's EEZ.}
-\end{figure}
-
-\begin{figure}
-\centering
-	\includegraphics{img/hist_kir_fishing.pdf}
-	\caption{\label{fig:hist_kir_fishing}Ridgeplot for the density of the \% of total fishing hours that took place within Kiribati EEZ waters by year for displaced vessels where the unit of observation is an individual vessel (n = 64). The vertical lines represent the median of each year.}	
-\end{figure}
-
-\begin{figure}
-\centering
 	\includegraphics{img/all_PS_VDS_cty_year.pdf}
 	\caption{\label{fig:all_PS_VDS_cty_year}Annual country-level vessel-days for all PNA countries by 313 tuna purse seiners.}
+\end{figure}
+
+\begin{figure}
+\centering
+	\includegraphics{img/fishing_the_line_by_year.pdf}
+	\caption{\label{fig:fishing_the_line_by_year}Annual fishing effort (hours) on a 1-degree grid around PIPA (red polygon) and Kiribati (black polygons). There is no clear evidence of a ``fishing the line'' effect, with the greatest effort applied on the Gilbert islands (Kiribati) after 2015.}	
 \end{figure}
 
 \begin{figure}

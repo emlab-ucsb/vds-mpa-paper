@@ -12,28 +12,25 @@
 #### SET UP ###########################################################################
 
 # Load packages
+library(here)
 library(tidyverse)
 library(ggridges)
 
 # Load data
 # I only want fishing tracks of purse seiners inside KIR before 2018
-tracks <- readRDS(file = here::here("data", "vessel_tracks_baci.rds")) %>% 
-  filter(gear == "tuna_purse_seines",
-         between(year, 2014, 2018),
-         fishing) 
+tracks <- readRDS(file = here("raw_data", "activity_by_vessel_year_eez.rds")) %>% 
+  filter(group == "displaced",
+         year > 2013,
+         eez_iso3 == "KIR")
 
 #### THE DATA ########################################################################
 
 # Generate the data
 kir_fishing <- tracks %>% 
-  group_by(mmsi, year, year_c) %>% 
-  mutate(total_hours = sum(hours)) %>% 
-  filter(eez_iso3 == "KIR") %>% 
-  group_by(mmsi, year, year_c, total_hours) %>% 
-  summarize(kir_hours = sum(hours)) %>% 
-  ungroup() %>% 
-  mutate(prop_hours = kir_hours / total_hours) %>% 
-  arrange(year, mmsi)
+  select(ssvid, year, contains("hours")) %>% 
+  mutate(prop_hours = fishing_hours / fishing_hours_in_PNA) %>% 
+  arrange(year, ssvid) %>% 
+  mutate(year_c = as.character(year))
 
 #### THE PLOT ########################################################################
 

@@ -71,6 +71,7 @@ WITH
       e.value) eez_code,
     ssvid,
     e.hours AS hours,
+    e.fishing_hours AS fishing_hours,
     activity.fishing_hours AS total_fishing_hours_in_year,
     activity.active_hours AS total_active_hours_in_year,
     activity.hours AS total_hours_in_year
@@ -111,6 +112,7 @@ results AS (SELECT
   flag, length_m, tonnage_gt, engine_power_kw, crew_size,
   length_factor,
   hours,
+  fishing_hours,
   hours * length_factor AS hours_length,
   fishing_hours_in_PNA,
   total_hours_in_PNA,

@@ -24,7 +24,6 @@ source(here("scripts", "0_functions", "sfc_as_cols.R"))
 # Countries I want to show
 countries <- c("PIPA",
                "KIR",
-               "HS",
                "ASM",
                "COK",
                "FSM",
@@ -44,14 +43,13 @@ countries <- c("PIPA",
                "NCL",
                "PLW")
 # Load EEZs
-eez <- read_sf(dsn = here("data", "spatial", "EEZ_subset"),
-               layer = "EEZ_subset") %>% 
+eez <- read_sf(dsn = here("raw_data", "spatial", "EEZ"),
+               layer = "EEZ_v10") %>% 
   filter(ISO_Ter1 %in% countries) %>% 
-  mutate(KIR = ISO_Ter1 == "KIR",
-         PNA = ifelse(PNA, "PNA", "Non-PNA")) %>% 
-  group_by(ISO_Ter1, PNA, KIR) %>% 
-  summarize() %>% 
-  rmapshaper::ms_simplify()
+  rmapshaper::ms_simplify(keep_shapes = T) %>% 
+  st_rotate() %>% 
+  group_by(ISO_Ter1) %>% 
+  summarize()
 
 ##### MPAS #################################################
 # Load MPA shapefiles
@@ -78,15 +76,16 @@ yearly_effort_raster <-readRDS(file = here("raw_data", "rasterized_effort_by_gro
                                  lon_bin_center + 180,
                                  lon_bin_center - 180) + 180) %>% 
   filter(between(lon_bin_center, 129, 213),
-         between(lat_bin_center, -26.5, 23))
+         between(lat_bin_center, -26.5, 23)) %>% 
+  mutate(hours = hours_length)
 
 # change for displaced
 change_displaced <- yearly_effort_raster %>% 
   filter(group == "displaced") %>%
   group_by(lon_bin_center, lat_bin_center, post) %>% 
-  summarize(days = mean(hours, na.rm = T) / 24) %>% 
+  summarize(hours = mean(hours, na.rm = T)) %>% 
   ungroup() %>% 
-  spread(post, days, fill = 0) %>% 
+  spread(post, hours, fill = 0) %>% 
   mutate(dif = Post - Pre) %>% 
   ggplot() +
   geom_tile(mapping = aes(x = lon_bin_center, y = lat_bin_center, fill = dif)) +
@@ -97,10 +96,11 @@ change_displaced <- yearly_effort_raster %>%
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         panel.grid.major = element_line(color = "transparent")) +
-  guides(fill = guide_colorbar(title = "Change\nin hours",
+  guides(fill = guide_colorbar(title = "Change in\nfishing hours",
                                ticks.colour = "black",
                                frame.colour = "black")) +
-  labs(x = "", y = "")
+  labs(x = "", y = "") +
+  ggtitle("Displaced vessels")
 
 ggsave(plot = change_displaced,
        file = here("docs", "img", "fishing_raster_displaced.png"),
@@ -111,9 +111,9 @@ ggsave(plot = change_displaced,
 change_not_displaced <- yearly_effort_raster %>% 
   filter(!group == "displaced") %>%
   group_by(lon_bin_center, lat_bin_center, post) %>% 
-  summarize(days = mean(hours, na.rm = T) / 24) %>% 
+  summarize(hours = mean(hours, na.rm = T)) %>% 
   ungroup() %>% 
-  spread(post, days, fill = 0) %>% 
+  spread(post, hours, fill = 0) %>% 
   mutate(dif = Post - Pre) %>% 
   ggplot() +
   geom_tile(mapping = aes(x = lon_bin_center, y = lat_bin_center, fill = dif)) +
@@ -124,10 +124,11 @@ change_not_displaced <- yearly_effort_raster %>%
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         panel.grid.major = element_line(color = "transparent")) +
-  guides(fill = guide_colorbar(title = "Change\nin hours",
+  guides(fill = guide_colorbar(title = "Change in\nfishing hours",
                                ticks.colour = "black",
                                frame.colour = "black")) +
-  labs(x = "", y = "")
+  labs(x = "", y = "") + 
+  ggtitle("Non-displaced vessels")
 
 ggsave(plot = change_not_displaced,
        file = here("docs", "img", "fishing_raster_not_displaced.png"),
@@ -137,12 +138,18 @@ ggsave(plot = change_not_displaced,
 # Difference between groups
 difference_between_groups <- yearly_effort_raster %>% 
   group_by(lon_bin_center, lat_bin_center, post, group) %>%
-  summarize(days = mean(hours, na.rm = T) / 24) %>% 
+  summarize(hours = mean(hours, na.rm = T)) %>% 
   ungroup() %>% 
-  spread(post, days, fill = 0) %>% 
+  spread(post, hours, fill = 0) %>% 
   mutate(dif = Post - Pre) %>% 
-  spread(group, dif, fill = 0) %>% 
-  mutate(dif = displaced - non_displaced) %>% 
+  select(-c(Post, Pre)) %>% 
+  group_by(group) %>% 
+  mutate(max_group = max(dif)) %>% 
+  ungroup() %>% 
+  mutate(dif = (dif / max_group) * 100) %>% 
+  select(-max_group) %>% 
+  spread(group, dif, fill = 0) %>%
+  mutate(dif = displaced - non_displaced) %>%
   ggplot() +
   geom_tile(mapping = aes(x = lon_bin_center, y = lat_bin_center, fill = dif)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
@@ -152,10 +159,11 @@ difference_between_groups <- yearly_effort_raster %>%
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         panel.grid.major = element_line(color = "transparent")) +
-  guides(fill = guide_colorbar(title = "Change\nin hours",
+  guides(fill = guide_colorbar(title = "Relative\nchange (%)",
                                ticks.colour = "black",
                                frame.colour = "black")) +
-  labs(x = "", y = "")
+  labs(x = "", y = "") +
+  ggtitle("Relative redistribution")
 
 ggsave(plot = difference_between_groups,
        file = here("docs", "img", "fishing_raster_difference_between_groups.png"),
@@ -172,12 +180,12 @@ plot_change <- plot_grid(change_displaced,
 ggsave(plot = plot_change,
        file = here("docs", "img", "fishing_raster_diff.png"),
        height = 7,
-       width = 5)
+       width = 4.5)
 
 ggsave(plot = plot_change,
        file = here("docs", "img", "fishing_raster_diff.pdf"),
        height = 7,
-       width = 5)
+       width = 4.5)
 
 
 

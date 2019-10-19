@@ -55,7 +55,8 @@ all_PS_VDS_year_plot <-
         legend.justification = c(0, 1),
         legend.position = c(0, 1))+
   labs(x = "Year", y = "Vessel-days (1,000)") +
-  scale_fill_brewer(palette = "Set1")
+  scale_fill_brewer(palette = "Set1") +
+  ggtitle("All PNA nations")
 
 ############ PS VDS for KIR
 all_PS_VDS_year_KIR_data <- vessel_activity %>% 
@@ -77,7 +78,8 @@ all_PS_VDS_KIR_year_plot <-
         legend.text = element_text(size = 8),
         legend.position = "None")+
   labs(x = "Year", y = "Vessel-days (1,000)") +
-  scale_fill_brewer(palette = "Set1")
+  scale_fill_brewer(palette = "Set1") +
+  ggtitle("Kiribati")
 
 # Financial data
 financial_data <- read.csv(file = here("data", "financial_data.csv")) %>% 
@@ -101,7 +103,7 @@ license_revenues <- financial_data %>%
         axis.text = element_text(size = 8),
         strip.background = element_blank(),
         legend.justification = c(0, 1),
-        legend.position = c(0, 1.05)) +
+        legend.position = c(0, 1)) +
   guides(fill = guide_legend(ncol = 2,
                              title = "Country"))
 
@@ -125,11 +127,7 @@ revenue_FFA_GFW <-
              alpha = 0.7) +
   scale_fill_brewer(palette = "Set1", guide = F) +
   theme_cowplot() +
-  theme(text = element_text(size = 10),
-        axis.text = element_text(size = 8),
-        legend.justification = c(0, 1),
-        legend.position = c(0, 1)) +
-  guides(size = guide_legend(title = "Vessel-days (1,000)", ncol = 3)) +
+  theme(text = element_text(size = 10)) +
   labs(x = "Vessel-days (1,000)",
        y = "Reported revenue\n(million USD)") +
   scale_size_continuous(breaks = c(1, 5, 10))
