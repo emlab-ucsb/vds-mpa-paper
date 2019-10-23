@@ -4,6 +4,7 @@ library(here)
 library(raster)
 library(rmapshaper)
 library(sf)
+library(cowplot)
 library(tidyverse)
 
 # Load the shapefiles

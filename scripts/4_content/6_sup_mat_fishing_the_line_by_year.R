@@ -1,17 +1,26 @@
+# This script checks for a fishing the line effect
 
+# Load packages
+library(startR)
+library(here)
+library(fishwatchr)
+library(tidyverse)
 
-
+# Load other functions
 source(here("scripts", "0_functions", "st_rotate.R"))
 
+# Load spatial layers
+## PNA EEZ, and filter for Kiribati
 eez <- st_read(here("data", "spatial", "PNA_EEZ.gpkg")) %>% 
-  filter(MRGID %in% c(8450, 8441, 8488)) %>% # Keep Phoenix islands only
-  st_rotate()
+  filter(ISO_Ter1 == "KIR") # Keep Phoenix islands only
 
-pipa <- st_read(here("data", "spatial", "PIPA.gpkg")) %>% 
-  st_rotate()
+# PIPA
+pipa <- st_read(here("data", "spatial", "PIPA.gpkg"))
 
+# Bounding box for the region
 bbox <- st_bbox(eez)
 
+# Load the data, and "rotate" it
 yearly_effort_raster <-
   readRDS(file = here("raw_data", "rasterized_effort_by_group.rds")) %>% 
   mutate(lon_bin_center = ifelse(lon_bin_center < 0,
@@ -22,6 +31,7 @@ yearly_effort_raster <-
   group_by(year, lat_bin_center, lon_bin_center) %>% 
   summarize(hours = sum(hours, na.rm = T))
 
+# plot it
 plot <- ggplot(yearly_effort_raster) +
   geom_raster(aes(x = lon_bin_center, y = lat_bin_center, fill = hours)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
@@ -34,6 +44,7 @@ plot <- ggplot(yearly_effort_raster) +
                                frame.colour = "black")) +
   labs(x = "", y = "")
 
+# Export the figure
 ggsave(plot = plot,
        filename = here("docs", "img", "fishing_the_line_by_year.pdf"),
        width = 6,

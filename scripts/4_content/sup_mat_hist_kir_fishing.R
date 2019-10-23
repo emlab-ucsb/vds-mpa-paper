@@ -12,6 +12,7 @@
 #### SET UP ###########################################################################
 
 # Load packages
+library(startR)
 library(here)
 library(tidyverse)
 library(ggridges)
