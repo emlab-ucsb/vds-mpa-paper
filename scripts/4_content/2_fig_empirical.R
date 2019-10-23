@@ -1,4 +1,9 @@
-
+# This script generates a 4-panel figure.
+# The panels contain:
+# - vessel-days for Kiribati
+# - vessel-days for all PNA
+# - historical revenue from licenses
+# - licenses vs AIS-derived vessel-days
 
 
 

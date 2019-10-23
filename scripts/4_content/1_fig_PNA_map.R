@@ -20,31 +20,6 @@ library(tidyverse)
 
 # Source local functions
 source(here("scripts", "0_functions", "st_rotate.R"))
-source(here("scripts", "0_functions", "sfc_as_cols.R"))
-
-# List of countries
-countries <- c("PIPA",
-               "KIR",
-               "HS",
-               "ASM",
-               "COK",
-               "FSM",
-               "MHL",
-               "NRU",
-               "PNG",
-               "SLB",
-               "TKL",
-               "TUV",
-               "UMI",
-               "FJI",
-               "NIU",
-               "TON",
-               "WSM",
-               "WLF",
-               "VUT",
-               "NCL",
-               "PLW",
-               "IDN")
 
 # List of PNA countries
 PNA_countries <- c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV", "TKL")
@@ -52,37 +27,32 @@ PNA_countries <- c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV", "TKL"
 # List of countries that hold VDS rights (and then sell to others)
 VDS_countries <- c(PNA_countries, "TKL")
 
-eez <- read_sf(dsn = here("raw_data", "spatial", "EEZ"),
-               layer = "EEZ_v10") %>% 
-  filter(ISO_Ter1 %in% countries) %>% 
-  rmapshaper::ms_simplify(keep_shapes = T) %>% 
-  st_rotate() %>% 
+eez <- read_sf(dsn = here("data", "spatial", "EEZ_subset.gpkg")) %>% 
   mutate(KIR = ISO_Ter1 == "KIR",
-         VDS = ifelse(ISO_Ter1 %in% VDS_countries, "VDS", "Non-PNA")) %>% 
-  group_by(ISO_Ter1, VDS, KIR) %>% 
-  summarize()
+         VDS = ISO_Ter1 %in% VDS_countries)
+
+# Extract ISO3 codes for countries present
+countries <- eez$ISO_Ter1
 
 # Get coastline
 small_coast <- rnaturalearth::ne_countries(scale = "large", returnclass = "sf") %>% 
   filter(sov_a3 %in% countries) %>% 
   st_rotate()
 
+# Create labeling datast (just to add names to the map)
 labels <- eez %>% 
   filter(ISO_Ter1 %in% VDS_countries) %>% 
     mutate(label = countrycode(sourcevar = ISO_Ter1,
                                origin = "iso3c",
                                destination = "country.name"),
-           label = ifelse(ISO_Ter1 == "FSM", "Federal States\nof Micronesia", label)) %>% 
-  st_simplify(dTolerance = 0.1)
+           label = ifelse(ISO_Ter1 == "FSM", "Federal States\nof Micronesia", label))
 
+# Load PIPA
+pipa <- st_read(dsn = here("data", "spatial", "PIPA.gpkg"))
 
-pipa <- sf::read_sf(dsn = here("data", "spatial", "PIPA"), layer = "PIPA") %>% 
-  sf::st_transform(crs = "+proj=longlat +datum=WGS84 +no_defs") %>% 
-  st_rotate()
-
-pnms <- read_sf(dsn = here::here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>%
-  filter(WDPAID == "555622118") %>%
-  select(WDPAID)
+# Load PNMS
+pnms <- st_read(here("raw_data", "spatial", "PLW_shapefiles"),
+                "PNMS")
 
 world <- rnaturalearth::ne_countries(continent = c("Oceania", "Asia"),
                                      returnclass = "sf") %>% 

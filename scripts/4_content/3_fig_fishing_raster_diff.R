@@ -16,57 +16,21 @@ library(sf)
 library(cowplot)
 library(tidyverse)
 
-# Source local functions
-source(here("scripts", "0_functions", "st_rotate.R"))
-source(here("scripts", "0_functions", "sfc_as_cols.R"))
 
 ##### EEZs #################################################
-# Countries I want to show
-countries <- c("PIPA",
-               "KIR",
-               "ASM",
-               "COK",
-               "FSM",
-               "MHL",
-               "NRU",
-               "PNG",
-               "SLB",
-               "TKL",
-               "TUV",
-               "UMI",
-               "FJI",
-               "NIU",
-               "TON",
-               "WSM",
-               "WLF",
-               "VUT",
-               "NCL",
-               "PLW")
 # Load EEZs
-eez <- read_sf(dsn = here("raw_data", "spatial", "EEZ"),
-               layer = "EEZ_v10") %>% 
-  filter(ISO_Ter1 %in% countries) %>% 
-  rmapshaper::ms_simplify(keep_shapes = T) %>% 
-  st_rotate() %>% 
-  group_by(ISO_Ter1) %>% 
-  summarize()
+eez <- read_sf(dsn = here("data", "spatial", "EEZ_subset.gpkg")) %>% 
+  filter(!ISO_Ter1 == "IDN") #remove Indonesia from this map
+
+# Extract ISO3 codes for countries present
+countries <- eez$ISO_Ter1
 
 ##### MPAS #################################################
 # Load MPA shapefiles
-mpas <- read_sf(dsn = here("data", "spatial", "LSMPAs"), layer = "LSMPAs") %>% 
+mpas <- st_read(dsn = here("data", "spatial", "LSMPAs.gpkg")) %>% 
   janitor::clean_names() %>% 
   filter(!wdpaid %in% c(555512002, 555512001)) %>% 
-  st_transform(crs = 4326) %>% 
-  st_rotate() %>%
-  mutate(strict = ifelse(no_tk_area > 0 |
-                           iucn_cat %in% c("Ia", "Ib") |
-                           desig_eng == "Protected Area",
-                         "No-Take", "Others"),
-         strict = ifelse(is.na(strict), "Others", strict),
-         strict = ifelse(wdpaid == 309888, "PIPA", strict),
-         Legend = fct_relevel(strict, c("No-Take", "PIPA", "Others"))) %>% 
-  filter(!name == "Longline",
-         iso3 %in% countries)
+  filter(iso3 %in% countries)
 
 
 # Load effort raster
