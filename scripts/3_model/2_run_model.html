@@ -1592,7 +1592,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Run the model</h1>
 <h4 class="author">Villaseñor-Derbez J.C.</h4>
-<h4 class="date">Updated on 2019-10-14</h4>
+<h4 class="date">Updated on 2019-10-23</h4>
 
 </div>
 
@@ -1615,13 +1615,13 @@ suppressPackageStartupMessages({
 })
 
 # Load functions
-source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;grow.R&quot;))
-source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;E_vec_fxn.R&quot;))
-source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;pi_of_E.R&quot;))
-source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;max_Ei.R&quot;))
-source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;solve_pi.R&quot;))
-source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;PNA_with_trading.R&quot;))
-source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;PNA_no_trading.R&quot;))
+source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;grow.R&quot;))
+source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;E_vec_fxn.R&quot;))
+source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;pi_of_E.R&quot;))
+source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;max_Ei.R&quot;))
+source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;solve_pi.R&quot;))
+source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;PNA_with_trading.R&quot;))
+source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;PNA_no_trading.R&quot;))
 
 # Some housekeeping
 update_geom_defaults(&quot;point&quot;,
@@ -2276,10 +2276,10 @@ E_i^* = \alpha \left(\frac{\sum_{\tau = 0}^{\hat{\tau}}E_{i,t-\tau}}{\bar{E}\hat
 (1 - \alpha) \left(\frac{\sum_{\tau = 0}^{\hat{\tau}}X_{i,t-\tau}}{\bar{X}\hat{\tau}} \right)
 \]</span></p>
 <p>Where <span class="math inline">\(\alpha\)</span> is a weight on historical effort (<span class="math inline">\(E_i\)</span>) and <span class="math inline">\(1-\alpha\)</span> is the weight in historical biomass (<span class="math inline">\(B_i\)</span>). We use <span class="math inline">\(\hat{\tau}= 7\)</span> to obtain a moving mean of 7 years for these measures. The difference between allocated days (<span class="math inline">\(E_i^*\)</span>) and used days (determined by Eq: ) for patch 1 are the sales. We then calculate vessel-day revenues to each country over the 50-year time horizon and compare them to a case where there is no reserve and allocations are based solely on biomass (<span class="math inline">\(\alpha = 0\)</span>).</p>
-<pre class="r"><code>source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;allocate.R&quot;))
-source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;allocate_wrap.R&quot;))
-source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;move_in_time.R&quot;))
-source(here(&quot;scripts&quot;, &quot;model&quot;, &quot;move_in_time_no_trading.R&quot;))</code></pre>
+<pre class="r"><code>source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;allocate.R&quot;))
+source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;allocate_wrap.R&quot;))
+source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;move_in_time.R&quot;))
+source(here(&quot;scripts&quot;, &quot;3_model&quot;, &quot;move_in_time_no_trading.R&quot;))</code></pre>
 <p>We first obtain the optimal allocation by running the model until steady state and with no reserves.</p>
 <pre class="r"><code>alphas &lt;- c(0, 0.5, 1)
 

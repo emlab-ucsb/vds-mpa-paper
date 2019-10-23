@@ -38,13 +38,13 @@ suppressPackageStartupMessages({
 })
 
 # Load functions
-source(here("scripts", "model", "grow.R"))
-source(here("scripts", "model", "E_vec_fxn.R"))
-source(here("scripts", "model", "pi_of_E.R"))
-source(here("scripts", "model", "max_Ei.R"))
-source(here("scripts", "model", "solve_pi.R"))
-source(here("scripts", "model", "PNA_with_trading.R"))
-source(here("scripts", "model", "PNA_no_trading.R"))
+source(here("scripts", "3_model", "grow.R"))
+source(here("scripts", "3_model", "E_vec_fxn.R"))
+source(here("scripts", "3_model", "pi_of_E.R"))
+source(here("scripts", "3_model", "max_Ei.R"))
+source(here("scripts", "3_model", "solve_pi.R"))
+source(here("scripts", "3_model", "PNA_with_trading.R"))
+source(here("scripts", "3_model", "PNA_no_trading.R"))
 
 # Some housekeeping
 update_geom_defaults("point",
@@ -640,10 +640,10 @@ Where  $\alpha$ is a weight on historical effort ($E_i$) and $1-\alpha$ is the w
 
 
 ```{r}
-source(here("scripts", "model", "allocate.R"))
-source(here("scripts", "model", "allocate_wrap.R"))
-source(here("scripts", "model", "move_in_time.R"))
-source(here("scripts", "model", "move_in_time_no_trading.R"))
+source(here("scripts", "3_model", "allocate.R"))
+source(here("scripts", "3_model", "allocate_wrap.R"))
+source(here("scripts", "3_model", "move_in_time.R"))
+source(here("scripts", "3_model", "move_in_time_no_trading.R"))
 ```
 
 

@@ -144,9 +144,9 @@ library(magrittr)
 library(tidyverse)
 
 # Load functions
-source(here("scripts", "model", "E_vec_fxn.R"))
-source(here("scripts", "model", "pi_of_E.R"))
-source(here("scripts", "model", "max_Ei.R"))
+source(here("scripts", "3_model", "E_vec_fxn.R"))
+source(here("scripts", "3_model", "pi_of_E.R"))
+source(here("scripts", "3_model", "max_Ei.R"))
 
 # Some housekeeping
 update_geom_defaults("point",
@@ -210,17 +210,11 @@ VDS_countries <- c("FSM", "KIR", "MHL", "NRU", "PLW", "PNG", "SLB", "TUV", "TKL"
 
 # Load historical effort received and summarize
 act <- readRDS(here("raw_data", "activity_by_vessel_year_eez.rds")) %>%
-  filter(
-    eez_iso3 %in% VDS_countries,
-    best_vessel_class == "tuna_purse_seines"
-  ) %>%
+  filter(eez_iso3 %in% VDS_countries) %>%
   group_by(year, eez_iso3) %>%
   summarize(days = sum(hours_length) / 24) %>%
   arrange(desc(days)) %>%
-  mutate(
-    days_prop = days / (sum(days) / (1 - prop_hs)),
-    c_days_prop = cumsum(days_prop)
-  )
+  mutate(days_prop = days / (sum(days)))
 ```
 
 This graph shows the data generated above
