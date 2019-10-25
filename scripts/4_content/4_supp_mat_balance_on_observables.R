@@ -18,7 +18,8 @@ library(tidyverse)
 
 # Load vessel info
 vessel_info <- readRDS(file = here("raw_data",
-                                   "vessel_info_pna_purse_seines.rds"))
+                                   "vessel_info_pna_purse_seines.rds")) %>% 
+  select(-length_factor)
 
 vessel_activity <- readRDS(file = here("raw_data",
                                        "activity_by_vessel_year_eez.rds")) %>% 
@@ -37,7 +38,7 @@ balance_table <- vessel_info %>%
                              measure == "engine_power_kw" ~ "Engine Power (KW)",
                              measure == "length_m" ~ "Length (m)",
                              measure == "fishing_hours_in_PNA" ~ "PNA fishing in 2014 (hours)",
-                             T ~ "Tonnage (GT)"))
+                             measure == "tonnage_gt" ~ "Tonnage (GT)"))
 
 
 # Create a density plot for each variable
@@ -71,7 +72,7 @@ mean_sd <- function(x) {
 
 # Function to apply ttest
 my_ttest <- function(data){
-  t.test(value ~ group, data = data)
+  t.test(value ~ group, data = drop_na(data))
 }
 
 # Function to apply broom::tidy
