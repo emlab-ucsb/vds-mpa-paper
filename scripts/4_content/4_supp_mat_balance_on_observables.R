@@ -20,8 +20,15 @@ library(tidyverse)
 vessel_info <- readRDS(file = here("raw_data",
                                    "vessel_info_pna_purse_seines.rds"))
 
+vessel_activity <- readRDS(file = here("raw_data",
+                                       "activity_by_vessel_year_eez.rds")) %>% 
+  filter(year == 2014) %>% 
+  select(ssvid, group, fishing_hours_in_PNA) %>% 
+  distinct()
+
 # Combien both datasets, and clean-up
 balance_table <- vessel_info %>% 
+  left_join(vessel_activity, by = c("ssvid", "group")) %>% 
   mutate(group = ifelse(group == "displaced", "Displaced", "Non-displaced"),
          group = fct_relevel(group, "Non-displaced")) %>% 
   select(-c(flag)) %>% 
@@ -29,6 +36,7 @@ balance_table <- vessel_info %>%
   mutate(measure = case_when(measure == "crew_size" ~ "Crew size (n)",
                              measure == "engine_power_kw" ~ "Engine Power (KW)",
                              measure == "length_m" ~ "Length (m)",
+                             measure == "fishing_hours_in_PNA" ~ "PNA fishing in 2014 (hours)",
                              T ~ "Tonnage (GT)"))
 
 
@@ -55,8 +63,8 @@ ggsave(plot = density_plot,
 
 # Create a function that returns mean (sd) for a variable
 mean_sd <- function(x) {
-  m <- round(mean(x), 2)
-  sd <- round(sd(x), 2)
+  m <- round(mean(x, na.rm = T), 2)
+  sd <- round(sd(x, na.rm = T), 2)
   
   paste0(m, " (", sd, ")")
 }
@@ -108,8 +116,30 @@ balance_table %>%
 
 
 
+# Create a graph for flag proportions
+flags <- c("ESP", "TWN", "JPN", "CHN")
 
-
+vessel_info %>% 
+  mutate(group = ifelse(group == "displaced", "Displaced", "Non-displaced"),
+         group = fct_relevel(group, "Non-displaced")) %>% 
+  select(group, flag) %>% 
+  mutate(flag = ifelse(is.na(flag), "Not reported", flag)) %>%
+  group_by(group) %>% 
+  mutate(n = n()) %>% 
+  ungroup() %>% 
+  group_by(group, flag, n) %>% 
+  summarize(n2 = n()) %>% 
+  ungroup() %>% 
+  mutate(prop = n2 / n * 100) %>% 
+  select(group, Flag = flag, prop) %>% 
+  spread(group, prop, fill = 0) %>% 
+  mutate(Flag = fct_relevel(Flag, "Not reported", after = Inf)) %>% 
+  arrange(Flag) %>% 
+  adorn_totals("row") %>% 
+  knitr::kable(format = "latex",
+               caption = "Proportion of vessel flags by group. Note that we do not observe the flag for two vessels (0.78\\%) in the non-displaced group.",
+               digits = 2) %>% 
+  cat(file = here("docs", "tab", "balance_table_flags.tex"))
 
 
 
