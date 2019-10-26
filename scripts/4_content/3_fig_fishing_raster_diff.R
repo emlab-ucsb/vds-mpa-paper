@@ -139,7 +139,7 @@ plot_change <- plot_grid(change_displaced,
                          change_not_displaced,
                          difference_between_groups,
                          ncol = 1,
-                         labels = "AUTO")
+                         labels = "auto")
 
 ggsave(plot = plot_change,
        file = here("docs", "img", "fishing_raster_diff.png"),

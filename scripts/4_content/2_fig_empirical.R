@@ -143,7 +143,7 @@ p <- plot_grid(all_PS_VDS_KIR_year_plot,
                license_revenues,
                revenue_FFA_GFW,
                ncol = 2,
-               labels = "AUTO")
+               labels = "auto")
 
 #Save plot
 ggsave(p,

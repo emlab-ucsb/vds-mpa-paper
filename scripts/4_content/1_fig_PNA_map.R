@@ -29,7 +29,8 @@ VDS_countries <- c(PNA_countries, "TKL")
 
 eez <- read_sf(dsn = here("data", "spatial", "EEZ_subset.gpkg")) %>% 
   mutate(KIR = ISO_Ter1 == "KIR",
-         VDS = ISO_Ter1 %in% VDS_countries)
+         VDS = ISO_Ter1 %in% VDS_countries) %>% 
+  lwgeom::st_make_valid()
 
 # Extract ISO3 codes for countries present
 countries <- eez$ISO_Ter1
@@ -45,7 +46,8 @@ labels <- eez %>%
     mutate(label = countrycode(sourcevar = ISO_Ter1,
                                origin = "iso3c",
                                destination = "country.name"),
-           label = ifelse(ISO_Ter1 == "FSM", "Federal States\nof Micronesia", label))
+           label = ifelse(ISO_Ter1 == "FSM", "Federal States\nof Micronesia", label)) %>% 
+  lwgeom::st_make_valid()
 
 # Load PIPA
 pipa <- st_read(dsn = here("data", "spatial", "PIPA.gpkg"))

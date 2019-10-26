@@ -453,7 +453,7 @@ All together
                         costs_with_trading_plot,
                         delta_costs_plot,
                         ncol = 1,
-                        labels = "AUTO"))
+                        labels = "auto"))
 ```
 
 Now let's save this figure.
