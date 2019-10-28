@@ -27,10 +27,7 @@ countries <- eez$ISO_Ter1
 
 ##### MPAS #################################################
 # Load MPA shapefiles
-mpas <- st_read(dsn = here("data", "spatial", "LSMPAs.gpkg")) %>% 
-  janitor::clean_names() %>% 
-  filter(!wdpaid %in% c(555512002, 555512001)) %>% 
-  filter(iso3 %in% countries)
+mpas <- st_read(dsn = here("data", "spatial", "PIPA.gpkg"))
 
 
 # Load effort raster
@@ -50,24 +47,25 @@ change_displaced <- yearly_effort_raster %>%
   summarize(hours = mean(hours, na.rm = T)) %>% 
   ungroup() %>% 
   spread(post, hours, fill = 0) %>% 
-  mutate(dif = Post - Pre) %>% 
+  mutate(dif = Post - Pre,
+         dif = dif / max(abs(dif))) %>% 
   ggplot() +
   geom_tile(mapping = aes(x = lon_bin_center, y = lat_bin_center, fill = dif)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas, fill = "transparent", color = "red") +
-  scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white") +
+  scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white", limits = c(-1, 1)) +
   cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         panel.grid.major = element_line(color = "transparent")) +
-  guides(fill = guide_colorbar(title = "Change in\nfishing hours",
+  guides(fill = guide_colorbar(title = "Normalized\nchange",
                                ticks.colour = "black",
                                frame.colour = "black")) +
   labs(x = "", y = "") +
   ggtitle("Displaced vessels")
 
 ggsave(plot = change_displaced,
-       file = here("docs", "img", "fishing_raster_displaced.png"),
+       file = here("docs", "img", "fishing_raster_displaced.pdf"),
        height = 2.5,
        width = 4.5)
 
@@ -78,24 +76,25 @@ change_not_displaced <- yearly_effort_raster %>%
   summarize(hours = mean(hours, na.rm = T)) %>% 
   ungroup() %>% 
   spread(post, hours, fill = 0) %>% 
-  mutate(dif = Post - Pre) %>% 
+  mutate(dif = Post - Pre,
+         dif = dif / max(abs(dif))) %>% 
   ggplot() +
   geom_tile(mapping = aes(x = lon_bin_center, y = lat_bin_center, fill = dif)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas, fill = "transparent", color = "red") +
-  scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white") +
+  scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white", limits = c(-1, 1)) +
   cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         panel.grid.major = element_line(color = "transparent")) +
-  guides(fill = guide_colorbar(title = "Change in\nfishing hours",
+  guides(fill = guide_colorbar(title = "Normalized\nchange",
                                ticks.colour = "black",
                                frame.colour = "black")) +
   labs(x = "", y = "") + 
   ggtitle("Non-displaced vessels")
 
 ggsave(plot = change_not_displaced,
-       file = here("docs", "img", "fishing_raster_not_displaced.png"),
+       file = here("docs", "img", "fishing_raster_not_displaced.pdf"),
        height = 2.5,
        width = 4.5)
 
@@ -108,9 +107,9 @@ difference_between_groups <- yearly_effort_raster %>%
   mutate(dif = Post - Pre) %>% 
   select(-c(Post, Pre)) %>% 
   group_by(group) %>% 
-  mutate(max_group = max(dif)) %>% 
+  mutate(max_group = max(abs(dif))) %>% 
   ungroup() %>% 
-  mutate(dif = (dif / max_group) * 100) %>% 
+  mutate(dif = (dif / max_group)) %>% 
   select(-max_group) %>% 
   spread(group, dif, fill = 0) %>%
   mutate(dif = displaced - non_displaced) %>%
@@ -118,22 +117,21 @@ difference_between_groups <- yearly_effort_raster %>%
   geom_tile(mapping = aes(x = lon_bin_center, y = lat_bin_center, fill = dif)) +
   geom_sf(data = eez, fill = "transparent", color = "black") +
   geom_sf(data = mpas, fill = "transparent", color = "red") +
-  scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white") +
+  scale_fill_gradient2(low = "blue", high = "red", midpoint = 0, mid = "white", limits = c(-1, 1)) +
   cowplot::theme_cowplot() +
   theme(text = element_text(size = 10),
         axis.text = element_text(size = 8),
         panel.grid.major = element_line(color = "transparent")) +
-  guides(fill = guide_colorbar(title = "Relative\nchange (%)",
+  guides(fill = guide_colorbar(title = "Difference",
                                ticks.colour = "black",
                                frame.colour = "black")) +
   labs(x = "", y = "") +
   ggtitle("Relative redistribution")
 
 ggsave(plot = difference_between_groups,
-       file = here("docs", "img", "fishing_raster_difference_between_groups.png"),
+       file = here("docs", "img", "fishing_raster_difference_between_groups.pdf"),
        height = 2.5,
        width = 4.5)
-
 
 plot_change <- plot_grid(change_displaced,
                          change_not_displaced,
@@ -144,12 +142,12 @@ plot_change <- plot_grid(change_displaced,
 ggsave(plot = plot_change,
        file = here("docs", "img", "fishing_raster_diff.png"),
        height = 7,
-       width = 4.5)
+       width = 4)
 
 ggsave(plot = plot_change,
        file = here("docs", "img", "fishing_raster_diff.pdf"),
        height = 7,
-       width = 4.5)
+       width = 4)
 
 
 
