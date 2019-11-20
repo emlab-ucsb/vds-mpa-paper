@@ -511,6 +511,14 @@ ggsave(plot = effort_and_revenues,
        height = 4)
 ```
 
+```{r}
+ggsave(plot = effort_and_revenues,
+       file = here("docs", "img","effort_and_revenues_ED_Fig4.tiff"),
+       width = 6,
+       height = 4)
+```
+
+
 
 
 ## How does vessel-price change?
@@ -552,6 +560,14 @@ ggsave(plot = vessel_day_price_no_trading_plot,
        height = 3)
 ```
 
+```{r}
+ggsave(plot = vessel_day_price_no_trading_plot,
+       filename = here("docs", "img", "vessel_day_price_no_trading_plot_ED_Fig1.tiff"),
+       width = 6,
+       height = 3)
+```
+
+
 
 ### When there is trading
 
@@ -584,6 +600,14 @@ ggsave(plot = vessel_day_price_with_trading_plot,
        width = 6,
        height = 4.5)
 ```
+
+```{r}
+ggsave(plot = vessel_day_price_with_trading_plot,
+       filename = here("docs", "img", "vessel_day_price_with_trading_plot_ED_Fig3.tiff"),
+       width = 6,
+       height = 4.5)
+```
+
 
 ## What about revenue to other PNA countries?
 
@@ -623,6 +647,14 @@ ggsave(plot = profits_PNA_notKIR_no_trading_plot,
        width = 3,
        height = 3)
 ```
+
+```{r}
+ggsave(plot = profits_PNA_notKIR_no_trading_plot,
+       filename = here("docs", "img", "profits_PNA_notKIR_no_trading_plot_ED_Fig2.tiff"),
+       width = 3,
+       height = 3)
+```
+
 
 
 # Allocation rules matter
@@ -754,7 +786,7 @@ best_rev <- allocate_wrap(
 ggsave(
   plot = allocation_cost_plot,
   filename = here("docs", "img", "allocation_cost_plot.pdf"),
-  width = 5.5,
+  width = 5,
   height = 3.5
 )
 ```
