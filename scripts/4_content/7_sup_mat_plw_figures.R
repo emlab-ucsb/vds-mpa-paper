@@ -77,9 +77,9 @@ plw_2018 <- plot_grid(plw_2018_ll,
                       labels = c("Longlines", "Purse seines"),
                       label_fontface = "plain",
                       label_size = 12)
-# Export plot as png
+# Export plot as tiff
 ggsave(plw_2018,
-       filename = here("docs", "img", "plw_2018.png"),
+       filename = here("docs", "img", "plw_2018_ED_Fig3.tiff"),
        width = 7,
        height = 3.5)
 
@@ -148,5 +148,9 @@ rbind(ll_ts, ps_ts) %>%
         legend.position = c(0, 1))
 
 ggsave(filename = here("docs", "img", "plw_ts_plot.pdf"),
+       width = 6,
+       height = 4)
+
+ggsave(filename = here("docs", "img", "plw_ts_plot_ED_Fig4.tiff"),
        width = 6,
        height = 4)

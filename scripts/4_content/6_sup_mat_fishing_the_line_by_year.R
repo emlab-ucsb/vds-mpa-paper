@@ -3,6 +3,7 @@
 # Load packages
 library(startR)
 library(here)
+library(sf)
 library(fishwatchr)
 library(tidyverse)
 
@@ -47,6 +48,11 @@ plot <- ggplot(yearly_effort_raster) +
 # Export the figure
 ggsave(plot = plot,
        filename = here("docs", "img", "fishing_the_line_by_year.pdf"),
+       width = 6,
+       height = 6)
+
+ggsave(plot = plot,
+       filename = here("docs", "img", "fishing_the_line_by_year_ED_Fig2.tiff"),
        width = 6,
        height = 6)
 

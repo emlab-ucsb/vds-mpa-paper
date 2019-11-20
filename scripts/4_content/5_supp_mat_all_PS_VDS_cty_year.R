@@ -63,3 +63,8 @@ ggsave(all_PS_VDS_cty_year_plot,
        filename = here("docs", "img", "all_PS_VDS_cty_year.pdf"),
        width = 6,
        height = 4)
+
+ggsave(all_PS_VDS_cty_year_plot,
+       filename = here("docs", "img", "all_PS_VDS_cty_year_ED_Fig1.tiff"),
+       width = 6,
+       height = 4)
