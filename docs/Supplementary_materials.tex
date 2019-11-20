@@ -65,11 +65,16 @@
 
 \maketitle
 
-\newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+%\newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
 
-\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
+%\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
 
-\section{Model parameterization}
+\renewcommand{\tablename}{Supplementary Table}
+\renewcommand{\figurename}{Supplementary Figure}
+
+\section{Supplementary Methods}
+
+\subsection{Model parameterization}
 
 We calibrate our model to loosely match the fishery dynamics observed for the VDS operated by the PNA. The table below contains the values used to parameterize the model.
 
@@ -110,7 +115,7 @@ f & 0.1 & Biomass is equally distributed between countries\\
 \end{table}
 
 
-\section{Balance on observables}
+\subsection{Balance on observables}
 
 We observe six characteristics for every vessel: flag, crew size, engine power, vessel length, tonnage capacity, and fishing hours within PNA waters in 2014. Figure \ref{fig:balance_density_plot} shows the distribution of the numeric variables for each group of vessels. Table \ref{tab:balance_table} presents the mean and standard deviation of each observable, and table \ref{tab:balance_table_flags} shows the composition of each group by flag. On average, displaced vessels have smaller crew sizes, more engine power, are larger than non-displaced vessels, and fished more in PNA waters during 2014. The largest relative difference is in terms of gross tonnage. 
 
@@ -201,43 +206,31 @@ Total & 100.00 & 100.00\\
 \begin{figure}[htbp]
 \centering
 \includegraphics{img/vessel_day_price_no_trading_plot.pdf}
-\caption{\label{fig:vessel_day_price_no_trading_plot}Vessel-day prices (vertical axis) for a combination of reserve sizes ($R$ in the horizontal-axis) and different within-country movement ($\theta$) for the country with spatial closure and other countries (left - right, respectively) when there is no trading.}
+\caption{\label{fig:vessel_day_price_no_trading_plot}Vessel-day prices with conservation and no trading. Vessel-day prices (vertical axis) are shown for a combination of reserve sizes ($R$ in the horizontal-axis) and different within-country movement ($\theta$) for the country with spatial closure and other countries (left - right, respectively) when there is no trading.}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics{img/profits_PNA_notKIR_no_trading_plot.pdf}
-\caption{\label{fig:profits_PNA_notKIR_no_trading_plot}Relative change in revenue for countries 2 - 9 (vertical axis) for a combination of reserve sizes ($R$ in the horizontal-axis) and different within-country movement ($\theta$) when there is no trading.}
+\caption{\label{fig:profits_PNA_notKIR_no_trading_plot}Change in revenues to non-conserving countries. Relative change in revenue for countries 2 - 9 (vertical axis) for a combination of reserve sizes ($R$ in the horizontal-axis) and different within-country movement ($\theta$) when there is no trading.}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics{img/vessel_day_price_with_trading_plot.pdf}
-\caption{\label{fig:vessel_day_price_with_trading_plot}PNA-wide vessel-day prices (vertical axis) with trading, for a combination of reserve sizes ($R$ in the horizontal-axis) and different within-country movement ($\theta$).}
+\caption{\label{fig:vessel_day_price_with_trading_plot}Vessel-day prices with conservation and trading. PNA-wide vessel-day prices (vertical axis) with trading, for a combination of reserve sizes ($R$ in the horizontal-axis) and different within-country movement ($\theta$).}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics{img/effort_and_revenues.pdf}
-	\caption{\label{fig:effort_and_revenues}Effort and revenue in Country 1 for a combination of reserve sizes ($R$), different within-country movement ($\theta$), and with and without trading. With trading, the relative drop in effort is always larger than the relative drop in revenue as $R$ increases. The exact opposite relationship holds without trading: effort remains fixed as revenue declines with increasing $R$.}
+	\caption{\label{fig:effort_and_revenues}Effort and revenues to the conserving country with and without trading. Effort and revenue in Country 1 are shown for a combination of reserve sizes ($R$), different within-country movement ($\theta$), and with and without trading. With trading, the relative drop in effort is always larger than the relative drop in revenue as $R$ increases. The exact opposite relationship holds without trading: effort remains fixed as revenue declines with increasing $R$.}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics{img/balance_density_plot.pdf}
-\caption{\label{fig:balance_density_plot}Distribution of observable characteristics by vessel for displaced (n = 64), non-displaced vessels (n = 254).}
-\end{figure}
-
-\begin{figure}
-\centering
-	\includegraphics{img/all_PS_VDS_cty_year.pdf}
-	\caption{\label{fig:all_PS_VDS_cty_year}Annual country-level vessel-days for all PNA countries by 318 tuna purse seiners.}
-\end{figure}
-
-\begin{figure}
-\centering
-	\includegraphics{img/fishing_the_line_by_year.pdf}
-	\caption{\label{fig:fishing_the_line_by_year}Annual fishing effort (hours) on a 1-degree grid around PIPA (red polygon) and Kiribati (black polygons). There is no clear evidence of a ``fishing the line'' effect, with the greatest effort applied on the Gilbert islands (Kiribati) after 2015.}	
+\caption{\label{fig:balance_density_plot}Vessel characteristics for 318 tuna purse seiners. Distribution of observable characteristics by vessel for displaced (n = 64), non-displaced vessels (n = 254).}
 \end{figure}
 
 \begin{figure}
@@ -250,18 +243,6 @@ Total & 100.00 & 100.00\\
 \centering
 	\includegraphics{img/catches.pdf}
 	\caption{\label{fig:catches}Financial indicators for PNA countries. A) Total annual purse seine catch by EEZ and, B) Total annual value of purse seine catch by EEZ. Vertical dashed line in both plots denotes implementation of PIPA.}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{img/plw_2018.pdf}
-\caption{\label{fig:plw_2018}Longline and purse seine fishing effort in Palau during 2018 at a 0.5 degree resolution. The red polygon shows the proposed Palau National Marine Sanctuary, containing 56\% and 91\% of longline and purse seine fishing effort, respectively. Note that the colorbars are presented in $log_{10}$ transformed scale for better visualization.}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{img/plw_ts_plot.pdf}
-\caption{\label{fig:plw_ts_plot}Time series of the annual proportion of longline and purse seine effort within the proposed PNMS boundaries.}
 \end{figure}
 
 \clearpage
