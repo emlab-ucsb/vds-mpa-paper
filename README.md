@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the data used in Villaseñor-Derbez et al. The purpose is to guide anyone interested in replicating the analsyses through the process of getting the data and analysing it in the way we did. All data are made publically available in this repository.
+This repository contains the data used in Villaseñor-Derbez et al. The purpose is to guide anyone interested in replicating the analyses through the process of getting the data and analyzing it in the way we did. All data are made publicly available in this repository.
 
 ## Citations
 
