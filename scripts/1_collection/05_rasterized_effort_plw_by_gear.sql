@@ -1,7 +1,7 @@
 ###########################################################
 # This query creates a gridded version of fishing hours by
-# within Palau, at a 0.1 degree resolution. It collects data
-# for longliners and purse seiners.
+# year-month within Palau, at a 0.1 degree resolution.
+# It collects data for longliners and purse seiners.
 ###########################################################
 #1) Query the data
 WITH eez_info AS (
