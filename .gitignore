@@ -31,3 +31,9 @@ docs/nature_paperwork/*
 *.zip
 *.here
 docs/old_ms/*
+docs/slides/*
+docs/palau_long.tex
+docs/palau_purse.tex
+docs/revenue_loss.tex
+docs/MS_*
+data/USMonuments/*
