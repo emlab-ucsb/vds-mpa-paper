@@ -14,7 +14,7 @@ For citations of our data (anything in the `data` folder), please cite this work
 
 The repository contains four key directories:
 
-- `raw_data`: Contains the original, raw data either from GFW or the FFA. These data have not been manipulated directly by us. GFW data is collected by SQL scripts outlined in `scripts/01_collection\`.
+- `raw_data`: Contains the original, raw data either from GFW or the FFA. These data have not been manipulated directly by us. GFW data is collected by SQL scripts outlined in `scripts/01_collection/`.
 - `data`: The data folder contains transformed and processed data. Scripts that take raw data and clean it are found in `scripts/2_processing/`.
 - `scripts`: This folder contains a set of helper functions, processing and analysis scripts, and content-generating scripts. Essentially, a processing script reads data from `raw_data` or a cloud-based database, does something to it, and exports it to `data`.
 - `docs`: Contains the `*.tex` files, figures, tables, bibliography, and supplementary information of the manuscript.
