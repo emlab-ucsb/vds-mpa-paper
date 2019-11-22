@@ -22,12 +22,12 @@ The repository contains four key directories:
 ## Repository structure 
 
 ```
--- data
+-- data/
    |__financial_data.csv
-   |__spatial
--- docs
-   |__img
-   |__tab
+   |__spatial/
+-- docs/
+   |__img/
+   |__tab/
    |__Markets_Conservation_final.tex
    |__nature.bst
    |__Supplementary_materials.aux
@@ -39,21 +39,22 @@ The repository contains four key directories:
    |__Supplementary_materials.synctex.gz
    |__Supplementary_materials.tex
 -- raw_data
-   |__FFA
-   |__spatial
+   |__FFA/
+   |__spatial/
    |__activity_by_vessel_year_eez.rds
    |__rasterized_effort_by_group.rds
    |__rasterized_effort_plw_by_gear.rds
    |__vessel_info_pna_purse_seines.rds
--- scripts
-   |__0_functions
-   |__1_collection
-   |__2_processing
-   |__3_model
-   |__4_content
+-- scripts/
+   |__0_setup.R
+   |__0_functions/
+   |__1_collection/
+   |__2_processing/
+   |__3_model/
+   |__4_content/
 ```
 
-## Notes on `raw_data`
+## Notes on `raw_data/`
 
 Due to GitHub's limitation on large-file data storage, we do not include two sources of raw data. These are not crucial to our analysis, since these are only shapefiles which we subset to our region of interest and are publicly available elsewhere. The resulting "cropped" spatial data are available in our `data` folder. Here, we point you in the direction of these data so that you can download them if you need to.
 
