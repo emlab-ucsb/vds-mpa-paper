@@ -40,6 +40,7 @@ The repository contains four key directories:
    |__Supplementary_materials.tex
 -- raw_data
    |__FFA
+   |__spatial
    |__activity_by_vessel_year_eez.rds
    |__rasterized_effort_by_group.rds
    |__rasterized_effort_plw_by_gear.rds
@@ -51,6 +52,15 @@ The repository contains four key directories:
    |__3_model
    |__4_content
 ```
+
+## Notes on `raw_data`
+
+Due to GitHub's limitation on large-file data storage, we do not include two sources of raw data. These are not crucial to our analysis, since these are only shapefiles which we subset to our region of interest and are publicly available elsewhere. The resulting "cropped" spatial data are available in our `data` folder. Here, we point you in the direction of these data so that you can download them if you need to.
+
+The data not included would live under `raw_data/spatial`, with two subsequent folders:
+
+- EEZ: The Exclusive Economic Zones V10 - Available from Marine Regions [here](http://www.marineregions.org/downloads.php), and used to outline the EEZ's of region of interest
+- WDPA_Jan2019: The World Database on Marine Protected Areas as of January 2019 - Available from Protected Planet [here](https://www.protectedplanet.net/marine), and used to outline MPAs in the region of interest
 
 --------- 
 
