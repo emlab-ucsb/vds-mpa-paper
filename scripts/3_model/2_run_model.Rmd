@@ -443,7 +443,12 @@ both <- left_join(shorter_no_trading, shorter_trading, by = c("Country", "R", "t
   startR::ggtheme_plot() +
   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1),
                      limits = c(0.885, 1)) +
+  scale_x_continuous(limi= c(0, 1)) +
   theme(legend.position = "None"))
+
+ggsave(plot = delta_costs_plot,
+       filename = here("docs", "img", "panel2c.pdf"),
+       width = 3.4, height = 2.3)
 ```
 
 All together
@@ -769,6 +774,7 @@ best_rev <- allocate_wrap(
    geom_line(size = 1.5) +
    scale_y_continuous(labels = scales::percent,
                       limits = c(0, 1)) +
+   scale_x_continuous(limits = c(0, 1)) +
    xlab("Portion of patch as reserve (R)") +
    ylab("Losses\n(relative to R = 0)") +
    scale_color_viridis_c() +
