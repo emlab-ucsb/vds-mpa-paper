@@ -1,0 +1,242 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\providecommand{\bibinfo}[2]{#2}
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem{oleary_2016}
+\bibinfo{author}{O'Leary, B.~C.} \emph{et~al.}
+\newblock \bibinfo{title}{Effective coverage targets for ocean protection}.
+\newblock \emph{\bibinfo{journal}{Conservation letters}}
+  \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{398--404}
+  (\bibinfo{year}{2016}).
+
+\bibitem{dinerstein_2019}
+\bibinfo{author}{Dinerstein, E.} \emph{et~al.}
+\newblock \bibinfo{title}{A global deal for nature: Guiding principles,
+  milestones, and targets}.
+\newblock \emph{\bibinfo{journal}{Sci. Adv.}} \textbf{\bibinfo{volume}{5}},
+  \bibinfo{pages}{eaaw2869} (\bibinfo{year}{2019}).
+
+\bibitem{sala_2017}
+\bibinfo{author}{Sala, E.} \& \bibinfo{author}{Giakoumi, S.}
+\newblock \bibinfo{title}{No-take marine reserves are the most effective
+  protected areas in the ocean}.
+\newblock \emph{\bibinfo{journal}{{ICES} Journal of Marine Science}}
+  (\bibinfo{year}{2017}).
+
+\bibitem{sala_2018}
+\bibinfo{author}{Sala, E.} \emph{et~al.}
+\newblock \bibinfo{title}{Assessing real progress towards effective ocean
+  protection}.
+\newblock \emph{\bibinfo{journal}{Marine Policy}}
+  \textbf{\bibinfo{volume}{91}}, \bibinfo{pages}{11--13}
+  (\bibinfo{year}{2018}).
+
+\bibitem{mcleod_2019}
+\bibinfo{author}{Mcleod, E.} \emph{et~al.}
+\newblock \bibinfo{title}{Lessons from the pacific islands – adapting to
+  climate change by supporting social and ecological resilience}.
+\newblock \emph{\bibinfo{journal}{Frontiers in Marine Science}}
+  (\bibinfo{year}{2019}).
+
+\bibitem{ramesh_2019}
+\bibinfo{author}{Ramesh, N.}, \bibinfo{author}{Rising, J.~A.} \&
+  \bibinfo{author}{Oremus, K.~L.}
+\newblock \bibinfo{title}{The small world of global marine fisheries: The
+  cross-boundary consequences of larval dispersal}.
+\newblock \emph{\bibinfo{journal}{Science}} \textbf{\bibinfo{volume}{364}},
+  \bibinfo{pages}{1192--1196} (\bibinfo{year}{2019}).
+
+\bibitem{hernndez_2019}
+\bibinfo{author}{Hernández, C.~M.} \emph{et~al.}
+\newblock \bibinfo{title}{Evidence and patterns of tuna spawning inside a large
+  no-take marine protected area}.
+\newblock \emph{\bibinfo{journal}{Scientific reports}}
+  \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{10772} (\bibinfo{year}{2019}).
+
+\bibitem{agardy_2018}
+\bibinfo{author}{Agardy, T.}
+\newblock \bibinfo{title}{Justified ambivalence about {MPA} effectiveness}.
+\newblock \emph{\bibinfo{journal}{{ICES} Journal of Marine Science}}
+  \textbf{\bibinfo{volume}{75}}, \bibinfo{pages}{1183--1185}
+  (\bibinfo{year}{2018}).
+\newblock
+  \urlprefix\url{https://academic.oup.com/icesjms/article/75/3/1183/4098825}.
+
+\bibitem{havice_2010}
+\bibinfo{author}{Havice, E.}
+\newblock \bibinfo{title}{The structure of tuna access agreements in the
+  western and central pacific ocean: Lessons for vessel day scheme planning}.
+\newblock \emph{\bibinfo{journal}{Marine Policy}}
+  \textbf{\bibinfo{volume}{34}}, \bibinfo{pages}{979--987}
+  (\bibinfo{year}{2010}).
+
+\bibitem{havice_2013}
+\bibinfo{author}{Havice, E.}
+\newblock \bibinfo{title}{Rights-based management in the western and central
+  pacific ocean tuna fishery: Economic and environmental change under the
+  vessel day scheme}.
+\newblock \emph{\bibinfo{journal}{Marine Policy}}
+  \textbf{\bibinfo{volume}{42}}, \bibinfo{pages}{259--267}
+  (\bibinfo{year}{2013}).
+
+\bibitem{aqorau_2018}
+\bibinfo{author}{Aqorau, T.}, \bibinfo{author}{Bell, J.} \&
+  \bibinfo{author}{Kittinger, J.~N.}
+\newblock \bibinfo{title}{Good governance for migratory species}.
+\newblock \emph{\bibinfo{journal}{Science}} \textbf{\bibinfo{volume}{361}},
+  \bibinfo{pages}{1208.2--1209} (\bibinfo{year}{2018}).
+
+\bibitem{ffa_2017b}
+\bibinfo{author}{{Pacific Islands Forum Fisheries Agency}}.
+\newblock \bibinfo{title}{Pacific islands forum fisheries agency 2016 tuna
+  development indicators brochure}.
+\newblock \bibinfo{type}{Tech. Rep.}, \bibinfo{institution}{Pacific Islands
+  Forum Fisheries Agency} (\bibinfo{year}{2017}).
+\newblock \urlprefix\url{https://www.ffa.int/tunadev\_indicators}.
+
+\bibitem{libecap_1989}
+\bibinfo{author}{Libecap, G.~D.}
+\newblock \bibinfo{title}{Distributional issues in contracting for property
+  rights}.
+\newblock \emph{\bibinfo{journal}{Journal of Institutional and Theoretical
+  Economics}} \textbf{\bibinfo{volume}{145}}, \bibinfo{pages}{6--24}
+  (\bibinfo{year}{1989}).
+\newblock \urlprefix\url{https://www.jstor.org/stable/40751163}.
+
+\bibitem{mccauley_2016}
+\bibinfo{author}{{McCauley}, D.~J.} \emph{et~al.}
+\newblock \bibinfo{title}{Ending hide and seek at sea}.
+\newblock \emph{\bibinfo{journal}{Science}} \textbf{\bibinfo{volume}{351}},
+  \bibinfo{pages}{1148--1150} (\bibinfo{year}{2016}).
+\newblock
+  \urlprefix\url{http://www.sciencemag.org/lookup/doi/10.1126/science.aad5686}.
+
+\bibitem{mcdermott_2018}
+\bibinfo{author}{{McDermott}, G.~R.}, \bibinfo{author}{Meng, K.~C.},
+  \bibinfo{author}{{McDonald}, G.~G.} \& \bibinfo{author}{Costello, C.~J.}
+\newblock \bibinfo{title}{The blue paradox: Preemptive overfishing in marine
+  reserves.}
+\newblock \emph{\bibinfo{journal}{Proc Natl Acad Sci {USA}}}
+  (\bibinfo{year}{2018}).
+
+\bibitem{kroodsma_2018}
+\bibinfo{author}{Kroodsma, D.~A.} \emph{et~al.}
+\newblock \bibinfo{title}{Tracking the global footprint of fisheries.}
+\newblock \emph{\bibinfo{journal}{Science}} \textbf{\bibinfo{volume}{359}},
+  \bibinfo{pages}{904--908} (\bibinfo{year}{2018}).
+
+\bibitem{ffa_2017}
+\bibinfo{author}{Terawasi, P.} \& \bibinfo{author}{Reid, C.}
+\newblock \bibinfo{title}{Economic and development indicators and statistics:
+  Tuna fisheries of the western and central pacific ocean}.
+\newblock \bibinfo{type}{Tech. Rep.}, \bibinfo{institution}{Pacific Islands
+  Forum Fisheries Agency, Honaira, Solomon Islands} (\bibinfo{year}{2017}).
+\newblock \urlprefix\url{https://www.ffa.int/node/2050}.
+
+\bibitem{hanich2018unraveling}
+\bibinfo{author}{Hanich, Q.} \emph{et~al.}
+\newblock \bibinfo{title}{Unraveling the blue paradox: Incomplete analysis
+  yields incorrect conclusions about phoenix islands protected area closure}.
+\newblock \emph{\bibinfo{journal}{Proceedings of the National Academy of
+  Sciences}} \textbf{\bibinfo{volume}{115}}, \bibinfo{pages}{E12122--E12123}
+  (\bibinfo{year}{2018}).
+
+\bibitem{ferraro2018causal}
+\bibinfo{author}{Ferraro, P.~J.}, \bibinfo{author}{Sanchirico, J.~N.} \&
+  \bibinfo{author}{Smith, M.~D.}
+\newblock \bibinfo{title}{Causal inference in coupled human and natural
+  systems}.
+\newblock \emph{\bibinfo{journal}{Proceedings of the National Academy of
+  Sciences}} \bibinfo{pages}{201805563} (\bibinfo{year}{2018}).
+
+\bibitem{crespo_2019}
+\bibinfo{author}{Crespo, G.~O.} \emph{et~al.}
+\newblock \bibinfo{title}{High-seas fish biodiversity is slipping through the
+  governance net.}
+\newblock \emph{\bibinfo{journal}{Nature Ecology \& Evolution}}
+  \textbf{\bibinfo{volume}{3}}, \bibinfo{pages}{1273--1276}
+  (\bibinfo{year}{2019}).
+
+\bibitem{rosegrant_1994}
+\bibinfo{author}{Rosegrant, M.~W.} \& \bibinfo{author}{Binswanger, H.~P.}
+\newblock \bibinfo{title}{Markets in tradable water rights: Potential for
+  efficiency gains in developing country water resource allocation}.
+\newblock \emph{\bibinfo{journal}{World development}}
+  \textbf{\bibinfo{volume}{22}}, \bibinfo{pages}{1613--1625}
+  (\bibinfo{year}{1994}).
+
+\bibitem{hutton_2003}
+\bibinfo{author}{Hutton, J.~M.} \& \bibinfo{author}{Leader-Williams, N.}
+\newblock \bibinfo{title}{Sustainable use and incentive-driven conservation:
+  realigning human and conservation interests}.
+\newblock \emph{\bibinfo{journal}{Oryx}} \textbf{\bibinfo{volume}{37}}
+  (\bibinfo{year}{2003}).
+
+\bibitem{sandbrook_2019}
+\bibinfo{author}{Sandbrook, C.}, \bibinfo{author}{Fisher, J.},
+  \bibinfo{author}{Holmes, G.}, \bibinfo{author}{Luque-Lora, R.} \&
+  \bibinfo{author}{Keane, A.}
+\newblock \bibinfo{title}{The global conservation movement is diverse but not
+  divided}.
+\newblock \emph{\bibinfo{journal}{Nat Sustain}} \textbf{\bibinfo{volume}{2}},
+  \bibinfo{pages}{316--323} (\bibinfo{year}{2019}).
+
+\bibitem{roberts_2017}
+\bibinfo{author}{Roberts, C.~M.} \emph{et~al.}
+\newblock \bibinfo{title}{Marine reserves can mitigate and promote adaptation
+  to climate change}.
+\newblock \emph{\bibinfo{journal}{Proc Natl Acad Sci {USA}}}
+  \textbf{\bibinfo{volume}{114}}, \bibinfo{pages}{6167--6175}
+  (\bibinfo{year}{2017}).
+
+\bibitem{ban_2019}
+\bibinfo{author}{Ban, N.~C.} \emph{et~al.}
+\newblock \bibinfo{title}{Well-being outcomes of marine protected areas}.
+\newblock \emph{\bibinfo{journal}{Nature Sustainability}}
+  \textbf{\bibinfo{volume}{2}}, \bibinfo{pages}{524--532}
+  (\bibinfo{year}{2019}).
+
+\bibitem{costello_2016}
+\bibinfo{author}{Costello, C.} \emph{et~al.}
+\newblock \bibinfo{title}{Global fishery prospects under contrasting management
+  regimes.}
+\newblock \emph{\bibinfo{journal}{Proceedings of the National Academy of
+  Sciences of the United States of America}} \textbf{\bibinfo{volume}{113}},
+  \bibinfo{pages}{5125--5129} (\bibinfo{year}{2016}).
+
+\bibitem{Hagrannsoknir2014}
+\bibinfo{author}{Hagrannsoknir}.
+\newblock \bibinfo{title}{Review of the purse seine vessel day scheme}.
+\newblock \bibinfo{type}{Tech. Rep.}, \bibinfo{institution}{PNA Office}
+  (\bibinfo{year}{2014}).
+
+\bibitem{pna_2016}
+\bibinfo{author}{PNA}.
+\newblock \bibinfo{title}{Palau arrangement for the management of the western
+  pacific fishery management scheme}.
+\newblock \bibinfo{type}{Tech. Rep.}, \bibinfo{institution}{Parties to the
+  Nauru Agreement} (\bibinfo{year}{2016}).
+\newblock \urlprefix\url{https://www.pnatuna.com/content/purse-seine-vds-text}.
+
+\bibitem{rcore_2019}
+\bibinfo{author}{{R Core Team}}.
+\newblock \emph{\bibinfo{title}{R: A Language and Environment for Statistical
+  Computing}}.
+\newblock \bibinfo{organization}{R Foundation for Statistical Computing},
+  \bibinfo{address}{Vienna, Austria} (\bibinfo{year}{2019}).
+\newblock \urlprefix\url{https://www.R-project.org/}.
+
+\bibitem{yeeting2018stabilising}
+\bibinfo{author}{Yeeting, A.~D.}, \bibinfo{author}{Weikard, H.-P.},
+  \bibinfo{author}{Bailey, M.}, \bibinfo{author}{Ram-Bidesi, V.} \&
+  \bibinfo{author}{Bush, S.~R.}
+\newblock \bibinfo{title}{Stabilising cooperation through pragmatic tolerance:
+  the case of the parties to the nauru agreement (pna) tuna fishery}.
+\newblock \emph{\bibinfo{journal}{Regional Environmental Change}}
+  \textbf{\bibinfo{volume}{18}}, \bibinfo{pages}{885--897}
+  (\bibinfo{year}{2018}).
+
+\end{thebibliography}
