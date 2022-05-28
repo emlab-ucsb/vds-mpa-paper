@@ -19,6 +19,7 @@ pi_of_E <- function(p = NULL, q = NULL, X = NULL, theta = NULL, R = NULL, beta =
   
   omega <- rep(1, n_patches)
   omega[1] <- theta + ((1 - theta) * (1 - R))
+  if(R == 1) {omega[1] <- 0}
   
   pi <- (p * q * X * omega) - (beta * c * ((E)^(beta - 1)))
   

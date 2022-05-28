@@ -289,7 +289,7 @@ Yes, it looks like a $\beta = 1.1$ actually reduces this.
       text = element_text(size = 10),
       axis.text = element_text(size = 8)
     ) +
-    startR::ggtheme_plot() +
+    # startR::ggtheme_plot() +
     scale_y_continuous(labels = scales::percent) +
     guides(color = guide_colorbar(title = quo("Movement ("~theta~")"),
                                   ticks.colour = "black", frame.colour = "black")) +
@@ -301,7 +301,7 @@ Yes, it looks like a $\beta = 1.1$ actually reduces this.
 
 ```{r}
 ggsave(plot = costs_no_trading_plot,
-       filename = here("docs", "slides", "img", "cost_no_trading.png"),
+       filename = here("docs", "diss_img", "cost_no_trading.png"),
        width = 3,
        height = 3)
 ```
@@ -368,14 +368,14 @@ The following graph shows the same information as the graph above. However, in t
   xlab("Portion of patch as reserve (R)") +
   ylab("Losses (relative to R = 0)") +
   scale_color_viridis_c() +
-  startR::ggtheme_plot() +
+  # startR::ggtheme_plot() +
   scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
   theme(legend.position = "None"))
 ```
 
 ```{r}
 ggsave(plot = costs_with_trading_plot_long_axis,
-       filename = here("docs", "slides", "img", "cost_with_trading_long_axis.png"),
+       filename = here("docs", "diss_img", "cost_with_trading_long_axis.png"),
        width = 3,
        height = 3)
 ```
@@ -393,7 +393,7 @@ ggsave(plot = costs_with_trading_plot_long_axis,
   xlab("Portion of patch as reserve (R)") +
   ylab("Losses\n(relative to R = 0)") +
   scale_color_viridis_c() +
-  startR::ggtheme_plot() +
+  # startR::ggtheme_plot() +
   scale_y_continuous(labels = scales::percent_format(accuracy = 0.01)) +
   theme(legend.position = "None"))
 ```
@@ -401,7 +401,7 @@ ggsave(plot = costs_with_trading_plot_long_axis,
 
 ```{r}
 ggsave(plot = costs_with_trading_plot,
-       filename = here("docs", "slides", "img", "cost_with_trading.png"),
+       filename = here("docs", "diss_img", "cost_with_trading.png"),
        width = 3,
        height = 3)
 ```
@@ -440,14 +440,14 @@ both <- left_join(shorter_no_trading, shorter_trading, by = c("Country", "R", "t
     text = element_text(size = 10),
     axis.text = element_text(size = 8)
   ) +
-  startR::ggtheme_plot() +
+  # startR::ggtheme_plot() +
   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1),
                      limits = c(0.885, 1)) +
   scale_x_continuous(limi= c(0, 1)) +
   theme(legend.position = "None"))
 
 ggsave(plot = delta_costs_plot,
-       filename = here("docs", "img", "panel2c.pdf"),
+       filename = here("docs", "diss_img", "panel2c.pdf"),
        width = 3.4, height = 2.3)
 ```
 
@@ -465,7 +465,7 @@ Now let's save this figure.
 
 ```{r}
 ggsave(plot = cost_plot,
-       filename = here("docs", "img", "PNA_model.pdf"),
+       filename = here("docs", "diss_img", "PNA_model.pdf"),
        width = 3.4,
        height = 7)
 ```
@@ -511,14 +511,14 @@ Save it
 
 ```{r}
 ggsave(plot = effort_and_revenues,
-       file = here("docs", "img","effort_and_revenues.pdf"),
+       file = here("docs", "diss_img", "effort_and_revenues.pdf"),
        width = 6,
        height = 4)
 ```
 
 ```{r}
 ggsave(plot = effort_and_revenues,
-       file = here("docs", "img","effort_and_revenues_ED_Fig4.tiff"),
+       here("docs", "diss_img", "effort_and_revenues_ED_Fig4.tiff"),
        width = 6,
        height = 4)
 ```
@@ -560,14 +560,14 @@ country_anom <- tibble(Country = c("KIR", "FSM", "MHL", "NRU", "PLW", "PNG", "SL
 
 ```{r}
 ggsave(plot = vessel_day_price_no_trading_plot,
-       filename = here("docs", "img", "vessel_day_price_no_trading_plot.pdf"),
+       filename = here("docs", "diss_img", "vessel_day_price_no_trading_plot.pdf"),
        width = 6,
        height = 3)
 ```
 
 ```{r}
 ggsave(plot = vessel_day_price_no_trading_plot,
-       filename = here("docs", "img", "vessel_day_price_no_trading_plot_ED_Fig1.tiff"),
+       here("docs", "diss_img", "vessel_day_price_no_trading_plot_ED_Fig1.tiff"),
        width = 6,
        height = 3)
 ```
@@ -601,14 +601,14 @@ ggsave(plot = vessel_day_price_no_trading_plot,
 
 ```{r}
 ggsave(plot = vessel_day_price_with_trading_plot,
-       filename = here("docs", "img", "vessel_day_price_with_trading_plot.pdf"),
+       here("docs", "diss_img", "vessel_day_price_with_trading_plot.pdf"),
        width = 6,
        height = 4.5)
 ```
 
 ```{r}
 ggsave(plot = vessel_day_price_with_trading_plot,
-       filename = here("docs", "img", "vessel_day_price_with_trading_plot_ED_Fig3.tiff"),
+       here("docs", "diss_img", "vessel_day_price_with_trading_plot_ED_Fig3.tiff"),
        width = 6,
        height = 4.5)
 ```
@@ -648,14 +648,14 @@ ggsave(plot = vessel_day_price_with_trading_plot,
 
 ```{r}
 ggsave(plot = profits_PNA_notKIR_no_trading_plot,
-       filename = here("docs", "img", "profits_PNA_notKIR_no_trading_plot.pdf"),
+       here("docs", "diss_img", "profits_PNA_notKIR_no_trading_plot.pdf"),
        width = 3,
        height = 3)
 ```
 
 ```{r}
 ggsave(plot = profits_PNA_notKIR_no_trading_plot,
-       filename = here("docs", "img", "profits_PNA_notKIR_no_trading_plot_ED_Fig2.tiff"),
+       here("docs", "diss_img", "profits_PNA_notKIR_no_trading_plot_ED_Fig2.tiff"),
        width = 3,
        height = 3)
 ```
@@ -791,7 +791,7 @@ best_rev <- allocate_wrap(
 #Paper export
 ggsave(
   plot = allocation_cost_plot,
-  filename = here("docs", "img", "allocation_cost_plot.pdf"),
+  here("docs", "diss_img", "allocation_cost_plot.pdf"),
   width = 5,
   height = 3.5
 )
@@ -802,7 +802,7 @@ ggsave(
 #Slide export
 ggsave(
   plot = allocation_cost_plot,
-  filename = here("docs", "slides", "img", "allocation_cost_plot.pdf"),
+  here("docs", "diss_img", "allocation_cost_plot.pdf"),
   width = 5,
   height = 3
 )
