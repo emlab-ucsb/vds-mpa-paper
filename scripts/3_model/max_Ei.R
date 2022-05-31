@@ -22,6 +22,9 @@ max_Ei <- function(p = NULL, q = NULL, Xvec = NULL, theta = NULL, R = NULL, beta
   # "fishable" biomass based on R and theta
   omega <- rep(1, n_patches)
   omega[1] <- theta + ((1 - theta) * (1 - R))
+  if(R == 1){
+    omega[1] <- 0
+  }
   
   # Calculate the maximum Ei assuming no vessel-day price
   E <- ((p * q * Xvec * omega) / (beta * c))^(1 / (beta - 1))

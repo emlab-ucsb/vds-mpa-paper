@@ -1,6 +1,9 @@
 move_in_time_no_trading <- function(fvec = NULL, theta = NULL, R = NULL, r = NULL, K = NULL, p = NULL, q = NULL, Xvec = NULL, beta = NULL, c = NULL, Evec = NULL, year = NULL) {
   
   omega <- theta + (1 - theta) * (1 - R)
+  if(R == 1){
+    omega[1] <- 0
+  }
   
   pis <- pmax(0,
               (p * q * Xvec) - (beta * c * (Evec ^ (beta - 1))))

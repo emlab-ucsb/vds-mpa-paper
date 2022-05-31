@@ -25,6 +25,9 @@ E_vec_fxn <- function(p = NULL, q = NULL, Xvec = NULL, theta = NULL, R = NULL, p
   # "fishable" biomass based on R and theta
   omega <- rep(1, n_patches)
   omega[1] <- theta + ((1 - theta) * (1 - R))
+  if(R == 1){
+    omega[1] <- 0
+  }
   
   # Create a vector of prices, wherte the high seas haven price (pi = 0)
   pi <- c(rep(pi, n_patches - 1), 0)

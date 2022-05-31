@@ -21,7 +21,9 @@ PNA_no_trading <- function(fvec = NULL, theta = NULL, R = NULL, r = NULL, K = NU
   n_patches <- length(fvec)
   
   omega <- theta + (1 - theta) * (1 - R)
-  if(R == 1){omega <- 0}
+  if(R == 1){
+    omega <- 0
+  }
   
   tol <- 0.001 * Bnow
   diff <- (tol * 2)^2
