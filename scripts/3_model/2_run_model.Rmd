@@ -20,8 +20,6 @@ knitr::opts_chunk$set(echo = TRUE,
                       warnings = FALSE,
                       message = FALSE)
 
-# Clean the environment
-rm(list = ls())
 ```
 
 ## Load packages and functions
@@ -213,6 +211,7 @@ Evec <- Benchmark_results$b_vessel_days
 Evec
 ```
 
+
 ## Run the model
 
 We now run the model with **NO** trading, using the Evec above as starting condition.
@@ -243,6 +242,23 @@ DF_results_no_trading <-
   unnest()
 ```
 
+```{r}
+no_trade_bm <- DF_results_no_trading %>% 
+  filter(R == 0, theta == 0) %>%
+  select(
+    Country,
+    b_harvest = Harvest,
+    b_vessel_days = Vessel_Days,
+    b_stock = Stock,
+    b_stock_i = Stock_i,
+    b_vdsprice = VDSprice,
+    b_vdsrevenue = VDSrevenue,
+    b_vdsrevenue_all = VDSrevenue_all,
+    b_vdsrevenue_notKIR = VDSrevenue_notKIR
+  )
+```
+
+
 We now take these results and add the benchmark results (no reserve) to calculate the cost of the reserve as the change in revenue. The proportional way of saying this is:
 
 $$
@@ -253,7 +269,7 @@ Where $\Pi_{R = 0}$  is the vessel-day revenue when there is no reserve, hence t
 ```{r}
 DF_1_no_trading <- DF_results_no_trading %>%
   filter(Country == "KIR") %>%
-  left_join(Benchmark_results, by = "Country") %>%
+  left_join(no_trade_bm, by = "Country") %>%
   mutate(
     cost = b_vdsrevenue - VDSrevenue,
     rel_cost = cost / b_vdsrevenue,
@@ -328,18 +344,35 @@ DF_results_with_trading <-
       Xvec = Xvec,
       beta = beta,
       c = c,
-      E = E
+      E = sum(Evec[1:9])
     )
   ) %>%
   unnest()
 ```
+
+```{r}
+trading_bm <- DF_results_with_trading %>% 
+  filter(R == 0, theta == 0) %>%
+  select(
+    Country,
+    b_harvest = Harvest,
+    b_vessel_days = Vessel_Days,
+    b_stock = Stock,
+    b_stock_i = Stock_i,
+    b_vdsprice = VDSprice,
+    b_vdsrevenue = VDSrevenue,
+    b_vdsrevenue_all = VDSrevenue_all,
+    b_vdsrevenue_notKIR = VDSrevenue_notKIR
+  )
+```
+
 
 Again, put it together with the reference values to calculate costs.
 
 ```{r}
 DF_1_with_trading <- DF_results_with_trading %>%
   filter(Country == "KIR") %>%
-  left_join(Benchmark_results, by = "Country") %>%
+  left_join(trading_bm, by = "Country") %>%
   mutate(
     vessel_days_sold = b_vessel_days - Vessel_Days,
     sales_revenue = vessel_days_sold * VDSprice,
@@ -352,6 +385,7 @@ DF_1_with_trading <- DF_results_with_trading %>%
     rel_cost_all = cost_all / b_vdsrevenue_all
   )
 ```
+
 
 The following graph shows the same information as the graph above. However, in this case, the costs are significantly lower. This is because a party can sell it's original allocation to other parties. The reduction i
 
@@ -689,7 +723,6 @@ We first obtain the optimal allocation by running the model until steady state a
 ```{r}
 
 alphas <- c(0, 0.5, 1)
-
 delta <- 1 / 1.1
 
 plan(multiprocess)
@@ -808,6 +841,43 @@ ggsave(
 )
 ```
 
+# Numbers for main text
+
+```{r}
+# revenues increase between 0\% and 7\% each
+DF_1_no_trading %>% pull(rel_cost_pna_not_kir) %>% range() * 100
+
+# When trading between countries occurs, 88.5\% to 99.2\% of revenue losses can be avoided.
+both %>% pull(rel_delta_cost) %>% range() * 100
+
+# implementing a reserve results in long-term losses to the conserving country of 20\% to 93\%, depending on the size of reserve and stock movement
+allocation %>%
+    filter(R > 0,
+           trade) %>% 
+    filter(alpha == 1) %>% 
+    mutate(trade = ifelse(trade, "Trading", "No Trading"),
+           alpha = as.character(alpha)) %>% 
+    group_by(trade, alpha, R, theta) %>%
+    summarize(rev = sum(rev_tot)) %>%
+    ungroup() %>% 
+    mutate(cost = (best_rev - rev) / best_rev) %>%
+    pull(cost) %>% 
+    range() * 100
+
+#However, a biomass-only allocation rule (\emph{i.e.} $\alpha = 0$) results in revenue losses of up to 0.7\%, essentially eliminating the costs of conservation.
+allocation %>%
+    filter(R > 0,
+           trade) %>% 
+    filter(alpha == 0) %>% 
+    mutate(trade = ifelse(trade, "Trading", "No Trading"),
+           alpha = as.character(alpha)) %>% 
+    group_by(trade, alpha, R, theta) %>%
+    summarize(rev = sum(rev_tot)) %>%
+    ungroup() %>% 
+    mutate(cost = (best_rev - rev) / best_rev) %>%
+    pull(cost) %>% 
+    range() * 100
+```
 
 # Reproducibility chunk
 
