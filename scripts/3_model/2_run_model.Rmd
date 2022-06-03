@@ -310,16 +310,15 @@ Yes, it looks like a $\beta = 1.1$ actually reduces this.
     guides(color = guide_colorbar(title = quo("Movement ("~theta~")"),
                                   ticks.colour = "black", frame.colour = "black")) +
     theme(legend.justification = c(0, 0.9),
-          legend.position = c(0, 1)) +
-    geom_abline(intercept = 0, slope = 1, size = 1, linetype = "dashed", color = "red")
+          legend.position = c(0, 1))
 )
 ```
 
 ```{r}
 ggsave(plot = costs_no_trading_plot,
        filename = here("docs", "diss_img", "cost_no_trading.png"),
-       width = 3,
-       height = 3)
+       width = 6,
+       height = 4.5)
 ```
 
 # Trading affects costs
@@ -410,8 +409,8 @@ The following graph shows the same information as the graph above. However, in t
 ```{r}
 ggsave(plot = costs_with_trading_plot_long_axis,
        filename = here("docs", "diss_img", "cost_with_trading_long_axis.png"),
-       width = 3,
-       height = 3)
+       width = 6,
+       height = 4.5)
 ```
 
 ```{r}
@@ -429,15 +428,19 @@ ggsave(plot = costs_with_trading_plot_long_axis,
   scale_color_viridis_c() +
   # startR::ggtheme_plot() +
   scale_y_continuous(labels = scales::percent_format(accuracy = 0.01)) +
-  theme(legend.position = "None"))
+    guides(color = guide_colorbar(title = quo("Movement ("~theta~")"),
+                                  ticks.colour = "black", frame.colour = "black")) +
+    theme(legend.justification = c(0, 0.9),
+          legend.position = c(0, 1))
+)
 ```
 
 
 ```{r}
 ggsave(plot = costs_with_trading_plot,
        filename = here("docs", "diss_img", "cost_with_trading.png"),
-       width = 3,
-       height = 3)
+       width = 6,
+       height = 4.5)
 ```
 
 ## Cost reduction due to trading
@@ -477,20 +480,35 @@ both <- left_join(shorter_no_trading, shorter_trading, by = c("Country", "R", "t
   # startR::ggtheme_plot() +
   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1),
                      limits = c(0.885, 1)) +
-  scale_x_continuous(limi= c(0, 1)) +
-  theme(legend.position = "None"))
+  scale_x_continuous(limits= c(0, 1)) +
+    guides(color = guide_colorbar(title = quo("Movement ("~theta~")"),
+                                  ticks.colour = "black", frame.colour = "black")) +
+    theme(legend.justification = c(0, 0.9),
+          legend.position = c(0, 1))
+)
 
+```
+
+```{r}
 ggsave(plot = delta_costs_plot,
        filename = here("docs", "diss_img", "panel2c.pdf"),
        width = 3.4, height = 2.3)
+
+ggsave(plot = delta_costs_plot,
+       filename = here("docs", "diss_img", "panel2c.png"),
+       width = 6,
+       height = 4.5)
 ```
 
 All together
 
 ```{r, fig.width = 4, fig.height = 7}
-(cost_plot <- plot_grid(costs_no_trading_plot,
-                        costs_with_trading_plot,
-                        delta_costs_plot,
+(cost_plot <- plot_grid(costs_no_trading_plot +
+                          geom_abline(intercept = 0, slope = 1, size = 1, linetype = "dashed", color = "red"),
+                        costs_with_trading_plot +
+                          theme(legend.position = "None"),
+                        delta_costs_plot  +
+                          theme(legend.position = "None"),
                         ncol = 1,
                         labels = "auto"))
 ```
@@ -826,6 +844,13 @@ ggsave(
   plot = allocation_cost_plot,
   here("docs", "diss_img", "allocation_cost_plot.pdf"),
   width = 5,
+  height = 3.5
+)
+
+ggsave(
+  plot = allocation_cost_plot,
+  here("docs", "diss_img", "allocation_cost_plot.png"),
+  width = 6,
   height = 3.5
 )
 ```

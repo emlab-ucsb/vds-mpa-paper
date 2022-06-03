@@ -30,7 +30,7 @@ VDS_countries <- c(PNA_countries, "TKL")
 eez <- read_sf(dsn = here("data", "spatial", "EEZ_subset.gpkg")) %>% 
   mutate(KIR = ISO_Ter1 == "KIR",
          VDS = ISO_Ter1 %in% VDS_countries) %>% 
-  lwgeom::st_make_valid()
+  st_make_valid()
 
 # Extract ISO3 codes for countries present
 countries <- eez$ISO_Ter1
@@ -73,13 +73,13 @@ reference <- ggplot() +
         panel.border = element_rect(colour = "black", fill = NA))
 
 main <- ggplot() +
-  geom_sf(data = eez, aes(color = KIR, fill = VDS), size = 0.5) +
-  geom_sf(data = pipa, fill = "red") +
-  geom_sf(data = pnms, fill = "red", size = 0) +
-  geom_sf(data = small_coast, color = "black", fill = "#E3E3E3", size = 0.1) +
-  geom_sf_label_repel(data = labels, mapping = aes(label = ISO_Ter1), force = 40, seed = 2) +
+  geom_sf(data = eez, color = "black", size = 0.5) +
+  # geom_sf(data = pipa, fill = "red") +
+  # geom_sf(data = pnms, fill = "red", size = 0) +
+  # geom_sf(data = small_coast, color = "black", fill = "#E3E3E3", size = 0.1) +
+  # geom_sf_label_repel(data = labels, mapping = aes(label = ISO_Ter1), force = 40, seed = 2) +
   ggtheme_plot() +
-  scale_color_manual(values = c("black", "red")) +
+  # scale_color_manual(values = c("black", "red")) +
   scale_fill_manual(values = c("transparent", "steelblue")) +
   theme(legend.position = "none") +
   labs(x = "", y = "") +
@@ -91,7 +91,7 @@ plot <- ggdraw() +
   draw_plot(reference, x = 0.075, y = 0.01, width = 0.45, height = 0.45)
 
 ggsave(plot = plot,
-       filename = here("docs", "img", "PNA_map.png"),
+       filename = here("docs", "diss_img", "PNA_map.png"),
        width = 6,
        height = 4.6)
 

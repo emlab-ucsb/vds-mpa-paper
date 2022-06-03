@@ -17,7 +17,7 @@
 #' @export
 #'
 E_vec_fxn <- function(p = NULL, q = NULL, Xvec = NULL, theta = NULL, R = NULL, pi = NULL, beta = NULL, c = NULL) {
-  
+  # browser()
   # Get the number of patches
   n_patches <- length(Xvec)
   
@@ -32,10 +32,11 @@ E_vec_fxn <- function(p = NULL, q = NULL, Xvec = NULL, theta = NULL, R = NULL, p
   # Create a vector of prices, wherte the high seas haven price (pi = 0)
   pi <- c(rep(pi, n_patches - 1), 0)
   
+
   # Calculate the attainable level of effort in each patch
   E_vec <- (((p * q * Xvec * omega) - pi) / (beta * c))^(1 / (beta - 1))
   
-  # These are the revenues. Prices cannot be higher than this, or would
+  # These are the marginal revenues. Prices cannot be higher than this, or would
   # imply negative efforts
   threshold <- p * q * Xvec * omega
   
