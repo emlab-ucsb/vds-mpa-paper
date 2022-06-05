@@ -89,6 +89,20 @@ p3 <- p2 +
   geom_segment(x = 0, xend = E2[2], y = pi_trade, yend = pi_trade, linetype = "dashed") +
   geom_segment(x = E2[1], xend = E2[1], y = 0, yend = pi_trade, linetype = "dashed") +
   geom_segment(x = E2[2], xend = E2[2], y = 0, yend = pi_trade, linetype = "dashed")
+
+p4 <- ggplot(data = data) +
+  geom_line(aes(x = E, y = pi), color = "steelblue") +
+  geom_line(data = data, aes(x = E, y = pi2), color = "red") +
+  geom_segment(x = 0, xend = E2[2], y = pi_trade, yend = pi_trade, linetype = "dashed") +
+  geom_segment(x = E2[1], xend = E2[1], y = 0, yend = pi_trade, linetype = "dashed") +
+  geom_segment(x = E2[2], xend = E2[2], y = 0, yend = pi_trade, linetype = "dashed") +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 1e4)) +
+  scale_y_continuous(expand = c(0, 0), limits = c(8e3, 13030)) +
+  labs(x = "Effort (Vessel-days)",
+       y = "Vessel-day price ($)") +
+  startR::ggtheme_plot()
+
+p41 <- cowplot::plot_grid(p2, p4, labels = c("No trade", "With trade"), ncol = 2, label_x = 0.2)
   
 
 
@@ -107,18 +121,9 @@ ggsave(plot = p3,
        width = 8,
        height = 4)
 
-
-
-
-
-
-# No reserves
-pi1 <- (p * q * X_i) - (beta * c * 5000 ^ (beta - 1))
-E1 <- (((p * q * X_i) - pi1) / (beta * c))^(1 / (beta - 1))
-(p * q * X_i) - (beta * c * E1 ^ (beta - 1))
-
-
-
-E_vec_fxn(p = p, q = q, Xvec = rep(X_i, 10), theta = theta, R = R, pi = pi1, beta = beta, c = c)[1:9] %>% sum()
+ggsave(plot = p41,
+       filename = here("docs", "diss_img", "demand_curves_4.png"),
+       width = 8,
+       height = 4)
 
 
